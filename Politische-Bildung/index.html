@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="de">
 <head>
+<!-- v12-handout-deterministisch -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Smartphone-Produktion (9 Schritte) – Karte + PDF</title>
@@ -415,10 +416,31 @@ function toggleSelect(id){
 
 function placeCardIntoSlot(cardId,slotIndex){
   clearChecks();
-  const oldIndex=placed.indexOf(cardId);
-  if(oldIndex!==-1) placed[oldIndex]=null;
-  placed[slotIndex]=cardId;
-  drawSlots(); drawBank();
+
+  const fromIndex = placed.indexOf(cardId);          // -1 => aus Bank
+  const targetId  = placed[slotIndex];              // null/undefined oder Karte im Zielslot
+
+  // Wenn Zielslot belegt ist:
+  if(targetId && targetId !== cardId){
+    if(fromIndex !== -1){
+      // Swap: Zielkarte wandert in den Ursprungsslot
+      placed[fromIndex] = targetId;
+    }else{
+      // Aus Bank: Zielkarte zurück in die Bank => Zielslot erst leeren
+      placed[slotIndex] = null;
+    }
+  }
+
+  // Ursprung leeren (falls Karte aus einem anderen Slot kam und dort nicht durch Swap ersetzt wurde)
+  if(fromIndex !== -1 && fromIndex !== slotIndex && placed[fromIndex] === cardId){
+    placed[fromIndex] = null;
+  }
+
+  placed[slotIndex] = cardId;
+
+  drawSlots();
+  drawBank();
+
   selectedCardId=null;
   [...document.querySelectorAll(".card")].forEach(c=>c.classList.remove("selected"));
   pickStatus.textContent="Karte: keine ausgewählt";
@@ -432,7 +454,7 @@ function drawSlots(){
     const id=placed[i]; if(!id) return;
     const step=steps.find(s=>s.id===id);
     const box=document.createElement("div");
-    box.className="slotCard"; box.style.flex="1 1 auto"; box.style.marginLeft="6px";
+    box.className="slotCard"; box.style.flex="1 1 auto"; box.style.marginLeft="6px"; box.draggable=true;
     box.innerHTML=`
       <div style="display:flex; gap:10px; align-items:flex-start;">
         <div style="flex:1 1 auto;">
@@ -443,6 +465,7 @@ function drawSlots(){
         <button type="button" title="Karte entfernen" style="padding:6px 8px;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:pointer;font-weight:800;">✕</button>
       </div>`;
     box.querySelector("button").addEventListener("click",()=>{placed[i]=null; clearChecks(); drawSlots(); drawBank();});
+    box.addEventListener("dragstart",(e)=>{clearChecks(); e.dataTransfer.setData("text/plain", id); e.dataTransfer.effectAllowed="move"; const s=steps.find(x=>x.id===id); if(s) setMapActive(s.mapKeys, s.countryLabel);});
     box.addEventListener("click",()=>{const s=steps.find(x=>x.id===id); if(s) setMapActive(s.mapKeys, s.countryLabel);});
     sl.appendChild(box);
   });
@@ -720,22 +743,87 @@ checkMarkBtn.addEventListener("click", ()=>{
 });
 
 function buildMarkHandout(){
-  // Legend with questions
+  // sicherstellen, dass alle gesetzten Markierungen als Klassen im Text stehen
+  applyClasses();
+
+  // Legende mit Fragen
   handoutLegend.innerHTML = rounds.map(r=>{
-    return `<div style="margin-bottom:6px;"><span class="sw ${r.colorClass}" style="vertical-align:middle;margin-right:8px;"></span><span style="font-weight:900;font-size:10.8px;">${r.label}:</span> <span style="font-size:10.5px;">${r.question}</span></div>`;
+    return `<div style="margin-bottom:6px;">
+      <span class="sw ${r.colorClass}" style="vertical-align:middle;margin-right:8px;"></span>
+      <span style="font-weight:900;font-size:10.8px;">${r.label}:</span>
+      <span style="font-size:10.5px;">${r.question}</span>
+    </div>`;
   }).join("");
-  // Text copy with highlight spans
+
+  // Textkopie + Inline-Highlight (zuverlässig für html2canvas)
   const clone = sourceText.cloneNode(true);
-  // Remove hover/click affordances
   clone.querySelectorAll(".seg").forEach(sp=>{
     sp.style.cursor = "default";
+    sp.style.padding = "2px 4px";
+    sp.style.borderRadius = "6px";
+    if(sp.classList.contains("r1")) sp.style.background = "rgba(255, 196, 0, .32)";
+    if(sp.classList.contains("r2")) sp.style.background = "rgba(34, 197, 94, .22)";
+    if(sp.classList.contains("r3")) sp.style.background = "rgba(59, 130, 246, .20)";
   });
   handoutText.innerHTML = clone.innerHTML;
 }
 
 async function downloadMarkPDF(){
-  buildMarkHandout();
-  const canvas = await html2canvas(markHandoutRoot, {scale:2, backgroundColor:"#ffffff"});
+  // 1) Klassen im sichtbaren Text setzen
+  applyClasses();
+
+  // 2) Temporären Handout-Container im Viewport erstellen
+  const temp = markHandoutRoot.cloneNode(true);
+  temp.id = "markHandoutRootTemp";
+  temp.style.position = "fixed";
+  temp.style.left = "0px";
+  temp.style.top = "0px";
+  temp.style.zIndex = "9999";
+  temp.style.opacity = "1";
+  temp.style.pointerEvents = "none";
+  temp.style.background = "#ffffff";
+  document.body.appendChild(temp);
+
+  // 3) Legende + Text in TEMP gezielt befüllen
+  const tempLegend = temp.querySelector("#handoutLegend");
+  const tempText   = temp.querySelector("#handoutText");
+
+  if(tempLegend){
+    tempLegend.innerHTML = rounds.map(r=>{
+      const col = (r.colorClass==="r1") ? "rgba(255,196,0,.75)"
+                : (r.colorClass==="r2") ? "rgba(34,197,94,.55)"
+                : "rgba(59,130,246,.50)";
+      return `<div style="margin-bottom:6px;">
+        <span style="display:inline-block;width:18px;height:10px;border-radius:999px;margin-right:8px;vertical-align:middle;background:${col};"></span>
+        <span style="font-weight:900;font-size:10.8px;">${r.label}:</span>
+        <span style="font-size:10.5px;">${r.question}</span>
+      </div>`;
+    }).join("");
+  }
+
+  if(tempText){
+    const clone = sourceText.cloneNode(true);
+    clone.querySelectorAll(".seg").forEach(sp=>{
+      sp.style.cursor = "default";
+      sp.style.padding = "2px 4px";
+      sp.style.borderRadius = "6px";
+      sp.style.display = "inline-block";
+      sp.style.margin = "1px 0";
+      if(sp.classList.contains("r1")) sp.style.background = "rgba(255,196,0,.32)";
+      if(sp.classList.contains("r2")) sp.style.background = "rgba(34,197,94,.22)";
+      if(sp.classList.contains("r3")) sp.style.background = "rgba(59,130,246,.20)";
+    });
+    tempText.innerHTML = clone.innerHTML;
+  }
+
+  // Layout flush
+  await new Promise(r=>requestAnimationFrame(()=>r()));
+
+  // 4) Rendern
+  const canvas = await html2canvas(temp, {scale:2, backgroundColor:"#ffffff"});
+  temp.remove();
+
+  // 5) PDF (mit Paging)
   const imgData = canvas.toDataURL("image/png");
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF("p","pt","a4");
@@ -743,9 +831,16 @@ async function downloadMarkPDF(){
   const pageH = pdf.internal.pageSize.getHeight();
   const imgW = pageW;
   const imgH = canvas.height*(imgW/canvas.width);
-  const fitScale = Math.min(1, pageH / imgH);
-  const finalH = imgH * fitScale;
-  pdf.addImage(imgData,"PNG",0,0,imgW,finalH);
+
+  let y = 0;
+  let remaining = imgH;
+  while(remaining > 0){
+    pdf.addImage(imgData, "PNG", 0, -y, imgW, imgH);
+    remaining -= pageH;
+    y += pageH;
+    if(remaining > 0) pdf.addPage();
+  }
+
   pdf.save("Handout_Abbau_Transport_Markierungen.pdf");
 }
 
