@@ -1,0 +1,1417 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Schüler-Tool – Markieren (Kategorien) & Auswertung (offline)</title>
+
+<!-- PDF.js lokal im selben Ordner: pdf.js + pdf.worker.js -->
+<script src="./pdf.js"></script>
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  if (!window.pdfjsLib) {
+    alert("PDF.js wurde nicht geladen. Prüfen Sie, ob pdf.js im selben Ordner liegt.");
+    return;
+  }
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "./pdf.worker.js";
+});
+</script>
+
+<style>
+  :root{
+    --bg:#0f1115; --panel:#151a22; --panel2:#101521; --line:#263041;
+    --text:#e8eef7; --muted:#a8b3c7; --ok:#6affb3; --warn:#ffd36a; --bad:#ff6a6a;
+    --mono: ui-monospace, Menlo, Consolas, monospace;
+    --r: 16px;
+
+    --stu: rgba(106,169,255,.28);     /* Schüler */
+    --eh:  rgba(106,255,179,.22);     /* Erwartung */
+    --hit: rgba(255,211,106,.33);     /* Treffer */
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    background: radial-gradient(1200px 600px at 20% -10%, #1c2a45 0%, transparent 60%),
+                radial-gradient(900px 500px at 80% 0%, #2a1f3d 0%, transparent 55%),
+                var(--bg);
+    color:var(--text);
+  }
+  header{
+    position:sticky; top:0; z-index:5;
+    background: rgba(16,21,33,.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    padding: 14px 16px;
+  }
+  .wrap{max-width:1500px;margin:0 auto}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .space{justify-content:space-between}
+  h1{margin:0;font-size:16px;font-weight:900}
+  .sub{margin-top:6px;color:var(--muted);font-size:12.5px;line-height:1.35}
+  .badge{
+    font-family:var(--mono);
+    font-size:12px;
+    padding:4px 8px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    background:#0b0f17;
+    color:var(--muted);
+  }
+  main{padding:14px 16px}
+  .grid{display:grid;grid-template-columns:560px 1fr;gap:12px}
+  @media (max-width: 1050px){.grid{grid-template-columns:1fr}}
+  .panel{
+    background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 40%), var(--panel);
+    border:1px solid var(--line);
+    border-radius: var(--r);
+    overflow:hidden;
+    box-shadow: 0 14px 40px rgba(0,0,0,.35);
+  }
+  .phead{
+    padding:12px 14px;
+    background: linear-gradient(180deg, rgba(255,255,255,.03), transparent), var(--panel2);
+    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  }
+  .pbody{padding:14px}
+  .status{font-size:12.5px}
+  .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+  .btn{
+    border:1px solid var(--line);
+    background: linear-gradient(180deg,#1a2230,#141a26);
+    color:var(--text);
+    border-radius: 12px;
+    padding:10px 12px;
+    cursor:pointer;
+    font-weight:800;
+    font-size:13px;
+  }
+  .btn:hover{border-color:#3a4a66}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn.primary{border-color:#2f5fa8;background:linear-gradient(180deg,#2a4b7e,#1b2e4b)}
+  .btn.danger{border-color:#8a2f2f;background:linear-gradient(180deg,#5a2222,#3b1717)}
+  input[type="file"], input[type="text"], input[type="number"], textarea, select{
+    width:100%;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:#0c1018;
+    color:var(--text);
+    padding:10px 11px;
+    font-size:13px;
+  }
+  textarea{min-height:86px;resize:vertical}
+  .hint{color:var(--muted);font-size:12px;line-height:1.35;margin-top:6px}
+  .hr{height:1px;background:var(--line);margin:12px 0}
+
+  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{
+    border:1px solid var(--line);
+    background: linear-gradient(180deg,#0f1624,#0b101a);
+    border-radius: 14px;
+    padding:12px;
+  }
+  .kpi .t{font-family:var(--mono);color:var(--muted);font-size:12px}
+  .kpi .v{font-weight:900;font-size:18px;margin-top:6px}
+
+  .legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .pill{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:#0b0f17;color:var(--muted);font-size:12px}
+  .dot{width:12px;height:12px;border-radius:4px;display:inline-block}
+  .dot.stu{background:var(--stu)}
+  .dot.eh{background:var(--eh)}
+  .dot.hit{background:var(--hit)}
+
+  .doc{
+    white-space:pre-wrap;
+    line-height:1.7;
+    font-size:15px;
+    background:#0b0f17;
+    border:1px solid var(--line);
+    border-radius: var(--r);
+    padding:14px;
+    min-height:70vh;
+    outline:none;
+  }
+  .token{padding:1px 1px;border-radius:6px}
+  .token.stu{background:var(--stu)}
+  .token.eh{background:var(--eh)}
+  .token.hit{background:var(--hit)}
+  .token.clickable{cursor:pointer}
+
+  .list{
+    margin-top:10px;
+    border:1px solid var(--line);
+    background:#0b0f17;
+    border-radius:14px;
+    padding:12px;
+    max-height:26vh;
+    overflow:auto;
+  }
+  .item{
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:10px;
+    background:linear-gradient(180deg,#0f1624,#0b101a);
+    margin-top:10px;
+  }
+  .item:first-child{margin-top:0}
+  .item .t{font-weight:900;font-size:13px}
+  .item .m{font-family:var(--mono);color:var(--muted);font-size:12px;margin-top:6px}
+  .item .q{margin-top:8px;font-size:12.5px;line-height:1.35;white-space:pre-wrap;border-left:3px solid #2a3a55;padding-left:10px;color:#d8e2f4}
+  .item .a{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+
+  .modebar{display:flex; gap:8px; flex-wrap:wrap;}
+  .tab{
+    border:1px solid var(--line);
+    background:#0b0f17;
+    border-radius:999px;
+    padding:8px 10px;
+    font-weight:900;
+    font-size:12px;
+    cursor:pointer;
+    color:var(--muted);
+    user-select:none;
+  }
+  .tab.active{
+    color:var(--text);
+    border-color:#3a4a66;
+    background:linear-gradient(180deg,#121b2a,#0b0f17);
+  }
+
+  /* Modal */
+  .backdrop{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.55);
+    display:none;
+    align-items:center; justify-content:center;
+    padding:16px;
+    z-index:10;
+  }
+  .modal{
+    width:min(860px,100%);
+    background: linear-gradient(180deg,#121a28,#0e1320);
+    border:1px solid var(--line);
+    border-radius: 18px;
+    overflow:hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,.55);
+  }
+  .mhead{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .mbody{padding:16px}
+  .mfoot{padding:14px 16px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
+  .small{font-size:12px;color:var(--muted);font-family:var(--mono)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width: 700px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="row space">
+      <div>
+        <h1>Schüler-Tool (offline) – Markieren & Auswertung</h1>
+        <div class="sub">Name ist Pflicht (für Dateiname + JSON). Erststand wird beim Freischalten gespeichert; danach darf weiter geübt werden.</div>
+      </div>
+      <div class="row">
+        <span class="badge" id="bMode">Modus: Arbeiten</span>
+        <span class="badge" id="bName">Name: —</span>
+        <span class="badge" id="bPdf">PDF: —</span>
+        <span class="badge" id="bEH">EH: —</span>
+        <span class="badge" id="bAttempt">Versuch: 1</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+    <section class="panel">
+      <div class="phead">
+        <div class="modebar">
+          <div class="tab active" id="tabWork">Arbeiten</div>
+          <div class="tab" id="tabEval">Auswertung</div>
+        </div>
+        <div class="status" id="status"><span class="warn">Bereit. Name, PDF und EH.json laden.</span></div>
+      </div>
+
+      <div class="pbody">
+        <div class="grid2">
+          <div>
+            <label class="small">0) Name (Pflicht)</label>
+            <input type="text" id="nameInput" placeholder="Nachname Vorname (z. B. Mustermann Max)" />
+            <div class="hint">Wird im JSON gespeichert und für den Dateinamen verwendet.</div>
+          </div>
+          <div>
+            <label class="small">Option: Klasse/Kurs (optional)</label>
+            <input type="text" id="classInput" placeholder="z. B. 10b / GK Geschichte / 9-10 Deutsch" />
+            <div class="hint">Wird ebenfalls im JSON gespeichert und in den Dateinamen übernommen.</div>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="grid2">
+          <div>
+            <label class="small">1) PDF laden</label>
+            <input type="file" id="pdfInput" accept="application/pdf" />
+            <div class="hint">Nur PDFs mit Textebene (Word/LibreOffice-Export).</div>
+          </div>
+          <div>
+            <label class="small">2) EH.json laden</label>
+            <input type="file" id="ehInput" accept="application/json" />
+            <div class="hint">Kategorien werden übernommen. Auswertung ist ggf. per EH-Einstellung deaktiviert.</div>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="row">
+          <button class="btn" id="btnExportStu" disabled>Schüler.json exportieren</button>
+          <button class="btn danger" id="btnClear" disabled>Markierungen löschen</button>
+          <button class="btn" id="btnNewAttempt" disabled>Neuer Versuch</button>
+        </div>
+
+        <div class="hr"></div>
+
+        <div id="workBlock">
+          <div style="font-weight:900;margin-bottom:6px">Arbeitsmodus</div>
+          <div class="hint">Markieren Sie Textstellen mit der Maus. Danach müssen Sie eine Kategorie auswählen (Pflicht) und können einen kurzen Kommentar ergänzen.</div>
+
+          <div class="hr"></div>
+
+          <div style="font-weight:900;margin-bottom:8px">Ihre Markierungen</div>
+          <div class="list" id="stuList">
+            <div class="hint" id="stuEmpty">Noch keine Markierungen.</div>
+          </div>
+        </div>
+
+        <div id="evalBlock" style="display:none">
+          <div class="row" style="justify-content:space-between">
+            <div>
+              <div style="font-weight:900;margin-bottom:6px">Auswertungsmodus</div>
+              <div class="hint" id="evalHint">Klicken Sie auf „Auswertung freischalten“. Vorher wird Ihr Erststand gespeichert.</div>
+            </div>
+            <div class="row">
+              <button class="btn primary" id="btnUnlock" disabled>Auswertung freischalten</button>
+              <span class="badge" id="bSnapshot">Erststand: —</span>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="kpis">
+            <div class="kpi"><div class="t">Trefferpunkte</div><div class="v" id="kHitPts">—</div></div>
+            <div class="kpi"><div class="t">Präzision / Recall</div><div class="v" id="kPR">—</div></div>
+            <div class="kpi"><div class="t">Präzisionsfaktor</div><div class="v" id="kPF">—</div></div>
+            <div class="kpi"><div class="t">Kategorie-Faktor</div><div class="v" id="kCF">—</div></div>
+            <div class="kpi"><div class="t">Endpunkte</div><div class="v" id="kFinal">—</div></div>
+            <div class="kpi"><div class="t">Übermarkierung (Zeichen)</div><div class="v" id="kExtra">—</div></div>
+          </div>
+
+          <div class="legend">
+            <span class="pill"><span class="dot stu"></span>Ihre Markierung</span>
+            <span class="pill"><span class="dot eh"></span>Erwartung</span>
+            <span class="pill"><span class="dot hit"></span>Treffer</span>
+            <span class="pill"><strong style="color:#d8e2f4">Overlap:</strong>&nbsp;<span id="bOverlap">—</span></span>
+            <span class="pill"><strong style="color:#d8e2f4">Freibetrag:</strong>&nbsp;<span id="bAllowance">—</span></span>
+            <span class="pill"><strong style="color:#d8e2f4">Kategoriegewicht:</strong>&nbsp;<span id="bCatW">—</span></span>
+          </div>
+
+          <div class="hr"></div>
+
+          <div style="font-weight:900;margin-bottom:8px">Fehlstellen (Erwartung ohne Treffer)</div>
+          <div class="list" id="missList">
+            <div class="hint" id="missEmpty">Noch keine Auswertung.</div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div style="font-weight:900;margin-bottom:8px">Trefferliste (mit Kategorie-Feedback)</div>
+          <div class="list" id="hitList">
+            <div class="hint" id="hitEmpty">Noch keine Auswertung.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="phead">
+        <div class="row">
+          <span class="badge">Markieren: Maus ziehen → loslassen</span>
+          <span class="badge">Klick auf Markierung: bearbeiten</span>
+          <span class="badge">Esc: Dialog schließen</span>
+        </div>
+      </div>
+      <div class="pbody">
+        <div class="doc" id="doc" tabindex="0"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- Modal: Schüler-Markierung -->
+<div class="backdrop" id="backdrop" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="mhead">
+      <div>
+        <div style="font-weight:900" id="mTitle">Markierung</div>
+        <div class="small" id="mRange">—</div>
+      </div>
+      <button class="btn" id="mClose">Schließen</button>
+    </div>
+    <div class="mbody">
+      <div class="grid2">
+        <div>
+          <label class="small">Kategorie (Pflicht)</label>
+          <select id="mCat"></select>
+          <div class="hint">Diese Liste kommt aus dem Erwartungshorizont (EH.json).</div>
+        </div>
+        <div>
+          <label class="small">Hinweis</label>
+          <input type="text" id="mShort" placeholder="z. B. Zentrale These / Beleg / Argument ..." />
+          <div class="hint">Optionaler Kurzvermerk (ersetzt nicht die Kategorie).</div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <label class="small">Kommentar (optional)</label>
+        <textarea id="mCom" placeholder="Warum haben Sie diese Stelle so eingeordnet?"></textarea>
+      </div>
+
+      <div style="margin-top:12px">
+        <label class="small">Auszug</label>
+        <div class="item" style="margin-top:8px"><div class="q" id="mQuote">—</div></div>
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="btn danger" id="mDel" style="display:none">Löschen</button>
+      <button class="btn" id="mCancel">Abbrechen</button>
+      <button class="btn primary" id="mSave">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = (id)=>document.getElementById(id);
+  const el = {
+    tabWork:$("tabWork"),
+    tabEval:$("tabEval"),
+    bMode:$("bMode"),
+    bName:$("bName"),
+    bPdf:$("bPdf"),
+    bEH:$("bEH"),
+    bAttempt:$("bAttempt"),
+    status:$("status"),
+
+    nameInput:$("nameInput"),
+    classInput:$("classInput"),
+
+    pdfInput:$("pdfInput"),
+    ehInput:$("ehInput"),
+
+    btnExportStu:$("btnExportStu"),
+    btnClear:$("btnClear"),
+    btnNewAttempt:$("btnNewAttempt"),
+
+    workBlock:$("workBlock"),
+    evalBlock:$("evalBlock"),
+
+    btnUnlock:$("btnUnlock"),
+    bSnapshot:$("bSnapshot"),
+    evalHint:$("evalHint"),
+
+    kHitPts:$("kHitPts"),
+    kPR:$("kPR"),
+    kPF:$("kPF"),
+    kCF:$("kCF"),
+    kFinal:$("kFinal"),
+    kExtra:$("kExtra"),
+
+    bOverlap:$("bOverlap"),
+    bAllowance:$("bAllowance"),
+    bCatW:$("bCatW"),
+
+    missList:$("missList"),
+    missEmpty:$("missEmpty"),
+    hitList:$("hitList"),
+    hitEmpty:$("hitEmpty"),
+
+    doc:$("doc"),
+    stuList:$("stuList"),
+
+    // Modal
+    backdrop:$("backdrop"),
+    mTitle:$("mTitle"),
+    mRange:$("mRange"),
+    mCat:$("mCat"),
+    mShort:$("mShort"),
+    mCom:$("mCom"),
+    mQuote:$("mQuote"),
+    mClose:$("mClose"),
+    mCancel:$("mCancel"),
+    mSave:$("mSave"),
+    mDel:$("mDel"),
+  };
+
+  const escapeHtml = (s)=>String(s).replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+  const setStatus=(kind,msg)=>{
+    const cls = kind==="ok"?"ok":kind==="bad"?"bad":"warn";
+    el.status.innerHTML = `<span class="${cls}">${escapeHtml(msg)}</span>`;
+  };
+  const uuid=()=> "m_"+Math.random().toString(16).slice(2)+Date.now().toString(16);
+  const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+
+  const state = {
+    mode:"work", // work | eval
+
+    student: {
+      name: "",
+      class: ""
+    },
+
+    pdf:{name:null,pages:0,text:"",tokens:[]},
+
+    eh:null,
+    ehCats:[],
+    ehAnns:[],
+
+    attempt_number: 1,
+    work_started_at: null,
+
+    submission_snapshot: null,
+    practice_after_unlock: { enabled:false, marks:[] },
+    draft_marks: [],
+
+    export_count: 0,
+    last_eval: null,
+    modal:{mode:"add", id:null, range:null}
+  };
+
+  function sanitizeFilePart(s){
+    return String(s||"")
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g,"")      // remove accents
+      .replace(/[^a-zA-Z0-9]+/g,"_")       // non-alnum -> _
+      .replace(/^_+|_+$/g,"")
+      .replace(/_{2,}/g,"_")
+      .slice(0,48);
+  }
+
+  function tsForFile(){
+    // YYYY-MM-DD-HH-MM-SS (local)
+    const d = new Date();
+    const pad=(n)=>String(n).padStart(2,"0");
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}-${pad(d.getHours())}-${pad(d.getMinutes())}-${pad(d.getSeconds())}`;
+  }
+
+  function updateBadges(){
+    el.bMode.textContent = "Modus: " + (state.mode==="work" ? "Arbeiten" : "Auswertung");
+    el.bName.textContent = "Name: " + (state.student.name ? state.student.name : "—");
+    el.bPdf.textContent = "PDF: " + (state.pdf.name ?? "—");
+    el.bEH.textContent = "EH: " + (state.eh ? "geladen" : "—");
+    el.bAttempt.textContent = "Versuch: " + state.attempt_number;
+    el.bSnapshot.textContent = "Erststand: " + (state.submission_snapshot?.captured_at ? "gespeichert" : "—");
+  }
+
+  // -------- PDF text extraction --------
+  function tokenize(text){
+    const re=/(\s+)|([^\s]+)/g;
+    let m,i=0;
+    const out=[];
+    while((m=re.exec(text))!==null){
+      const t=m[0];
+      out.push({t,start:i,end:i+t.length});
+      i+=t.length;
+    }
+    return out;
+  }
+
+  function spans(){ return el.doc.querySelectorAll("span.token"); }
+
+  function renderText(){
+    el.doc.innerHTML="";
+    const frag=document.createDocumentFragment();
+    state.pdf.tokens.forEach(tok=>{
+      const sp=document.createElement("span");
+      sp.className="token clickable";
+      sp.textContent=tok.t;
+      sp.dataset.start=String(tok.start);
+      sp.dataset.end=String(tok.end);
+      frag.appendChild(sp);
+    });
+    el.doc.appendChild(frag);
+  }
+
+  async function extractText(file){
+    if(!window.pdfjsLib) throw new Error("PDF.js fehlt (pdf.js nicht geladen).");
+    const ab = await file.arrayBuffer();
+
+    let pdf;
+    try{
+      pdf = await pdfjsLib.getDocument({data:ab}).promise;
+    }catch(e){
+      pdf = await pdfjsLib.getDocument({data:ab, disableWorker:true}).promise;
+    }
+
+    state.pdf.pages = pdf.numPages;
+
+    const parts=[];
+    for(let p=1;p<=pdf.numPages;p++){
+      const page=await pdf.getPage(p);
+      const content=await page.getTextContent();
+      const items = content.items.map(it=>({
+        str: it.str || "",
+        x: it.transform?.[4] ?? 0,
+        y: it.transform?.[5] ?? 0
+      }));
+      items.sort((a,b)=>{
+        if(Math.abs(b.y-a.y)>2) return b.y-a.y;
+        return a.x-b.x;
+      });
+
+      let out="", lastY=null;
+      for(const it of items){
+        if(!it.str) continue;
+        if(lastY!==null && Math.abs(it.y-lastY)>8) out += "\n";
+        else if(out && !out.endsWith("\n") && !out.endsWith(" ") && !it.str.startsWith(" ")) out += " ";
+        out += it.str;
+        lastY = it.y;
+      }
+
+      parts.push(out.trimEnd());
+      if(p<pdf.numPages) parts.push("\n\n");
+    }
+    return parts.join("");
+  }
+
+  // -------- Selection -> range --------
+  function getSelectionRange(){
+    const sel=window.getSelection();
+    if(!sel || sel.rangeCount===0) return null;
+    const r=sel.getRangeAt(0);
+    if(r.collapsed) return null;
+    if(!el.doc.contains(r.commonAncestorContainer)) return null;
+
+    const startEl = (r.startContainer.nodeType===3 ? r.startContainer.parentElement : r.startContainer)?.closest?.("span.token");
+    const endEl   = (r.endContainer.nodeType===3 ? r.endContainer.parentElement : r.endContainer)?.closest?.("span.token");
+    if(!startEl || !endEl) return null;
+
+    let startOff=0;
+    let endOff=(endEl.textContent||"").length;
+
+    if(r.startContainer.nodeType===3 && startEl.contains(r.startContainer)){
+      startOff = clamp(r.startOffset,0,(r.startContainer.textContent||"").length);
+    }
+    if(r.endContainer.nodeType===3 && endEl.contains(r.endContainer)){
+      endOff = clamp(r.endOffset,0,(r.endContainer.textContent||"").length);
+    }
+
+    const start=(+startEl.dataset.start)+startOff;
+    const end=(+endEl.dataset.start)+endOff;
+    if(end<=start) return null;
+    return {start,end};
+  }
+
+  // -------- Modes + UI --------
+  function setMode(mode){
+    state.mode = mode;
+    const work = mode==="work";
+    el.tabWork.classList.toggle("active", work);
+    el.tabEval.classList.toggle("active", !work);
+
+    el.workBlock.style.display = work ? "block" : "none";
+    el.evalBlock.style.display = work ? "none" : "block";
+
+    refreshControls();
+    applyHighlights();
+    if(!work && state.practice_after_unlock.enabled){
+      evaluateAndRender();
+    }
+  }
+
+  function refreshControls(){
+    const hasName = !!state.student.name.trim();
+    const hasPdf = !!state.pdf.text;
+    const hasEh = !!state.eh;
+    const unlockedAllowed = !!state.eh?.settings?.student_ui?.allow_unlock_evaluation;
+
+    el.btnExportStu.disabled = !(hasName && hasPdf && hasEh);
+    el.btnClear.disabled = !(hasPdf && hasEh);
+    el.btnNewAttempt.disabled = !(hasPdf && hasEh);
+
+    el.btnUnlock.disabled = !(hasPdf && hasEh && unlockedAllowed);
+
+    if(state.mode==="work"){
+      if(!hasName) setStatus("warn","Bitte zuerst den Namen eintragen.");
+      else if(!hasPdf || !hasEh) setStatus("warn","Bitte PDF und EH.json laden.");
+      else if(!state.ehCats.length) setStatus("bad","EH enthält keine Kategorien. Ohne Kategorien ist das Tool so nicht nutzbar.");
+      else setStatus("ok","Arbeitsmodus: Markieren → Kategorie wählen (Pflicht) → Kommentar optional.");
+    }else{
+      if(!hasName) setStatus("warn","Bitte zuerst den Namen eintragen.");
+      else if(!hasPdf || !hasEh) setStatus("warn","Bitte PDF und EH.json laden.");
+      else if(!unlockedAllowed) setStatus("warn","Auswertung ist durch EH-Einstellungen deaktiviert. Sie können trotzdem markieren und exportieren.");
+      else if(!state.practice_after_unlock.enabled) setStatus("warn","Auswertung noch nicht freigeschaltet.");
+      else setStatus("ok","Auswertung aktiv: EH sichtbar, Sie können weiter üben (nur Erststand wird für Lehrer gespeichert).");
+    }
+
+    if(!state.eh) el.evalHint.textContent = "Laden Sie zuerst EH.json.";
+    else if(!unlockedAllowed) el.evalHint.textContent = "Auswertung ist für diese Aufgabe deaktiviert (Einstellung in EH.json).";
+    else if(!state.practice_after_unlock.enabled) el.evalHint.textContent = "Klicken Sie auf „Auswertung freischalten“. Vorher wird Ihr Erststand gespeichert.";
+    else el.evalHint.textContent = "Sie sehen jetzt den Erwartungshorizont. Änderungen zählen als Übung, nicht als Erststand.";
+
+    updateBadges();
+  }
+
+  // -------- Modal (student mark) --------
+  function fillCategorySelect(selected){
+    el.mCat.innerHTML="";
+    const opt0=document.createElement("option");
+    opt0.value="";
+    opt0.textContent="— Bitte Kategorie wählen —";
+    el.mCat.appendChild(opt0);
+
+    for(const c of state.ehCats){
+      const opt=document.createElement("option");
+      opt.value=c;
+      opt.textContent=c;
+      el.mCat.appendChild(opt);
+    }
+    el.mCat.value = state.ehCats.includes(selected) ? selected : "";
+  }
+
+  function activeMarks(){
+    return state.practice_after_unlock.enabled ? state.practice_after_unlock.marks : state.draft_marks;
+  }
+
+  function openModal(mode, id, range){
+    state.modal={mode,id,range};
+    el.mTitle.textContent = mode==="edit" ? "Markierung bearbeiten" : "Markierung hinzufügen";
+    el.mRange.textContent = `Range: ${range.start}–${range.end} (${range.end-range.start} Zeichen)`;
+
+    const list = activeMarks();
+    const mark = mode==="edit" ? list.find(m=>m.id===id) : null;
+
+    fillCategorySelect(mark?.category || "");
+    el.mShort.value = mark?.short || "";
+    el.mCom.value = mark?.comment || "";
+    el.mQuote.textContent = state.pdf.text.slice(range.start, range.end);
+
+    el.mDel.style.display = mode==="edit" ? "inline-block" : "none";
+    el.backdrop.style.display="flex";
+    el.mCat.focus();
+  }
+
+  function closeModal(){
+    el.backdrop.style.display="none";
+    state.modal={mode:"add",id:null,range:null};
+    const sel=window.getSelection(); if(sel) sel.removeAllRanges();
+  }
+
+  el.mClose.onclick = closeModal;
+  el.mCancel.onclick = closeModal;
+  document.addEventListener("keydown",(e)=>{
+    if(e.key==="Escape" && el.backdrop.style.display==="flex") closeModal();
+  });
+
+  el.mDel.onclick = ()=>{
+    const m=state.modal;
+    if(m.mode!=="edit" || !m.id) return;
+    if(!confirm("Markierung wirklich löschen?")) return;
+    const list = activeMarks();
+    const idx = list.findIndex(x=>x.id===m.id);
+    if(idx>=0) list.splice(idx,1);
+    closeModal();
+    rebuildStuList();
+    applyHighlights();
+    if(state.mode==="eval" && state.practice_after_unlock.enabled) evaluateAndRender();
+  };
+
+  el.mSave.onclick = ()=>{
+    const m=state.modal;
+    if(!m.range) return;
+
+    const category=(el.mCat.value||"").trim();
+    if(!category){
+      alert("Bitte eine Kategorie auswählen (Pflicht).");
+      return;
+    }
+    const short=(el.mShort.value||"").trim();
+    const comment=(el.mCom.value||"").trim();
+    const {start,end}=m.range;
+
+    const list = activeMarks();
+    const now = new Date().toISOString();
+
+    if(m.mode==="edit" && m.id){
+      const idx = list.findIndex(x=>x.id===m.id);
+      if(idx>=0){
+        list[idx] = {
+          ...list[idx],
+          category, short, comment,
+          start, end,
+          quote: state.pdf.text.slice(start,end),
+          updated_at: now
+        };
+      }
+    }else{
+      list.push({
+        id: uuid(),
+        start, end,
+        category, short, comment,
+        quote: state.pdf.text.slice(start,end),
+        created_at: now,
+        updated_at: now
+      });
+    }
+
+    closeModal();
+    rebuildStuList();
+    applyHighlights();
+    if(state.mode==="eval" && state.practice_after_unlock.enabled) evaluateAndRender();
+    setStatus("ok","Markierung gespeichert.");
+  };
+
+  function rebuildStuList(){
+    const list = activeMarks();
+    el.stuList.innerHTML="";
+
+    if(!list.length){
+      const div=document.createElement("div");
+      div.className="hint";
+      div.textContent="Noch keine Markierungen.";
+      el.stuList.appendChild(div);
+      return;
+    }
+
+    const sorted=[...list].sort((a,b)=>a.start-b.start);
+    for(const m of sorted){
+      const item=document.createElement("div");
+      item.className="item";
+
+      const t=document.createElement("div");
+      t.className="t";
+      t.textContent = `${m.category}${m.short ? " · "+m.short : ""}`;
+
+      const meta=document.createElement("div");
+      meta.className="m";
+      meta.textContent = `Range: ${m.start}–${m.end} · ID: ${m.id}`;
+
+      const q=document.createElement("div");
+      q.className="q";
+      q.textContent = m.quote || state.pdf.text.slice(m.start,m.end);
+
+      const a=document.createElement("div");
+      a.className="a";
+
+      const show=document.createElement("button");
+      show.className="btn";
+      show.textContent="Anzeigen";
+      show.onclick=()=>{
+        for(const sp of spans()){
+          const s=+sp.dataset.start, e=+sp.dataset.end;
+          if(e<=m.start || s>=m.end) continue;
+          sp.scrollIntoView({behavior:"smooth", block:"center"});
+          break;
+        }
+      };
+
+      const edit=document.createElement("button");
+      edit.className="btn primary";
+      edit.textContent="Bearbeiten";
+      edit.onclick=()=>openModal("edit", m.id, {start:m.start,end:m.end});
+
+      const del=document.createElement("button");
+      del.className="btn danger";
+      del.textContent="Löschen";
+      del.onclick=()=>{
+        if(!confirm("Markierung wirklich löschen?")) return;
+        const list2=activeMarks();
+        const idx=list2.findIndex(x=>x.id===m.id);
+        if(idx>=0) list2.splice(idx,1);
+        rebuildStuList();
+        applyHighlights();
+        if(state.mode==="eval" && state.practice_after_unlock.enabled) evaluateAndRender();
+      };
+
+      a.append(show,edit,del);
+      item.append(t,meta,q,a);
+
+      if(m.comment){
+        const c=document.createElement("div");
+        c.className="hint";
+        c.textContent="Kommentar: " + m.comment;
+        item.appendChild(c);
+      }
+
+      el.stuList.appendChild(item);
+    }
+  }
+
+  // -------- EH import --------
+  function loadEH(data){
+    if(!data || data.type!=="EH" || !Array.isArray(data.annotations)){
+      throw new Error("EH.json-Format passt nicht.");
+    }
+    state.eh = data;
+    state.ehCats = Array.isArray(data.categories) ? data.categories.map(String) : [];
+    state.ehAnns = data.annotations.map(a=>({
+      id: a.id || ("eh_"+Math.random().toString(16).slice(2)),
+      start: Number(a.start),
+      end: Number(a.end),
+      category: (a.category||"").toString(),
+      points: (a.points ?? "") === "" ? "" : Number(a.points),
+      comment: (a.comment||"").toString(),
+      quote: (a.quote||"").toString()
+    })).filter(a=>Number.isFinite(a.start)&&Number.isFinite(a.end)&&a.end>a.start);
+
+    const sc = data.settings?.scoring || {};
+    if(!Number.isFinite(Number(sc.min_overlap))) sc.min_overlap = 0.30;
+    if(!Number.isFinite(Number(sc.precision_allowance))) sc.precision_allowance = 0.65;
+    if(!Number.isFinite(Number(sc.category_weight))) sc.category_weight = 0.30;
+
+    el.bOverlap.textContent = Math.round(Number(sc.min_overlap)*100) + "%";
+    el.bAllowance.textContent = Math.round(Number(sc.precision_allowance)*100) + "%";
+    el.bCatW.textContent = Math.round(Number(sc.category_weight)*100) + "%";
+
+    refreshControls();
+    rebuildStuList();
+    applyHighlights();
+  }
+
+  // -------- Highlight rendering --------
+  function applyHighlights(){
+    const sps = spans();
+    sps.forEach(sp=>{
+      sp.classList.remove("stu","eh","hit");
+    });
+    if(!state.pdf.text) return;
+
+    const showEH = state.mode==="eval"
+      && state.practice_after_unlock.enabled
+      && !!state.eh?.settings?.student_ui?.show_eh_highlights;
+
+    const marks = activeMarks();
+
+    for(const sp of sps){
+      const s = +sp.dataset.start, e = +sp.dataset.end;
+
+      const inStu = marks.some(m => !(e<=m.start || s>=m.end));
+      const inEh  = showEH ? state.ehAnns.some(a => !(e<=a.start || s>=a.end)) : false;
+
+      let inHit = false;
+      if(inStu && inEh){
+        const thr = Number(state.eh?.settings?.scoring?.min_overlap ?? 0.30);
+        outer:
+        for(const ea of state.ehAnns){
+          if(e<=ea.start || s>=ea.end) continue;
+          for(const sm of marks){
+            if(e<=sm.start || s>=sm.end) continue;
+            if(overlapRatio(ea,sm) >= thr){ inHit=true; break outer; }
+          }
+        }
+      }
+
+      if(inStu) sp.classList.add("stu");
+      if(inEh) sp.classList.add("eh");
+      if(inHit) sp.classList.add("hit");
+    }
+
+    updateBadges();
+  }
+
+  // click on token opens edit if inside a student mark
+  el.doc.addEventListener("click",(ev)=>{
+    const t = ev.target;
+    if(!(t instanceof HTMLElement)) return;
+    const sp = t.closest("span.token");
+    if(!sp) return;
+
+    const posS = +sp.dataset.start;
+    const list = activeMarks();
+    const found = list.find(m => posS>=m.start && posS<m.end);
+    if(found){
+      openModal("edit", found.id, {start:found.start,end:found.end});
+    }
+  });
+
+  // selecting creates new mark
+  el.doc.addEventListener("mouseup", ()=>{
+    if(!state.pdf.text || !state.eh) return;
+
+    if(state.mode!=="work" && !(state.mode==="eval" && state.practice_after_unlock.enabled)) return;
+
+    if(!state.ehCats.length){
+      setStatus("bad","EH enthält keine Kategorien. Markieren ist so nicht möglich.");
+      return;
+    }
+
+    const r = getSelectionRange();
+    if(!r || (r.end-r.start)<2) return;
+    const sel=window.getSelection(); if(sel) sel.removeAllRanges();
+    openModal("add", null, r);
+  });
+
+  // -------- Eval computation --------
+  function overlapRatio(a,b){
+    const inter = Math.max(0, Math.min(a.end,b.end) - Math.max(a.start,b.start));
+    const lenA = Math.max(1, a.end-a.start);
+    const lenB = Math.max(1, b.end-b.start);
+    return inter / Math.min(lenA,lenB);
+  }
+
+  function normalizeIntervals(list){
+    return (list || [])
+      .map(x => ({ start: Math.max(0, Number(x.start)), end: Math.max(0, Number(x.end)) }))
+      .filter(x => Number.isFinite(x.start) && Number.isFinite(x.end) && x.end > x.start)
+      .sort((a,b)=>a.start-b.start);
+  }
+  function mergeIntervals(list){
+    const arr = normalizeIntervals(list);
+    if(arr.length===0) return [];
+    const out=[{...arr[0]}];
+    for(let i=1;i<arr.length;i++){
+      const cur=arr[i], last=out[out.length-1];
+      if(cur.start <= last.end){
+        last.end = Math.max(last.end, cur.end);
+      }else{
+        out.push({...cur});
+      }
+    }
+    return out;
+  }
+  function intervalsLength(merged){
+    let s=0;
+    for(const it of merged) s += (it.end-it.start);
+    return s;
+  }
+  function intersectionLength(aMerged, bMerged){
+    let i=0,j=0,sum=0;
+    while(i<aMerged.length && j<bMerged.length){
+      const a=aMerged[i], b=bMerged[j];
+      const start = Math.max(a.start,b.start);
+      const end = Math.min(a.end,b.end);
+      if(end>start) sum += (end-start);
+      if(a.end < b.end) i++; else j++;
+    }
+    return sum;
+  }
+
+  function evaluateNow(){
+    if(!state.eh || !state.practice_after_unlock.enabled) return null;
+
+    const marks = state.practice_after_unlock.marks;
+    const ehAnns = state.ehAnns;
+
+    const sc = state.eh.settings?.scoring || {};
+    const minOverlap = Number(sc.min_overlap ?? 0.30);
+    const allowance = Number(sc.precision_allowance ?? 0.65);
+    const catW = Number(sc.category_weight ?? 0.30);
+
+    const hits=[];
+    const misses=[];
+    let hitPoints=0;
+    let catCorrectPoints=0;
+    let catTotalPoints=0;
+
+    for(const e of ehAnns){
+      let best=null;
+      for(const s of marks){
+        const r = overlapRatio(e,s);
+        if(r >= minOverlap && (!best || r > best.ratio)){
+          best = {eh:e, stu:s, ratio:r};
+        }
+      }
+      if(best){
+        const cat_ok = (best.eh.category||"") && (best.stu.category||"") && (best.eh.category===best.stu.category);
+        hits.push({...best, cat_ok});
+        const p = (best.eh.points ?? "");
+        const pNum = (p!=="" && Number.isFinite(Number(p))) ? Number(p) : 0;
+        hitPoints += pNum;
+        if(pNum>0){
+          catTotalPoints += pNum;
+          if(cat_ok) catCorrectPoints += pNum;
+        }
+      }else{
+        misses.push(e);
+      }
+    }
+
+    const catAccuracy = (catTotalPoints>0) ? (catCorrectPoints/catTotalPoints) : 1;
+    const catFactor = (1 - catW) + (catW * catAccuracy);
+
+    const ehUnion = mergeIntervals(ehAnns);
+    const stuUnion = mergeIntervals(marks);
+    const ehLen = intervalsLength(ehUnion);
+    const stuLen = intervalsLength(stuUnion);
+    const interLen = intersectionLength(ehUnion, stuUnion);
+
+    const precision = (stuLen>0) ? (interLen/stuLen) : 0;
+    const recall = (ehLen>0) ? (interLen/ehLen) : 0;
+
+    const extraLen = Math.max(0, stuLen - interLen);
+
+    const pf = (precision <= allowance) ? 0 : (precision - allowance) / (1 - allowance);
+    const precisionFactor = clamp(pf, 0, 1);
+
+    const final = hitPoints * precisionFactor * catFactor;
+
+    return {
+      minOverlap, allowance, catW,
+      hits, misses,
+      hitPoints,
+      catAccuracy, catFactor,
+      precision, recall,
+      precisionFactor,
+      extraLen,
+      final
+    };
+  }
+
+  function fmtPct(x){
+    if(!Number.isFinite(x)) return "0%";
+    return Math.round(x*100) + "%";
+  }
+
+  function renderMissList(misses){
+    el.missList.innerHTML="";
+    if(!misses.length){
+      const div=document.createElement("div");
+      div.className="hint";
+      div.textContent="Keine Fehlstellen (nach Mindest-Overlap).";
+      el.missList.appendChild(div);
+      return;
+    }
+    const showCat = !!state.eh?.settings?.student_ui?.show_eh_categories;
+    const showCom = !!state.eh?.settings?.student_ui?.show_eh_comments;
+
+    for(const m of misses){
+      const item=document.createElement("div");
+      item.className="item";
+
+      const t=document.createElement("div");
+      t.className="t";
+      const pts = (m.points ?? "")!=="" ? ` · ${m.points} P` : "";
+      const cat = showCat && m.category ? ` (${m.category})` : "";
+      t.textContent = `Fehlt${cat}${pts}`;
+
+      const meta=document.createElement("div");
+      meta.className="m";
+      meta.textContent = `Range: ${m.start}–${m.end}`;
+
+      const q=document.createElement("div");
+      q.className="q";
+      q.textContent = m.quote || state.pdf.text.slice(m.start,m.end);
+
+      item.append(t,meta,q);
+
+      if(showCom && m.comment){
+        const c=document.createElement("div");
+        c.className="hint";
+        c.textContent="EH-Kommentar: " + m.comment;
+        item.appendChild(c);
+      }
+
+      el.missList.appendChild(item);
+    }
+  }
+
+  function renderHitList(hits){
+    el.hitList.innerHTML="";
+    if(!hits.length){
+      const div=document.createElement("div");
+      div.className="hint";
+      div.textContent="Noch keine Treffer.";
+      el.hitList.appendChild(div);
+      return;
+    }
+    const showCat = !!state.eh?.settings?.student_ui?.show_eh_categories;
+    const showCom = !!state.eh?.settings?.student_ui?.show_eh_comments;
+
+    for(const h of hits){
+      const item=document.createElement("div");
+      item.className="item";
+
+      const t=document.createElement("div");
+      t.className="t";
+      const pts = (h.eh.points ?? "")!=="" ? ` · ${h.eh.points} P` : "";
+      const ok = h.cat_ok ? "✅ Kategorie korrekt" : "❌ Kategorie falsch";
+      t.textContent = `Treffer${pts} · ${ok}`;
+
+      const meta=document.createElement("div");
+      meta.className="m";
+      meta.textContent = `Overlap: ${fmtPct(h.ratio)} · EH: ${h.eh.start}–${h.eh.end} · Du: ${h.stu.start}–${h.stu.end}`;
+
+      const q=document.createElement("div");
+      q.className="q";
+      q.textContent = h.eh.quote || state.pdf.text.slice(h.eh.start,h.eh.end);
+
+      item.append(t,meta,q);
+
+      if(showCat){
+        const c=document.createElement("div");
+        c.className="hint";
+        c.textContent = `EH-Kategorie: ${h.eh.category || "—"} | Deine Kategorie: ${h.stu.category || "—"}`;
+        item.appendChild(c);
+      }
+      if(showCom && h.eh.comment){
+        const cc=document.createElement("div");
+        cc.className="hint";
+        cc.textContent = "EH-Kommentar: " + h.eh.comment;
+        item.appendChild(cc);
+      }
+
+      el.hitList.appendChild(item);
+    }
+  }
+
+  function evaluateAndRender(){
+    const res = evaluateNow();
+    state.last_eval = res;
+
+    if(!res){
+      el.kHitPts.textContent="—";
+      el.kPR.textContent="—";
+      el.kPF.textContent="—";
+      el.kCF.textContent="—";
+      el.kFinal.textContent="—";
+      el.kExtra.textContent="—";
+      el.missList.innerHTML=""; el.missList.appendChild(el.missEmpty);
+      el.hitList.innerHTML=""; el.hitList.appendChild(el.hitEmpty);
+      return;
+    }
+
+    el.kHitPts.textContent = String(res.hitPoints);
+    el.kPR.textContent = `${fmtPct(res.precision)} / ${fmtPct(res.recall)}`;
+    el.kPF.textContent = fmtPct(res.precisionFactor);
+    el.kCF.textContent = fmtPct(res.catFactor);
+    el.kFinal.textContent = String(Math.round(res.final*100)/100);
+    el.kExtra.textContent = String(res.extraLen);
+
+    renderMissList(res.misses);
+    renderHitList(res.hits);
+    applyHighlights();
+  }
+
+  // -------- Unlock evaluation + snapshot --------
+  function lockSnapshotIfNeeded(){
+    if(state.submission_snapshot?.locked) return;
+
+    const now = new Date().toISOString();
+    const snapshotMarks = JSON.parse(JSON.stringify(state.draft_marks));
+
+    state.submission_snapshot = {
+      locked:true,
+      captured_at: now,
+      marks: snapshotMarks
+    };
+
+    state.practice_after_unlock.enabled = true;
+    state.practice_after_unlock.marks = JSON.parse(JSON.stringify(snapshotMarks));
+
+    setStatus("ok","Auswertung freigeschaltet. Erststand wurde gespeichert.");
+    refreshControls();
+    rebuildStuList();
+    evaluateAndRender();
+  }
+
+  el.btnUnlock.addEventListener("click", ()=>{
+    const allowed = !!state.eh?.settings?.student_ui?.allow_unlock_evaluation;
+    if(!allowed){
+      setStatus("warn","Auswertung ist deaktiviert.");
+      return;
+    }
+    if(!state.pdf.text || !state.eh){
+      setStatus("warn","Bitte PDF und EH.json laden.");
+      return;
+    }
+    lockSnapshotIfNeeded();
+  });
+
+  // -------- Export student.json (with name-based filename) --------
+  function exportStudent(){
+    const name = (state.student.name||"").trim();
+    if(!name){
+      alert("Bitte zuerst den Namen eintragen (Pflicht).");
+      return;
+    }
+    if(!state.eh || !state.pdf.text){
+      alert("Bitte PDF und EH.json laden.");
+      return;
+    }
+
+    state.export_count += 1;
+
+    const payload = {
+      type:"STUDENT_WORK",
+      version:"2.1",
+      createdAt:new Date().toISOString(),
+
+      student: {
+        name: name,
+        class: (state.student.class||"").trim()
+      },
+
+      eh_id: state.eh.eh_id || null,
+      pdf: { name: state.pdf.name, pages: state.pdf.pages, charCount: state.pdf.text.length },
+
+      attempt: {
+        attempt_number: state.attempt_number,
+        work_started_at: state.work_started_at,
+        evaluation_unlocked_at: state.submission_snapshot?.captured_at || null,
+        export_count: state.export_count
+      },
+
+      submission_snapshot: state.submission_snapshot ? state.submission_snapshot : {
+        locked:false,
+        captured_at:null,
+        marks: state.draft_marks
+      },
+
+      practice_after_unlock: state.practice_after_unlock,
+
+      eh_settings: state.eh.settings || {}
+    };
+
+    const basePdf = state.pdf.name ? state.pdf.name.replace(/\.pdf$/i,"") : "Abgabe";
+    const who = sanitizeFilePart(name) || "SCHUELER";
+    const cls = sanitizeFilePart(payload.student.class);
+    const clsPart = cls ? `_${cls}` : "";
+    const pdfPart = sanitizeFilePart(basePdf) ? `_${sanitizeFilePart(basePdf)}` : "";
+    const fname = `${who}${clsPart}${pdfPart}_V${state.attempt_number}_${tsForFile()}.json`;
+
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download=fname;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+
+    setStatus("ok","Schüler.json exportiert.");
+  }
+
+  el.btnExportStu.addEventListener("click", exportStudent);
+
+  // -------- Clear / New attempt --------
+  el.btnClear.addEventListener("click", ()=>{
+    if(!confirm("Wirklich alle Markierungen löschen?")) return;
+    state.draft_marks = [];
+    if(state.practice_after_unlock.enabled){
+      state.practice_after_unlock.marks = [];
+    }
+    rebuildStuList();
+    applyHighlights();
+    if(state.mode==="eval" && state.practice_after_unlock.enabled) evaluateAndRender();
+    setStatus("ok","Markierungen gelöscht.");
+  });
+
+  el.btnNewAttempt.addEventListener("click", ()=>{
+    if(!confirm("Neuer Versuch? Erststand und Übungsstand werden zurückgesetzt.")) return;
+
+    state.attempt_number += 1;
+    state.work_started_at = new Date().toISOString();
+    state.export_count = 0;
+
+    state.submission_snapshot = null;
+    state.practice_after_unlock = { enabled:false, marks:[] };
+    state.draft_marks = [];
+    state.last_eval = null;
+
+    setMode("work");
+    rebuildStuList();
+    applyHighlights();
+    refreshControls();
+    setStatus("ok","Neuer Versuch gestartet.");
+  });
+
+  // -------- Tab handlers --------
+  el.tabWork.addEventListener("click", ()=>setMode("work"));
+  el.tabEval.addEventListener("click", ()=>setMode("eval"));
+
+  // -------- Name handlers --------
+  function syncStudentMeta(){
+    state.student.name = (el.nameInput.value||"").trim();
+    state.student.class = (el.classInput.value||"").trim();
+    refreshControls();
+  }
+  el.nameInput.addEventListener("input", syncStudentMeta);
+  el.classInput.addEventListener("input", syncStudentMeta);
+
+  // -------- File inputs --------
+  el.pdfInput.addEventListener("change", async ()=>{
+    const file = el.pdfInput.files?.[0];
+    if(!file) return;
+
+    try{
+      setStatus("warn","PDF wird geladen und Text extrahiert …");
+      state.pdf.name = file.name;
+
+      state.pdf.text = await extractText(file);
+      state.pdf.tokens = tokenize(state.pdf.text);
+      renderText();
+
+      state.attempt_number = 1;
+      state.work_started_at = new Date().toISOString();
+      state.export_count = 0;
+
+      state.submission_snapshot = null;
+      state.practice_after_unlock = { enabled:false, marks:[] };
+      state.draft_marks = [];
+      state.last_eval = null;
+
+      rebuildStuList();
+      applyHighlights();
+      refreshControls();
+
+      if(!state.pdf.text.trim()){
+        setStatus("bad","Kein Text extrahiert (PDF ohne Textebene oder geschützt).");
+      }else{
+        setStatus("ok","PDF geladen. Jetzt EH.json laden.");
+      }
+    }catch(e){
+      console.error(e);
+      setStatus("bad","Fehler: " + (e?.message||String(e)));
+    }
+  });
+
+  el.ehInput.addEventListener("change", async ()=>{
+    const f = el.ehInput.files?.[0];
+    if(!f) return;
+
+    try{
+      const txt = await f.text();
+      const data = JSON.parse(txt);
+      loadEH(data);
+
+      const ehChars = Number(data.pdf?.charCount);
+      if(Number.isFinite(ehChars) && state.pdf.text){
+        const diff = Math.abs(ehChars - state.pdf.text.length);
+        if(diff > Math.max(200, state.pdf.text.length*0.02)){
+          setStatus("warn","EH geladen, aber Textlänge wirkt abweichend. Auswertung kann ungenau sein.");
+        }else{
+          setStatus("ok","EH geladen. Sie können jetzt markieren.");
+        }
+      }else{
+        setStatus("ok","EH geladen. Sie können jetzt markieren.");
+      }
+
+      rebuildStuList();
+      applyHighlights();
+      refreshControls();
+    }catch(e){
+      console.error(e);
+      setStatus("bad","EH-Importfehler: " + (e?.message||String(e)));
+    }
+  });
+
+  // -------- Init --------
+  state.work_started_at = new Date().toISOString();
+  setMode("work");
+  updateBadges();
+  refreshControls();
+  rebuildStuList();
+  setStatus("warn","Bereit. Name, PDF und EH.json laden.");
+})();
+</script>
+</body>
+</html>
