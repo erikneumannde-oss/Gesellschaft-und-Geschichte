@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rechte und Pflichten - Interaktives Training</title>
+    <style>
+        :root {
+            --primary: #2C3E50;
+            --secondary: #3498DB;
+            --light: #F2F4F4;
+            --success: #27AE60;
+            --danger: #C0392B;
+            --warning: #F39C12;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #EAECEE;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 15px;
+            margin-top: 0;
+        }
+
+        h2 {
+            color: var(--secondary);
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        #intro-section {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .intro-box {
+            background-color: var(--light);
+            padding: 20px;
+            border-left: 5px solid var(--secondary);
+            border-radius: 5px;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #2980B9;
+        }
+
+        .btn-large {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            background-color: #eee;
+            border-radius: 10px;
+            height: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background-color: var(--secondary);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .case-number {
+            font-weight: bold;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+        }
+
+        .case-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .case-text {
+            font-size: 1.1em;
+            padding: 20px;
+            background-color: #F8F9F9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .decision-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .btn-erlaubt {
+            flex: 1;
+            background-color: #fff;
+            color: var(--success);
+            border: 2px solid var(--success);
+            padding: 15px;
+            font-size: 1.2em;
+        }
+
+        .btn-erlaubt:hover {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-verboten {
+            flex: 1;
+            background-color: #fff;
+            color: var(--danger);
+            border: 2px solid var(--danger);
+            padding: 15px;
+            font-size: 1.2em;
+        }
+
+        .btn-verboten:hover {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .feedback-area {
+            display: none;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            animation: fadeIn 0.4s;
+        }
+
+        .feedback-correct {
+            background-color: #EAFAF1;
+            border-left: 5px solid var(--success);
+        }
+
+        .feedback-incorrect {
+            background-color: #FDEDEC;
+            border-left: 5px solid var(--danger);
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .action-plan-wrapper {
+            background-color: #FEF9E7;
+            padding: 30px;
+            border: 2px dashed var(--warning);
+            border-radius: 10px;
+        }
+
+        .task-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .task-box h3 {
+            color: var(--warning);
+            margin-top: 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Rechte und Pflichten klären ⚖️</h1>
+
+    <div id="intro-section" class="section">
+        <div class="intro-box">
+            <p><strong>Arbeitsauftrag:</strong></p>
+            <p>Nimm dir für diese Einheit <strong>mindestens 20 Minuten</strong> Zeit. Lege einen <strong>Zettel und einen Stift</strong> bereit.</p>
+            <p>Kinder und Jugendliche haben durch die UN-Kinderrechtskonvention garantierte Rechte. Dennoch haben Eltern und Lehrkräfte einen gesetzlichen Erziehungs- und Schutzauftrag. Dies führt im Alltag oft zu Situationen, die Schüler als ungerecht empfinden, obwohl sie rechtlich zulässig sind.</p>
+            <p>Du bearbeitest nun 16 Situationen. Entscheide jeweils: <strong>Ist das Handeln der Erwachsenen gesetzlich erlaubt oder nicht erlaubt?</strong></p>
+        </div>
+        <button class="btn btn-large" onclick="startTraining()">Training starten</button>
+    </div>
+
+    <div id="situation-section" class="section">
+        <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        
+        <div class="case-header">
+            <span id="case-counter" class="case-number">Situation 1 von 16</span>
+        </div>
+        
+        <div id="case-title" class="case-title">Titel</div>
+        <div id="case-text" class="case-text">Text</div>
+
+        <div id="decision-area" class="decision-buttons">
+            <button class="btn btn-erlaubt" onclick="checkAnswer(true)">✅ Erlaubt</button>
+            <button class="btn btn-verboten" onclick="checkAnswer(false)">❌ Nicht erlaubt</button>
+        </div>
+
+        <div id="feedback-area" class="feedback-area">
+            <div id="feedback-title" class="feedback-title">Ergebnis</div>
+            <div id="feedback-text">Erklärung...</div>
+            <br>
+            <button id="next-btn" class="btn" onclick="nextSituation()">Nächste Situation ➔</button>
+        </div>
+    </div>
+
+    <div id="action-section" class="section">
+        <h2>Aktionsplan und Mitbestimmung 📝</h2>
+        <div class="action-plan-wrapper">
+            <p>Du hast alle Fälle analysiert. Bearbeite nun die folgenden drei Aufgaben <strong>schriftlich auf deinem Zettel</strong>, um konkrete Handlungsmöglichkeiten festzuhalten.</p>
+
+            <div class="task-box">
+                <h3>Aufgabe 1: Der Klassenrat als formales Instrument</h3>
+                <p>Schüler haben ein Recht auf Mitbestimmung. Bei strukturellen Konflikten in der Schule (z.B. Hausaufgabenregelungen, Sitzordnungen, Pausengestaltung) ist der Klassenrat das korrekte Gremium.</p>
+                <p><strong>Auftrag:</strong> Formuliere einen konkreten, sachlichen Antrag für den nächsten Klassenrat zu einem Thema, das an der Schule aktuell Probleme bereitet. <br><em>Muster: "Ich beantrage, dass im Klassenrat das Thema ___ besprochen wird. Mein Lösungsvorschlag lautet ___."</em></p>
+            </div>
+
+            <div class="task-box">
+                <h3>Aufgabe 2: Grenzsetzung durch Kommunikation</h3>
+                <p>Bei einer Grenzüberschreitung durch Erwachsene (z.B. unzulässige Taschenkontrolle) ist eine sachliche Zurückweisung notwendig.</p>
+                <p><strong>Auftrag:</strong> Formuliere einen präzisen Satz, mit dem du eine ungerechtfertigte Kontrolle deines Handys durch deine Eltern stoppst. <br><em>Tipp: Beziehe dich explizit auf das Brief- und Fernmeldegeheimnis.</em></p>
+            </div>
+
+            <div class="task-box">
+                <h3>Aufgabe 3: Externe Ansprechpartner</h3>
+                <p>Bei Vorfällen von Gewalt (körperlich oder psychisch) oder massiven Rechtsverletzungen ist externe Hilfe zwingend erforderlich.</p>
+                <p><strong>Auftrag:</strong> Notiere:<br>
+                1. Den Namen einer spezifischen Lehrkraft oder Schulsozialarbeiterin, an die du dich wenden würdest.<br>
+                2. Die "Nummer gegen Kummer": <strong>116 111</strong> (Anonyme und kostenfreie Beratung).</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const situations = [
+        {
+            title: "Die durchsuchte Schultasche",
+            text: "In der Klasse verschwindet Geld. Der Lehrer fordert alle Schüler auf, ihre Rucksäcke zu öffnen und durchsucht jede Tasche gründlich.",
+            isAllowed: false,
+            explanation: "<strong>Nicht erlaubt.</strong> Eine Lehrkraft darf Schultaschen nicht durchsuchen. Dies stellt einen Eingriff in die Privatsphäre dar. Eine Durchsuchung bei Verdacht obliegt ausschließlich der Polizei."
+        },
+        {
+            title: "Das eingezogene Handy",
+            text: "Du benutzt dein Smartphone im Unterricht. Die Lehrkraft zieht das Gerät ein und gibt an, dass du es am Ende des Schultages im Sekretariat abholen kannst.",
+            isAllowed: true,
+            explanation: "<strong>Erlaubt.</strong> Zur Sicherung des Bildungsauftrags und eines störungsfreien Unterrichts ist das vorübergehende Einziehen von Gegenständen als pädagogische Maßnahme nach dem Schulgesetz zulässig. Das Gerät darf jedoch nicht entsperrt oder durchsucht werden."
+        },
+        {
+            title: "Nachrichten lesen ohne Verdacht",
+            text: "Deine Eltern fordern dich auf, dein Handy zu entsperren. Sie möchten deine Chatverläufe lesen, um allgemein informiert zu sein, mit wem du kommunizierst.",
+            isAllowed: false,
+            explanation: "<strong>Nicht erlaubt.</strong> Auch für Minderjährige gilt das Brief- und Fernmeldegeheimnis. Eine Kontrolle gegen deinen Willen ist nur zulässig, wenn eine konkrete Gefährdung (z.B. Straftaten, extremes Cybermobbing) vorliegt."
+        },
+        {
+            title: "Bildschirmzeit und WLAN-Abschaltung",
+            text: "Deine Eltern legen fest, dass das WLAN um 21:00 Uhr abgeschaltet wird und du abends keine elektronischen Medien mehr nutzen darfst.",
+            isAllowed: true,
+            explanation: "<strong>Erlaubt.</strong> Eltern haben das Recht und die Pflicht zur Personensorge. Dies schließt die Sicherstellung von ausreichendem Schlaf und die Regulation des Medienkonsums als legitimen Teil der Erziehung ein."
+        },
+        {
+            title: "Die Kollektivstrafe",
+            text: "Aufgrund erheblicher Unruhe in der Klasse ordnet die Lehrkraft an, dass alle Schüler einen mehrseitigen Text abschreiben müssen.",
+            isAllowed: false,
+            explanation: "<strong>Nicht erlaubt.</strong> Kollektivstrafen sind schulrechtlich verboten. Erzieherische Maßnahmen müssen sich immer individuell gegen die Personen richten, die das Fehlverhalten begangen haben."
+        },
+        {
+            title: "Der vorgegebene Sitzplan",
+            text: "Die Lehrkraft erstellt einen verbindlichen Sitzplan. Du wirst von deinem Freund getrennt und musst neben einer anderen Person sitzen.",
+            isAllowed: true,
+            explanation: "<strong>Erlaubt.</strong> Die Lehrkraft trägt die Verantwortung für die Arbeitsatmosphäre. Ein Sitzplan ist eine zulässige organisatorische und pädagogische Maßnahme zur Steuerung des Unterrichts."
+        },
+        {
+            title: "Das geöffnete Tagebuch",
+            text: "Deine Mutter bricht das Schloss deines Tagebuchs auf und liest die Einträge, um herauszufinden, ob du schulische Probleme hast.",
+            isAllowed: false,
+            explanation: "<strong>Nicht erlaubt.</strong> Dies stellt eine erhebliche Verletzung der Privatsphäre und des Persönlichkeitsrechts dar. Tagebucheinträge sind streng vertraulich."
+        },
+        {
+            title: "Umfang der Hausaufgaben",
+            text: "Die Lehrkräfte erteilen Hausaufgaben, für deren Erledigung du am Nachmittag etwa 60 bis 90 Minuten benötigst. Du weigerst dich mit Verweis auf dein Recht auf Erholung.",
+            isAllowed: true,
+            explanation: "<strong>Erlaubt.</strong> Hausaufgaben sind ein regulärer Bestandteil des Schulwesens. Ein zeitlicher Aufwand von 60 bis 90 Minuten pro Tag ist für Schüler der Sekundarstufe I (7. Klasse) vorgesehen und rechtlich zulässig."
+        },
+        {
+            title: "Notenvergabe nach Verhalten",
+            text: "Du hast im Unterricht korrekte fachliche Beiträge geleistet, stellst jedoch oft kritische Fragen, die die Lehrkraft als störend empfindet. Daraufhin erhältst du eine schlechte fachliche Note.",
+            isAllowed: false,
+            explanation: "<strong>Nicht erlaubt.</strong> Leistungsbewertungen müssen sich strikt auf die fachliche Leistung beziehen. Das Sozialverhalten darf nicht in die Fachnote einfließen, sondern wird über gesonderte Kopfnoten abgebildet."
+        },
+        {
+            title: "Umgangsverbot zur Gefahrenabwehr",
+            text: "Deine Eltern verbieten dir den Umgang mit einer älteren Person, die nachweislich straffällig geworden ist und harte Drogen konsumiert.",
+            isAllowed: true,
+            explanation: "<strong>Erlaubt.</strong> Im Rahmen der elterlichen Sorge haben Eltern die Pflicht, Minderjährige vor konkreten Gefahren zu schützen. Ein Umgangsverbot ist in diesem Fall eine zulässige Schutzmaßnahme."
+        },
+        {
+            title: "Übermäßige Hausarbeit",
+            text: "Deine Eltern verlangen, dass du nach der Schule täglich drei Stunden den Haushalt führst und die Kinderbetreuung übernimmst, sodass keine Freizeit mehr bleibt.",
+            isAllowed: false,
+            explanation: "<strong>Nicht erlaubt.</strong> Altersgerechte Mithilfe im Haushalt ist zumutbar. Ein Einsatz, der das Recht auf Spiel, Freizeit und Erholung vollständig unterbindet, ist jedoch unzulässig."
+        },
+        {
+            title: "Körperliche Maßregelung",
+            text: "Du hast deine Eltern belogen. Dein Vater verabreicht dir eine Ohrfeige mit der Begründung, dies sei eine erzieherische Notwendigkeit.",
+            isAllowed: false,
+            explanation: "<strong>Nicht erlaubt.</strong> Minderjährige haben ein Recht auf gewaltfreie Erziehung. Körperliche Bestrafungen, seelische Verletzungen und entwürdigende Maßnahmen sind in Deutschland gesetzlich untersagt."
+        },
+        {
+            title: "Verbot unangemessener Kleidung",
+            text: "Du möchtest bei Minusgraden im Winter lediglich mit einem dünnen T-Shirt das Haus verlassen. Deine Eltern verbieten dies und bestehen auf einer Winterjacke.",
+            isAllowed: true,
+            explanation: "<strong>Erlaubt.</strong> Dies fällt unter die Gesundheitssorgepflicht der Eltern. Sie müssen sicherstellen, dass du dich nicht durch unangemessene Kleidung gesundheitlichen Gefahren aussetzt."
+        },
+        {
+            title: "Entsorgung von Eigentum",
+            text: "Deine Eltern räumen dein Zimmer auf, beurteilen einige deiner selbstgekauften Poster als unordentlich und werfen diese ohne deine Zustimmung in den Müll.",
+            isAllowed: false,
+            explanation: "<strong>Nicht erlaubt.</strong> Minderjährige besitzen ein Recht auf Eigentum. Eltern haben nicht das Recht, persönliches Eigentum des Kindes eigenmächtig zu zerstören oder zu entsorgen."
+        },
+        {
+            title: "Verbot des Toilettengangs",
+            text: "Eine Lehrkraft verbietet während einer 90-minütigen Doppelstunde grundsätzlich allen Schülern den Toilettengang mit dem Hinweis, dafür seien die Pausen da.",
+            isAllowed: false,
+            explanation: "<strong>Nicht erlaubt.</strong> Der Gang zur Toilette ist ein menschliches Grundbedürfnis. Ein generelles Verbot verletzt das Persönlichkeitsrecht sowie das Recht auf körperliche Unversehrtheit."
+        },
+        {
+            title: "Umsetzen bei Klassenarbeiten",
+            text: "Vor Beginn einer Klassenarbeit ändert die Lehrkraft die Sitzordnung. Alle Schüler müssen sich umsetzen und einzeln sitzen.",
+            isAllowed: true,
+            explanation: "<strong>Erlaubt.</strong> Die Lehrkraft ist verpflichtet, Rahmenbedingungen für eine objektive Leistungskontrolle zu schaffen. Die Anpassung der Sitzordnung zur Verhinderung von Täuschungsversuchen ist eine Standardmaßnahme."
+        }
+    ];
+
+    let currentSituationIndex = 0;
+
+    function startTraining() {
+        document.getElementById('intro-section').style.display = 'none';
+        document.getElementById('situation-section').style.display = 'block';
+        loadSituation();
+    }
+
+    function loadSituation() {
+        const currentData = situations[currentSituationIndex];
+        document.getElementById('decision-area').style.display = 'flex';
+        document.getElementById('feedback-area').style.display = 'none';
+        
+        document.getElementById('case-counter').innerText = `Situation ${currentSituationIndex + 1} von ${situations.length}`;
+        document.getElementById('case-title').innerText = currentData.title;
+        document.getElementById('case-text').innerText = currentData.text;
+
+        const progressPercent = ((currentSituationIndex) / situations.length) * 100;
+        document.getElementById('progress-fill').style.width = progressPercent + '%';
+    }
+
+    function checkAnswer(userSaysAllowed) {
+        const currentData = situations[currentSituationIndex];
+        const isCorrect = (userSaysAllowed === currentData.isAllowed);
+        
+        document.getElementById('decision-area').style.display = 'none';
+        const feedbackArea = document.getElementById('feedback-area');
+        feedbackArea.style.display = 'block';
+        
+        const feedbackTitle = document.getElementById('feedback-title');
+        
+        if (isCorrect) {
+            feedbackArea.className = "feedback-area feedback-correct";
+            feedbackTitle.innerText = "Korrekt analysiert.";
+            feedbackTitle.style.color = "var(--success)";
+        } else {
+            feedbackArea.className = "feedback-area feedback-incorrect";
+            feedbackTitle.innerText = "Falsche Einschätzung.";
+            feedbackTitle.style.color = "var(--danger)";
+        }
+
+        document.getElementById('feedback-text').innerHTML = currentData.explanation;
+
+        if (currentSituationIndex === situations.length - 1) {
+            document.getElementById('next-btn').innerText = "Weiter zum Aktionsplan ➔";
+        } else {
+            document.getElementById('next-btn').innerText = "Nächste Situation ➔";
+        }
+    }
+
+    function nextSituation() {
+        currentSituationIndex++;
+        if (currentSituationIndex < situations.length) {
+            loadSituation();
+        } else {
+            document.getElementById('situation-section').style.display = 'none';
+            document.getElementById('action-section').style.display = 'block';
+        }
+    }
+</script>
+
+</body>
+</html>
