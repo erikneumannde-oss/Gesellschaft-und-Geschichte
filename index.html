@@ -60,6 +60,7 @@ h1 { margin: 0; font-size: 1.6rem; }
   box-shadow: 0 10px 25px rgba(0,0,0,0.08);
   transition: transform .1s ease, box-shadow .2s ease;
   cursor: pointer;
+  display: block; /* Wichtig für <a> Tags, damit sie wie Karten wirken */
 }
 
 .card:hover { 
@@ -86,7 +87,7 @@ footer a {
 }
 
 /* --- HISTORISCHES TOOL CSS --- */
-/* Wird aktiviert, wenn das Tool geöffnet ist */
+/* Bleibt erhalten, falls noch Fragmente auf dieser Seite geladen werden sollen */
 body.history-theme {
   background-color: #2c2c2c;
   background-image: radial-gradient(circle, #444, #111);
@@ -174,10 +175,17 @@ body.history-theme {
 
 <!-- HAUPTMENÜ -->
 <div class="container" id="main-menu">
-  <div class="card" onclick="openTool('geschichte')">
-    <h2>Geschichte</h2>
+  
+  <!-- Direkte Verweise auf die jeweiligen Ordner innerhalb von "Geschichte" -->
+  <a class="card" href="./Geschichte/Absolutismus/index.html">
+    <h2>Geschichte: Absolutismus</h2>
+    <p>Materialien und Aufgaben zur Epoche des Absolutismus.</p>
+  </a>
+
+  <a class="card" href="./Geschichte/Paulskirchenparlament/index.html">
+    <h2>Geschichte: Paulskirchenparlament</h2>
     <p>Paulskirche 1848: Quellen-Zuordnung und historische Argumentationsanalyse (Interaktives Dossier).</p>
-  </div>
+  </a>
 
   <a class="card" href="./Politische-Bildung/">
     <h2>Politische Bildung</h2>

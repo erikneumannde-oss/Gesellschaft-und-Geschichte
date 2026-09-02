@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="de">
+<head><script type='text/javascript' nonce='uHrr0NvZkP2rdD5Wl0iRtg==' src='https://contribution.usercontent.google.com/Q8TaQdkV79tvXsavcVrraKv6ahtXBpdWTOlNOiYCsWcab_Yn8fY2HO_tPkBDHYEzoaTyXcbzOsgZpdDKJAeA5HhGU9lymMTXFQuG0Z3JLtFUooqpplKQKwvu7RNRF2wHrsZ3C9gjmTb1KDBIRg2RH66ptROGaeuWBLBQUcq1K78Kab07YqRSVTJ_givSxEUCBQl34f5SRyo8mxUHgMnx0rfTIBrcX686ntSJEy0t7TKKLxQVll4VO6D0iRdZWIekD8CXTLCQcQPIw9aNP7Rj6B_1o0vIINljxvt6gj2-rh-Sk9KV_USnUNNDICiBO6jit3WYUd4CwMlFZFjXe6-QctJsx2Q33F2ZooBq-WqzUNVYL-nmZcMW_5YLWjb5BhZTsyNtOV7DnrtlRxVeAVZ-T8WvHXxyL7ftWfiuswTlABcrQfgUUm6cQhhuONJ1I8CpSw86KCxGGKuJLwfT1qu_tXgFTBQQxG318J4IrK13xQlnmEDhr_-oZWtJiFS6N4DbQ5r2o0DB3CUgCCsTUaf8MZKizLoirb4Mg5Xp3HXpknDax6sBQ2FhQuoigaxeQz_lSDqT_MDA6gZU8169earnE5l_B82uNqOGjGBtVRivFUvp8CKWYxT7C5UduwiEr_25XuOzY-5fCiZG4yiPrZodTNDzXulDjJZEosDk8kTK6PgHucymdu7hy87gnvT5v8nXX0L9pAJBKQolXq-OYmfFRz8Rzhuep-7hlTpsrKN568hk'></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lernmodul: Der französische Staat unter Ludwig XIV.</title>
+    
+    <!-- Polyfill für Drag & Drop auf Touch-Geräten (iPad, Smartphones) -->
+    <script src="https://bernardo-castilho.github.io/DragDropTouch/DragDropTouch.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #1a365d; 
+            --secondary-color: #2b6cb0; 
+            --accent-color: #d69e2e; 
+            --highlight-color: #fef08a; 
+            --bg-color: #f7fafc;
+            --success-color: #38a169;
+            --error-color: #e53e3e;
+            --text-color: #2d3748;
+        }
+        
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            /* Verhindert unerwünschtes Zoomen/Scrollen beim Drag&Drop auf dem iPad */
+            touch-action: manipulation; 
+        }
+        
+        .container {
+            max-width: 1150px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-top: 6px solid var(--primary-color);
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+        }
+        
+        h2 {
+            color: var(--secondary-color);
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+        
+        .module {
+            display: none; 
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .module.active {
+            display: block; 
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .instruction {
+            background-color: #ebf8ff;
+            border-left: 5px solid var(--secondary-color);
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            font-style: italic;
+            border-radius: 0 8px 8px 0;
+            font-size: 1.1rem;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            /* Bessere Touch-Ziele auf dem iPad */
+            min-height: 44px;
+        }
+        
+        button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Modul 1 */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .card {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s;
+        }
+        
+        .card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+        
+        /* Modul 2 */
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .quiz-item {
+            padding: 20px;
+            background: #ffffff;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .quiz-text {
+            margin-bottom: 15px;
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+        
+        select {
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #a0aec0;
+            width: 100%;
+            font-size: 1rem;
+            background-color: #f8fafc;
+            cursor: pointer;
+            /* Größere Touch-Fläche */
+            min-height: 44px;
+        }
+        
+        .feedback {
+            font-weight: 600;
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        /* Modul 3: Textmarker */
+        .text-container {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            padding: 35px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.03);
+            text-align: justify;
+        }
+        
+        .highlightable {
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 3px;
+            padding: 2px 4px;
+            margin: 0 -2px;
+            /* Verhindert Textauswahl beim Tippen auf dem iPad */
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .highlightable:hover {
+            background-color: #edf2f7;
+        }
+        
+        .highlighted {
+            background-color: var(--highlight-color) !important;
+        }
+        
+        .paragraph-break {
+            display: block;
+            margin-bottom: 15px;
+        }
+        
+        /* Modul 4: Drag & Drop */
+        .diagram-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .draggables-sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            min-width: 280px;
+        }
+        
+        .hierarchy-main {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            border: 2px solid #cbd5e0;
+        }
+        
+        .draggable-item {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 6px;
+            cursor: grab;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 0.95rem;
+            transition: opacity 0.2s;
+            /* Wichtig für Touch: Verhindert Scrollen beim Ziehen */
+            touch-action: none; 
+        }
+        
+        .draggable-item:active {
+            cursor: grabbing;
+        }
+        
+        .draggable-item small {
+            display: block;
+            font-weight: normal;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            color: #e2e8f0;
+        }
+        
+        .branch {
+            flex: 1;
+            min-width: 220px;
+            background: #f0f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border-top: 4px solid var(--secondary-color);
+        }
+        
+        .branch h4 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .dropzone {
+            width: 100%;
+            min-height: 90px;
+            background: #ffffff;
+            border: 2px dashed #a0aec0;
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .dropzone.dragover {
+            background: #ebf8ff;
+            border-color: var(--secondary-color);
+            transform: scale(1.02);
+        }
+        
+        .dropzone-label {
+            font-size: 0.85rem;
+            color: #4a5568;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            text-align: center;
+            font-weight: 700;
+            /* Damit das Label nicht beim Drop stört */
+            pointer-events: none; 
+        }
+        
+        .hierarchy-level {
+            display: flex;
+            width: 100%;
+            gap: 20px;
+            justify-content: center;
+            align-items: stretch;
+        }
+        
+        .arrow-down {
+            color: #a0aec0;
+            font-size: 1.5rem;
+            line-height: 1;
+            margin: -10px 0;
+        }
+        
+        @media (max-width: 900px) {
+            .quiz-grid { grid-template-columns: 1fr; }
+            .diagram-container { flex-direction: column; }
+            .hierarchy-level { flex-direction: column; }
+            .container { padding: 20px; margin: 10px auto; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Die Herrschaft des Sonnenkönigs</h1>
+
+    <!-- MODUL 1 -->
+    <div class="module active" id="modul1">
+        <h2>Modul 1: Die drei Grundpfeiler eines Staates</h2>
+        <div class="instruction">
+            Bevor wir uns ansehen, wie das Leben und die Politik im Frankreich des 17. Jahrhunderts aussahen, müssen wir klären, was ein Staat eigentlich ist. Jeder funktionierende Staat – egal ob damals oder heute, ob Königreich oder Republik – muss drei grundlegende Aufgaben erfüllen.
+        </div>
+        <p>Stell dir vor, du gründest mit einer großen Gruppe von Menschen eine eigene Gesellschaft auf einer neuen Insel. Schnell werdet ihr feststellen, dass ein friedliches Zusammenleben nur funktioniert, wenn bestimmte Dinge organisiert werden. Man spricht hierbei von den drei Staatsgewalten.</p>
+        
+        <div class="grid-3">
+            <div class="card">
+                <h3>1. Die Legislative</h3>
+                <p><strong>Die gesetzgebende Gewalt</strong></p>
+                <p>Ohne Regeln herrscht Chaos. Die Legislative ist dafür zuständig, die Spielregeln des Staates aufzustellen. Hier wird darüber beraten, welche Gesetze notwendig sind. Darf man klauen? Wie hoch sind die Steuern? Welche Rechte haben die Bürger? Die Legislative entwirft diese Gesetze, schreibt sie nieder und setzt sie offiziell in Kraft, sodass sie für alle Menschen im Land gültig sind.</p>
+            </div>
+            <div class="card">
+                <h3>2. Die Exekutive</h3>
+                <p><strong>Die ausführende Gewalt</strong></p>
+                <p>Regeln auf dem Papier bringen nichts, wenn sich niemand an sie hält oder sie nicht umgesetzt werden. Die Exekutive ist der "Motor" des Staates. Sie baut Straßen, leitet Krankenhäuser, treibt die Steuern ein und schützt das Land. Dazu gehören die Regierung, die Verwaltung (wie Ämter), das Militär und die Polizei. Sie <em>führen</em> das aus, was die Legislative beschlossen hat.</p>
+            </div>
+            <div class="card">
+                <h3>3. Die Judikative</h3>
+                <p><strong>Die rechtsprechende Gewalt</strong></p>
+                <p>Wo Menschen zusammenleben, gibt es Streit. Und manchmal brechen Menschen die aufgestellten Regeln. Die Judikative ist dafür da, in solchen Fällen ein Urteil zu fällen. Gerichte und Richter prüfen, wer im Recht ist und wer im Unrecht. Sie bestrafen Kriminelle und schlichten Konflikte. Dabei orientieren sie sich streng an den Gesetzen, die die Legislative vorher festgelegt hat.</p>
+            </div>
+        </div>
+        
+        <div class="nav-buttons">
+            <div></div>
+            <button onclick="nextModule(2)">Grundlagen verstanden & Weiter &#8594;</button>
+        </div>
+    </div>
+
+    <!-- MODUL 2 -->
+    <div class="module" id="modul2">
+        <h2>Modul 2: Der Herrscher über alles</h2>
+        <div class="instruction">
+            In Frankreich herrschte König Ludwig XIV. (der "Sonnenkönig"). Sein Herrschaftsstil wird als <strong>Absolutismus</strong> bezeichnet. Das bedeutet: Er wollte alle drei gerade kennengelernten Staatsaufgaben (Legislative, Exekutive, Judikative) in seiner eigenen Person vereinen. <br><br>
+            Ordne die folgenden sechs historischen Handlungen des Königs der jeweiligen Staatsgewalt zu. Du musst alle richtig zuordnen, um zu Modul 3 zu gelangen!
+        </div>
+        
+        <div class="quiz-grid">
+            <div class="quiz-item">
+                <div class="quiz-text">1. Ludwig XIV. erlässt das "Edikt von Fontainebleau" – eine völlig neue Rechtsvorschrift, die den protestantischen Glauben in Frankreich offiziell verbietet.</div>
+                <select id="q1">
+                    <option value="">-- Bitte wählen --</option>
+                    <option value="legislative">Legislative (Gesetzgebung)</option>
+                    <option value="exekutive">Exekutive (Ausführung)</option>
+                    <option value="judikative">Judikative (Rechtsprechung)</option>
+                </select>
+            </div>
+            
+            <div class="quiz-item">
+                <div class="quiz-text">2. Der König erteilt seiner Armee den direkten militärischen Befehl, in die Spanischen Niederlande einzumarschieren, um die Grenzen zu erweitern.</div>
+                <select id="q2">
+                    <option value="">-- Bitte wählen --</option>
+                    <option value="legislative">Legislative (Gesetzgebung)</option>
+                    <option value="exekutive">Exekutive (Ausführung)</option>
+                    <option value="judikative">Judikative (Rechtsprechung)</option>
+                </select>
+            </div>
+            
+            <div class="quiz-item">
+                <div class="quiz-text">3. Mit einem "Lettre de cachet" (Brief mit königlichem Siegel) lässt der König einen Kritiker ohne jeglichen Prozess direkt in das Gefängnis (Bastille) werfen.</div>
+                <select id="q3">
+                    <option value="">-- Bitte wählen --</option>
+                    <option value="legislative">Legislative (Gesetzgebung)</option>
+                    <option value="exekutive">Exekutive (Ausführung)</option>
+                    <option value="judikative">Judikative (Rechtsprechung)</option>
+                </select>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-text">4. Der König verfasst den sogenannten "Code Louis", ein einheitliches Regelwerk für das ganze Land, an das sich alle Bürger halten müssen.</div>
+                <select id="q4">
+                    <option value="">-- Bitte wählen --</option>
+                    <option value="legislative">Legislative (Gesetzgebung)</option>
+                    <option value="exekutive">Exekutive (Ausführung)</option>
+                    <option value="judikative">Judikative (Rechtsprechung)</option>
+                </select>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-text">5. Ludwig XIV. beauftragt seine königlichen Steuereintreiber, die "Taille" (eine direkte Steuer) bei den Bauern von Haus zu Haus einzusammeln, um sein Schloss zu finanzieren.</div>
+                <select id="q5">
+                    <option value="">-- Bitte wählen --</option>
+                    <option value="legislative">Legislative (Gesetzgebung)</option>
+                    <option value="exekutive">Exekutive (Ausführung)</option>
+                    <option value="judikative">Judikative (Rechtsprechung)</option>
+                </select>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-text">6. Zwei adlige Familien streiten um Ländereien. Der König entzieht dem zuständigen Gericht den Fall, liest die Akten selbst und fällt als oberste Instanz ein endgültiges Urteil.</div>
+                <select id="q6">
+                    <option value="">-- Bitte wählen --</option>
+                    <option value="legislative">Legislative (Gesetzgebung)</option>
+                    <option value="exekutive">Exekutive (Ausführung)</option>
+                    <option value="judikative">Judikative (Rechtsprechung)</option>
+                </select>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <button onclick="checkQuiz()">Antworten überprüfen</button>
+        </div>
+        <div id="quiz-result" class="feedback"></div>
+        
+        <div class="nav-buttons">
+            <button onclick="prevModule(1)">&#8592; Zurück</button>
+            <button id="btn-next-3" onclick="nextModule(3)" disabled="">Weiter zu Modul 3 &#8594;</button>
+        </div>
+    </div>
+
+    <!-- MODUL 3 -->
+    <div class="module" id="modul3">
+        <h2>Modul 3: Schein und Sein – Wie regiert man 20 Millionen Menschen?</h2>
+        <div class="instruction">
+            Lies den folgenden, ausführlichen Text aufmerksam durch. <strong>Tippe auf die Textstellen und Sätze, die dir besonders wichtig erscheinen. Sie werden dann gelb markiert.</strong> <br>Deine Aufgabe: Finde heraus, warum der König trotz seiner theoretischen Alleinherrschaft in der Praxis auf unzählige Helfer, Minister und Beamte angewiesen war.
+        </div>
+        
+        <div class="text-container" id="text-container">
+            <span class="highlightable paragraph-break">Der Satz "L'État, c'est moi" (Der Staat bin ich) wird König Ludwig XIV. gerne in den Mund gelegt.</span>
+            <span class="highlightable paragraph-break">Zwar ist unter Historikern umstritten, ob er diese Worte jemals wörtlich so ausgesprochen hat, aber sie fassen sein Selbstverständnis perfekt zusammen.</span>
+            <span class="highlightable paragraph-break">Ludwig wählte die Sonne als sein Symbol. So wie sich die Planeten um die Sonne drehen, sollte sich in Frankreich alles um ihn drehen.</span>
+            <span class="highlightable paragraph-break">Die theoretische Grundlage für diese Machtfülle lieferte der Hofprediger Bossuet mit der Idee des "Gottesgnadentums".</span>
+            <span class="highlightable paragraph-break">Bossuet argumentierte, dass Könige von Gott selbst als seine Stellvertreter auf Erden eingesetzt seien.</span>
+            <span class="highlightable paragraph-break">Aus diesem Grund sei der König niemandem auf der Erde Rechenschaft schuldig – weder dem Volk noch dem Adel noch der Kirche.</span>
+            <span class="highlightable paragraph-break">Da er über den Menschen stand, stand er folglich auch über den Gesetzen. Der Herrscher war "absolutus" (lateinisch für "losgelöst" von den Gesetzen), weshalb wir diese Epoche den Absolutismus nennen.</span>
+            
+            <span class="highlightable paragraph-break">In Modul 2 hast du gesehen, dass Ludwig theoretisch die völlige Kontrolle über die Gesetzgebung, die Ausführung und die Rechtsprechung besaß.</span>
+            <span class="highlightable paragraph-break">Doch in der Realität sah der Alltag im 17. Jahrhundert völlig anders aus. Der absolute Anspruch war zu einem großen Teil eine geschickte Illusion.</span>
+            <span class="highlightable paragraph-break">Frankreich war damals mit rund 20 Millionen Einwohnern das bevölkerungsreichste Land Europas und flächenmäßig riesig.</span>
+            <span class="highlightable paragraph-break">Es gab keine schnellen Kommunikationsmittel. Eine Kutsche brauchte von Paris in die südlichen Provinzen oft mehrere Wochen.</span>
+            <span class="highlightable paragraph-break">Zudem sprachen viele Menschen im Süden gar kein richtiges Französisch, sondern regionale Dialekte.</span>
+            <span class="highlightable paragraph-break">Ein solch riesiges und unübersichtliches Land konnte unmöglich von einem einzigen Mann an seinem Schreibtisch im Schloss Versailles kontrolliert und regiert werden.</span>
+            
+            <span class="highlightable paragraph-break">Um den Staat am Laufen zu halten, brauchte Ludwig XIV. einen gigantischen und gut organisierten Verwaltungsapparat.</span>
+            <span class="highlightable paragraph-break">Ganz oben in der Machtzentrale, direkt unter dem König, arbeiteten die königlichen Räte (die sogenannten Conseils).</span>
+            <span class="highlightable paragraph-break">Hier saßen Fachleute, die Gesetzesentwürfe schrieben, Verträge ausarbeiteten und politische Pläne schmiedeten.</span>
+            <span class="highlightable paragraph-break">Besonders wichtig waren die Fachminister. Ludwig traute dem alten Hochadel nicht, da dieser in der Vergangenheit oft gegen die Könige rebelliert hatte.</span>
+            <span class="highlightable paragraph-break">Um den Adel kaltzustellen, zwang Ludwig die adligen Familien, am Hof von Versailles zu leben. Dort verbrachten sie ihre Zeit mit teuren Festen, Mode und strengen Hofetiketten, anstatt in ihren Provinzen Politik zu machen.</span>
+            
+            <span class="highlightable paragraph-break">Die echte Regierungsarbeit übergab der König stattdessen an bürgerliche oder niederadlige Fachleute, die ihm ihre Karriere verdankten und ihm treu ergeben waren.</span>
+            <span class="highlightable paragraph-break">Der fähigste und berühmteste von ihnen war Jean-Baptiste Colbert. Als Finanz- und Wirtschaftsminister lenkte Colbert fast die gesamte Innenpolitik.</span>
+            <span class="highlightable paragraph-break">Er erfand das Wirtschaftssystem des Merkantilismus, förderte Manufakturen, baute Straßen und trieb gnadenlos Steuern ein, um die enormen Ausgaben für das Schloss Versailles und den Hofstaat zu decken.</span>
+            <span class="highlightable paragraph-break">Ein anderer mächtiger Mann war der Kriegsminister Marquis de Louvois. Er formte das französische Militär von einem wilden Haufen Söldner zu einer streng organisierten, stehenden Armee mit einheitlichen Uniformen und Kasernen.</span>
+            <span class="highlightable paragraph-break">Männer wie Colbert und Louvois dachten sich die weitreichenden Gesetze aus und legten sie dem König oft nur noch zur endgültigen Unterschrift vor. Sie übernahmen also in der Praxis große Teile der Legislative.</span>
+            
+            <span class="highlightable paragraph-break">Doch wie setzte man diese Gesetze in den weit entfernten Provinzen durch?</span>
+            <span class="highlightable paragraph-break">Dafür baute der König das System der "Intendanten" massiv aus. Das waren hochgebildete königliche Sonderbeauftragte, die aus der Hauptstadt in die Provinzen entsandt wurden.</span>
+            <span class="highlightable paragraph-break">Sie waren die Augen und Ohren des Königs vor Ort. Die Intendanten beaufsichtigten die Steuereintreiber, kontrollierten die lokale Polizei, organisierten den Straßenbau und berichteten regelmäßig per Brief nach Versailles.</span>
+            <span class="highlightable paragraph-break">Sie sorgten gemeinsam mit Beamten dafür, dass die Exekutive auch hunderte Kilometer vom König entfernt funktionierte.</span>
+            
+            <span class="highlightable paragraph-break">Auch bei der Rechtsprechung (Judikative) sah die Praxis anders aus als die Theorie. Zwar konnte der König als oberster Richter jederzeit eingreifen, doch die massenhafte Alltagsarbeit bewältigten unzählige lokale Richter.</span>
+            <span class="highlightable paragraph-break">Besonders wichtig waren die sogenannten "Parlements". Achtung: Im Frankreich des 17. Jahrhunderts waren das keine Volksvertretungen (wie unser heutiger Bundestag), sondern die höchsten regionalen Gerichtshöfe.</span>
+            <span class="highlightable paragraph-break">Die Richter dort prüften Streitigkeiten und verurteilten Kriminelle. Obwohl der König sie zwingen konnte, seine Gesetze offiziell in ihre Bücher einzutragen, hatten diese Gerichte auf lokaler Ebene enormen Einfluss.</span>
+            <span class="highlightable paragraph-break">Zusätzlich musste selbst ein absoluter König bestimmte Grenzen akzeptieren: Er konnte alte Traditionen, Sonderrechte von Städten oder Privilegien der katholischen Kirche nicht einfach per Fingerschnippen abschaffen, ohne einen gewaltigen Aufstand zu riskieren.</span>
+            
+            <span class="highlightable paragraph-break">Zusammenfassend lässt sich sagen: Der Absolutismus war in der politischen Theorie die grenzenlose Alleinherrschaft eines Einzelnen, der von Gott eingesetzt war.</span>
+            <span class="highlightable paragraph-break">In der historischen Wirklichkeit war es jedoch die Geburtsstunde des modernen, zentralisierten Beamtenstaates.</span>
+            <span class="highlightable paragraph-break">Tausende Fachleute – Räte, Minister, Intendanten, Steuereintreiber und Richter – hielten die gigantische Machtmaschinerie Frankreichs am Laufen.</span>
+            <span class="highlightable paragraph-break">König Ludwig XIV. thronte zwar als strahlende Sonne an der Spitze, aber ohne seine unzähligen Helfer wäre sein Reich im Chaos versunken.</span>
+        </div>
+        
+        <div class="nav-buttons">
+            <button onclick="prevModule(2)">&#8592; Zurück</button>
+            <button onclick="nextModule(4)">Text durchgearbeitet & Weiter &#8594;</button>
+        </div>
+    </div>
+
+    <!-- MODUL 4 -->
+    <div class="module" id="modul4">
+        <h2>Modul 4: Die Verfassungspyramide des Absolutismus</h2>
+        <div class="instruction">
+            Lass uns das Gelernte nun in einem Schaubild ordnen. Das Schaubild teilt sich nun deutlich in die <strong>drei Staatsgewalten</strong> (Legislative, Exekutive, Judikative) auf. Ziehe die historischen Akteure in das passende Feld, um zu zeigen, wer in der Praxis welche Aufgaben für den König übernahm.
+        </div>
+        
+        <div class="diagram-container">
+            <div class="draggables-sidebar" id="draggable-container">
+                <div class="draggable-item" draggable="true" id="item-king">Der König (Ludwig XIV.)<br><small>Theoretischer Herrscher über alle Gewalten</small></div>
+                <div class="draggable-item" draggable="true" id="item-councils">Zentrale Räte (Conseils)<br><small>Ausarbeitung von neuen Gesetzen</small></div>
+                <div class="draggable-item" draggable="true" id="item-ministers">Fachminister (z.B. Colbert)<br><small>Leitung von Wirtschaft, Finanzen & Planung</small></div>
+                <div class="draggable-item" draggable="true" id="item-intendants">Intendanten<br><small>Chef-Kontrolleure der Exekutive in den Provinzen</small></div>
+                <div class="draggable-item" draggable="true" id="item-officials">Reguläre Beamte & Polizei<br><small>Alltägliche Umsetzung vor Ort & Steuern</small></div>
+                <div class="draggable-item" draggable="true" id="item-judges">Lokale Gerichtshöfe (Parlements)<br><small>Alltägliche Urteile & Strafen vor Ort</small></div>
+            </div>
+
+            <div class="hierarchy-main">
+                <!-- Spitze -->
+                <div class="dropzone" id="zone-king" style="max-width: 400px;">
+                    <div class="dropzone-label">1. Die absolute Spitze (Alle Gewalten)</div>
+                </div>
+                
+                <div class="arrow-down">&#8595;</div>
+                <div style="font-weight: bold; color: var(--secondary-color); text-transform: uppercase; font-size: 0.9rem; text-align: center;">Die praktische Aufteilung im Staat<br><small>(Wer macht die echte Arbeit?)</small></div>
+                
+                <div class="hierarchy-level">
+                    
+                    <!-- Legislative Branch -->
+                    <div class="branch">
+                        <h4>Legislative<br><small>(Gesetzgebung & Planung)</small></h4>
+                        <div class="dropzone" id="zone-councils">
+                            <div class="dropzone-label">Beratung & Entwürfe (Räte)</div>
+                        </div>
+                        <div class="dropzone" id="zone-ministers">
+                            <div class="dropzone-label">Vorgaben & Leitung (Minister)</div>
+                        </div>
+                    </div>
+
+                    <!-- Exekutive Branch -->
+                    <div class="branch">
+                        <h4>Exekutive<br><small>(Ausführung & Verwaltung)</small></h4>
+                        <div class="dropzone" id="zone-intendants">
+                            <div class="dropzone-label">Regionale Chefs (Intendanten)</div>
+                        </div>
+                        <div class="dropzone" id="zone-officials">
+                            <div class="dropzone-label">Alltag & Basis (Polizei/Beamte)</div>
+                        </div>
+                    </div>
+
+                    <!-- Judikative Branch -->
+                    <div class="branch">
+                        <h4>Judikative<br><small>(Rechtsprechung)</small></h4>
+                        <div class="dropzone" id="zone-judges" style="height: 100%;">
+                            <div class="dropzone-label">Alltägliche Urteile (Gerichtshöfe)</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <button onclick="checkDragAndDrop()" style="background-color: var(--accent-color); color: #000; padding: 15px 30px; font-size: 1.2rem;">Pyramide überprüfen</button>
+        </div>
+        <div id="drag-result" class="feedback"></div>
+        
+        <div class="nav-buttons">
+            <button onclick="prevModule(3)">&#8592; Zurück</button>
+            <button onclick="finishCourse()" id="btn-finish" disabled="">Lernmodul erfolgreich abschließen &#10004;</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- Navigation ---
+    function nextModule(moduleNum) {
+        document.querySelectorAll('.module').forEach(el => el.classList.remove('active'));
+        document.getElementById('modul' + moduleNum).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function prevModule(moduleNum) {
+        document.querySelectorAll('.module').forEach(el => el.classList.remove('active'));
+        document.getElementById('modul' + moduleNum).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- Logik für Modul 2 (Quiz) ---
+    function checkQuiz() {
+        const q1 = document.getElementById('q1').value; // Fontainebleau -> legislative
+        const q2 = document.getElementById('q2').value; // Einmarsch -> exekutive
+        const q3 = document.getElementById('q3').value; // Lettre de cachet -> judikative
+        const q4 = document.getElementById('q4').value; // Code Louis -> legislative
+        const q5 = document.getElementById('q5').value; // Taille/Steuern -> exekutive
+        const q6 = document.getElementById('q6').value; // Streit Adlige -> judikative
+        
+        const resultText = document.getElementById('quiz-result');
+        const nextBtn = document.getElementById('btn-next-3');
+        
+        resultText.style.display = 'block';
+
+        if (q1 === 'legislative' && q2 === 'exekutive' && q3 === 'judikative' && 
+            q4 === 'legislative' && q5 === 'exekutive' && q6 === 'judikative') {
+            resultText.style.backgroundColor = '#d4edda';
+            resultText.style.color = '#155724';
+            resultText.style.border = '1px solid #c3e6cb';
+            resultText.innerHTML = '&#10004; Hervorragend! Du hast alle sechs Aufgaben absolut richtig zugeordnet. Der König griff in jeden Bereich des Staates ein. Du darfst zu Modul 3 weitergehen!';
+            nextBtn.disabled = false; 
+        } else {
+            resultText.style.backgroundColor = '#f8d7da';
+            resultText.style.color = '#721c24';
+            resultText.style.border = '1px solid #f5c6cb';
+            resultText.innerHTML = '&#10008; Da sind noch Fehler drin. Erinnere dich an Modul 1: Gesetzgebung (Legislative) sind neue Regeln. Ausführung (Exekutive) ist aktives Handeln wie Armee oder Steuern. Rechtsprechung (Judikative) dreht sich um Urteile und Strafen.';
+            nextBtn.disabled = true;
+        }
+    }
+
+    // --- Logik für Modul 3 (Textmarker) ---
+    document.querySelectorAll('.highlightable').forEach(span => {
+        span.addEventListener('click', function() {
+            this.classList.toggle('highlighted');
+        });
+    });
+
+    // --- Logik für Modul 4 (Drag & Drop) ---
+    const draggables = document.querySelectorAll('.draggable-item');
+    const dropzones = document.querySelectorAll('.dropzone');
+    
+    draggables.forEach(draggable => {
+        draggable.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', draggable.id);
+            setTimeout(() => {
+                draggable.style.opacity = '0.5';
+            }, 0);
+        });
+
+        draggable.addEventListener('dragend', () => {
+            draggable.style.opacity = '1';
+        });
+    });
+
+    dropzones.forEach(zone => {
+        zone.addEventListener('dragover', e => {
+            e.preventDefault();
+            zone.classList.add('dragover');
+        });
+        
+        zone.addEventListener('dragleave', e => {
+            zone.classList.remove('dragover');
+        });
+        
+        zone.addEventListener('drop', e => {
+            e.preventDefault();
+            zone.classList.remove('dragover');
+            
+            const id = e.dataTransfer.getData('text/plain');
+            const draggableElement = document.getElementById(id);
+            
+            if (draggableElement) {
+                // Label der Zone behalten (Pointer-Events sind per CSS deaktiviert)
+                const label = zone.querySelector('.dropzone-label');
+                zone.innerHTML = ''; 
+                zone.appendChild(label);
+                zone.appendChild(draggableElement);
+            }
+        });
+    });
+
+    function checkDragAndDrop() {
+        const zoneKing = document.getElementById('zone-king');
+        const zoneCouncils = document.getElementById('zone-councils');
+        const zoneMinisters = document.getElementById('zone-ministers');
+        const zoneIntendants = document.getElementById('zone-intendants');
+        const zoneOfficials = document.getElementById('zone-officials');
+        const zoneJudges = document.getElementById('zone-judges');
+        
+        const dragResult = document.getElementById('drag-result');
+        const finishBtn = document.getElementById('btn-finish');
+        
+        dragResult.style.display = 'block';
+
+        const isKingCorrect = zoneKing.querySelector('#item-king') !== null;
+        const isCouncilsCorrect = zoneCouncils.querySelector('#item-councils') !== null;
+        const isMinistersCorrect = zoneMinisters.querySelector('#item-ministers') !== null;
+        const isIntendantsCorrect = zoneIntendants.querySelector('#item-intendants') !== null;
+        const isOfficialsCorrect = zoneOfficials.querySelector('#item-officials') !== null;
+        const isJudgesCorrect = zoneJudges.querySelector('#item-judges') !== null;
+
+        if (isKingCorrect && isCouncilsCorrect && isMinistersCorrect && isIntendantsCorrect && isOfficialsCorrect && isJudgesCorrect) {
+            dragResult.style.backgroundColor = '#d4edda';
+            dragResult.style.color = '#155724';
+            dragResult.style.border = '1px solid #c3e6cb';
+            dragResult.innerHTML = '&#10004; Fantastisch! Du hast die komplexe Hierarchie des absolutistischen Staates vollkommen richtig abgebildet und die Gewalten perfekt zugeordnet. Du kannst das Modul nun abschließen!';
+            finishBtn.disabled = false;
+        } else {
+            dragResult.style.backgroundColor = '#f8d7da';
+            dragResult.style.color = '#721c24';
+            dragResult.style.border = '1px solid #f5c6cb';
+            dragResult.innerHTML = '&#10008; Das stimmt noch nicht ganz. Prüfe genau: Wer bereitet die Gesetze vor (Legislative)? Wer führt die Steuern und die Verwaltung (Exekutive)? Wer fällt die alltäglichen Urteile (Judikative)?';
+            finishBtn.disabled = true;
+        }
+    }
+    
+    function finishCourse() {
+        alert("Herzlichen Glückwunsch! Du hast das Modul zum Absolutismus extrem erfolgreich gemeistert und echtes Expertenwissen bewiesen.");
+    }
+</script>
+
+</body>
+</html>
