@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Politische Bildung - Gesellschaft und Geschichte</title>
+  <title>Klasse 9/10 - Politische Bildung</title>
   <style>
     /* Grundlegendes Layout und Typografie */
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background-color: #f4f8f5; /* Leicht grünlich angehauchter Hintergrund */
+      background-color: #f4f8f5;
       color: #333;
       margin: 0;
       padding: 0;
@@ -19,7 +19,7 @@
 
     /* Kopfbereich (Header) - Grüne Palette */
     header {
-      background-color: #1e4d2e; /* Dunkles Waldgrün */
+      background-color: #1e4d2e;
       color: #ffffff;
       padding: 3rem 1rem;
       text-align: center;
@@ -35,7 +35,7 @@
     header p {
       margin: 10px 0 0 0;
       font-size: 1.2rem;
-      color: #a9dfbf; /* Helles Grün für den Untertitel */
+      color: #a9dfbf;
     }
 
     /* Hauptbereich mit den Themen-Karten */
@@ -60,7 +60,7 @@
       display: flex;
       flex-direction: column;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border-top: 4px solid #27ae60; /* Markantes Grün */
+      border-top: 4px solid #27ae60;
     }
 
     .card:hover {
@@ -97,7 +97,14 @@
     }
 
     .card a:hover {
-      background-color: #2ecc71; /* Helleres Grün beim Hover */
+      background-color: #2ecc71;
+    }
+    
+    /* Grauer Button für inaktive/fehlende Links */
+    .card a.disabled {
+      background-color: #bdc3c7;
+      cursor: default;
+      pointer-events: none;
     }
 
     /* Zurück-Link Container */
@@ -124,7 +131,7 @@
     footer {
       text-align: center;
       padding: 1.5rem;
-      background-color: #e2e6ea; /* Neutrales Grau */
+      background-color: #e2e6ea;
       border-top: 1px solid #d1d8dd;
     }
 
@@ -144,39 +151,26 @@
 <body>
 
   <header>
-    <h1>Politische Bildung</h1>
-    <p>Unterrichtsmaterialien geordnet nach Jahrgangsstufen</p>
+    <h1>Klasse 9/10</h1>
+    <p>Materialien für den Unterricht in Politischer Bildung der Jahrgangsstufen 9 und 10</p>
   </header>
 
   <main>
-    <!-- Karte: Klasse 7/8 -->
+    <!-- Platzhalter-Karte, da noch keine Ordner existieren -->
     <div class="card">
-      <h2>Klasse 7/8</h2>
-      <p>Grundlagen der Demokratie, Kommunalpolitik, Wahlen und erste Einblicke in gesellschaftliche Prozesse und Mitbestimmung.</p>
-      <a href="./Klasse-7-8/index.html">Zu den Materialien</a>
-    </div>
-
-    <!-- Karte: Klasse 9/10 -->
-    <div class="card">
-      <h2>Klasse 9/10</h2>
-      <p>Politisches System der Bundesrepublik Deutschland, Europäische Union, soziale Marktwirtschaft und Menschenrechte.</p>
-      <a href="./Klasse-9-10/index.html">Zu den Materialien</a>
-    </div>
-
-    <!-- Karte: Oberstufe -->
-    <div class="card">
-      <h2>Oberstufe</h2>
-      <p>Internationale Beziehungen, politische Theorien, Globalisierung, Verfassungsrecht und Herausforderungen der modernen Gesellschaft.</p>
-      <a href="./Oberstufe/index.html">Zu den Materialien</a>
+      <h2>In Vorbereitung</h2>
+      <p>Für diese Jahrgangsstufe sind aktuell noch keine spezifischen Unterordner oder Materialien hinterlegt. Diese werden in Kürze ergänzt.</p>
+      <a href="#" class="disabled">Noch keine Materialien</a>
     </div>
   </main>
 
   <div class="back-link-container">
-    <a href="../index.html">← Zurück zur Startseite</a>
+    <a href="../index.html">← Zurück zur Übersicht (Politische Bildung)</a>
+    <a href="../../index.html">⌂ Zur Startseite</a>
   </div>
 
   <footer>
-    <a href="../impressum.html">Impressum & Datenschutzerklärung</a>
+    <a href="../../impressum.html">Impressum & Datenschutzerklärung</a>
   </footer>
 
 </body>

@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Was ist Politik? - Das Spandau-RPG (Module 1-3)</title>
+    <style>
+        :root {
+            --primary: #1a5f7a;
+            --secondary: #2c3e50;
+            --accent: #e67e22;
+            --success: #27ae60;
+            --danger: #c0392b;
+            --bg-color: #34495e;
+            --ui-bg: rgba(255, 255, 255, 0.99);
+        }
+
+        html, body {
+            margin: 0; padding: 0; height: 100vh; width: 100vw;
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        #game-header {
+            background-color: var(--secondary);
+            color: white;
+            width: 100%;
+            max-width: 850px;
+            padding: 8px 15px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+            box-sizing: border-box;
+        }
+
+        #task-display { font-weight: bold; color: #f1c40f; }
+
+        #phone-icon {
+            font-size: 22px;
+            cursor: pointer;
+            opacity: 0.3;
+            filter: grayscale(100%);
+            transition: all 0.3s;
+            padding: 2px 6px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.1);
+        }
+        #phone-icon.active {
+            opacity: 1;
+            filter: grayscale(0%);
+            animation: pulse-phone 1.2s infinite alternate;
+            background: var(--accent);
+            cursor: pointer;
+        }
+
+        @keyframes pulse-phone {
+            0% { transform: scale(1); box-shadow: 0 0 0px var(--accent); }
+            100% { transform: scale(1.15); box-shadow: 0 0 12px #f1c40f; }
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            max-width: 850px;
+            aspect-ratio: 4/3;
+            background-color: #82ccdd;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        canvas { display: block; width: 100%; height: 100%; }
+
+        #dialog-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 20; display: none; 
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .dialog-box {
+            background: var(--ui-bg); 
+            padding: 14px; 
+            border-radius: 12px;
+            width: 100%; 
+            max-width: 580px; 
+            max-height: 90%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border-top: 6px solid var(--primary);
+            box-sizing: border-box;
+        }
+
+        .dialog-box h2 { 
+            color: var(--primary); 
+            margin: 0 0 6px 0; 
+            font-size: 1.15rem; 
+            flex-shrink: 0;
+        }
+
+        .dialog-content-scroll {
+            overflow-y: auto; 
+            flex-grow: 1; 
+            margin-bottom: 10px; 
+            padding-right: 4px;
+            text-align: left;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+        }
+
+        .dialog-box p { font-size: 0.88rem; line-height: 1.35; margin-bottom: 8px; }
+        .def-box { background: #f0f7fa; padding: 8px; border-left: 4px solid var(--primary); margin-top: 6px; font-size: 0.82rem; }
+        .example-box { background: #e8f8f5; padding: 8px; border-left: 4px solid var(--success); margin-top: 5px; font-size: 0.82rem; font-style: italic; }
+        .glossar-box { background: #fef9e7; padding: 10px; border: 2px dashed #f1c40f; margin-top: 10px; border-radius: 6px; }
+
+        .btn-container {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 8px;
+            background: var(--ui-bg);
+        }
+
+        .btn {
+            background: var(--primary); color: white; border: none;
+            padding: 11px 18px; font-size: 0.95rem; border-radius: 6px;
+            cursor: pointer; font-weight: bold; transition: background 0.2s;
+            width: 100%; display: block;
+            box-sizing: border-box;
+        }
+        .btn:hover { background: #227b9e; }
+        
+        #choices-container { display: flex; flex-direction: column; gap: 6px; }
+        .choice-btn { background: #ecf0f1; color: var(--secondary); border: 2px solid var(--secondary); text-align: left; font-size: 0.85rem; padding: 10px; }
+        .choice-btn:hover { background: #bdc3c7; }
+        .choice-btn.correct { background: var(--success); color: white; border-color: #1e8449; }
+        .choice-btn.wrong { background: var(--danger); color: white; border-color: #922b21; }
+
+        /* Touch-freundliche Lückentext-Stile */
+        .dropzone {
+            display: inline-block;
+            min-width: 100px;
+            height: 26px;
+            background: #e2e8f0;
+            border: 2px dashed #718096;
+            border-radius: 4px;
+            vertical-align: middle;
+            text-align: center;
+            line-height: 22px;
+            font-weight: bold;
+            color: #2d3748;
+            margin: 0 3px;
+            cursor: pointer;
+        }
+        .dropzone.filled {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        .drag-items-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+            padding: 8px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            justify-content: center;
+        }
+        .drag-item {
+            background: var(--primary);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            user-select: none;
+            transition: transform 0.1s;
+        }
+        .drag-item:active { transform: scale(0.95); }
+        .drag-item.selected { background: var(--accent); border: 2px solid #fff; }
+
+        #power-bar-container {
+            position: absolute; top: 10px; right: 10px;
+            width: 160px; background: rgba(255,255,255,0.95);
+            border-radius: 8px; padding: 6px;
+            display: none; z-index: 5; border: 2px solid var(--primary);
+        }
+        #power-bar-container span { font-size: 11px; font-weight: bold; color: var(--secondary); }
+        #power-bar {
+            height: 12px; width: 0%; background: var(--success);
+            border-radius: 4px; transition: width 0.4s ease-out;
+        }
+
+        #inventory-bar {
+            position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+            background: rgba(255,255,255,0.95);
+            padding: 6px 12px; border-radius: 30px;
+            display: none; align-items: center; gap: 8px;
+            z-index: 5; font-weight: bold; color: var(--secondary); border: 2px solid var(--primary);
+            font-size: 0.9rem;
+        }
+        .inv-item { font-size: 18px; opacity: 0.3; transition: all 0.3s; }
+        .inv-item.found { opacity: 1; transform: scale(1.2); }
+
+        #mobile-controls {
+            display: none; width: 100%; max-width: 850px;
+            background: var(--secondary); padding: 8px;
+            border-radius: 0 0 8px 8px; justify-content: center; gap: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            flex-shrink: 0;
+            box-sizing: border-box;
+        }
+
+        .d-pad-group {
+            display: grid; grid-template-columns: repeat(3, 45px); grid-template-rows: repeat(2, 45px);
+            gap: 4px; justify-content: center; align-items: center;
+        }
+
+        .d-btn {
+            background: rgba(255, 255, 255, 0.2); color: white; border: 2px solid rgba(255, 255, 255, 0.4);
+            font-size: 18px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; user-select: none; -webkit-user-select: none;
+        }
+        .d-btn:active, .d-btn.touched { background: var(--primary); border-color: white; }
+
+        @media (pointer: coarse) {
+            #mobile-controls { display: flex; }
+            #game-header { border-radius: 8px 8px 0 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-header">
+        <div>Aufgabe: <span id="task-display">Schau am Skatepark nach!</span></div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div id="phone-icon" title="Smartphone" onclick="triggerSmartphone()">📱</div>
+            <div id="phase-display">Modul 1 / 3</div>
+        </div>
+    </div>
+
+    <div id="game-container">
+        <canvas id="gameCanvas" width="850" height="600"></canvas>
+        
+        <div id="power-bar-container">
+            <span>Macht (Unterschriften)</span>
+            <div style="width: 100%; background: #ccc; border-radius: 4px; margin-top: 4px;">
+                <div id="power-bar"></div>
+            </div>
+        </div>
+
+        <div id="inventory-bar">
+            Beweise: 
+            <span class="inv-item" id="inv-item1" title="Bauplan">🗺️</span>
+            <span class="inv-item" id="inv-item2" title="Lärm-Studie">📊</span>
+        </div>
+
+        <div id="dialog-overlay">
+            <div class="dialog-box">
+                <h2 id="dialog-title">Feierabend in Spandau</h2>
+                <div class="dialog-content-scroll" id="dialog-scroll-box">
+                    <p id="dialog-text">Endlich ist die Schule aus und du möchtest eine Runde skaten. Doch was ist denn da vorne an eurem Skatepark los? Da steht ein riesiger Bagger...<br><br><strong>Aufgabe:</strong> Schau mal lieber nach, was dort passiert!</p>
+                </div>
+                <div class="btn-container">
+                    <div id="choices-container"></div>
+                    <button class="btn" id="dialog-btn" onclick="closeDialog()">Nachschauen gehen!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobile-controls">
+        <div class="d-pad-group">
+            <div></div>
+            <div class="d-btn" id="btn-up">▲</div>
+            <div></div>
+            <div class="d-btn" id="btn-left">◀</div>
+            <div class="d-btn" id="btn-down">▼</div>
+            <div class="d-btn" id="btn-right">▶</div>
+        </div>
+    </div>
+
+<script>
+    const gameState = {
+        phase: 1, 
+        isPaused: true,
+        currentNPC: null,
+        factionsRecruited: 0,
+        inventory: 0,
+        phoneUnlocked: false,
+        module: 1
+    };
+
+    let inputState = { up: false, down: false, left: false, right: false };
+
+    window.addEventListener('keydown', e => {
+        if (gameState.isPaused) return;
+        if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') inputState.up = true;
+        if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') inputState.down = true;
+        if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') inputState.left = true;
+        if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') inputState.right = true;
+    });
+
+    window.addEventListener('keyup', e => {
+        if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') inputState.up = false;
+        if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') inputState.down = false;
+        if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') inputState.left = false;
+        if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') inputState.right = false;
+    });
+
+    function setupTouchButton(id, direction) {
+        const btn = document.getElementById(id);
+        const press = (e) => { e.preventDefault(); if (gameState.isPaused) return; inputState[direction] = true; btn.classList.add('touched'); };
+        const release = (e) => { e.preventDefault(); inputState[direction] = false; btn.classList.remove('touched'); };
+        btn.addEventListener('touchstart', press, { passive: false });
+        btn.addEventListener('touchend', release, { passive: false });
+        btn.addEventListener('touchcancel', release, { passive: false });
+        btn.addEventListener('mousedown', press);
+        btn.addEventListener('mouseup', release);
+        btn.addEventListener('mouseleave', release);
+    }
+
+    setupTouchButton('btn-up', 'up');
+    setupTouchButton('btn-down', 'down');
+    setupTouchButton('btn-left', 'left');
+    setupTouchButton('btn-right', 'right');
+
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    const ui = {
+        task: document.getElementById('task-display'),
+        phase: document.getElementById('phase-display'),
+        overlay: document.getElementById('dialog-overlay'),
+        title: document.getElementById('dialog-title'),
+        text: document.getElementById('dialog-text'),
+        scrollBox: document.getElementById('dialog-scroll-box'),
+        btn: document.getElementById('dialog-btn'),
+        choices: document.getElementById('choices-container'),
+        powerBar: document.getElementById('power-bar'),
+        powerContainer: document.getElementById('power-bar-container'),
+        inventoryBar: document.getElementById('inventory-bar'),
+        phoneIcon: document.getElementById('phone-icon')
+    };
+
+    const player = { x: 400, y: 500, size: 30, speed: 4.5, emoji: '🛹', history: [] };
+
+    const zones = [
+        { id: 'skatepark', x: 280, y: 220, w: 200, h: 140, color: '#95a5a6', name: 'Skatepark' },
+        { id: 'land', x: 620, y: 20, w: 180, h: 120, color: '#e67e22', name: 'Abgeordnetenhaus', emoji: '🏛️' },
+        { id: 'rathaus', x: 20, y: 450, w: 180, h: 120, color: '#f1c40f', name: 'Rathaus Spandau', emoji: '🏢' },
+        { id: 'zuhause', x: 20, y: 20, w: 180, h: 120, color: '#3498db', name: 'Zuhause (Eltern)', emoji: '🏠' },
+        { id: 'schule', x: 640, y: 220, w: 160, h: 100, color: '#e74c3c', name: 'Lily-Braun-Gymnasium', emoji: '🏫' },
+        { id: 'sportplatz', x: 640, y: 450, w: 160, h: 120, color: '#27ae60', name: 'Sportverein', emoji: '⚽' },
+        { id: 'wohngebiet', x: 20, y: 220, w: 140, h: 100, color: '#9b59b6', name: 'Anwohner', emoji: '🏘️' }
+    ];
+
+    let entities = {
+        tractor: { active: true, x: 350, y: 280, size: 40, emoji: '🚜' },
+        journalist: { 
+            active: false, 
+            x: 700, y: 80, 
+            size: 35, 
+            emoji: '📸', 
+            speed: 1.5,
+            waypoints: [
+                {x: 700, y: 80},  
+                {x: 700, y: 260}, 
+                {x: 440, y: 260}, 
+                {x: 440, y: 480}, 
+                {x: 100, y: 480}  
+            ],
+            currentWaypoint: 0,
+            direction: 1 
+        },
+        items: [
+            { id: 'item1', active: false, x: 120, y: 410, size: 30, emoji: '🗺️', name: "Bauplan" },
+            { id: 'item2', active: false, x: 90, y: 170, size: 30, emoji: '📊', name: "Lärm-Studie" }
+        ],
+        npcs: [],
+        followers: []
+    };
+
+    const factionData = [
+        {
+            id: 'anwohner', x: 100, y: 340, emoji: '👵', name: "Die Anwohner",
+            dialog: "Wir Anwohner finden den Skatepark viel zu laut! Parkplätze sind leiser.",
+            choices: [
+                { text: "Pech gehabt, wir waren zuerst hier!", correct: false, response: "Mit dieser Einstellung helfe ich euch bestimmt nicht!" },
+                { text: "Wir können feste Ruhezeiten vereinbaren. Ein Parkplatz bringt nur Abgase.", correct: true, response: "Das ist ein guter Kompromiss. Ich unterschreibe eure Liste!" }
+            ]
+        },
+        {
+            id: 'sportler', x: 570, y: 500, emoji: '🏃', name: "Der Sportverein",
+            dialog: "Skater stören nur. Wir brauchen den Platz für ein neues Fußballfeld.",
+            choices: [
+                { text: "Weißt du was? Wir können den Platz teilen und ein gemeinsames Sportfest für Spandau planen.", correct: true, response: "Zusammenarbeit klingt gut. Wir unterstützen euch!" },
+                { text: "Euer Sport ist doch eh langweilig.", correct: false, response: "So gewinnt ihr keine Freunde. Wir sind raus." }
+            ]
+        },
+        {
+            id: 'schueler', x: 700, y: 340, emoji: '🎒', name: "Die Mitschüler",
+            dialog: "Ach, Politik ist langweilig. Ich hab keine Zeit für sowas.",
+            choices: [
+                { text: "Wenn wir jetzt nicht zusammenhalten, streichen sie unseren Treffpunkt.", correct: true, response: "Stimmt, wenn wir uns nicht wehren, entscheiden andere über uns. Ich mache mit!" },
+                { text: "Dann mach doch was du willst.", correct: false, response: "Na dann, viel Erfolg alleine." }
+            ]
+        }
+    ];
+
+    const quizQuestions = [
+        {
+            question: "1. Was liegt vor, wenn unterschiedliche Interessen oder Ziele von Gruppen (wie Skater vs. Autofahrer) unvereinbar aufeinanderprallen?",
+            choices: [
+                { text: "Der Konflikt", correct: true, isDefinition: true, defTitle: "der Konflikt", defText: "Ein Konflikt liegt vor, wenn unterschiedliche Interessen, Meinungen oder Ziele von Personen oder Gruppen aufeinanderprallen und unvereinbar scheinen." },
+                { text: "Eine Gesetzesänderung", correct: false, isDefinition: false },
+                { text: "Eine friedliche Einigung", correct: false, isDefinition: false },
+                { text: "Ein privates Hobby", correct: false, isDefinition: false }
+            ]
+        },
+        {
+            question: "2. Warum war der erste Schritt am Küchentisch bei den Eltern nicht ausreichend?",
+            choices: [
+                { text: "Weil Eltern keine Ahnung von Politik haben.", correct: false, isDefinition: false },
+                { text: "Weil das Problem dort privat blieb und nicht öffentlich gemacht wurde.", correct: true, isDefinition: true, defTitle: "die Privatheit & die Öffentlichkeit", defText: "Das Private betrifft das persönliche, geschützte Umfeld. Das Öffentliche betrifft Themen, die für alle Bürger sichtbar sind und die Gesellschaft als Ganzes angehen." },
+                { text: "Weil man am Küchentisch keine Beweise sammeln darf.", correct: false, isDefinition: false },
+                { text: "Weil der Bagger schon weg war.", correct: false, isDefinition: false }
+            ]
+        },
+        {
+            question: "3. Was ist die genaue Definition des Begriffs 'Gesellschaft'?",
+            choices: [
+                { text: "Ein Rathaus mit gewählten Politikern.", correct: false, isDefinition: false },
+                { text: "Ein Artikel in der Lokalzeitung.", correct: false, isDefinition: false },
+                { text: "Die Gesellschaft (eine Gruppe von Menschen, die gemeinsame Merkmale, Interessen und Regeln teilen).", correct: true, isDefinition: true, defTitle: "die Gesellschaft", defText: "Eine Gesellschaft ist eine Gruppe von Menschen, die gemeinsame Merkmale, Interessen und Regeln teilen." },
+                { text: "Die Fähigkeit, den eigenen Willen gegen den Widerstand anderer durchzusetzen.", correct: false, isDefinition: false }
+            ]
+        },
+        {
+            question: "4. Was versteht man unter dem Begriff 'Macht' in der Politik?",
+            choices: [
+                { text: "Die Zuständigkeit einer Behörde für einen Bezirk.", correct: false, isDefinition: false },
+                { text: "Das Recht, nachts laute Musik zu hören.", correct: false, isDefinition: false },
+                { text: "Das Schreiben von Social-Media-Posts.", correct: false, isDefinition: false },
+                { text: "Die Macht (die Fähigkeit, den eigenen Willen auch gegen den Widerstand anderer durchzusetzen).", correct: true, isDefinition: true, defTitle: "die Macht", defText: "Macht ist die Fähigkeit, den eigenen Willen auch gegen den Widerstand anderer durchzusetzen." }
+            ]
+        },
+        {
+            question: "5. Warum war das Abgeordnetenhaus am Ende die falsche Adresse für euren Park?",
+            choices: [
+                { text: "Weil das Abgeordnetenhaus für Gesetze auf Landesebene zuständig ist, ein lokaler Park aber Sache des Bezirksamts (Kommune) ist.", correct: true, isDefinition: true, defTitle: "die politischen Ebenen", defText: "Politik ist in verschiedene Ebenen unterteilt (Kommune/Bezirk, Bundesland, Staat). Jede Ebene hat ganz bestimmte Aufgaben und Zuständigkeiten." },
+                { text: "Weil dort nur der Bürgermeister arbeitet.", correct: false, isDefinition: false },
+                { text: "Weil man dort keine Unterschriften abgeben darf.", correct: false, isDefinition: false },
+                { text: "Weil der Weg zu weit war.", correct: false, isDefinition: false }
+            ]
+        }
+    ];
+    let currentQuizIndex = 0;
+
+    function showDialog(title, text, btnText = "Weiter") {
+        gameState.isPaused = true;
+        inputState.up = inputState.down = inputState.left = inputState.right = false;
+        ui.choices.style.display = 'none';
+        ui.btn.style.display = 'block';
+        ui.title.innerText = title;
+        ui.text.innerHTML = text;
+        ui.scrollBox.scrollTop = 0;
+        ui.btn.innerText = btnText;
+        ui.btn.onclick = closeDialog;
+        ui.overlay.style.display = 'flex';
+    }
+
+    function showChoiceDialog(npc) {
+        gameState.isPaused = true;
+        inputState.up = inputState.down = inputState.left = inputState.right = false;
+        gameState.currentNPC = npc;
+        ui.btn.style.display = 'none';
+        ui.choices.style.display = 'flex';
+        ui.title.innerText = npc.name;
+        ui.text.innerHTML = `<p>${npc.dialog}</p><p><em>Was antwortest du?</em></p>`;
+        ui.scrollBox.scrollTop = 0;
+        ui.choices.innerHTML = '';
+        
+        npc.choices.forEach(choice => {
+            let btn = document.createElement('button');
+            btn.className = 'btn choice-btn';
+            btn.innerText = choice.text;
+            btn.onclick = () => handleChoice(choice);
+            ui.choices.appendChild(btn);
+        });
+        ui.overlay.style.display = 'flex';
+    }
+
+    function handleChoice(choice) {
+        ui.choices.style.display = 'none';
+        ui.text.innerHTML = `<p>${choice.response}</p>`;
+        ui.scrollBox.scrollTop = 0;
+        ui.btn.style.display = 'block';
+        ui.btn.innerText = "Weiter";
+        
+        if (choice.correct) {
+            ui.btn.onclick = () => {
+                gameState.currentNPC.active = false; 
+                gameState.factionsRecruited++;
+                
+                entities.followers.push({ emoji: gameState.currentNPC.emoji });
+                entities.followers.push({ emoji: '🧍' });
+                ui.powerBar.style.width = (gameState.factionsRecruited / 3) * 100 + '%';
+                
+                closeDialog();
+                
+                if (gameState.factionsRecruited === 3) {
+                    setTimeout(() => {
+                        showDialog("👥 GESELLSCHAFT & 💪 MACHT", 
+                        "Du hast Unterschriften von Mitschülern, Sportlern und Anwohnern gesammelt!<br>" +
+                        "<div class='def-box'><strong>Definition GESELLSCHAFT:</strong> Eine Gesellschaft ist eine Gruppe von Menschen, die gemeinsame Merkmale, Interessen und Regeln teilen.</div>" +
+                        "<div class='example-box'>👥 <strong>Beispiel in Spandau:</strong> Du gehörst zu mehreren Gesellschaften gleichzeitig – als Schüler zur Schulgemeinschaft, als Skater zu eurer Clique und als Bürger zum Bezirk Spandau!</div>" +
+                        "<div class='def-box' style='margin-top:15px;'><strong>Definition MACHT:</strong> Macht ist die Fähigkeit, den eigenen Willen auch gegen den Widerstand anderer durchzusetzen.</div>" +
+                        "<div class='example-box'>💪 <strong>Beispiel in Spandau:</strong> Weil ihr euch als große Gruppe verbündet habt, habt ihr nun genug Macht, um etwas zu verändern.</div>");
+                        
+                        ui.btn.onclick = () => {
+                            gameState.phase = 6;
+                            ui.phase.innerText = "Modul 1 / 3";
+                            ui.task.innerText = "Ihr habt Macht! Läuft zu dem Ort, wo ihr das Problem lösen könnt!";
+                            
+                            showDialog("🎯 Wo wollt ihr mit den Unterschriften hin?", 
+                                "Ihr haltet den großen Unterschriftenstapel in euren Händen. Aber wo müsst ihr jetzt auf der Karte hin, um den Beschluss zu erwirken?<br><br><em>Lauft zu dem Gebäude, das für einen lokalen Park zuständig ist!</em>");
+                        };
+                    }, 500);
+                }
+            };
+        } else {
+            ui.btn.onclick = () => {
+                player.x -= 25; player.history = []; 
+                closeDialog();
+            };
+        }
+    }
+
+    function triggerSmartphone() {
+        if (!gameState.phoneUnlocked) return;
+        
+        showDialog("📱 SOCIAL MEDIA POST", 
+            "Du hast den Bauplan und die Lärm-Studie online gestellt! Innerhalb von Minuten wird der Beitrag tausendmal geteilt.<br>" +
+            "<div class='def-box'><strong>Definition ÖFFENTLICHKEIT:</strong> Die Öffentlichkeit ist der Raum, in dem gesellschaftliche und politische Themen für alle sichtbar und diskutierbar werden.</div>" +
+            "<div class='example-box'>📢 <strong>Beispiel in Spandau:</strong> Euer Problem ist nun nicht mehr privat am Küchentisch – ganz Spandau redet darüber. Fange die Journalistin (📸) auf ihrer genauen Route ab!</div>");
+        
+        ui.btn.onclick = () => {
+            ui.overlay.style.display = 'none';
+            ui.phoneIcon.classList.remove('active');
+            gameState.phase = 4;
+            ui.phase.innerText = "Modul 1 / 3";
+            ui.task.innerText = "Finde die Journalistin (📸) auf ihrer Straße!";
+            entities.journalist.active = true;
+            gameState.isPaused = false;
+        };
+    }
+
+    function closeDialog() {
+        ui.overlay.style.display = 'none';
+        gameState.currentNPC = null;
+        
+        if (gameState.phase === 1 && !entities.tractor.active) {
+            gameState.phase = 2; 
+            ui.phase.innerText = "Modul 1 / 3";
+            ui.task.innerText = "Gehe nach Hause zu deinen Eltern (🏠) oben links und berichte davon!";
+        } 
+        else if (gameState.phase === 2.5) {
+            gameState.phase = 3; 
+            ui.phase.innerText = "Modul 1 / 3";
+            ui.task.innerText = "Sammle Beweis 1: Hole dir den Bauplan (🗺️) beim Rathaus (🏢)!";
+            ui.inventoryBar.style.display = 'flex';
+            entities.items[0].active = true; 
+        }
+        
+        gameState.isPaused = false;
+    }
+
+    // --- MODUL 2: WISSENSTEST & GLOSSAR LOGIK ---
+    function startModule2() {
+        gameState.module = 2;
+        ui.phase.innerText = "Modul 2 / 3";
+        ui.task.innerText = "Wissenstest & Glossar-Einträge";
+        currentQuizIndex = 0;
+        showQuizQuestion();
+    }
+
+    // Robuste Zufallsmischung (Fisher-Yates Shuffle)
+    function shuffleArray(array) {
+        let arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function showQuizQuestion() {
+        if (currentQuizIndex >= quizQuestions.length) {
+            startModule3();
+            return;
+        }
+
+        let q = quizQuestions[currentQuizIndex];
+        let shuffledChoices = shuffleArray(q.choices);
+
+        gameState.isPaused = true;
+        ui.btn.style.display = 'none';
+        ui.choices.style.display = 'flex';
+        ui.title.innerText = `🧠 Modul 2: Frage ${currentQuizIndex + 1} von ${quizQuestions.length}`;
+        ui.text.innerHTML = `<p><strong>${q.question}</strong></p>`;
+        ui.scrollBox.scrollTop = 0;
+        ui.choices.innerHTML = '';
+
+        shuffledChoices.forEach(ch => {
+            let btn = document.createElement('button');
+            btn.className = 'btn choice-btn';
+            btn.innerText = ch.text;
+            btn.onclick = () => {
+                if (ch.correct) {
+                    btn.classList.add('correct');
+                    setTimeout(() => {
+                        if (ch.isDefinition) {
+                            showGlossarNotice(ch.defTitle, ch.defText);
+                        } else {
+                            currentQuizIndex++;
+                            showQuizQuestion();
+                        }
+                    }, 600);
+                } else {
+                    btn.classList.add('wrong');
+                    alert("Das war leider falsch. Probiere es noch einmal!");
+                }
+            };
+            ui.choices.appendChild(btn);
+        });
+        ui.overlay.style.display = 'flex';
+    }
+
+    function showGlossarNotice(title, text) {
+        ui.choices.style.display = 'none';
+        ui.btn.style.display = 'block';
+        ui.title.innerText = "📖 Glossar-Auftrag";
+        ui.text.innerHTML = `
+            <p><strong>Richtig!</strong> Da dies eine wichtige Definition war, gehört sie in deinen Hefter:</p>
+            <div class="glossar-box">
+                <p style="margin:0 0 5px 0; color:var(--primary); font-weight:bold;">✍️ Übertrage dir diesen Begriff mit Definition (Erklärung) in dein Glossar:</p>
+                <p style="margin:0;"><strong>${title}:</strong> ${text}</p>
+            </div>
+        `;
+        ui.scrollBox.scrollTop = 0;
+        ui.btn.innerText = "Ins Glossar übertragen & Weiter";
+        ui.btn.onclick = () => {
+            currentQuizIndex++;
+            showQuizQuestion();
+        };
+    }
+
+    // --- MODUL 3: TOUCH-FREUNDLICHER LÜCKENTEXT (Mit erzwungener Zufalls-Mischung) ---
+    let selectedWord = null;
+
+    function startModule3() {
+        gameState.module = 3;
+        ui.phase.innerText = "Modul 3 / 3";
+        ui.task.innerText = "Abschluss: Politik-Begriffe im Lückentext anwenden";
+
+        gameState.isPaused = true;
+        ui.btn.style.display = 'none';
+        ui.choices.style.display = 'none';
+        ui.title.innerText = "🧩 Modul 3: Lückentext ausfüllen";
+        
+        let rawItems = ["Gesellschaft", "Regeln und Gesetze", "Konflikte", "Öffentlichkeit", "Macht", "Ebene"];
+        let shuffledItems;
+        
+        // Schleife garantiert, dass die Begriffe beim Start niemals in der originalen Reihenfolge stehen
+        do {
+            shuffledItems = shuffleArray(rawItems);
+        } while (shuffledItems[0] === "Gesellschaft" && shuffledItems[1] === "Regeln und Gesetze");
+
+        let poolHTML = "";
+        shuffledItems.forEach((item) => {
+            poolHTML += `<div class="drag-item" onclick="selectWord(this, '${item}')">${item}</div>`;
+        });
+
+        ui.text.innerHTML = `
+            <p>Tippe zuerst auf einen Begriff unten und danach auf die passende Lücke (?):</p>
+            <p style="line-height: 2.3; font-size: 0.95rem;">
+                Politik regelt das Zusammenleben in einer 
+                <span class="dropzone" data-answer="Gesellschaft" onclick="fillZone(this)">?</span> 
+                durch verbindliche 
+                <span class="dropzone" data-answer="Regeln und Gesetze" onclick="fillZone(this)">?</span>. 
+                Dabei entstehen oft 
+                <span class="dropzone" data-answer="Konflikte" onclick="fillZone(this)">?</span>, 
+                wenn Interessen aufeinanderprallen. Um diese zu lösen, machen Bürger ihre Anliegen in der 
+                <span class="dropzone" data-answer="Öffentlichkeit" onclick="fillZone(this)">?</span> 
+                sichtbar und erlangen durch Zusammenschluss die nötige 
+                <span class="dropzone" data-answer="Macht" onclick="fillZone(this)">?</span>, 
+                um auf der richtigen politischen 
+                <span class="dropzone" data-answer="Ebene" onclick="fillZone(this)">?</span> 
+                etwas zu verändern.
+            </p>
+            
+            <div class="drag-items-container" id="drag-items-pool">
+                ${poolHTML}
+            </div>
+        `;
+        ui.scrollBox.scrollTop = 0;
+        
+        let checkBtn = document.createElement('button');
+        checkBtn.className = 'btn';
+        checkBtn.innerText = "Lösung prüfen";
+        checkBtn.style.marginTop = "15px";
+        checkBtn.onclick = checkTapDropSolution;
+        
+        ui.choices.innerHTML = '';
+        ui.choices.appendChild(checkBtn);
+        ui.choices.style.display = 'block';
+        ui.overlay.style.display = 'flex';
+    }
+
+    function selectWord(element, word) {
+        document.querySelectorAll('.drag-item').forEach(i => i.classList.remove('selected'));
+        element.classList.add('selected');
+        selectedWord = word;
+    }
+
+    function fillZone(zone) {
+        if (!selectedWord) {
+            alert("Bitte wähle zuerst unten einen Begriff aus!");
+            return;
+        }
+        zone.innerText = selectedWord;
+        zone.classList.add('filled');
+        zone.style.borderColor = "#28a745";
+        zone.style.background = "#d4edda";
+        selectedWord = null;
+        document.querySelectorAll('.drag-item').forEach(i => i.classList.remove('selected'));
+    }
+
+    function checkTapDropSolution() {
+        let zones = document.querySelectorAll('.dropzone');
+        let allCorrect = true;
+        zones.forEach(z => {
+            if (z.innerText !== z.getAttribute('data-answer')) {
+                allCorrect = false;
+            }
+        });
+
+        if (allCorrect) {
+            showDialog("🎉 GESAMTSIEG & HEFTER-EINTRAG", 
+                "Fantastisch! Du hast alle Lücken perfekt ausgefüllt und das Spandau-RPG erfolgreich gemeistert.<br><br>" +
+                "<div class='glossar-box'>" +
+                "<p style='margin:0 0 5px 0; color:var(--primary); font-weight:bold;'>✍️ Hefter-Eintrag (Zusammenfassung):</p>" +
+                "<p style='margin:0;'><strong>Politik</strong> regelt das Zusammenleben in einer <strong>Gesellschaft</strong> durch verbindliche <strong>Regeln und Gesetze</strong>. Dabei entstehen oft <strong>Konflikte</strong>, wenn Interessen aufeinanderprallen. Um diese zu lösen, machen Bürger ihre Anliegen in der <strong>Öffentlichkeit</strong> sichtbar und erlangen durch Zusammenschluss die nötige <strong>Macht</strong>, um auf der richtigen politischen <strong>Ebene</strong> etwas zu verändern.</p>" +
+                "</div>");
+            ui.btn.innerText = "Spiel neu starten";
+            ui.btn.onclick = () => location.reload();
+        } else {
+            alert("Nicht ganz richtig! Überprüfe noch einmal, welcher Begriff in welche Lücke gehört.");
+        }
+    }
+
+    function checkCollision(x1, y1, s1, x2, y2, s2) { return (x1 < x2 + s2 && x1 + s1 > x2 && y1 < y2 + s2 && y1 + s1 > y2); }
+    function checkZoneCollision(px, py, ps, zone) { return (px < zone.x + zone.w && px + ps > zone.x && py < zone.y + zone.h && py + ps > zone.y); }
+
+    function update() {
+        if (gameState.isPaused) return;
+
+        let dx = 0, dy = 0;
+        
+        if (inputState.up) dy -= player.speed;
+        if (inputState.down) dy += player.speed;
+        if (inputState.left) dx -= player.speed;
+        if (inputState.right) dx += player.speed;
+
+        let nextX = player.x + dx, nextY = player.y + dy;
+        let blocked = false;
+        
+        if (nextX + player.size > 480 && nextX < 540) {
+            if (nextY < 220 || nextY + player.size > 280) blocked = true; 
+        }
+
+        if (dx !== 0 || dy !== 0) {
+            if (!blocked) {
+                player.x = Math.max(0, Math.min(canvas.width - player.size, nextX));
+                player.y = Math.max(0, Math.min(canvas.height - player.size, nextY));
+                player.history.unshift({x: player.x, y: player.y});
+                if (player.history.length > 200) player.history.pop();
+            }
+        }
+
+        if (gameState.phase === 1 && entities.tractor.active) {
+            if (checkCollision(player.x, player.y, player.size, entities.tractor.x, entities.tractor.y, entities.tractor.size)) {
+                entities.tractor.active = false;
+                showDialog("🚜 KONFLIKT AM SKATEPARK", 
+                    "Du trittst an den Bagger heran. Der Fahrer schnauft: 'Hau ab Kleine(r)! Hier wird alles plattgemacht für neue Parkplätze. Eure Skater-Träume interessieren hier keinen.'<br>" +
+                    "<div class='def-box'><strong>Definition KONFLIKT:</strong> Ein Konflikt liegt vor, wenn unterschiedliche Interessen, Meinungen oder Ziele von Personen oder Gruppen aufeinanderprallen und unvereinbar scheinen.</div>" +
+                    "<div class='example-box'>⚡ <strong>Beispiel in Spandau:</strong> Du willst ungestört skaten, aber die Autofahrer und Anwohner wollen mehr Parkplätze. Genau hier prallen eure Interessen aufeinander.</div>");
+            }
+        }
+
+        if (gameState.phase === 2) {
+            const zuhause = zones.find(z => z.id === 'zuhause');
+            if (checkZoneCollision(player.x, player.y, player.size, zuhause)) {
+                gameState.phase = 2.5; 
+                player.x += 30; player.history = [];
+                showDialog("🏠👩‍👦 PRIVAT vs. 🌍 ÖFFENTLICHKEIT", 
+                    "Völlig aufgelöst kommst du nach Hause und erzählst es deinen Eltern in der Küche. Sie schütteln den Kopf: 'Das ist ja schrecklich, aber solange du dich nur hier am Küchentisch aufregst, bleibt euer Problem völlig <strong>privat</strong>. Wenn du etwas retten willst, musst du damit an die Öffentlichkeit! Besorge dir am besten als Erstes die amtlichen Baupläne drüben beim Rathaus.'<br>" +
+                    "<div class='def-box'><strong>Definition PRIVAT vs. ÖFFENTLICH:</strong> Das Private betrifft das persönliche, geschützte Umfeld (Familie/Wohnung). Das Öffentliche betrifft Themen, die für alle Bürger sichtbar sind und die Gesellschaft als Ganzes angehen.</div>" +
+                    "<div class='example-box'>🏠 ➡️ 📢 <strong>Beispiel in Spandau:</strong> Am Küchentisch zu meckern ist privat. Erst wenn du mit Beweisen nach draußen gehst, machst du das Problem öffentlich.</div>");
+            }
+        }
+
+        if (gameState.phase === 3) {
+            if (entities.items[0].active && checkCollision(player.x, player.y, player.size, entities.items[0].x, entities.items[0].y, entities.items[0].size)) {
+                entities.items[0].active = false;
+                gameState.inventory++;
+                document.getElementById('inv-item1').classList.add('found');
+                
+                showDialog("🏢 Amtlicher Tipp im Rathaus", "Die Verwaltungsfachangestellte lächelt dich an: 'Finde ich toll, dass du dich so für euren Jugendtreff einsetzt! Hier hast du den offiziellen Bauplan. Und als kleiner Tipp: Es gibt hier im Haus auch eine Akte über eine Lärmstudie wegen der Bauarbeiten – such die mal oben zwischen deinem Zuhause und den Anwohnern, das ist ein Super-Argument für deine Verhandlungen!'<br><br><strong>Nächster Schritt:</strong> Hole dir das Lärmgutachten (📊) oben links!");
+                ui.btn.onclick = () => {
+                    closeDialog();
+                    entities.items[1].active = true; 
+                    ui.task.innerText = "Hole das Lärmgutachten (📊) zwischen Zuhause und Anwohnern!";
+                };
+            }
+
+            if (entities.items[1].active && checkCollision(player.x, player.y, player.size, entities.items[1].x, entities.items[1].y, entities.items[1].size)) {
+                entities.items[1].active = false;
+                gameState.inventory++;
+                document.getElementById('inv-item2').classList.add('found');
+                
+                gameState.phoneUnlocked = true;
+                ui.phoneIcon.classList.add('active');
+                ui.task.innerText = "Alle Beweise da! Tippe oben auf das Smartphone (📱)!";
+                showDialog("📊 Lärmschutzgutachten gefunden!", "Perfekt! Du hast nun beide Beweise (Bauplan und Lärm-Studie).<br><br><strong>Tippe jetzt oben auf das blinkende Smartphone-Symbol (📱)</strong>, um die Beweise über Social Media zu teilen!");
+            }
+        }
+
+        if (gameState.phase === 4 && entities.journalist.active) {
+            let j = entities.journalist;
+            let target = j.waypoints[j.currentWaypoint];
+            let diffX = target.x - j.x;
+            let diffY = target.y - j.y;
+            let dist = Math.hypot(diffX, diffY);
+
+            if (dist < j.speed) {
+                j.x = target.x;
+                j.y = target.y;
+                j.currentWaypoint += j.direction;
+
+                if (j.currentWaypoint >= j.waypoints.length) {
+                    j.currentWaypoint = j.waypoints.length - 2;
+                    j.direction = -1;
+                } else if (j.currentWaypoint < 0) {
+                    j.currentWaypoint = 1;
+                    j.direction = 1;
+                }
+            } else {
+                j.x += (diffX / dist) * j.speed;
+                j.y += (diffY / dist) * j.speed;
+            }
+
+            if (checkCollision(player.x, player.y, player.size, j.x, j.y, j.size)) {
+                j.active = false;
+                showDialog("📸 ÖFFENTLICHKEIT HERGESTELLT", 
+                    "Die Journalistin liest deinen Post, fängt dich auf ihrer Route ab und tippt in ihr Tablet: 'Großartig! Ich schreibe sofort einen fetten Artikel für die Lokalzeitung. Jetzt weiß es die ganze Stadt!'<br>" +
+                    "<div class='def-box'><strong>Definition ÖFFENTLICHKEIT:</strong> Die Öffentlichkeit ist der Raum, in dem gesellschaftliche und politische Themen für alle sichtbar und diskutierbar werden.</div>" +
+                    "<div class='example-box'>📰 <strong>Beispiel in Spandau:</strong> Durch den Zeitungsartikel wissen jetzt alle Spandauer Bescheid. Die Politiker können den Abriss nicht mehr im Geheimen durchziehen.</div>");
+                
+                ui.btn.onclick = () => {
+                    closeDialog();
+                    gameState.phase = 5;
+                    ui.phase.innerText = "Modul 1 / 3";
+                    ui.task.innerText = "Sammle Unterschriften: Überzeuge Anwohner, Lily-Braun-Gymnasium und Sportverein!";
+                    ui.inventoryBar.style.display = 'none';
+                    ui.powerContainer.style.display = 'block';
+                    factionData.forEach(f => entities.npcs.push({ ...f, active: true, size: 35 }));
+                };
+            }
+        }
+
+        if (gameState.phase === 5) {
+            entities.npcs.forEach(npc => {
+                if (npc.active && checkCollision(player.x, player.y, player.size, npc.x, npc.y, npc.size)) showChoiceDialog(npc);
+            });
+        }
+
+        if (gameState.phase === 6) {
+            const rathaus = zones.find(z => z.id === 'rathaus');
+            const land = zones.find(z => z.id === 'land');
+
+            if (checkZoneCollision(player.x, player.y, player.size, land)) {
+                player.x -= 30; player.history = [];
+                showDialog("🏛️ Falsche politische Ebene!", 
+                    "Du betrittst das Abgeordnetenhaus oben rechts, aber man winkt ab: 'Wir machen Gesetze für ganz Berlin, aber um deinen lokalen Park in Spandau kümmert sich das Bezirksamt vor Ort! Suche die richtige Institution.'<br>" +
+                    "<div class='def-box'><strong>Definition POLITISCHE EBENEN:</strong> Politik ist in verschiedene Ebenen unterteilt (Kommune/Bezirk, Bundesland, Staat). Jede Ebene hat ganz bestimmte Aufgaben und Zuständigkeiten.</div>");
+            }
+            else if (checkZoneCollision(player.x, player.y, player.size, rathaus)) {
+                gameState.phase = 7; 
+                showDialog("🏢 REGELN & GESETZE (Rathaus Spandau)", 
+                    "Du legst dem Bürgermeister euren riesigen Unterschriftenstapel auf den Tisch. Er schluckt schwer: 'In Ordnung, der öffentliche Druck ist zu groß...'<br>" +
+                    "<div class='def-box'><strong>Definition REGELN & GESETZE:</strong> Regeln und Gesetze sind verbindliche Vorgaben einer Gesellschaft, an die sich alle halten müssen, um das Zusammenleben zu ordnen.</div>" +
+                    "<div class='example-box'>📜 <strong>Beispiel in Spandau:</strong> Die Bezirksverordnetenversammlung erlässt einen offiziellen Beschluss: Der Parkplatzbau wird gestoppt. Der Skatepark bleibt für alle verbindlich geschützt!</div><br>" +
+                    "🎉 <strong>MODUL 1 ERFOLGREICH GESCHAFFT!</strong> 🎉");
+                
+                ui.btn.innerText = "Weiter zu Modul 2 (Wissenstest)";
+                ui.btn.onclick = () => {
+                    closeDialog();
+                    startModule2();
+                };
+            }
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#bdc3c7';
+        ctx.fillRect(100, 240, 650, 45); 
+        ctx.fillRect(250, 390, 320, 40); 
+        ctx.fillRect(400, 240, 40, 190); 
+        
+        ctx.fillStyle = '#3498db';
+        ctx.fillRect(480, 0, 60, 600);
+        
+        ctx.fillStyle = '#7f8c8d';
+        ctx.fillRect(470, 220, 80, 65);
+        ctx.fillStyle = '#2c3e50';
+        ctx.fillRect(470, 220, 80, 5); 
+        ctx.fillRect(470, 280, 80, 5); 
+
+        zones.forEach(z => {
+            ctx.fillStyle = z.color; ctx.fillRect(z.x, z.y, z.w, z.h);
+            ctx.fillStyle = '#fff'; ctx.font = 'bold 15px sans-serif'; ctx.textAlign = 'center';
+            ctx.fillText(z.name, z.x + z.w/2, z.y + z.h - 10);
+            if (z.emoji) { ctx.font = '35px sans-serif'; ctx.fillText(z.emoji, z.x + z.w/2, z.y + z.h/2 + 5); }
+        });
+
+        ctx.font = '30px sans-serif'; ctx.textAlign = 'left';
+
+        if (entities.tractor.active) ctx.fillText(entities.tractor.emoji, entities.tractor.x, entities.tractor.y + 30);
+        if (entities.journalist.active) ctx.fillText(entities.journalist.emoji, entities.journalist.x, entities.journalist.y + 30);
+        
+        entities.items.items = entities.items || [];
+        entities.items.forEach(item => {
+            if (item.active) ctx.fillText(item.emoji, item.x, item.y + 30);
+        });
+
+        entities.npcs.forEach(npc => { if (npc.active) ctx.fillText(npc.emoji, npc.x, npc.y + 30); });
+
+        const delay = 10; 
+        for (let i = 0; i < entities.followers.length; i++) {
+            let histIndex = (i + 1) * delay;
+            if (histIndex < player.history.length) ctx.fillText(entities.followers[i].emoji, player.history[histIndex].x, player.history[histIndex].y + 30);
+            else if (player.history.length > 0) ctx.fillText(entities.followers[i].emoji, player.history[player.history.length - 1].x, player.history[player.history.length - 1].y + 30);
+        }
+
+        ctx.fillText(player.emoji, player.x, player.y + 30);
+    }
+
+    function gameLoop() {
+        requestAnimationFrame(gameLoop);
+        update(); 
+        draw();
+    }
+
+    showDialog("🏫 Schulschluss im Lily-Braun-Gymnasium", "Endlich ist die Schule aus und du möchtest eine Runde skaten. Doch was ist denn da vorne an eurem Skatepark los? Da steht ein riesiger Bagger...<br><br><strong>Aufgabe:</strong> Schau mal lieber nach, was dort passiert!");
+    gameLoop();
+</script>
+</body>
+</html>
