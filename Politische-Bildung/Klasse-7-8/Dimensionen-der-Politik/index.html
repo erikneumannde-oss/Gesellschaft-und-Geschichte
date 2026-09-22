@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Die drei Dimensionen der Politik</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #d4e4f7 0%, #b3d4ff 100%);
+            color: #2c3e50;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden; 
+            cursor: pointer; 
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #top-section {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            min-height: 270px;
+            position: relative;
+            transition: min-height 0.5s ease;
+        }
+
+        .speech-bubble {
+            background: #ffffff;
+            border: 4px solid #34495e;
+            border-radius: 15px;
+            padding: 15px 30px; 
+            width: 85%;
+            min-height: 100px; 
+            height: auto;
+            box-sizing: border-box;
+            font-size: 1.15em;
+            line-height: 1.4;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.5s ease;
+        }
+
+        .continue-indicator {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(5px); }
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            margin-left: -10px;
+            border-width: 20px 20px 0;
+            border-style: solid;
+            border-color: #34495e transparent transparent transparent;
+            display: block;
+            width: 0;
+            transition: border-color 0.5s ease;
+        }
+
+        #avatar-container {
+            margin-top: 25px;
+            transition: all 1.5s ease-in-out;
+            transform-origin: top center;
+        }
+
+        #avatar {
+            width: 200px;
+            height: 200px;
+            background-color: transparent; 
+            background-image: url('avatar.png'); 
+            border-radius: 15px;
+            background-size: 200% 200%; 
+            background-position: 0% 0%; 
+            background-repeat: no-repeat;
+            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.2));
+            animation: endless-talk 0.9s step-end infinite;
+        }
+
+        @keyframes endless-talk {
+            0% { background-position: 0% 0%; }         
+            20% { background-position: 100% 0%; }      
+            40% { background-position: 0% 0%; }        
+            60% { background-position: 100% 0%; }      
+            80% { background-position: 0% 0%; }        
+            100% { background-position: 0% 0%; }
+        }
+
+        #presentation-area {
+            width: 100%;
+            max-width: 1200px;
+            flex-grow: 1;
+            display: flex;
+            flex-wrap: wrap; 
+            justify-content: center;
+            align-content: flex-start;
+            padding: 15px; 
+            gap: 15px;
+            box-sizing: border-box;
+            height: calc(100vh - 270px); 
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            display: none;
+            flex: 1;
+            border-top: 8px solid;
+            overflow-y: auto; 
+            margin-bottom: 15px;
+        }
+
+        .info-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .overview-card {
+            flex: 0 1 auto !important; 
+            width: max-content; 
+            padding: 15px 30px !important;
+            margin: 0 !important;
+        }
+
+        .overview-card h2 {
+            margin: 0 !important;
+            padding: 0 !important;
+            border-bottom: none !important;
+        }
+
+        .info-card h2 {
+            margin-top: 0;
+            font-size: 1.2em; 
+            text-align: center;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .info-card ul {
+            padding-left: 20px;
+            font-size: 1em;
+            line-height: 1.4;
+            margin: 10px 0;
+        }
+        
+        .info-card li {
+            margin-bottom: 8px;
+        }
+
+        .border-inhalt { border-color: #2ecc71; }
+        .border-form { border-color: #9b59b6; }
+        .border-prozess { border-color: #e67e22; }
+
+        .example-box {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed #bdc3c7;
+            opacity: 0;
+            display: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .example-box.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        .example-text {
+            font-size: 0.95em; 
+            line-height: 1.5;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+
+        .example-text p {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .example-icons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 10px;
+            background: #f8f9fa;
+            padding: 10px; 
+            border-radius: 10px;
+        }
+
+        .icon-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #555;
+            text-align: center;
+            flex: 1;
+            min-width: 90px;
+        }
+        .icon-box svg {
+            margin-bottom: 5px;
+            width: 40px; 
+            height: 40px;
+        }
+
+        .instruction {
+            position: fixed;
+            bottom: 20px;
+            font-size: 1em;
+            color: #444;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+            pointer-events: none; 
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        .avatar-large {
+            transform: scale(1.8) translateY(30px);
+            opacity: 1;
+        }
+        
+        .avatar-dimmed {
+            transform: scale(0.6) translateY(-40px);
+            opacity: 1;
+            pointer-events: none;
+        }
+        
+        .avatar-small {
+            transform: scale(0.6) translateY(-50px);
+            opacity: 1;
+        }
+        
+        .detail-view-container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .detail-card {
+            flex: 1;
+            max-width: 800px;
+        }
+
+        @media (max-width: 768px) {
+            #top-section {
+                min-height: 220px;
+            }
+            #presentation-area {
+                height: calc(100vh - 220px);
+                padding: 10px;
+                gap: 10px;
+            }
+            .info-card {
+                width: 95%; 
+                box-sizing: border-box;
+                max-height: 75vh;
+            }
+            .overview-card {
+                width: max-content; 
+                margin: 0 auto 10px auto !important;
+            }
+            .speech-bubble {
+                width: 95%;
+                font-size: 1.05em;
+                padding: 12px 15px;
+                min-height: 90px;
+            }
+            .avatar-large {
+                transform: scale(1.5) translateY(20px);
+            }
+            .avatar-dimmed {
+                transform: scale(0.5) translateY(-30px);
+                opacity: 1; 
+            }
+            .avatar-small {
+                transform: scale(0.5) translateY(-60px);
+            }
+            .example-text {
+                font-size: 0.9em;
+            }
+            .icon-box svg {
+                width: 32px;
+                height: 32px;
+            }
+        }
+    </style>
+</head>
+<body id="main-body" tabindex="0">
+
+    <div id="top-section">
+        <div class="speech-bubble" id="speech-bubble">
+            <span id="speech-text"></span>
+            <div class="continue-indicator" id="continue-indicator">▼</div>
+        </div>
+        
+        <div id="avatar-container" class="avatar-large">
+            <div id="avatar"></div>
+        </div>
+    </div>
+
+    <div id="presentation-area">
+        <!-- Kleine Übersichtskarten am Anfang -->
+        <div class="info-card border-inhalt overview-card" id="card-overview-1">
+            <h2>1. Inhalt</h2>
+        </div>
+        <div class="info-card border-form overview-card" id="card-overview-2">
+            <h2>2. Form</h2>
+        </div>
+        <div class="info-card border-prozess overview-card" id="card-overview-3">
+            <h2>3. Prozess</h2>
+        </div>
+
+        <!-- Große Vollansicht-Karten für das Finale -->
+        <div class="info-card border-inhalt" id="card-final-1">
+            <h2>1. Inhalt</h2>
+            <ul>
+                <li>Um welches konkrete Sachproblem geht es? Was ist der Auslöser?</li>
+                <li>Welche Argumente sprechen für eine bestimmte Lösung?</li>
+                <li>Welche Argumente sprechen dagegen? Welche Folgen hätte die Entscheidung?</li>
+            </ul>
+        </div>
+        <div class="info-card border-form" id="card-final-2">
+            <h2>2. Form</h2>
+            <ul>
+                <li>Wer hat die Befugnis (Kompetenz) zu entscheiden?</li>
+                <li>Nach welchen Regeln wird entschieden? (z.B. Mehrheitsrecht)</li>
+                <li>Welche gesetzlichen Grundlagen oder Verträge spielen eine Rolle?</li>
+            </ul>
+        </div>
+        <div class="info-card border-prozess" id="card-final-3">
+            <h2>3. Prozess</h2>
+            <ul>
+                <li>Warum wird das Thema diskutiert? Wer ist von dem Problem betroffen?</li>
+                <li>Welche Interessen und Meinungen vertreten die jeweiligen Gruppen?</li>
+                <li>Wie artikulieren sie ihre Meinung in der Öffentlichkeit?</li>
+                <li>Gibt es Verhandlungen und am Ende einen Kompromissvorschlag?</li>
+            </ul>
+        </div>
+
+        <!-- Detailkarte für die Einzelschritte -->
+        <div class="info-card detail-card" id="card-detail">
+            <h2 id="detail-title">Titel</h2>
+            <div id="detail-content"></div>
+            <div id="example-container" class="example-box"></div>
+        </div>
+    </div>
+
+    <div class="instruction" id="instruction">Drücke [Enter] oder tippe, um fortzufahren</div>
+
+    <script>
+        const questions = {
+            inhalt: `
+                <ul>
+                    <li>Um welches konkrete Sachproblem geht es? Was ist der Auslöser?</li>
+                    <li>Welche Argumente sprechen für eine bestimmte Lösung?</li>
+                    <li>Welche Argumente sprechen dagegen? Welche Folgen hätte die Entscheidung?</li>
+                </ul>
+            `,
+            form: `
+                <ul>
+                    <li>Wer hat die Befugnis (Kompetenz) zu entscheiden?</li>
+                    <li>Nach welchen Regeln wird entschieden? (z.B. Mehrheitsrecht)</li>
+                    <li>Welche gesetzlichen Grundlagen oder Verträge spielen eine Rolle?</li>
+                </ul>
+            `,
+            prozess: `
+                <ul>
+                    <li>Warum wird das Thema diskutiert? Wer ist von dem Problem betroffen?</li>
+                    <li>Welche Interessen und Meinungen vertreten die jeweiligen Gruppen?</li>
+                    <li>Wie artikulieren sie ihre Meinung in der Öffentlichkeit?</li>
+                    <li>Gibt es Verhandlungen und am Ende einen Kompromissvorschlag?</li>
+                </ul>
+            `
+        };
+
+        const examples = {
+            inhalt: `
+                <div class="example-text">
+                    <p><strong>Das Problem:</strong> Häufig klingeln Handys mitten im Unterricht und stören die Konzentration massiv. Außerdem kommt es vor, dass ungefragt Fotos oder Videos von Schülern und Lehrkräften gemacht und unerlaubt im Internet geteilt werden.</p>
+                    <p><strong>Die Argumente:</strong> Für ein Verbot spricht ganz klar, dass der Unterricht wieder störungsfrei ablaufen kann. Dagegen spricht jedoch, dass Handys heute ein fester Bestandteil des Alltags sind. Ein generelles Verbot stellt alle Schüler pauschal unter Generalverdacht.</p>
+                </div>
+                <div class="example-icons">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="#34495e" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="6" y="2" width="12" height="20" rx="2" ry="2"></rect><path d="M12 18h.01"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4 7l2-2"></path><path d="M20 7l-2-2"></path>
+                        </svg>
+                        Handy klingelt
+                    </div>
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="#34495e" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                        Unerlaubte Fotos
+                    </div>
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="#2ecc71" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path><path d="M18.63 13A17.89 17.89 0 0 1 18 8"></path><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"></path><path d="M18 8a6 6 0 0 0-9.33-5"></path><line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                        Verbot = Ruhe
+                    </div>
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="#e74c3c" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        Generalverdacht
+                    </div>
+                </div>
+            `,
+            form: `
+                <div class="example-text">
+                    <p><strong>Wer darf entscheiden?</strong> Solche weitreichenden Regeln kann nicht eine Person allein festlegen. Die Gesamtkonferenz entscheidet in diesem Fall über die Anpassung der Hausordnung. Im Vorfeld können Schüler- und Elternvertretungen in ihren eigenen Gremien debattieren und Argumente sammeln, die sie dann der Gesamtkonferenz vorlegen. An der finalen Abstimmung dürfen jedoch ausschließlich die Lehrkräfte teilnehmen.</p>
+                    <p><strong>Wie wird entschieden?</strong> Nach einer ausführlichen Debatte wird durch die stimmberechtigten Lehrkräfte ein demokratischer Mehrheitsbeschluss gefasst. Die rechtliche Grundlage für diese Entscheidung bildet dabei die Hausordnung, die dafür formal geändert werden muss.</p>
+                </div>
+                <div class="example-icons">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="#34495e" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path>
+                        </svg>
+                        Gesamtkonferenz
+                    </div>
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="#34495e" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        Mehrheitsentscheid
+                    </div>
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="#34495e" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        Hausordnung
+                    </div>
+                </div>
+            `,
+            prozess: `
+                <div class="example-text">
+                    <p><strong>Wie läuft der Prozess ab?</strong> Ausgelöst wurde die aktuelle Diskussion durch ein heimlich gefilmtes Unterrichtsvideo. Die Schülervertretung wehrt sich vehement gegen ein Verbot, da es die Freiheit einschränkt. Viele Eltern und die Schulleitung sind hingegen für das Verbot.</p>
+                    <p><strong>Der Weg zum Kompromiss:</strong> Über Artikel in der Schülerzeitung oder Podiumsdiskussionen wird öffentlich verhandelt. Am Ende steht ein Kompromiss: Handys dürfen nur in Notfällen oder zu Unterrichtszwecken mit ausdrücklicher Erlaubnis der Lehrkraft genutzt werden, bleiben aber ansonsten in der Tasche.</p>
+                </div>
+                <div class="example-icons">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="#34495e" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        Diskussion
+                    </div>
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="#34495e" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"></path><path d="M18 14h-8"></path><path d="M15 18h-5"></path><path d="M10 6h8v4h-8V6Z"></path>
+                        </svg>
+                        Öffentlichkeit
+                    </div>
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="#34495e" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="12" r="5"></circle><circle cx="15" cy="12" r="5"></circle>
+                        </svg>
+                        Kompromiss
+                    </div>
+                </div>
+            `
+        };
+
+        const story = [
+            { text: "Vielleicht ist es dir auch schon häufiger so gegangen...", action: () => { setAvatar("avatar-large"); } },
+            { text: "Du erfährst von einem politischen Problem und verstehst nicht, worum es geht.", action: () => {} },
+            { text: "Vielen Menschen geht es ähnlich. Deshalb denken sie, Politik sei kompliziert.", action: () => {} },
+            { text: "Dass Politik aber spannend und weitaus weniger kompliziert sein kann...", action: () => {} },
+            { text: "...siehst du, wenn du ein Thema strukturiert von allen Seiten betrachtest.", action: () => {} },
+            { text: "Dabei helfen uns drei bestimmte Dimensionen.", action: () => {} },
+            { text: "Ich werde dir diese Dimensionen nun an einem Beispiel genauer erläutern.", action: () => {} },
+            { text: "Stell dir folgende Frage: Warum gibt es an unserer Schule eigentlich ein Handyverbot?", action: () => {} },
+
+            { text: "Lass uns zunächst einen Blick auf die drei Dimensionen werfen...", action: () => { setAvatar("avatar-dimmed"); hideDetail(); } },
+            { text: "Die erste Dimension ist der INHALT.", action: () => { showOverviewCard(1); setBubbleColor("#2ecc71"); } },
+            { text: "Die zweite Dimension ist die FORM bzw. der RAHMEN.", action: () => { showOverviewCard(2); setBubbleColor("#9b59b6"); } },
+            { text: "Die dritte Dimension ist der PROZESS der Entscheidungsfindung.", action: () => { showOverviewCard(3); setBubbleColor("#e67e22"); } },
+
+            { text: "Schauen wir uns die Dimensionen nun einzeln an. Wir beginnen mit dem INHALT.", action: () => { hideAllOverviews(); setBubbleColor("#2ecc71"); } },
+            { text: "In dieser Dimension betrachten wir das Problem und die Argumente.", action: () => { loadDetail("1. Dimension: Inhalt", questions.inhalt, "border-inhalt"); } },
+            { text: "Wenden wir diese Leitfragen nun auf das Handyverbot an.", action: () => { setAvatar("avatar-small"); } },
+            { text: "Das Sachproblem und die Argumente lassen sich nun in vollen Sätzen zusammenfassen.", action: () => { showExample('inhalt'); } },
+
+            { text: "Kommen wir zur zweiten Dimension: RAHMEN und FORM.", action: () => { setAvatar("avatar-dimmed"); hideDetail(); setBubbleColor("#9b59b6"); } },
+            { text: "Hier analysieren wir die institutionellen Regeln und Vorgaben.", action: () => { loadDetail("2. Dimension: Rahmen/Form", questions.form, "border-form"); } },
+            { text: "Wie sieht dieser Rahmen bei unserem Handyverbot aus?", action: () => { setAvatar("avatar-small"); } },
+            { text: "Auch hier schauen wir uns die Antworten in ausformulierten Sätzen an.", action: () => { showExample('form'); } },
+
+            { text: "Fehlt noch die dritte Dimension: Der PROZESS.", action: () => { setAvatar("avatar-dimmed"); hideDetail(); setBubbleColor("#e67e22"); } },
+            { text: "Hier rücken die Akteure, ihre Interessen und die Konfliktlösung in den Fokus.", action: () => { loadDetail("3. Dimension: Prozess", questions.prozess, "border-prozess"); } },
+            { text: "Wer streitet beim Handyverbot mit wem?", action: () => { setAvatar("avatar-small"); } },
+            { text: "Der Prozess vom Problem bis zum finalen Kompromiss im Detail.", action: () => { showExample('prozess'); } },
+
+            { text: "So greifen alle drei Dimensionen ineinander.", action: () => { 
+                setAvatar("avatar-dimmed"); 
+                hideDetail(); // Blendet die letzte Detailbox restlos aus, bevor die Übersicht startet
+                setBubbleColor("#34495e");
+                showFinalCards();
+            }},
+            { text: "Hier siehst du abschließend noch einmal alle Leitfragen im Überblick.", action: () => {} },
+            { text: "Übernehmt nun bitte diese Übersicht in euren Hefter.", action: () => {} },
+            { text: "Wendet die drei Dimensionen danach selbstständig auf unser Fallbeispiel 'Freibad' an. Viel Erfolg!", action: () => {} }
+        ];
+
+        let currentStep = -1;
+        let isAnimating = false;
+
+        function setAvatar(className) {
+            const container = document.getElementById('avatar-container');
+            container.className = className;
+        }
+
+        function setBubbleColor(color) {
+            const bubble = document.getElementById('speech-bubble');
+            bubble.style.borderColor = color;
+            const style = document.createElement('style');
+            style.innerHTML = `.speech-bubble::after { border-color: ${color} transparent transparent transparent !important; }`;
+            document.head.appendChild(style);
+        }
+
+        function showOverviewCard(number) {
+            const card = document.getElementById('card-overview-' + number);
+            card.style.display = 'block';
+            setTimeout(() => card.classList.add('visible'), 50);
+        }
+
+        function hideAllOverviews() {
+            for(let i=1; i<=3; i++) {
+                const card = document.getElementById('card-overview-' + i);
+                card.classList.remove('visible');
+                setTimeout(() => card.style.display = 'none', 300);
+            }
+        }
+
+        function showFinalCards() {
+            hideAllOverviews();
+            hideDetail();
+            for(let i=1; i<=3; i++) {
+                const card = document.getElementById('card-final-' + i);
+                card.style.display = 'block';
+                setTimeout(() => card.classList.add('visible'), 50);
+            }
+        }
+
+        function loadDetail(title, content, borderClass) {
+            const card = document.getElementById('card-detail');
+            document.getElementById('detail-title').innerText = title;
+            document.getElementById('detail-content').innerHTML = content;
+            
+            const exContainer = document.getElementById('example-container');
+            exContainer.innerHTML = ''; 
+            exContainer.classList.remove('visible');
+            exContainer.style.display = 'none';
+            
+            card.className = 'info-card detail-card ' + borderClass;
+            card.style.display = 'block';
+            setTimeout(() => card.classList.add('visible'), 50);
+        }
+
+        function showExample(exampleKey) {
+            const exContainer = document.getElementById('example-container');
+            exContainer.innerHTML = examples[exampleKey];
+            exContainer.style.display = 'block';
+            setTimeout(() => {
+                exContainer.classList.add('visible');
+            }, 50);
+        }
+
+        function hideDetail() {
+            const card = document.getElementById('card-detail');
+            card.classList.remove('visible');
+            setTimeout(() => card.style.display = 'none', 300);
+        }
+
+        function nextStep() {
+            if (isAnimating) return;
+            if (currentStep >= story.length - 1) return;
+            
+            isAnimating = true;
+            setTimeout(() => { isAnimating = false; }, 350); 
+            
+            currentStep++;
+            const step = story[currentStep];
+            document.getElementById("speech-text").innerText = step.text;
+            
+            if (currentStep > 0) {
+                const instr = document.getElementById('instruction');
+                if(instr) instr.style.display = 'none';
+            }
+
+            if (currentStep === story.length - 1) {
+                const indicator = document.getElementById('continue-indicator');
+                if(indicator) indicator.style.display = 'none';
+            }
+            
+            step.action();
+        }
+
+        window.addEventListener('keydown', function(e) {
+            if (e.key === "Enter" || e.keyCode === 13 || e.key === " " || e.keyCode === 32) {
+                e.preventDefault();
+                nextStep();
+            }
+        });
+
+        document.getElementById('main-body').addEventListener('click', function(e) {
+            nextStep();
+        });
+
+        document.getElementById('main-body').addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            nextStep();
+        }, { passive: false });
+
+        window.onload = function() {
+            window.focus(); 
+            document.body.focus();
+        };
+
+        nextStep();
+
+    </script>
+</body>
+</html>
