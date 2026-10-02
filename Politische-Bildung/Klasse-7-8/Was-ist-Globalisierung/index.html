@@ -278,12 +278,13 @@
         .name-input-container { margin: 20px 0; text-align: center; display: flex; justify-content: center; gap: 15px; align-items: center;}
         .name-input-container input { padding: 12px; font-size: 18px; width: 350px; border: 2px solid var(--primary); border-radius: 6px; background: #fff; color: #333;}
         
-        /* Druckbereich */
+        /* Druckbereich für sauberes A4 PDF */
         .print-area { 
             background: #fdfbfb; background-image: repeating-linear-gradient(45deg, #fdfbfb 0px, #fdfbfb 20px, #f4f4f4 20px, #f4f4f4 40px);
             color: #333; padding: 50px; margin-top: 20px; position: relative;
             border: 12px solid var(--gold); outline: 4px solid #fff; outline-offset: -16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            /* Fixe Mindesthöhe entfernt, wird beim Druck dynamisch erzwungen */
         }
         
         .cert-name-top { position: absolute; top: 30px; right: 40px; font-size: 14px; font-weight: bold; color: #333; }
@@ -504,7 +505,7 @@
         const popupDataMap = {
             'wirt-asien': { title: 'Elektrogeräte & Massenproduktion', text: 'Dank moderner Containerschiffe, standardisierter Frachtcontainer und weltweiter Logistikketten können Konsumgüter wie Smartphones, Laptops oder Handventilatoren in extrem großen Stückzahlen produziert und in Rekordzeit zu niedrigen Preisen auf den europäischen Markt gebracht werden. Gleichzeitig entsteht dadurch weltweit riesiger elektronischer Müll, und die langen Transportwege belasten durch den Verbrauch fossiler Energieträger das Klima. Die Produktion in globalen Fabriknetzwerken – die vor allem in China konzentriert sind – sichert zwar Millionen Menschen in den Fabrikregionen ein regelmäßiges Einkommen und lässt den weltweiten Wohlstand steigen, allerdings stehen die Arbeits- und Sicherheitsbedingungen vor Ort in diesen Werken immer wieder massiv in der Kritik.' },
             'wirt-europa': { title: 'Modeindustrie & Design', text: 'Die globale Textil- und Modeindustrie sorgt dafür, dass aktuelle Modetrends aus den führenden Metropolen innerhalb weniger Wochen in den Läden weltweit hängen und Konsumenten eine riesige Auswahl an Kleidung haben. Um diesen schnellen Konsum zu ermöglichen, wird die physische Produktion der Textilien allerdings in weltweite Fabriken ausgelagert, wo oft unter fragwürdigen Bedingungen und extrem niedrigem Lohn gearbeitet wird. Während die kreativen Design-Entwürfe, Modetrends und Markenstrategien ihren Ursprung meist in europäischen Zentren wie Paris oder Mailand haben, führt dieses weltweite System auf der Endverbraucherseite zu gigantischen Mengen an Textilmüll (Fast Fashion), der schwer zu recyceln ist.' },
-            'kult-asien': { title: 'Asiatische Popkultur', text: 'Über das Internet und moderne Streaming-Dienste haben Jugendliche auf allen Kontinenten heute uneingeschränkten Zugang zu asiatischen Medien, wodurch ein intensiver interkultureller Austausch und weltweite Fan-Gemeinschaften entstehen. Der enorme globale Einfluss der asiatischen Popkultur – wie japanische Anime oder der weltweite Siegeszug des südkoreanischen K-Pop – begeistert Millionen Menschen rund um den Globus. Kritiker merken jedoch an, dass durch diese globale Verflechtung und den Druck des Weltmarktes traditionelle lokale Medienformen und regionale Bräuche immer weiter in Hintergrund gedrängt werden und eine fortschreitende Kommerzialisierung von Kultur stattfindet.' },
+            'kult-asien': { title: 'Asiatische Popkultur', text: 'Über das Internet und moderne Streaming-Dienste haben Jugendliche auf allen Kontinenten heute uneingeschränkten Zugang zu asiatischen Medien, wodurch ein intensiver interkultureller Austausch und weltweite Fan-Gemeinschaften entstehen. Der enorme globale Einfluss der asiatischen Popkultur – wie japanische Anime oder der weltweite Siegeszug des südkoreanischen K-Pop – begeistert Millionen Menschen rund um den Globus. Kritiker merken jedoch an, dass durch diese globale Verflechtung und den Druck des Weltmarktes traditionelle lokale Medienformen und regionale Bräuche immer weiter in den Hintergrund gedrängt werden und eine fortschreitende Kommerzialisierung von Kultur stattfindet.' },
             'kult-usa': { title: 'US-amerikanische Medienwelt', text: 'Fast überall auf der Welt wachsen Menschen mit denselben Hollywood-Blockbustern, globalen Musik-Charts und standardisierten Unterhaltungsformaten auf, was zwar einen schnellen, unkomplizierten grenzüberschreitenden Zugang zu internationaler Unterhaltung schafft, aber auch seine Schattenseiten hat. Diese übermächtige Präsenz der US-Medien führt dazu, dass die amerikanische Kultur und westliche Werte global dominieren, während kleinere, regionale Film- und Musikindustrien auf dem Weltmarkt kaum eine Chance haben, wahrgenommen zu werden. Dennoch bildet dieser gemeinsame Medienkonsum seit Jahrzehnten einen festen Kernbestandteil einer global geteilten Popkultur.' },
             'kom-usa': { title: 'Social-Media & digitale Netze', text: 'Die weltweite Vernetzung durch digitale Plattformen US-amerikanischer Tech-Konzerne ermöglicht eine globale Kommunikation, bei der Nachrichten, Trends und politische Debatten in Sekundenschnelle über alle Landesgrenzen hinweg geteilt werden und Entfernungen im digitalen Raum keine Rolle mehr spielen. Diese enorme Reichweite erleichtert zwar die weltweite Verständigung und den schnellen Wissensaustausch erheblich, birgt jedoch gleichzeitig massive Probleme. So sorgen Algorithmen für die rasante Verbreitung von Falschinformationen (Fake News) und die Entstehung extremer Online-Echokammern, während gleichzeitig der Schutz persönlicher Nutzerdaten stark gefährdet ist.' },
             'kom-europa': { title: 'Sprache & Kolonialgeschichte', text: 'Ursprünglich ausgelöst durch das britische Weltreich in der Kolonialzeit, hat sich die englische Sprache heute als universelles Werkzeug in der internationalen Wirtschaft, der Wissenschaft und im Internet etabliert, um Barrieren zwischen unterschiedlichen Sprachräumen zu überwinden und den weltweiten Austausch im Beruf enorm zu erleichtern. Auf der kritischen Seite wird dabei jedoch regelmäßig gesehen, dass lokale Sprachen und regionale Dialekte durch diesen Druck an Bedeutung verlieren. Zudem führt diese Dominanz dazu, dass Menschen, deren Muttersprache nicht Englisch ist, im globalen Wettbewerb strukturell benachteiligt sein können.' },
@@ -761,22 +762,17 @@
             document.getElementById('cert-name-display').innerText = name.trim() !== "" ? "Name: " + name : "Name: _________________";
         }
 
-        // --- KORRIGIERTE PDF FUNKTION ---
+        // --- KORRIGIERTER PDF DRUCK ---
         function downloadPDF() {
             const element = document.getElementById('print-area');
-            const screen = document.getElementById('screen-certificate');
             
-            // Alte Styles merken
-            const bodyDisplay = document.body.style.display;
-            const bodyHeight = document.body.style.height;
-            const screenDisplay = screen.style.display;
-            const screenOverflow = screen.style.overflow;
+            // Alte Werte merken
+            const originalWidth = element.style.width;
+            const originalMaxWidth = element.style.maxWidth;
             
-            // Flexbox-Zentrierung und Scroll-Bereiche kurz aufheben, damit html2canvas das Element normal "sieht"
-            document.body.style.display = 'block';
-            document.body.style.height = 'auto';
-            screen.style.display = 'block';
-            screen.style.overflow = 'visible';
+            // Element kurzzeitig zwingend auf DIN A4 Proportionen (Hochformat) setzen
+            element.style.width = '794px'; 
+            element.style.maxWidth = 'none';
 
             if (typeof html2pdf !== 'undefined') {
                 const opt = {
@@ -784,26 +780,21 @@
                     filename:     'Arbeitsblatt_Globalisierung.pdf',
                     image:        { type: 'jpeg', quality: 1 },
                     html2canvas:  { 
-                        scale: 2,
-                        windowWidth: 1000 // Verhindert Tablet-Quetschungen
+                        scale: 2, 
+                        windowWidth: 850 // Zwingt den Canvas auf die Arbeitsblatt-Breite
                     },
                     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
                 
                 html2pdf().set(opt).from(element).save().then(() => {
-                    // Alles sofort wieder zurücksetzen
-                    document.body.style.display = bodyDisplay;
-                    document.body.style.height = bodyHeight;
-                    screen.style.display = screenDisplay;
-                    screen.style.overflow = screenOverflow;
+                    // Werte wieder herstellen, sobald das PDF gespeichert wurde
+                    element.style.width = originalWidth;
+                    element.style.maxWidth = originalMaxWidth;
                 });
             } else {
                 alert("Hinweis: Für den PDF-Download muss die Datei 'html2pdf.bundle.min.js' lokal vorhanden sein.");
-                // Auch bei Fehler zurücksetzen
-                document.body.style.display = bodyDisplay;
-                document.body.style.height = bodyHeight;
-                screen.style.display = screenDisplay;
-                screen.style.overflow = screenOverflow;
+                element.style.width = originalWidth;
+                element.style.maxWidth = originalMaxWidth;
             }
         }
     </script>
