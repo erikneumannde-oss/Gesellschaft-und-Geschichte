@@ -278,7 +278,7 @@
         .name-input-container { margin: 20px 0; text-align: center; display: flex; justify-content: center; gap: 15px; align-items: center;}
         .name-input-container input { padding: 12px; font-size: 18px; width: 350px; border: 2px solid var(--primary); border-radius: 6px; background: #fff; color: #333;}
         
-        /* Druckbereich */
+        /* Druckbereich: Festes Hochformat Layout */
         .print-area { 
             background: #fdfbfb; background-image: repeating-linear-gradient(45deg, #fdfbfb 0px, #fdfbfb 20px, #f4f4f4 20px, #f4f4f4 40px);
             color: #333; padding: 40px; margin: 20px auto; position: relative;
@@ -294,10 +294,12 @@
         .cert-name-top { position: absolute; top: 30px; right: 40px; font-size: 14px; font-weight: bold; color: #333; }
         .cert-title { text-align: center; color: #2c3e50; font-size: 30px; text-transform: uppercase; letter-spacing: 2px; margin-top: 20px; margin-bottom: 40px; font-family: Georgia, serif;}
         
+        /* Das Siegel rechts unten */
         .cert-badge { position: absolute; bottom: 40px; right: 40px; width: 120px; height: 120px; background: var(--gold); border-radius: 50%; border: 4px dashed #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; font-size: 16px; text-align: center; transform: rotate(-15deg);}
 
         .cert-box { background: rgba(255,255,255,0.9); padding: 20px; border-left: 6px solid var(--secondary); margin-bottom: 30px; }
         
+        /* Spalten für Chancen und Risiken untereinander gestapelt */
         .cert-columns { display: flex; flex-direction: column; gap: 25px; margin-bottom: 40px;}
         .cert-col { background: rgba(255,255,255,0.9); padding: 20px; border-top: 4px solid var(--primary); }
         .cert-col h4 { margin-top: 0; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px;}
@@ -768,43 +770,78 @@
             document.getElementById('cert-name-display').innerText = name.trim() !== "" ? "Name: " + name : "Name: _________________";
         }
 
+        // --- DER ABSOLUT SICHERE PDF-FIX (MIT PHYSISCHER SKALIERUNG) ---
         function downloadPDF() {
-            const element = document.getElementById('print-area');
+            const printArea = document.getElementById('print-area');
             
-            // Um exakte Maße zu bekommen, Rand und Schatten kurz entfernen
-            const originalMargin = element.style.margin;
-            const originalBoxShadow = element.style.boxShadow;
-            element.style.margin = '0';
-            element.style.boxShadow = 'none';
+            // Alte Styles merken
+            const originalStyle = printArea.getAttribute('style') || '';
+            
+            // 1. Die exakte aktuelle Pixel-Größe des Arbeitsblatts messen
+            const pxWidth = printArea.offsetWidth;
+            const pxHeight = printArea.offsetHeight;
+            
+            // 2. Das Element "einfrieren", damit beim Entfernen der Ränder nichts wackelt
+            printArea.style.width = pxWidth + 'px';
+            printArea.style.maxWidth = 'none';
+            printArea.style.margin = '0';
+            printArea.style.boxShadow = 'none';
             
             setTimeout(() => {
-                // Reale Pixel-Maße des Elements auslesen
-                const pxWidth = element.offsetWidth;
-                const pxHeight = element.offsetHeight;
+                // Ein DIN A4 Blatt hat das Seitenverhältnis 297mm (Höhe) zu 210mm (Breite)
+                // Wenn wir 10mm Rand vom PDF-Maker abziehen, bleiben 277mm zu 190mm
+                const usableRatio = 277 / 190; 
                 
-                // In Millimeter umrechnen (Basisbreite DIN A4 = 210mm)
-                const mmWidth = 210;
-                const mmHeight = (pxHeight * mmWidth) / pxWidth;
+                // So hoch DARF das Arbeitsblatt bei seiner aktuellen Breite maximal sein,
+                // um noch auf eine einzige A4 Seite zu passen.
+                const targetHeight = pxWidth * usableRatio;
+                
+                let scale = 1;
+                
+                // WENN die Liste zu lang geworden ist, schrumpfen wir das gesamte Element!
+                if (pxHeight > targetHeight) {
+                    scale = targetHeight / pxHeight;
+                }
+                
+                // Wir bauen eine unsichtbare Kamera-Hülle.
+                // Diese Hülle ist mathematisch exakt so groß, dass sie perfekt auf A4 passt.
+                const wrapper = document.createElement('div');
+                wrapper.style.width = pxWidth + 'px';
+                wrapper.style.height = (pxHeight * scale) + 'px'; 
+                wrapper.style.backgroundColor = '#fdfbfb';
+                wrapper.style.overflow = 'hidden';
+                wrapper.style.position = 'relative';
+                
+                // Das Arbeitsblatt wird jetzt über CSS physisch auf die passende Höhe verkleinert.
+                printArea.style.transform = 'scale(' + scale + ')';
+                printArea.style.transformOrigin = 'top left';
+                
+                // Das verkleinerte Arbeitsblatt in die Kamera-Hülle schieben
+                printArea.parentNode.insertBefore(wrapper, printArea);
+                wrapper.appendChild(printArea);
 
                 if (typeof html2pdf !== 'undefined') {
                     const opt = {
-                        margin:       0, 
+                        margin:       10, 
                         filename:     'Arbeitsblatt_Globalisierung.pdf',
                         image:        { type: 'jpeg', quality: 1 },
                         html2canvas:  { scale: 2 },
-                        // Hier ist der Schlüssel: Wir erstellen ein benutzerdefiniertes Seitenformat,
-                        // das exakt den Maßen deines Arbeitsblattes entspricht. Kein A4-Zwang = Kein Umbruch!
-                        jsPDF:        { unit: 'mm', format: [mmWidth, mmHeight], orientation: 'portrait' }
+                        // Da die Hülle jetzt exakt geschrumpft wurde, passt alles auf EINE Standard-A4-Seite.
+                        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
                     };
                     
-                    html2pdf().set(opt).from(element).save().then(() => {
-                        element.style.margin = originalMargin;
-                        element.style.boxShadow = originalBoxShadow;
+                    html2pdf().set(opt).from(wrapper).save().then(() => {
+                        // Sobald das PDF gespeichert ist, packen wir alles wieder aus 
+                        // und stellen die Original-Ansicht wieder her.
+                        wrapper.parentNode.insertBefore(printArea, wrapper);
+                        wrapper.parentNode.removeChild(wrapper);
+                        printArea.setAttribute('style', originalStyle);
                     });
                 } else {
-                    alert("Hinweis: html2pdf.bundle.min.js fehlt.");
-                    element.style.margin = originalMargin;
-                    element.style.boxShadow = originalBoxShadow;
+                    alert("Hinweis: Für den PDF-Download muss die Datei 'html2pdf.bundle.min.js' lokal vorhanden sein.");
+                    wrapper.parentNode.insertBefore(printArea, wrapper);
+                    wrapper.parentNode.removeChild(wrapper);
+                    printArea.setAttribute('style', originalStyle);
                 }
             }, 100);
         }
