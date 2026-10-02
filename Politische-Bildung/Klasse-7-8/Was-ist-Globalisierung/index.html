@@ -149,27 +149,35 @@
             background-repeat: no-repeat;
         }
 
-        /* OPTIMIERT FÜR TOUCH-GERÄTE (iPAD/iPHONE) */
         .hotspot {
             position: absolute; width: 22px; height: 22px; background: #e74c3c;
             border: 3px solid white; border-radius: 50%; cursor: pointer; transform: translate(-50%, -50%);
             box-shadow: 0 0 15px rgba(231,76,60,0.8); transition: 0.2s; z-index: 5;
-            touch-action: manipulation; /* Verhindert das 300ms-Delay auf iOS */
-            -webkit-tap-highlight-color: transparent; /* Verhindert das graue Aufblinken in Safari */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
-        
-        /* Hitbox (Trefferfläche) unsichtbar vergrößern */
         .hotspot::after {
-            content: '';
-            position: absolute;
-            top: -20px;
-            left: -20px;
-            right: -20px;
-            bottom: -20px;
-            border-radius: 50%;
+            content: ''; position: absolute; top: -20px; left: -20px; right: -20px; bottom: -20px; border-radius: 50%;
         }
-
         .hotspot:hover, .hotspot:active { transform: translate(-50%, -50%) scale(1.3); background: #ff7675; }
+
+        .persistent-task {
+            display: none; 
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--gold);
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            letter-spacing: 0.5px;
+        }
+        .persistent-task strong {
+            color: var(--gold);
+        }
 
         /* --- AVATAR (LILY) GROß & TUTORIAL --- */
         .avatar {
@@ -275,7 +283,7 @@
             background: #fdfbfb; background-image: repeating-linear-gradient(45deg, #fdfbfb 0px, #fdfbfb 20px, #f4f4f4 20px, #f4f4f4 40px);
             color: #333; padding: 50px; margin-top: 20px; position: relative;
             border: 12px solid var(--gold); outline: 4px solid #fff; outline-offset: -16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); min-height: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); min-height: 297mm; /* Mindesthöhe für DIN A4 */
         }
         
         .cert-name-top { position: absolute; top: 30px; right: 40px; font-size: 14px; font-weight: bold; color: #333; }
@@ -382,6 +390,12 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Dauerhafte Aufgabe unter dem Globus -->
+        <div id="persistent-task" class="persistent-task">
+            <strong>Aufgabe:</strong> Klicke auf die roten Punkte auf dem Globus und notiere jeweils mindestens 4 Chancen und 4 Risiken in ganzen Sätzen in deine Tabelle (📋)!
+        </div>
+
         <button class="btn" id="btn-map-next" onclick="tryNextFromMap()">Weiter zur Definition</button>
     </div>
 
@@ -490,7 +504,7 @@
 
         const popupDataMap = {
             'wirt-asien': { title: 'Elektrogeräte & Massenproduktion', text: 'Dank moderner Containerschiffe, standardisierter Frachtcontainer und weltweiter Logistikketten können Konsumgüter wie Smartphones, Laptops oder Handventilatoren in extrem großen Stückzahlen produziert und in Rekordzeit zu niedrigen Preisen auf den europäischen Markt gebracht werden. Gleichzeitig entsteht dadurch weltweit riesiger elektronischer Müll, und die langen Transportwege belasten durch den Verbrauch fossiler Energieträger das Klima. Die Produktion in globalen Fabriknetzwerken – die vor allem in China konzentriert sind – sichert zwar Millionen Menschen in den Fabrikregionen ein regelmäßiges Einkommen und lässt den weltweiten Wohlstand steigen, allerdings stehen die Arbeits- und Sicherheitsbedingungen vor Ort in diesen Werken immer wieder massiv in der Kritik.' },
-            'wirt-europa': { title: 'Modeindustrie & Design', text: 'Die globale Textil- und Modeindustrie sorgt dafür, dass aktuelle Modetrends aus den führenden Metropolen innerhalb weniger Wochen in den Läden weltweit hängen und Konsumenten eine riesige Auswahl an Kleidung haben. Um diesen schnellen Konsum zu ermöglichen, wird die physische Produktion der Textilien allerdings in weltweite Fabriken ausgelagert, wo oft unter fragwürdigen Bedingungen und extrem niedrigem Lohn arbeitet wird. Während die kreativen Design-Entwürfe, Modetrends und Markenstrategien ihren Ursprung meist in europäischen Zentren wie Paris oder Mailand haben, führt dieses weltweite System auf der Endverbraucherseite zu gigantischen Mengen an Textilmüll (Fast Fashion), der schwer zu recyceln ist.' },
+            'wirt-europa': { title: 'Modeindustrie & Design', text: 'Die globale Textil- und Modeindustrie sorgt dafür, dass aktuelle Modetrends aus den führenden Metropolen innerhalb weniger Wochen in den Läden weltweit hängen und Konsumenten eine riesige Auswahl an Kleidung haben. Um diesen schnellen Konsum zu ermöglichen, wird die physische Produktion der Textilien allerdings in weltweite Fabriken ausgelagert, wo oft unter fragwürdigen Bedingungen und extrem niedrigem Lohn gearbeitet wird. Während die kreativen Design-Entwürfe, Modetrends und Markenstrategien ihren Ursprung meist in europäischen Zentren wie Paris oder Mailand haben, führt dieses weltweite System auf der Endverbraucherseite zu gigantischen Mengen an Textilmüll (Fast Fashion), der schwer zu recyceln ist.' },
             'kult-asien': { title: 'Asiatische Popkultur', text: 'Über das Internet und moderne Streaming-Dienste haben Jugendliche auf allen Kontinenten heute uneingeschränkten Zugang zu asiatischen Medien, wodurch ein intensiver interkultureller Austausch und weltweite Fan-Gemeinschaften entstehen. Der enorme globale Einfluss der asiatischen Popkultur – wie japanische Anime oder der weltweite Siegeszug des südkoreanischen K-Pop – begeistert Millionen Menschen rund um den Globus. Kritiker merken jedoch an, dass durch diese globale Verflechtung und den Druck des Weltmarktes traditionelle lokale Medienformen und regionale Bräuche immer weiter in den Hintergrund gedrängt werden und eine fortschreitende Kommerzialisierung von Kultur stattfindet.' },
             'kult-usa': { title: 'US-amerikanische Medienwelt', text: 'Fast überall auf der Welt wachsen Menschen mit denselben Hollywood-Blockbustern, globalen Musik-Charts und standardisierten Unterhaltungsformaten auf, was zwar einen schnellen, unkomplizierten grenzüberschreitenden Zugang zu internationaler Unterhaltung schafft, aber auch seine Schattenseiten hat. Diese übermächtige Präsenz der US-Medien führt dazu, dass die amerikanische Kultur und westliche Werte global dominieren, während kleinere, regionale Film- und Musikindustrien auf dem Weltmarkt kaum eine Chance haben, wahrgenommen zu werden. Dennoch bildet dieser gemeinsame Medienkonsum seit Jahrzehnten einen festen Kernbestandteil einer global geteilten Popkultur.' },
             'kom-usa': { title: 'Social-Media & digitale Netze', text: 'Die weltweite Vernetzung durch digitale Plattformen US-amerikanischer Tech-Konzerne ermöglicht eine globale Kommunikation, bei der Nachrichten, Trends und politische Debatten in Sekundenschnelle über alle Landesgrenzen hinweg geteilt werden und Entfernungen im digitalen Raum keine Rolle mehr spielen. Diese enorme Reichweite erleichtert zwar die weltweite Verständigung und den schnellen Wissensaustausch erheblich, birgt jedoch gleichzeitig massive Probleme. So sorgen Algorithmen für die rasante Verbreitung von Falschinformationen (Fake News) und die Entstehung extremer Online-Echokammern, während gleichzeitig der Schutz persönlicher Nutzerdaten stark gefährdet ist.' },
@@ -583,6 +597,7 @@
             nextScreen('screen-map');
             document.getElementById('tutorial-overlay').style.display = 'block';
             document.getElementById('avatar-speech').style.display = 'flex';
+            document.getElementById('persistent-task').style.display = 'none';
             tutIndex = 0;
             updateTutorialText();
         }
@@ -599,6 +614,8 @@
             } else {
                 document.getElementById('avatar-speech').style.display = 'none';
                 document.getElementById('tutorial-overlay').style.display = 'none';
+                // Dauerhafte Aufgabe einblenden
+                document.getElementById('persistent-task').style.display = 'block';
             }
         }
 
@@ -746,19 +763,39 @@
             document.getElementById('cert-name-display').innerText = name.trim() !== "" ? "Name: " + name : "Name: _________________";
         }
 
+        // KORRIGIERTE PDF-DOWNLOAD FUNKTION GEGEN ABSCHNEIDEN
         function downloadPDF() {
             const element = document.getElementById('print-area');
+            const screen = document.getElementById('screen-certificate');
+            
+            // Scroll-Eigenschaften temporär aufheben, um Cut-Off durch html2canvas zu verhindern
+            const originalOverflow = screen.style.overflow;
+            const originalHeight = screen.style.height;
+            screen.style.overflow = 'visible';
+            screen.style.height = 'auto';
+
             if (typeof html2pdf !== 'undefined') {
                 const opt = {
                     margin:       10,
                     filename:     'Arbeitsblatt_Globalisierung.pdf',
                     image:        { type: 'jpeg', quality: 1 },
-                    html2canvas:  { scale: 2 },
+                    html2canvas:  { 
+                        scale: 2, 
+                        scrollY: 0,
+                        windowWidth: 1000 // Zwingt den Canvas auf Desktop-Breite gegen Tablet-Quetschungen
+                    },
                     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
-                html2pdf().set(opt).from(element).save();
+                
+                html2pdf().set(opt).from(element).save().then(() => {
+                    // Zurücksetzen der Styles nach Generierung
+                    screen.style.overflow = originalOverflow;
+                    screen.style.height = originalHeight;
+                });
             } else {
                 alert("Hinweis: Für den PDF-Download muss die Datei 'html2pdf.bundle.min.js' lokal vorhanden sein.");
+                screen.style.overflow = originalOverflow;
+                screen.style.height = originalHeight;
             }
         }
     </script>
