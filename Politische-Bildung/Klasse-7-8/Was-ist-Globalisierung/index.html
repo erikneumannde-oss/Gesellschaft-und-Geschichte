@@ -149,12 +149,27 @@
             background-repeat: no-repeat;
         }
 
+        /* OPTIMIERT FÜR TOUCH-GERÄTE (iPAD/iPHONE) */
         .hotspot {
             position: absolute; width: 22px; height: 22px; background: #e74c3c;
             border: 3px solid white; border-radius: 50%; cursor: pointer; transform: translate(-50%, -50%);
             box-shadow: 0 0 15px rgba(231,76,60,0.8); transition: 0.2s; z-index: 5;
+            touch-action: manipulation; /* Verhindert das 300ms-Delay auf iOS */
+            -webkit-tap-highlight-color: transparent; /* Verhindert das graue Aufblinken in Safari */
         }
-        .hotspot:hover { transform: translate(-50%, -50%) scale(1.3); background: #ff7675; }
+        
+        /* Hitbox (Trefferfläche) unsichtbar vergrößern */
+        .hotspot::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            border-radius: 50%;
+        }
+
+        .hotspot:hover, .hotspot:active { transform: translate(-50%, -50%) scale(1.3); background: #ff7675; }
 
         /* --- AVATAR (LILY) GROß & TUTORIAL --- */
         .avatar {
@@ -360,7 +375,6 @@
                     <div class="hotspot" style="top: 38%; left: 91%;" onclick="openPopupMap('pol-asien')"></div>
                 </div>
                 
-                <!-- Großer Avatar Lily eingebunden -->
                 <div class="avatar"><img src="lily.png" alt="Lily Braun"></div>
                 <div class="avatar-speech" id="avatar-speech">
                     <div id="speech-text"></div>
@@ -395,7 +409,7 @@
             Filme, Serien und Musik verbreiten sich um die ganze Welt und verändern unsere <div class="gap-slot" data-answer="w_ku" ondrop="dropGap(event)" ondragover="allowDrop(event)"></div>. 
             Durch das <div class="gap-slot" data-answer="w_internet" ondrop="dropGap(event)" ondragover="allowDrop(event)"></div> und Social Media entsteht eine grenzenlose <div class="gap-slot" data-answer="w_ko" ondrop="dropGap(event)" ondragover="allowDrop(event)"></div>. 
             Gleichzeitig führen der massenhafte weltweite <div class="gap-slot" data-answer="w_konsum" ondrop="dropGap(event)" ondragover="allowDrop(event)"></div> und der enorme Rohstoffabbau zu internationalen Herausforderungen für die <div class="gap-slot" data-answer="w_um" ondrop="dropGap(event)" ondragover="allowDrop(event)"></div>. 
-            Um Krisen gemeinsam zu lösen, bilden Staaten Verträge und internationale Bündnisse (like the EU), was die Dimension der <div class="gap-slot" data-answer="w_po" ondrop="dropGap(event)" ondragover="allowDrop(event)"></div> darstellt.
+            Um Krisen gemeinsam zu lösen, bilden Staaten Verträge und internationale Bündnisse (wie die EU), was die Dimension der <div class="gap-slot" data-answer="w_po" ondrop="dropGap(event)" ondragover="allowDrop(event)"></div> darstellt.
         </div>
         
         <p id="gap-feedback"></p>
@@ -476,7 +490,7 @@
 
         const popupDataMap = {
             'wirt-asien': { title: 'Elektrogeräte & Massenproduktion', text: 'Dank moderner Containerschiffe, standardisierter Frachtcontainer und weltweiter Logistikketten können Konsumgüter wie Smartphones, Laptops oder Handventilatoren in extrem großen Stückzahlen produziert und in Rekordzeit zu niedrigen Preisen auf den europäischen Markt gebracht werden. Gleichzeitig entsteht dadurch weltweit riesiger elektronischer Müll, und die langen Transportwege belasten durch den Verbrauch fossiler Energieträger das Klima. Die Produktion in globalen Fabriknetzwerken – die vor allem in China konzentriert sind – sichert zwar Millionen Menschen in den Fabrikregionen ein regelmäßiges Einkommen und lässt den weltweiten Wohlstand steigen, allerdings stehen die Arbeits- und Sicherheitsbedingungen vor Ort in diesen Werken immer wieder massiv in der Kritik.' },
-            'wirt-europa': { title: 'Modeindustrie & Design', text: 'Die globale Textil- und Modeindustrie sorgt dafür, dass aktuelle Modetrends aus den führenden Metropolen innerhalb weniger Wochen in den Läden weltweit hängen und Konsumenten eine riesige Auswahl an Kleidung haben. Um diesen schnellen Konsum zu ermöglichen, wird die physische Produktion der Textilien allerdings in weltweite Fabriken ausgelagert, wo oft unter fragwürdigen Bedingungen und extrem niedrigem Lohn gearbeitet wird. Während die kreativen Design-Entwürfe, Modetrends und Markenstrategien ihren Ursprung meist in europäischen Zentren wie Paris oder Mailand haben, führt dieses weltweite System auf der Endverbraucherseite zu gigantischen Mengen an Textilmüll (Fast Fashion), der schwer zu recyceln ist.' },
+            'wirt-europa': { title: 'Modeindustrie & Design', text: 'Die globale Textil- und Modeindustrie sorgt dafür, dass aktuelle Modetrends aus den führenden Metropolen innerhalb weniger Wochen in den Läden weltweit hängen und Konsumenten eine riesige Auswahl an Kleidung haben. Um diesen schnellen Konsum zu ermöglichen, wird die physische Produktion der Textilien allerdings in weltweite Fabriken ausgelagert, wo oft unter fragwürdigen Bedingungen und extrem niedrigem Lohn arbeitet wird. Während die kreativen Design-Entwürfe, Modetrends und Markenstrategien ihren Ursprung meist in europäischen Zentren wie Paris oder Mailand haben, führt dieses weltweite System auf der Endverbraucherseite zu gigantischen Mengen an Textilmüll (Fast Fashion), der schwer zu recyceln ist.' },
             'kult-asien': { title: 'Asiatische Popkultur', text: 'Über das Internet und moderne Streaming-Dienste haben Jugendliche auf allen Kontinenten heute uneingeschränkten Zugang zu asiatischen Medien, wodurch ein intensiver interkultureller Austausch und weltweite Fan-Gemeinschaften entstehen. Der enorme globale Einfluss der asiatischen Popkultur – wie japanische Anime oder der weltweite Siegeszug des südkoreanischen K-Pop – begeistert Millionen Menschen rund um den Globus. Kritiker merken jedoch an, dass durch diese globale Verflechtung und den Druck des Weltmarktes traditionelle lokale Medienformen und regionale Bräuche immer weiter in den Hintergrund gedrängt werden und eine fortschreitende Kommerzialisierung von Kultur stattfindet.' },
             'kult-usa': { title: 'US-amerikanische Medienwelt', text: 'Fast überall auf der Welt wachsen Menschen mit denselben Hollywood-Blockbustern, globalen Musik-Charts und standardisierten Unterhaltungsformaten auf, was zwar einen schnellen, unkomplizierten grenzüberschreitenden Zugang zu internationaler Unterhaltung schafft, aber auch seine Schattenseiten hat. Diese übermächtige Präsenz der US-Medien führt dazu, dass die amerikanische Kultur und westliche Werte global dominieren, während kleinere, regionale Film- und Musikindustrien auf dem Weltmarkt kaum eine Chance haben, wahrgenommen zu werden. Dennoch bildet dieser gemeinsame Medienkonsum seit Jahrzehnten einen festen Kernbestandteil einer global geteilten Popkultur.' },
             'kom-usa': { title: 'Social-Media & digitale Netze', text: 'Die weltweite Vernetzung durch digitale Plattformen US-amerikanischer Tech-Konzerne ermöglicht eine globale Kommunikation, bei der Nachrichten, Trends und politische Debatten in Sekundenschnelle über alle Landesgrenzen hinweg geteilt werden und Entfernungen im digitalen Raum keine Rolle mehr spielen. Diese enorme Reichweite erleichtert zwar die weltweite Verständigung und den schnellen Wissensaustausch erheblich, birgt jedoch gleichzeitig massive Probleme. So sorgen Algorithmen für die rasante Verbreitung von Falschinformationen (Fake News) und die Entstehung extremer Online-Echokammern, während gleichzeitig der Schutz persönlicher Nutzerdaten stark gefährdet ist.' },
@@ -557,7 +571,6 @@
             nextScreen('screen-eval');
         }
 
-        // Aktualisierte Tutorials mit Lily Brauns Vorstellung
         const tutTexts = [
             "Hallo! Ich bin <b>Lily Braun</b> und freue mich riesig, dass du an meiner Schule bist! Wusstest du, dass unser Alltag heute von der ganzen Welt abhängt? Dieses Phänomen nennt man <b>Globalisierung</b>!",
             "Klicke auf die roten Punkte auf der Weltkarte, um anhand der Beispiele zu verstehen, welche Lebensbereiche die Globalisierung berührt.",
