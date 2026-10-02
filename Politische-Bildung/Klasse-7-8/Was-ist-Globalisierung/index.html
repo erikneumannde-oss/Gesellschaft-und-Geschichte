@@ -278,22 +278,30 @@
         .name-input-container { margin: 20px 0; text-align: center; display: flex; justify-content: center; gap: 15px; align-items: center;}
         .name-input-container input { padding: 12px; font-size: 18px; width: 350px; border: 2px solid var(--primary); border-radius: 6px; background: #fff; color: #333;}
         
-        /* Druckbereich für sauberes A4 PDF */
+        /* FESTES HOCHFORMAT FÜR DAS ARBEITSBLATT (Erzwingt A4 Proportionen schon auf dem Bildschirm) */
         .print-area { 
             background: #fdfbfb; background-image: repeating-linear-gradient(45deg, #fdfbfb 0px, #fdfbfb 20px, #f4f4f4 20px, #f4f4f4 40px);
-            color: #333; padding: 50px; margin-top: 20px; position: relative;
+            color: #333; padding: 40px; margin: 20px auto; position: relative;
             border: 12px solid var(--gold); outline: 4px solid #fff; outline-offset: -16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-            /* Fixe Mindesthöhe entfernt, wird beim Druck dynamisch erzwungen */
+            /* Zwingt das Layout in die Form eines hochformatigen Papiers */
+            width: 100%;
+            max-width: 750px;
+            min-height: 1050px; /* Garantiert, dass es ein langes Rechteck ist */
+            box-sizing: border-box;
         }
         
         .cert-name-top { position: absolute; top: 30px; right: 40px; font-size: 14px; font-weight: bold; color: #333; }
-        .cert-title { text-align: center; color: #2c3e50; font-size: 32px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; font-family: Georgia, serif;}
-        .cert-badge { position: absolute; bottom: 40px; right: 50px; width: 120px; height: 120px; background: var(--gold); border-radius: 50%; border: 4px dashed #fff; box-shadow: 0 0 15px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; font-size: 16px; text-align: center; transform: rotate(-15deg);}
+        .cert-title { text-align: center; color: #2c3e50; font-size: 30px; text-transform: uppercase; letter-spacing: 2px; margin-top: 20px; margin-bottom: 40px; font-family: Georgia, serif;}
+        
+        /* Das Siegel rechts unten */
+        .cert-badge { position: absolute; bottom: 40px; right: 40px; width: 120px; height: 120px; background: var(--gold); border-radius: 50%; border: 4px dashed #fff; box-shadow: 0 0 15px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; font-size: 16px; text-align: center; transform: rotate(-15deg);}
 
-        .cert-box { background: rgba(255,255,255,0.9); padding: 20px; border-left: 6px solid var(--secondary); margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
-        .cert-columns { display: flex; gap: 20px; margin-bottom: 40px;}
-        .cert-col { flex: 1; background: rgba(255,255,255,0.9); padding: 20px; border-top: 4px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
+        .cert-box { background: rgba(255,255,255,0.9); padding: 20px; border-left: 6px solid var(--secondary); margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
+        
+        /* Spalten für Chancen und Risiken untereinander gestapelt -> Garantiert sauberes Hochformat */
+        .cert-columns { display: flex; flex-direction: column; gap: 25px; margin-bottom: 40px;}
+        .cert-col { background: rgba(255,255,255,0.9); padding: 20px; border-top: 4px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
         .cert-col h4 { margin-top: 0; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px;}
         .cert-ul { padding-left: 20px; margin: 0; font-size: 14px;}
         .cert-ul li { margin-bottom: 8px; }
@@ -449,9 +457,10 @@
             <button class="btn" style="margin: 0;" onclick="downloadPDF()">📥 Arbeitsblatt (PDF) speichern</button>
         </div>
 
+        <!-- Das Arbeitsblatt im strengen Hochformat (Portrait) -->
         <div class="print-area" id="print-area">
             <div class="cert-name-top" id="cert-name-display">Name: _________________</div>
-            <div class="cert-title">Die Globalisierung - wird die Welt ein Dorf?</div>
+            <div class="cert-title">Die Globalisierung<br>wird die Welt ein Dorf?</div>
             
             <div class="cert-box">
                 <h4 style="margin-top:0; color: #2c3e50;">Erfolgreich erarbeitete Definition:</h4>
@@ -461,6 +470,7 @@
             <h3 style="text-align: center; color: #333; margin-top: 30px;">Eigenständig analysierte Vor- und Nachteile</h3>
             
             <div class="cert-columns">
+                <!-- Die Spalten sind nun untereinander (Hochformat) angeordnet -->
                 <div class="cert-col">
                     <h4>Chancen / Vorteile</h4>
                     <ul class="cert-ul" id="cert-vorteile-list"></ul>
@@ -470,6 +480,8 @@
                     <ul class="cert-ul" id="cert-risiken-list"></ul>
                 </div>
             </div>
+            
+            <!-- Das Zertifikat Siegel -->
             <div class="cert-badge">Erfolgreich<br>Absolviert</div>
         </div>
     </div>
@@ -762,39 +774,21 @@
             document.getElementById('cert-name-display').innerText = name.trim() !== "" ? "Name: " + name : "Name: _________________";
         }
 
-        // --- KORRIGIERTER PDF DRUCK ---
         function downloadPDF() {
             const element = document.getElementById('print-area');
             
-            // Alte Werte merken
-            const originalWidth = element.style.width;
-            const originalMaxWidth = element.style.maxWidth;
-            
-            // Element kurzzeitig zwingend auf DIN A4 Proportionen (Hochformat) setzen
-            element.style.width = '794px'; 
-            element.style.maxWidth = 'none';
-
             if (typeof html2pdf !== 'undefined') {
                 const opt = {
                     margin:       10,
                     filename:     'Arbeitsblatt_Globalisierung.pdf',
                     image:        { type: 'jpeg', quality: 1 },
-                    html2canvas:  { 
-                        scale: 2, 
-                        windowWidth: 850 // Zwingt den Canvas auf die Arbeitsblatt-Breite
-                    },
+                    html2canvas:  { scale: 2 },
                     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
                 
-                html2pdf().set(opt).from(element).save().then(() => {
-                    // Werte wieder herstellen, sobald das PDF gespeichert wurde
-                    element.style.width = originalWidth;
-                    element.style.maxWidth = originalMaxWidth;
-                });
+                html2pdf().set(opt).from(element).save();
             } else {
                 alert("Hinweis: Für den PDF-Download muss die Datei 'html2pdf.bundle.min.js' lokal vorhanden sein.");
-                element.style.width = originalWidth;
-                element.style.maxWidth = originalMaxWidth;
             }
         }
     </script>
