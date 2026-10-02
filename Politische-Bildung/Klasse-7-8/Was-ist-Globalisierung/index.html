@@ -770,41 +770,55 @@
             document.getElementById('cert-name-display').innerText = name.trim() !== "" ? "Name: " + name : "Name: _________________";
         }
 
+        // --- DER ULTIMATIVE PDF-FIX ---
         function downloadPDF() {
             const element = document.getElementById('print-area');
             
-            // Feste Breite für das Rendern setzen
+            // Alte Werte merken
             const originalWidth = element.style.width;
             const originalMaxWidth = element.style.maxWidth;
+            const originalMargin = element.style.margin;
+            const originalBoxShadow = element.style.boxShadow;
+            
+            // Störende CSS-Eigenschaften (Schatten, Ränder), die über die reine Höhe 
+            // hinausragen, für den Snapshot kurzzeitig komplett deaktivieren.
             element.style.width = '794px'; 
             element.style.maxWidth = 'none';
+            element.style.margin = '0'; 
+            element.style.boxShadow = 'none';
 
-            // Kurz warten, um das Layout neu zu berechnen
+            // Einen kurzen Moment warten, damit der Browser die Änderungen übernimmt
             setTimeout(() => {
+                // Wir messen die echte Höhe des bereinigten Elements
                 const pxWidth = element.offsetWidth;
                 const pxHeight = element.offsetHeight;
                 
-                // Dynamische Höhe für das PDF berechnen, um Seitenumbruch komplett zu verhindern
+                // Wir errechnen die nötige Höhe für die PDF-Seite (basierend auf 210mm DIN A4 Breite)
                 const pdfHeightMm = (pxHeight / pxWidth) * 210;
 
                 if (typeof html2pdf !== 'undefined') {
                     const opt = {
-                        margin:       0, // WICHTIG: Kein Margin! Verhindert das Zerschneiden
+                        margin:       0, 
                         filename:     'Arbeitsblatt_Globalisierung.pdf',
                         image:        { type: 'jpeg', quality: 1 },
                         html2canvas:  { scale: 2 },
-                        // Dynamisches Format: Immer genau 1 Seite, egal wie lang der Text ist!
+                        // Wir erzwingen exakt diese EINE Seite im PDF, egal wie lang sie ist.
                         jsPDF:        { unit: 'mm', format: [210, pdfHeightMm], orientation: 'portrait' }
                     };
                     
                     html2pdf().set(opt).from(element).save().then(() => {
+                        // Alle Styles wieder herstellen
                         element.style.width = originalWidth;
                         element.style.maxWidth = originalMaxWidth;
+                        element.style.margin = originalMargin;
+                        element.style.boxShadow = originalBoxShadow;
                     });
                 } else {
                     alert("Hinweis: Für den PDF-Download muss die Datei 'html2pdf.bundle.min.js' lokal vorhanden sein.");
                     element.style.width = originalWidth;
                     element.style.maxWidth = originalMaxWidth;
+                    element.style.margin = originalMargin;
+                    element.style.boxShadow = originalBoxShadow;
                 }
             }, 100);
         }
