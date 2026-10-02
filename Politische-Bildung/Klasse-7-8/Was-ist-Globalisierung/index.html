@@ -286,7 +286,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
             
             width: 100%;
-            max-width: 750px; /* Garantiert ein Hochformat auf dem Bildschirm */
+            max-width: 750px; 
             min-height: 1050px;
             box-sizing: border-box;
         }
@@ -459,7 +459,7 @@
 
         <div class="print-area" id="print-area">
             <div class="cert-name-top" id="cert-name-display">Name: _________________</div>
-            <div class="cert-title">Die Globalisierung<br>wird die Welt ein Dorf?</div>
+            <div class="cert-title">Die Globalisierung - wird die Welt ein Dorf?</div>
             
             <div class="cert-box">
                 <h4 style="margin-top:0; color: #2c3e50;">Erfolgreich erarbeitete Definition:</h4>
@@ -770,32 +770,43 @@
             document.getElementById('cert-name-display').innerText = name.trim() !== "" ? "Name: " + name : "Name: _________________";
         }
 
-        // --- DER ULTIMATIVE PDF-FIX ---
         function downloadPDF() {
             const element = document.getElementById('print-area');
             
-            // Wir berechnen die exakte, tatsächliche Höhe des Arbeitsblattes (inklusive aller hinzugefügten Argumente!)
-            const pxWidth = element.offsetWidth;
-            const pxHeight = element.offsetHeight;
-            
-            // Ein DIN-A4-Blatt ist 210mm breit. Wir rechnen die benötigte Länge in mm um.
-            const contentWidthMm = 190; // 210mm Breite minus 2x10mm Ränder
-            const pageHeightMm = (pxHeight / pxWidth) * contentWidthMm + 20; // Rechnet die Proportion hoch + 20mm Ränder
+            // Feste Breite für das Rendern setzen
+            const originalWidth = element.style.width;
+            const originalMaxWidth = element.style.maxWidth;
+            element.style.width = '794px'; 
+            element.style.maxWidth = 'none';
 
-            if (typeof html2pdf !== 'undefined') {
-                const opt = {
-                    margin:       10,
-                    filename:     'Arbeitsblatt_Globalisierung.pdf',
-                    image:        { type: 'jpeg', quality: 1 },
-                    // Hier passiert die Magie: Die PDF-Seite wird exakt so lang gemacht, wie sie sein muss!
-                    // Es gibt absolut keinen Seitenumbruch mehr, da alles immer auf genau EINE einzige Seite passt.
-                    jsPDF:        { unit: 'mm', format: [210, pageHeightMm], orientation: 'portrait' }
-                };
+            // Kurz warten, um das Layout neu zu berechnen
+            setTimeout(() => {
+                const pxWidth = element.offsetWidth;
+                const pxHeight = element.offsetHeight;
                 
-                html2pdf().set(opt).from(element).save();
-            } else {
-                alert("Hinweis: Für den PDF-Download muss die Datei 'html2pdf.bundle.min.js' lokal vorhanden sein.");
-            }
+                // Dynamische Höhe für das PDF berechnen, um Seitenumbruch komplett zu verhindern
+                const pdfHeightMm = (pxHeight / pxWidth) * 210;
+
+                if (typeof html2pdf !== 'undefined') {
+                    const opt = {
+                        margin:       0, // WICHTIG: Kein Margin! Verhindert das Zerschneiden
+                        filename:     'Arbeitsblatt_Globalisierung.pdf',
+                        image:        { type: 'jpeg', quality: 1 },
+                        html2canvas:  { scale: 2 },
+                        // Dynamisches Format: Immer genau 1 Seite, egal wie lang der Text ist!
+                        jsPDF:        { unit: 'mm', format: [210, pdfHeightMm], orientation: 'portrait' }
+                    };
+                    
+                    html2pdf().set(opt).from(element).save().then(() => {
+                        element.style.width = originalWidth;
+                        element.style.maxWidth = originalMaxWidth;
+                    });
+                } else {
+                    alert("Hinweis: Für den PDF-Download muss die Datei 'html2pdf.bundle.min.js' lokal vorhanden sein.");
+                    element.style.width = originalWidth;
+                    element.style.maxWidth = originalMaxWidth;
+                }
+            }, 100);
         }
     </script>
 </body>
