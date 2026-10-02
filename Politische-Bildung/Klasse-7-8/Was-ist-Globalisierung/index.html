@@ -770,57 +770,70 @@
             document.getElementById('cert-name-display').innerText = name.trim() !== "" ? "Name: " + name : "Name: _________________";
         }
 
-        // --- DER ULTIMATIVE PDF-FIX ---
+        // --- DER ABSOLUT SICHERE PDF-FIX ---
         function downloadPDF() {
             const element = document.getElementById('print-area');
             
-            // Alte Werte merken
-            const originalWidth = element.style.width;
-            const originalMaxWidth = element.style.maxWidth;
+            // Um exakte Maße zu bekommen, schalten wir kurz störende CSS-Abstände ab
             const originalMargin = element.style.margin;
-            const originalBoxShadow = element.style.boxShadow;
+            element.style.margin = '0';
             
-            // Störende CSS-Eigenschaften (Schatten, Ränder), die über die reine Höhe 
-            // hinausragen, für den Snapshot kurzzeitig komplett deaktivieren.
-            element.style.width = '794px'; 
-            element.style.maxWidth = 'none';
-            element.style.margin = '0'; 
-            element.style.boxShadow = 'none';
+            const pxWidth = element.offsetWidth;
+            const pxHeight = element.offsetHeight;
+            
+            // Ein DIN A4 Blatt hat das Seitenverhältnis 297mm (Höhe) zu 210mm (Breite)
+            // Wir ziehen hier auf beiden Seiten je 10mm Rand ab (also 277mm / 190mm)
+            const printableRatio = 277 / 190; 
+            
+            // Wir bauen eine unsichtbare weiße Hülle für den Druck
+            const wrapper = document.createElement('div');
+            wrapper.style.backgroundColor = '#ffffff'; 
+            
+            // Wenn die Liste sehr lang ist, machen wir die Hülle breiter!
+            // Dadurch MUSS das PDF-Programm die gesamte Hülle stärker verkleinern 
+            // und das Arbeitsblatt passt wieder perfekt auf die Seite.
+            if (pxHeight / pxWidth > printableRatio) {
+                // Das Arbeitsblatt ist zu hoch: Wir errechnen die nötige Breite für das A4 Format
+                const targetWidth = pxHeight / printableRatio;
+                // Die Hülle wird exakt auf die perfekten A4 Proportionen gestreckt
+                wrapper.style.width = targetWidth + 'px';
+                wrapper.style.height = pxHeight + 'px';
+                wrapper.style.display = 'flex';
+                wrapper.style.justifyContent = 'center'; // Zentriert das Arbeitsblatt in der Mitte der Hülle
+                wrapper.style.alignItems = 'center'; 
+            } else {
+                // Das Arbeitsblatt ist kurz genug und passt problemlos auf die Seite
+                wrapper.style.width = pxWidth + 'px';
+                wrapper.style.height = pxHeight + 'px';
+                wrapper.style.display = 'flex';
+                wrapper.style.justifyContent = 'center';
+            }
+            
+            // Das Arbeitsblatt in die Hülle schieben
+            element.parentNode.insertBefore(wrapper, element);
+            wrapper.appendChild(element);
 
-            // Einen kurzen Moment warten, damit der Browser die Änderungen übernimmt
-            setTimeout(() => {
-                // Wir messen die echte Höhe des bereinigten Elements
-                const pxWidth = element.offsetWidth;
-                const pxHeight = element.offsetHeight;
+            if (typeof html2pdf !== 'undefined') {
+                const opt = {
+                    margin:       10, 
+                    filename:     'Arbeitsblatt_Globalisierung.pdf',
+                    image:        { type: 'jpeg', quality: 1 },
+                    html2canvas:  { scale: 2 },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
                 
-                // Wir errechnen die nötige Höhe für die PDF-Seite (basierend auf 210mm DIN A4 Breite)
-                const pdfHeightMm = (pxHeight / pxWidth) * 210;
-
-                if (typeof html2pdf !== 'undefined') {
-                    const opt = {
-                        margin:       0, 
-                        filename:     'Arbeitsblatt_Globalisierung.pdf',
-                        image:        { type: 'jpeg', quality: 1 },
-                        html2canvas:  { scale: 2 },
-                        // Wir erzwingen exakt diese EINE Seite im PDF, egal wie lang sie ist.
-                        jsPDF:        { unit: 'mm', format: [210, pdfHeightMm], orientation: 'portrait' }
-                    };
-                    
-                    html2pdf().set(opt).from(element).save().then(() => {
-                        // Alle Styles wieder herstellen
-                        element.style.width = originalWidth;
-                        element.style.maxWidth = originalMaxWidth;
-                        element.style.margin = originalMargin;
-                        element.style.boxShadow = originalBoxShadow;
-                    });
-                } else {
-                    alert("Hinweis: Für den PDF-Download muss die Datei 'html2pdf.bundle.min.js' lokal vorhanden sein.");
-                    element.style.width = originalWidth;
-                    element.style.maxWidth = originalMaxWidth;
-                    element.style.margin = originalMargin;
-                    element.style.boxShadow = originalBoxShadow;
-                }
-            }, 100);
+                html2pdf().set(opt).from(wrapper).save().then(() => {
+                    // Sobald das PDF generiert ist, alles wieder in den Ursprungszustand versetzen
+                    wrapper.parentNode.insertBefore(element, wrapper);
+                    wrapper.parentNode.removeChild(wrapper);
+                    element.style.margin = '20px auto'; 
+                });
+            } else {
+                alert("Hinweis: Für den PDF-Download muss die Datei 'html2pdf.bundle.min.js' lokal vorhanden sein.");
+                wrapper.parentNode.insertBefore(element, wrapper);
+                wrapper.parentNode.removeChild(wrapper);
+                element.style.margin = '20px auto';
+            }
         }
     </script>
 </body>
