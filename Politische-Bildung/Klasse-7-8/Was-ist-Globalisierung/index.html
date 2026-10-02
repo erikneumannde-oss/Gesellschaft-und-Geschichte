@@ -278,16 +278,16 @@
         .name-input-container { margin: 20px 0; text-align: center; display: flex; justify-content: center; gap: 15px; align-items: center;}
         .name-input-container input { padding: 12px; font-size: 18px; width: 350px; border: 2px solid var(--primary); border-radius: 6px; background: #fff; color: #333;}
         
-        /* FESTES HOCHFORMAT FÜR DAS ARBEITSBLATT (Erzwingt A4 Proportionen schon auf dem Bildschirm) */
+        /* Druckbereich: Festes Hochformat */
         .print-area { 
             background: #fdfbfb; background-image: repeating-linear-gradient(45deg, #fdfbfb 0px, #fdfbfb 20px, #f4f4f4 20px, #f4f4f4 40px);
             color: #333; padding: 40px; margin: 20px auto; position: relative;
             border: 12px solid var(--gold); outline: 4px solid #fff; outline-offset: -16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-            /* Zwingt das Layout in die Form eines hochformatigen Papiers */
+            
             width: 100%;
-            max-width: 750px;
-            min-height: 1050px; /* Garantiert, dass es ein langes Rechteck ist */
+            max-width: 750px; /* Garantiert ein Hochformat auf dem Bildschirm */
+            min-height: 1050px;
             box-sizing: border-box;
         }
         
@@ -299,7 +299,7 @@
 
         .cert-box { background: rgba(255,255,255,0.9); padding: 20px; border-left: 6px solid var(--secondary); margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
         
-        /* Spalten für Chancen und Risiken untereinander gestapelt -> Garantiert sauberes Hochformat */
+        /* Spalten für Chancen und Risiken untereinander gestapelt */
         .cert-columns { display: flex; flex-direction: column; gap: 25px; margin-bottom: 40px;}
         .cert-col { background: rgba(255,255,255,0.9); padding: 20px; border-top: 4px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
         .cert-col h4 { margin-top: 0; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px;}
@@ -457,7 +457,6 @@
             <button class="btn" style="margin: 0;" onclick="downloadPDF()">📥 Arbeitsblatt (PDF) speichern</button>
         </div>
 
-        <!-- Das Arbeitsblatt im strengen Hochformat (Portrait) -->
         <div class="print-area" id="print-area">
             <div class="cert-name-top" id="cert-name-display">Name: _________________</div>
             <div class="cert-title">Die Globalisierung<br>wird die Welt ein Dorf?</div>
@@ -470,7 +469,6 @@
             <h3 style="text-align: center; color: #333; margin-top: 30px;">Eigenständig analysierte Vor- und Nachteile</h3>
             
             <div class="cert-columns">
-                <!-- Die Spalten sind nun untereinander (Hochformat) angeordnet -->
                 <div class="cert-col">
                     <h4>Chancen / Vorteile</h4>
                     <ul class="cert-ul" id="cert-vorteile-list"></ul>
@@ -480,8 +478,6 @@
                     <ul class="cert-ul" id="cert-risiken-list"></ul>
                 </div>
             </div>
-            
-            <!-- Das Zertifikat Siegel -->
             <div class="cert-badge">Erfolgreich<br>Absolviert</div>
         </div>
     </div>
@@ -774,16 +770,26 @@
             document.getElementById('cert-name-display').innerText = name.trim() !== "" ? "Name: " + name : "Name: _________________";
         }
 
+        // --- DER ULTIMATIVE PDF-FIX ---
         function downloadPDF() {
             const element = document.getElementById('print-area');
             
+            // Wir berechnen die exakte, tatsächliche Höhe des Arbeitsblattes (inklusive aller hinzugefügten Argumente!)
+            const pxWidth = element.offsetWidth;
+            const pxHeight = element.offsetHeight;
+            
+            // Ein DIN-A4-Blatt ist 210mm breit. Wir rechnen die benötigte Länge in mm um.
+            const contentWidthMm = 190; // 210mm Breite minus 2x10mm Ränder
+            const pageHeightMm = (pxHeight / pxWidth) * contentWidthMm + 20; // Rechnet die Proportion hoch + 20mm Ränder
+
             if (typeof html2pdf !== 'undefined') {
                 const opt = {
                     margin:       10,
                     filename:     'Arbeitsblatt_Globalisierung.pdf',
                     image:        { type: 'jpeg', quality: 1 },
-                    html2canvas:  { scale: 2 },
-                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                    // Hier passiert die Magie: Die PDF-Seite wird exakt so lang gemacht, wie sie sein muss!
+                    // Es gibt absolut keinen Seitenumbruch mehr, da alles immer auf genau EINE einzige Seite passt.
+                    jsPDF:        { unit: 'mm', format: [210, pageHeightMm], orientation: 'portrait' }
                 };
                 
                 html2pdf().set(opt).from(element).save();
