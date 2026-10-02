@@ -283,7 +283,8 @@
             background: #fdfbfb; background-image: repeating-linear-gradient(45deg, #fdfbfb 0px, #fdfbfb 20px, #f4f4f4 20px, #f4f4f4 40px);
             color: #333; padding: 50px; margin-top: 20px; position: relative;
             border: 12px solid var(--gold); outline: 4px solid #fff; outline-offset: -16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); min-height: 297mm; /* Mindesthöhe für DIN A4 */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            min-height: 800px; /* Geändert: Verhindert falschen Page Break */
         }
         
         .cert-name-top { position: absolute; top: 30px; right: 40px; font-size: 14px; font-weight: bold; color: #333; }
@@ -763,39 +764,39 @@
             document.getElementById('cert-name-display').innerText = name.trim() !== "" ? "Name: " + name : "Name: _________________";
         }
 
-        // KORRIGIERTE PDF-DOWNLOAD FUNKTION GEGEN ABSCHNEIDEN
+        // Bugfix PDF: Flexbox zerschneidet Bild nicht mehr, Seitenumbruch verhindert
         function downloadPDF() {
             const element = document.getElementById('print-area');
-            const screen = document.getElementById('screen-certificate');
+            const originalStyle = element.getAttribute('style') || '';
             
-            // Scroll-Eigenschaften temporär aufheben, um Cut-Off durch html2canvas zu verhindern
-            const originalOverflow = screen.style.overflow;
-            const originalHeight = screen.style.height;
-            screen.style.overflow = 'visible';
-            screen.style.height = 'auto';
+            // Element temporär aus dem zentrierten Layout holen und fixe Breite vergeben
+            element.style.position = 'absolute';
+            element.style.top = '0';
+            element.style.left = '0';
+            element.style.width = '800px'; 
+            element.style.margin = '0';
+            element.style.zIndex = '9999';
 
             if (typeof html2pdf !== 'undefined') {
                 const opt = {
                     margin:       10,
                     filename:     'Arbeitsblatt_Globalisierung.pdf',
                     image:        { type: 'jpeg', quality: 1 },
+                    pagebreak:    { mode: 'avoid-all' }, // Verhindert zerschneiden des Siegels
                     html2canvas:  { 
                         scale: 2, 
                         scrollY: 0,
-                        windowWidth: 1000 // Zwingt den Canvas auf Desktop-Breite gegen Tablet-Quetschungen
+                        scrollX: 0
                     },
                     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
                 
                 html2pdf().set(opt).from(element).save().then(() => {
-                    // Zurücksetzen der Styles nach Generierung
-                    screen.style.overflow = originalOverflow;
-                    screen.style.height = originalHeight;
+                    element.setAttribute('style', originalStyle); // Wieder zurücksetzen
                 });
             } else {
                 alert("Hinweis: Für den PDF-Download muss die Datei 'html2pdf.bundle.min.js' lokal vorhanden sein.");
-                screen.style.overflow = originalOverflow;
-                screen.style.height = originalHeight;
+                element.setAttribute('style', originalStyle);
             }
         }
     </script>
