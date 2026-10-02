@@ -278,7 +278,7 @@
         .name-input-container { margin: 20px 0; text-align: center; display: flex; justify-content: center; gap: 15px; align-items: center;}
         .name-input-container input { padding: 12px; font-size: 18px; width: 350px; border: 2px solid var(--primary); border-radius: 6px; background: #fff; color: #333;}
         
-        /* Druckbereich: Festes Hochformat Layout */
+        /* Druckbereich */
         .print-area { 
             background: #fdfbfb; background-image: repeating-linear-gradient(45deg, #fdfbfb 0px, #fdfbfb 20px, #f4f4f4 20px, #f4f4f4 40px);
             color: #333; padding: 40px; margin: 20px auto; position: relative;
@@ -294,14 +294,12 @@
         .cert-name-top { position: absolute; top: 30px; right: 40px; font-size: 14px; font-weight: bold; color: #333; }
         .cert-title { text-align: center; color: #2c3e50; font-size: 30px; text-transform: uppercase; letter-spacing: 2px; margin-top: 20px; margin-bottom: 40px; font-family: Georgia, serif;}
         
-        /* Das Siegel rechts unten */
-        .cert-badge { position: absolute; bottom: 40px; right: 40px; width: 120px; height: 120px; background: var(--gold); border-radius: 50%; border: 4px dashed #fff; box-shadow: 0 0 15px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; font-size: 16px; text-align: center; transform: rotate(-15deg);}
+        .cert-badge { position: absolute; bottom: 40px; right: 40px; width: 120px; height: 120px; background: var(--gold); border-radius: 50%; border: 4px dashed #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; font-size: 16px; text-align: center; transform: rotate(-15deg);}
 
-        .cert-box { background: rgba(255,255,255,0.9); padding: 20px; border-left: 6px solid var(--secondary); margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
+        .cert-box { background: rgba(255,255,255,0.9); padding: 20px; border-left: 6px solid var(--secondary); margin-bottom: 30px; }
         
-        /* Spalten für Chancen und Risiken untereinander gestapelt */
         .cert-columns { display: flex; flex-direction: column; gap: 25px; margin-bottom: 40px;}
-        .cert-col { background: rgba(255,255,255,0.9); padding: 20px; border-top: 4px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
+        .cert-col { background: rgba(255,255,255,0.9); padding: 20px; border-top: 4px solid var(--primary); }
         .cert-col h4 { margin-top: 0; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px;}
         .cert-ul { padding-left: 20px; margin: 0; font-size: 14px;}
         .cert-ul li { margin-bottom: 8px; }
@@ -770,66 +768,41 @@
             document.getElementById('cert-name-display').innerText = name.trim() !== "" ? "Name: " + name : "Name: _________________";
         }
 
-        // --- DER ABSOLUT SICHERE PDF-FIX ---
         function downloadPDF() {
             const element = document.getElementById('print-area');
             
-            // Um exakte Maße zu bekommen, schalten wir störende CSS-Eigenschaften kurz ab
+            // Um exakte Maße zu bekommen, Rand und Schatten kurz entfernen
             const originalMargin = element.style.margin;
             const originalBoxShadow = element.style.boxShadow;
-            
             element.style.margin = '0';
             element.style.boxShadow = 'none';
             
             setTimeout(() => {
+                // Reale Pixel-Maße des Elements auslesen
                 const pxWidth = element.offsetWidth;
                 const pxHeight = element.offsetHeight;
                 
-                // Ein DIN A4 Blatt hat das Seitenverhältnis 297mm zu 210mm.
-                // Mit 10mm Rand an allen Seiten ist der nutzbare Bereich 277mm zu 190mm (Faktor ~1.457)
-                const a4Ratio = 277 / 190; 
-                const currentRatio = pxHeight / pxWidth;
-                
-                let targetWidth = pxWidth;
-                
-                // WENN das Arbeitsblatt zu lang ist, machen wir die unsichtbare Hülle BREITER.
-                // Dadurch muss die PDF-Bibliothek das gesamte Bild verkleinern, um es in die 
-                // vorgegebene A4-Breite zu quetschen. Die Höhe schrumpft automatisch mit!
-                if (currentRatio > a4Ratio) {
-                    targetWidth = pxHeight / a4Ratio;
-                }
-                
-                // Wir verpacken das Arbeitsblatt in eine Container-Hülle
-                const wrapper = document.createElement('div');
-                wrapper.style.width = targetWidth + 'px';
-                wrapper.style.display = 'flex';
-                wrapper.style.justifyContent = 'center';
-                wrapper.style.backgroundColor = '#fdfbfb'; 
-                
-                element.parentNode.insertBefore(wrapper, element);
-                wrapper.appendChild(element);
+                // In Millimeter umrechnen (Basisbreite DIN A4 = 210mm)
+                const mmWidth = 210;
+                const mmHeight = (pxHeight * mmWidth) / pxWidth;
 
                 if (typeof html2pdf !== 'undefined') {
                     const opt = {
-                        margin:       10, 
+                        margin:       0, 
                         filename:     'Arbeitsblatt_Globalisierung.pdf',
                         image:        { type: 'jpeg', quality: 1 },
                         html2canvas:  { scale: 2 },
-                        // Wir legen zwingend fest, dass das PDF immer das Format A4 im Hochformat hat
-                        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                        // Hier ist der Schlüssel: Wir erstellen ein benutzerdefiniertes Seitenformat,
+                        // das exakt den Maßen deines Arbeitsblattes entspricht. Kein A4-Zwang = Kein Umbruch!
+                        jsPDF:        { unit: 'mm', format: [mmWidth, mmHeight], orientation: 'portrait' }
                     };
                     
-                    html2pdf().set(opt).from(wrapper).save().then(() => {
-                        // Sobald das PDF generiert ist, alles aufräumen
-                        wrapper.parentNode.insertBefore(element, wrapper);
-                        wrapper.parentNode.removeChild(wrapper);
+                    html2pdf().set(opt).from(element).save().then(() => {
                         element.style.margin = originalMargin;
                         element.style.boxShadow = originalBoxShadow;
                     });
                 } else {
-                    alert("Hinweis: Für den PDF-Download muss die Datei 'html2pdf.bundle.min.js' lokal vorhanden sein.");
-                    wrapper.parentNode.insertBefore(element, wrapper);
-                    wrapper.parentNode.removeChild(wrapper);
+                    alert("Hinweis: html2pdf.bundle.min.js fehlt.");
                     element.style.margin = originalMargin;
                     element.style.boxShadow = originalBoxShadow;
                 }
