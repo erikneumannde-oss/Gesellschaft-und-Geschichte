@@ -278,7 +278,7 @@
         .name-input-container { margin: 20px 0; text-align: center; display: flex; justify-content: center; gap: 15px; align-items: center;}
         .name-input-container input { padding: 12px; font-size: 18px; width: 350px; border: 2px solid var(--primary); border-radius: 6px; background: #fff; color: #333;}
         
-        /* Druckbereich: Festes Hochformat */
+        /* Druckbereich: Festes Hochformat Layout */
         .print-area { 
             background: #fdfbfb; background-image: repeating-linear-gradient(45deg, #fdfbfb 0px, #fdfbfb 20px, #f4f4f4 20px, #f4f4f4 40px);
             color: #333; padding: 40px; margin: 20px auto; position: relative;
@@ -774,66 +774,66 @@
         function downloadPDF() {
             const element = document.getElementById('print-area');
             
-            // Um exakte Maße zu bekommen, schalten wir kurz störende CSS-Abstände ab
+            // Um exakte Maße zu bekommen, schalten wir störende CSS-Eigenschaften kurz ab
             const originalMargin = element.style.margin;
+            const originalBoxShadow = element.style.boxShadow;
+            
             element.style.margin = '0';
+            element.style.boxShadow = 'none';
             
-            const pxWidth = element.offsetWidth;
-            const pxHeight = element.offsetHeight;
-            
-            // Ein DIN A4 Blatt hat das Seitenverhältnis 297mm (Höhe) zu 210mm (Breite)
-            // Wir ziehen hier auf beiden Seiten je 10mm Rand ab (also 277mm / 190mm)
-            const printableRatio = 277 / 190; 
-            
-            // Wir bauen eine unsichtbare weiße Hülle für den Druck
-            const wrapper = document.createElement('div');
-            wrapper.style.backgroundColor = '#ffffff'; 
-            
-            // Wenn die Liste sehr lang ist, machen wir die Hülle breiter!
-            // Dadurch MUSS das PDF-Programm die gesamte Hülle stärker verkleinern 
-            // und das Arbeitsblatt passt wieder perfekt auf die Seite.
-            if (pxHeight / pxWidth > printableRatio) {
-                // Das Arbeitsblatt ist zu hoch: Wir errechnen die nötige Breite für das A4 Format
-                const targetWidth = pxHeight / printableRatio;
-                // Die Hülle wird exakt auf die perfekten A4 Proportionen gestreckt
+            setTimeout(() => {
+                const pxWidth = element.offsetWidth;
+                const pxHeight = element.offsetHeight;
+                
+                // Ein DIN A4 Blatt hat das Seitenverhältnis 297mm zu 210mm.
+                // Mit 10mm Rand an allen Seiten ist der nutzbare Bereich 277mm zu 190mm (Faktor ~1.457)
+                const a4Ratio = 277 / 190; 
+                const currentRatio = pxHeight / pxWidth;
+                
+                let targetWidth = pxWidth;
+                
+                // WENN das Arbeitsblatt zu lang ist, machen wir die unsichtbare Hülle BREITER.
+                // Dadurch muss die PDF-Bibliothek das gesamte Bild verkleinern, um es in die 
+                // vorgegebene A4-Breite zu quetschen. Die Höhe schrumpft automatisch mit!
+                if (currentRatio > a4Ratio) {
+                    targetWidth = pxHeight / a4Ratio;
+                }
+                
+                // Wir verpacken das Arbeitsblatt in eine Container-Hülle
+                const wrapper = document.createElement('div');
                 wrapper.style.width = targetWidth + 'px';
-                wrapper.style.height = pxHeight + 'px';
-                wrapper.style.display = 'flex';
-                wrapper.style.justifyContent = 'center'; // Zentriert das Arbeitsblatt in der Mitte der Hülle
-                wrapper.style.alignItems = 'center'; 
-            } else {
-                // Das Arbeitsblatt ist kurz genug und passt problemlos auf die Seite
-                wrapper.style.width = pxWidth + 'px';
-                wrapper.style.height = pxHeight + 'px';
                 wrapper.style.display = 'flex';
                 wrapper.style.justifyContent = 'center';
-            }
-            
-            // Das Arbeitsblatt in die Hülle schieben
-            element.parentNode.insertBefore(wrapper, element);
-            wrapper.appendChild(element);
-
-            if (typeof html2pdf !== 'undefined') {
-                const opt = {
-                    margin:       10, 
-                    filename:     'Arbeitsblatt_Globalisierung.pdf',
-                    image:        { type: 'jpeg', quality: 1 },
-                    html2canvas:  { scale: 2 },
-                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                };
+                wrapper.style.backgroundColor = '#fdfbfb'; 
                 
-                html2pdf().set(opt).from(wrapper).save().then(() => {
-                    // Sobald das PDF generiert ist, alles wieder in den Ursprungszustand versetzen
+                element.parentNode.insertBefore(wrapper, element);
+                wrapper.appendChild(element);
+
+                if (typeof html2pdf !== 'undefined') {
+                    const opt = {
+                        margin:       10, 
+                        filename:     'Arbeitsblatt_Globalisierung.pdf',
+                        image:        { type: 'jpeg', quality: 1 },
+                        html2canvas:  { scale: 2 },
+                        // Wir legen zwingend fest, dass das PDF immer das Format A4 im Hochformat hat
+                        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                    };
+                    
+                    html2pdf().set(opt).from(wrapper).save().then(() => {
+                        // Sobald das PDF generiert ist, alles aufräumen
+                        wrapper.parentNode.insertBefore(element, wrapper);
+                        wrapper.parentNode.removeChild(wrapper);
+                        element.style.margin = originalMargin;
+                        element.style.boxShadow = originalBoxShadow;
+                    });
+                } else {
+                    alert("Hinweis: Für den PDF-Download muss die Datei 'html2pdf.bundle.min.js' lokal vorhanden sein.");
                     wrapper.parentNode.insertBefore(element, wrapper);
                     wrapper.parentNode.removeChild(wrapper);
-                    element.style.margin = '20px auto'; 
-                });
-            } else {
-                alert("Hinweis: Für den PDF-Download muss die Datei 'html2pdf.bundle.min.js' lokal vorhanden sein.");
-                wrapper.parentNode.insertBefore(element, wrapper);
-                wrapper.parentNode.removeChild(wrapper);
-                element.style.margin = '20px auto';
-            }
+                    element.style.margin = originalMargin;
+                    element.style.boxShadow = originalBoxShadow;
+                }
+            }, 100);
         }
     </script>
 </body>
