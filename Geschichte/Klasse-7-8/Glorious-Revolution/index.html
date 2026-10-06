@@ -109,7 +109,7 @@
             pointer-events: none; 
         }
 
-        /* RPG-Sprechblase (Untertitel-Box) - FLUID TYPOGRAPHY */
+        /* RPG-Sprechblase (Untertitel-Box) */
         #dialog-box {
             position: absolute;
             bottom: clamp(10px, 3vh, 30px);
@@ -195,7 +195,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 20%; 
+            width: 22%; 
             position: relative;
             margin-top: clamp(10vh, 20vh, 25vh); 
         }
@@ -218,7 +218,7 @@
 
         #scroll-container-final {
             position: relative;
-            width: 55%; 
+            width: 52%; 
             height: 95vh;
             display: flex;
             justify-content: center;
@@ -239,17 +239,17 @@
         #interactive-text {
             position: relative;
             z-index: 2;
-            width: 50%;  
+            width: 60%;  /* Breiter gemacht, um weniger quetschig zu wirken */
             height: 65%;
             margin-top: 2%; 
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             touch-action: pan-y;
             overscroll-behavior-y: contain;
-            padding: clamp(10px, 2vh, 20px) clamp(20px, 3vw, 40px); 
+            padding: clamp(5px, 1vh, 15px) clamp(10px, 2vw, 25px); 
             box-sizing: border-box;
             font-family: 'Times New Roman', Times, serif; 
-            font-size: clamp(12px, 1.8vh, 18px);
+            font-size: clamp(12px, 1.6vh, 17px);
             line-height: 1.5;
             color: #2b1b0b; 
             white-space: pre-wrap; 
@@ -285,12 +285,11 @@
 
         .number-trigger:hover { color: #d32f2f; transform: scale(1.1); }
 
+        /* NEUE ANKER-LOGIK FÜR SPRECHBLASEN */
         .final-instruction {
             position: absolute;
             bottom: 105%; 
-            left: 50%;
-            transform: translateX(-50%);
-            width: clamp(200px, 25vw, 350px); 
+            width: clamp(220px, 25vw, 350px); 
             background: #f8f8f8;
             border: 4px solid #444;
             border-radius: 12px;
@@ -304,27 +303,41 @@
 
         .final-instruction strong { color: #5c1a1a; font-size: 1.1em; }
 
-        .final-instruction::after {
-            content: '';
-            position: absolute;
-            bottom: -11px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 12px 12px 0 12px;
-            border-style: solid;
+        /* Wilhelm (Links) - fest am linken Rand verankert */
+        .portrait-container.left .final-instruction {
+            left: 5%; 
+            transform: none;
+        }
+        .portrait-container.left .final-instruction::after {
+            content: ''; position: absolute; bottom: -11px;
+            left: 45%; transform: translateX(-50%);
+            border-width: 12px 12px 0 12px; border-style: solid;
             border-color: #f8f8f8 transparent transparent transparent;
         }
-        
-        .final-instruction::before {
-            content: '';
-            position: absolute;
-            bottom: -17px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 16px 16px 0 16px;
-            border-style: solid;
+        .portrait-container.left .final-instruction::before {
+            content: ''; position: absolute; bottom: -17px; z-index: -1;
+            left: 45%; transform: translateX(-50%);
+            border-width: 16px 16px 0 16px; border-style: solid;
             border-color: #444 transparent transparent transparent;
-            z-index: -1;
+        }
+
+        /* Maria (Rechts) - fest am rechten Rand verankert */
+        .portrait-container.right .final-instruction {
+            left: auto;
+            right: 5%;
+            transform: none;
+        }
+        .portrait-container.right .final-instruction::after {
+            content: ''; position: absolute; bottom: -11px;
+            left: auto; right: 45%; transform: translateX(50%);
+            border-width: 12px 12px 0 12px; border-style: solid;
+            border-color: #f8f8f8 transparent transparent transparent;
+        }
+        .portrait-container.right .final-instruction::before {
+            content: ''; position: absolute; bottom: -17px; z-index: -1;
+            left: auto; right: 45%; transform: translateX(50%);
+            border-width: 16px 16px 0 16px; border-style: solid;
+            border-color: #444 transparent transparent transparent;
         }
 
         #wilhelm-instruction.interactive { cursor: pointer; }
@@ -413,7 +426,7 @@
            --------------------------------------------------- */
         #quiz-container {
             width: clamp(300px, 50vw, 800px);
-            max-height: 85vh; /* Verhindert das Abschneiden auf kleinen Bildschirmen */
+            max-height: 85vh;
             overflow-y: auto;
             background: #f8f8f8;
             border: 6px solid #8a6a24;
