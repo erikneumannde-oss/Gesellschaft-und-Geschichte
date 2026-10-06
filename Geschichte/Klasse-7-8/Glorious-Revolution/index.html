@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -193,7 +193,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 18%; 
+            width: 20%; /* Mehr Breite für das Porträt, um die Sprechblase besser zu tragen */
             position: relative;
             margin-top: 25vh; 
         }
@@ -208,25 +208,23 @@
         .portrait-container h2 {
             color: #fff;
             font-family: serif;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 1.2vw, 1.2rem);
             margin-top: 15px;
             text-shadow: 2px 2px 4px #000;
             text-align: center;
         }
 
         /* 
-         * DER WICHTIGSTE FIX: 
-         * aspect-ratio zwingt den Container immer quadratisch zu sein.
-         * Dadurch bleibt die object-fit Skalierung des Hintergrunds IMMER exakt 
-         * deckungsgleich mit den Prozentwerten des Textes! 
+         * FIX: aspect-ratio: 1 / 1; friert die Rolle quadratisch ein.
+         * max-width: 48vw; (statt 55vw) schafft eine sichere Pufferzone zu den Porträts!
          */
         #scroll-container-final {
             position: relative;
             aspect-ratio: 1 / 1; 
             width: 100%;
-            max-width: 55vw; 
+            max-width: 48vw; 
             height: 100%;
-            max-height: 90vh;
+            max-height: 85vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -236,20 +234,19 @@
         #scroll-bg {
             position: absolute;
             top: 50%; left: 50%;
-            /* Deine originale, perfekte Streckung bleibt unberührt */
             transform: translate(-50%, -50%) scale(2.6, 1.4); 
             width: 100%;
             height: 100%;
             object-fit: contain; 
             z-index: 1;
             filter: drop-shadow(0 0 20px rgba(0,0,0,0.8));
-            pointer-events: none; /* Verhindert, dass das Bild Klicks auf den Text blockiert */
+            pointer-events: none; 
         }
 
+        /* Originale Prozentwerte - garantiert passgenau im quadratischen Container */
         #interactive-text {
             position: relative;
             z-index: 2;
-            /* Deine originalen Werte! */
             width: 45%;  
             height: 60%;
             margin-top: 2%; 
@@ -296,57 +293,58 @@
 
         .number-trigger:hover { color: #d32f2f; transform: scale(1.1); }
 
-        /* SPRECHBLASEN - Die Verankerung links/rechts bleibt, damit sie nicht überlappen */
+        /* SPRECHBLASEN - Dynamische Breite mit 'clamp' gegen das Überlappen */
         .final-instruction {
             position: absolute;
             bottom: 105%; 
-            width: 350px; 
+            width: clamp(200px, 24vw, 320px); 
             background: #f8f8f8;
             border: 4px solid #444;
             border-radius: 12px;
-            padding: 15px 20px 40px 20px; 
+            padding: 15px 15px 35px 15px; 
             box-shadow: 0 10px 20px rgba(0,0,0,0.8);
-            font-size: 16px;
+            font-size: clamp(13px, 1.4vw, 16px);
             line-height: 1.4;
             color: #000;
             z-index: 210;
+            box-sizing: border-box;
         }
 
-        .final-instruction strong { color: #5c1a1a; font-size: 18px; }
+        .final-instruction strong { color: #5c1a1a; font-size: 1.1em; }
 
-        /* Wilhelm (Links) */
+        /* Wilhelm (Links) - fest am linken Rand verankert */
         .portrait-container.left .final-instruction {
-            left: 5%; 
+            left: -10px; /* Leicht überhängend für mehr Platz nach innen */
             transform: none;
         }
         .portrait-container.left .final-instruction::after {
             content: ''; position: absolute; bottom: -11px;
-            left: 45%; transform: translateX(-50%);
+            left: calc(50% + 10px); transform: translateX(-50%);
             border-width: 12px 12px 0 12px; border-style: solid;
             border-color: #f8f8f8 transparent transparent transparent;
         }
         .portrait-container.left .final-instruction::before {
             content: ''; position: absolute; bottom: -17px; z-index: -1;
-            left: 45%; transform: translateX(-50%);
+            left: calc(50% + 10px); transform: translateX(-50%);
             border-width: 16px 16px 0 16px; border-style: solid;
             border-color: #444 transparent transparent transparent;
         }
 
-        /* Maria (Rechts) */
+        /* Maria (Rechts) - fest am rechten Rand verankert */
         .portrait-container.right .final-instruction {
             left: auto;
-            right: 5%;
+            right: -10px;
             transform: none;
         }
         .portrait-container.right .final-instruction::after {
             content: ''; position: absolute; bottom: -11px;
-            left: auto; right: 45%; transform: translateX(50%);
+            left: auto; right: calc(50% + 10px); transform: translateX(50%);
             border-width: 12px 12px 0 12px; border-style: solid;
             border-color: #f8f8f8 transparent transparent transparent;
         }
         .portrait-container.right .final-instruction::before {
             content: ''; position: absolute; bottom: -17px; z-index: -1;
-            left: auto; right: 45%; transform: translateX(50%);
+            left: auto; right: calc(50% + 10px); transform: translateX(50%);
             border-width: 16px 16px 0 16px; border-style: solid;
             border-color: #444 transparent transparent transparent;
         }
@@ -356,10 +354,10 @@
 
         #wilhelm-checkmark {
             position: absolute;
-            bottom: 15px;
-            right: 25px;
-            width: 14px; 
-            height: 24px; 
+            bottom: 10px;
+            right: 20px;
+            width: 10px; 
+            height: 20px; 
             border-bottom: 5px solid #2e7d32; 
             border-right: 5px solid #2e7d32;
             transform: rotate(45deg);
@@ -436,7 +434,7 @@
            --------------------------------------------------- */
         #quiz-container {
             width: 50%;
-            max-height: 85vh; /* Verhindert Abschneiden der Fragen unten */
+            max-height: 85vh;
             overflow-y: auto;
             background: #f8f8f8;
             border: 6px solid #8a6a24;
