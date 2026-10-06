@@ -49,6 +49,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             max-height: 60vh;
+            max-width: 30vw;
             image-rendering: pixelated;
             opacity: 0;
             transition: opacity 1.5s ease-in-out;
@@ -108,29 +109,30 @@
             pointer-events: none; 
         }
 
-        /* RPG-Sprechblase (Untertitel-Box) */
+        /* RPG-Sprechblase (Untertitel-Box) - FLUID TYPOGRAPHY */
         #dialog-box {
             position: absolute;
-            bottom: 30px;
+            bottom: clamp(10px, 3vh, 30px);
             left: 50%;
             transform: translateX(-50%);
-            width: 80%;
+            width: 85%;
             max-width: 900px;
             background: #f8f8f8;
             border: 6px solid #444;
             border-radius: 12px;
-            padding: 25px 30px;
+            padding: clamp(10px, 2vh, 25px) clamp(15px, 3vw, 30px);
             box-shadow: inset 0 0 0 4px #000, 0 10px 20px rgba(0,0,0,0.8);
             color: #000;
-            font-size: 20px;
+            font-size: clamp(14px, 2vh, 20px);
             font-weight: bold;
             line-height: 1.5;
             z-index: 1000;
             cursor: pointer;
-            min-height: 100px;
+            min-height: clamp(60px, 10vh, 100px);
             transition: opacity 1s ease;
             display: flex;
             flex-direction: column;
+            box-sizing: border-box;
         }
 
         #arrow {
@@ -153,14 +155,14 @@
 
         .action-btn {
             display: none;
-            margin-top: 15px;
-            padding: 8px 16px;
+            margin-top: 10px;
+            padding: clamp(6px, 1vh, 8px) 16px;
             background-color: #5c1a1a;
             color: white;
             border: 2px solid #000;
             border-radius: 6px;
             font-family: inherit;
-            font-size: 16px;
+            font-size: clamp(14px, 1.5vh, 16px);
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.2s;
@@ -179,7 +181,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 3%; 
+            padding: 0 2%; 
             box-sizing: border-box;
             background-color: #1a1a1a;
             background-image: radial-gradient(circle, #2a2a2a 0%, #000 100%);
@@ -193,14 +195,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 18%; 
+            width: 20%; 
             position: relative;
-            margin-top: 25vh; 
+            margin-top: clamp(10vh, 20vh, 25vh); 
         }
 
         .portrait-container img {
             width: 100%;
-            max-width: 220px;
+            max-width: clamp(120px, 15vw, 220px);
             image-rendering: pixelated;
             filter: drop-shadow(0 0 15px rgba(255,215,0,0.2));
         }
@@ -208,15 +210,15 @@
         .portrait-container h2 {
             color: #fff;
             font-family: serif;
-            font-size: 1.2rem;
-            margin-top: 15px;
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            margin-top: 10px;
             text-shadow: 2px 2px 4px #000;
             text-align: center;
         }
 
         #scroll-container-final {
             position: relative;
-            width: 60%; 
+            width: 55%; 
             height: 95vh;
             display: flex;
             justify-content: center;
@@ -237,23 +239,23 @@
         #interactive-text {
             position: relative;
             z-index: 2;
-            width: 45%;  
-            height: 60%;
+            width: 50%;  
+            height: 65%;
             margin-top: 2%; 
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             touch-action: pan-y;
             overscroll-behavior-y: contain;
-            padding: 20px 40px; 
+            padding: clamp(10px, 2vh, 20px) clamp(20px, 3vw, 40px); 
             box-sizing: border-box;
             font-family: 'Times New Roman', Times, serif; 
-            font-size: 18px;
-            line-height: 1.6;
+            font-size: clamp(12px, 1.8vh, 18px);
+            line-height: 1.5;
             color: #2b1b0b; 
             white-space: pre-wrap; 
         }
 
-        #interactive-text::-webkit-scrollbar { width: 8px; }
+        #interactive-text::-webkit-scrollbar { width: 6px; }
         #interactive-text::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 4px; }
         #interactive-text::-webkit-scrollbar-thumb { background: rgba(138, 106, 36, 0.7); border-radius: 4px; }
 
@@ -288,19 +290,19 @@
             bottom: 105%; 
             left: 50%;
             transform: translateX(-50%);
-            width: 350px; 
+            width: clamp(200px, 25vw, 350px); 
             background: #f8f8f8;
             border: 4px solid #444;
             border-radius: 12px;
-            padding: 15px 20px 40px 20px; 
+            padding: clamp(10px, 1.5vh, 15px) clamp(10px, 1.5vw, 20px) clamp(25px, 4vh, 40px) clamp(10px, 1.5vw, 20px); 
             box-shadow: 0 10px 20px rgba(0,0,0,0.8);
-            font-size: 16px;
+            font-size: clamp(12px, 1.6vh, 16px);
             line-height: 1.4;
             color: #000;
             z-index: 210;
         }
 
-        .final-instruction strong { color: #5c1a1a; font-size: 18px; }
+        .final-instruction strong { color: #5c1a1a; font-size: 1.1em; }
 
         .final-instruction::after {
             content: '';
@@ -330,10 +332,10 @@
 
         #wilhelm-checkmark {
             position: absolute;
-            bottom: 15px;
-            right: 25px;
-            width: 14px; 
-            height: 24px; 
+            bottom: 10px;
+            right: 20px;
+            width: 10px; 
+            height: 20px; 
             border-bottom: 5px solid #2e7d32; 
             border-right: 5px solid #2e7d32;
             transform: rotate(45deg);
@@ -346,11 +348,11 @@
            --------------------------------------------------- */
         #schema-container {
             position: absolute;
-            top: 40%; 
+            top: 45%; 
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 900px;
+            width: 95%;
+            max-width: 1000px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -367,32 +369,33 @@
             justify-content: center;
             align-items: flex-start;
             width: 100%;
-            margin: 10px 0;
+            margin: clamp(5px, 1vh, 10px) 0;
         }
 
         .schema-box {
             background: rgba(0, 0, 0, 0.7);
             border: 2px solid #8a6a24;
             border-radius: 8px;
-            padding: 15px 25px;
-            margin: 0 15px;
+            padding: clamp(8px, 1.5vh, 15px) clamp(10px, 2vw, 25px);
+            margin: 0 clamp(5px, 1vw, 15px);
             text-align: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.8);
             transition: all 0.5s ease;
             opacity: 0; 
             transform: translateY(20px);
+            font-size: clamp(12px, 1.6vh, 16px);
         }
 
         .schema-box.visible { transform: translateY(0); }
 
         .schema-box strong {
-            font-size: 1.3rem;
+            font-size: 1.2em;
             color: #d4af37;
             display: block;
             margin-bottom: 5px;
         }
 
-        .schema-box hr { border: 0; height: 1px; background: #8a6a24; margin: 10px 0; }
+        .schema-box hr { border: 0; height: 1px; background: #8a6a24; margin: 8px 0; }
 
         .schema-box.active-highlight {
             background: rgba(138, 106, 36, 0.5);
@@ -400,20 +403,23 @@
             box-shadow: 0 0 20px #d4af37;
         }
 
-        #box-voters { width: 30%; }
-        #box-nonvoters { width: 60%; opacity: 0; }
+        #box-voters { width: 35%; }
+        #box-nonvoters { width: 55%; opacity: 0; }
 
-        .schema-arrow { font-size: 1.5rem; color: #d4af37; margin: 0 10px; opacity: 0; transition: opacity 0.5s ease; }
+        .schema-arrow { font-size: clamp(1rem, 2vh, 1.5rem); color: #d4af37; margin: 0 10px; opacity: 0; transition: opacity 0.5s ease; }
 
         /* ---------------------------------------------------
            QUIZ STYLES & DOWNLOAD BEREICH
            --------------------------------------------------- */
         #quiz-container {
-            width: 50%;
+            width: clamp(300px, 50vw, 800px);
+            max-height: 85vh; /* Verhindert das Abschneiden auf kleinen Bildschirmen */
+            overflow-y: auto;
             background: #f8f8f8;
             border: 6px solid #8a6a24;
             border-radius: 12px;
-            padding: 30px;
+            padding: clamp(15px, 3vh, 30px);
+            box-sizing: border-box;
             box-shadow: inset 0 0 0 4px #000, 0 10px 30px rgba(0,0,0,0.8);
             font-family: 'Times New Roman', Times, serif;
             color: #000;
@@ -421,10 +427,10 @@
         }
 
         #quiz-question {
-            font-size: 1.4rem;
+            font-size: clamp(16px, 2.2vh, 24px);
             color: #5c1a1a;
             margin-top: 0;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-bottom: 2px solid #8a6a24;
             padding-bottom: 10px;
         }
@@ -433,10 +439,10 @@
             background: #fff;
             border: 2px solid #ccc;
             border-radius: 6px;
-            padding: 12px 15px;
-            margin-bottom: 10px;
+            padding: clamp(8px, 1.5vh, 12px) 15px;
+            margin-bottom: 8px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: clamp(14px, 1.8vh, 18px);
             transition: all 0.2s;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
@@ -448,14 +454,14 @@
         #quiz-submit {
             display: block;
             width: 100%;
-            margin-top: 20px;
-            padding: 12px;
+            margin-top: 15px;
+            padding: clamp(10px, 1.5vh, 12px);
             background-color: #5c1a1a;
             color: white;
             border: 2px solid #000;
             border-radius: 6px;
             font-family: inherit;
-            font-size: 18px;
+            font-size: clamp(16px, 2vh, 18px);
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.2s;
@@ -463,16 +469,15 @@
 
         #quiz-submit:hover { background-color: #d32f2f; }
 
-        /* Eingabefeld für den Schülernamen */
         #student-name {
             width: 100%;
-            padding: 12px;
-            margin-top: 20px;
+            padding: clamp(8px, 1.5vh, 12px);
+            margin-top: 15px;
             margin-bottom: 10px;
             border: 2px solid #ccc;
             border-radius: 6px;
             font-family: inherit;
-            font-size: 16px;
+            font-size: clamp(14px, 1.8vh, 16px);
             box-sizing: border-box;
         }
 
@@ -518,7 +523,7 @@
             <div id="schema-container">
                 <div class="schema-row">
                     <div class="schema-box" id="box-crown">
-                        <img src="Krone.png" alt="Krone" style="height: 45px; margin-bottom: 5px; filter: drop-shadow(0 0 5px rgba(255,215,0,0.5));">
+                        <img src="Krone.png" alt="Krone" style="height: clamp(30px, 5vh, 45px); margin-bottom: 5px; filter: drop-shadow(0 0 5px rgba(255,215,0,0.5));">
                         <strong>Krone</strong>
                         Monarch & Regierung
                     </div>
