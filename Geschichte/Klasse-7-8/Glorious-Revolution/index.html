@@ -108,7 +108,7 @@
             pointer-events: none; 
         }
 
-        /* RPG-Sprechblase (Untertitel-Box in der Story) */
+        /* RPG-Sprechblase in der Story */
         #dialog-box {
             position: absolute;
             bottom: 30px;
@@ -170,16 +170,15 @@
         .action-btn:hover { background-color: #d32f2f; }
 
         /* ---------------------------------------------------
-           STYLES FÜR DIE FINALE ANALYSE-SZENE UND DAS QUIZ
+           NEUES STABILES SPALTEN-LAYOUT FÜR ANALYSE & QUIZ
            --------------------------------------------------- */
-        
         #final-scene, #quiz-scene {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             display: flex;
             justify-content: space-between;
-            align-items: stretch; /* Zieht die 3 Spalten auf volle Höhe */
-            padding: 2% 3%; 
+            align-items: stretch; /* Füllt die volle Höhe */
+            padding: 0 2%; 
             box-sizing: border-box;
             background-color: #1a1a1a;
             background-image: radial-gradient(circle, #2a2a2a 0%, #000 100%);
@@ -189,21 +188,18 @@
             transition: opacity 1s ease-in-out;
         }
 
-        /* 
-         * FIX 1: Feste linke und rechte Spalte (jeweils 25%).
-         * Sprechblasen und Figuren sind jetzt Teil der Spalte und können nicht ausbrechen.
-         */
+        /* Die linke und rechte Säule für Porträts & Sprechblasen */
         .portrait-container {
             display: flex;
             flex-direction: column;
-            justify-content: flex-end; /* Drückt die Porträts an den unteren Rand */
+            justify-content: flex-end; /* Drückt Bilder nach unten */
             align-items: center;
-            width: 25%; 
+            width: 22%; 
             height: 100%;
-            padding-bottom: 2vh;
-            box-sizing: border-box;
+            padding-bottom: 5vh; 
             position: relative;
-            pointer-events: auto; /* Erlaubt Klicks in diesem Bereich */
+            box-sizing: border-box;
+            pointer-events: auto; 
         }
 
         .portrait-container img {
@@ -211,26 +207,23 @@
             max-width: 220px;
             image-rendering: pixelated;
             filter: drop-shadow(0 0 15px rgba(255,215,0,0.2));
-            margin-top: auto; /* Schiebt das Bild ganz nach unten */
+            margin-top: auto;
         }
 
         .portrait-container h2 {
             color: #fff;
             font-family: serif;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 1.2vw, 1.2rem);
             margin-top: 15px;
             margin-bottom: 0;
             text-shadow: 2px 2px 4px #000;
             text-align: center;
         }
 
-        /* 
-         * FIX 2: Die Sprechblasen sind jetzt Teil des regulären Layouts (relative)
-         * und wachsen dynamisch nach unten/oben, ohne zu überlappen!
-         */
+        /* Die Sprechblasen passen sich jetzt 100% an ihre Säule an, kein Überlappen mehr */
         .final-instruction {
             position: relative; 
-            width: 100%; /* Füllt die 25%-Spalte voll aus */
+            width: 100%; 
             background: #f8f8f8;
             border: 4px solid #444;
             border-radius: 12px;
@@ -239,18 +232,18 @@
             font-size: clamp(13px, 1.2vw, 16px);
             line-height: 1.4;
             color: #000;
-            margin-bottom: 30px; /* Sicherer Abstand zum Kopf der Figur */
+            margin-bottom: 30px; 
             box-sizing: border-box;
             z-index: 210;
         }
 
         .final-instruction strong { color: #5c1a1a; font-size: 1.1em; }
 
-        /* Der Pfeil an der Sprechblase */
+        /* Der Pfeil, der nach unten zeigt */
         .final-instruction::after {
             content: '';
             position: absolute;
-            top: 100%; /* Heftet den Pfeil unten an die Box an */
+            top: 100%; 
             left: 50%;
             transform: translateX(-50%);
             border-width: 12px 12px 0 12px;
@@ -287,20 +280,32 @@
             display: none; 
         }
 
+        /* Die mittlere Spalte hält Rolle und Quiz strikt in der Mitte fest */
+        .center-column {
+            width: 52%; 
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            pointer-events: auto;
+        }
+
         /* 
-         * FIX 3: Die mittlere Spalte. 
-         * aspect-ratio: 4/5 garantiert, dass das Bild sich exakt so verhält wie der Text.
+         * DER ULTIMATIVE SCHRIFTROLLEN-FIX:
+         * Aspect-Ratio zwingt die Box IMMER genau in dieselben Proportionen. 
+         * Dadurch bleibt das skalierte Bild zu 100% synchron mit dem Text, egal wie groß der Bildschirm ist! 
          */
         #scroll-container-final {
             position: relative;
-            width: 48%; /* Bleibt exakt zwischen den 25%-Spalten */
-            aspect-ratio: 4 / 5; /* Zwingt die Rolle in die perfekte Form */
-            max-height: 95vh;
+            width: 100%;
+            height: auto;
+            max-height: 85vh; /* Verhindert Abschneiden oben/unten */
+            aspect-ratio: 1.15 / 1; /* Friert Rolle und Text exakt in Originalproportion ein */
             display: flex;
             justify-content: center;
             align-items: center;
             margin: auto;
-            pointer-events: auto;
         }
 
         #scroll-bg {
@@ -312,9 +317,10 @@
             object-fit: contain; 
             z-index: 1;
             filter: drop-shadow(0 0 20px rgba(0,0,0,0.8));
-            pointer-events: none; 
+            pointer-events: none; /* Klicks dringen zum Text durch */
         }
 
+        /* Dein Originaler Textbereich - dank dem fixierten Container passt er jetzt immer perfekt */
         #interactive-text {
             position: relative;
             z-index: 2;
@@ -328,7 +334,7 @@
             padding: 20px 40px; 
             box-sizing: border-box;
             font-family: 'Times New Roman', Times, serif; 
-            font-size: 18px;
+            font-size: clamp(14px, 1.8vh, 18px); 
             line-height: 1.6;
             color: #2b1b0b; 
             white-space: pre-wrap; 
@@ -432,20 +438,19 @@
            QUIZ STYLES & DOWNLOAD BEREICH
            --------------------------------------------------- */
         #quiz-container {
-            width: 48%; /* Passt sich wie die Rolle der Mitte an */
-            max-height: 90vh;
+            width: 100%; /* Orientiert sich nun an der Center-Column */
+            max-width: 800px;
+            max-height: 85vh;
             overflow-y: auto;
             background: #f8f8f8;
             border: 6px solid #8a6a24;
             border-radius: 12px;
             padding: 30px;
-            box-sizing: border-box;
             box-shadow: inset 0 0 0 4px #000, 0 10px 30px rgba(0,0,0,0.8);
             font-family: 'Times New Roman', Times, serif;
             color: #000;
             z-index: 10;
-            margin: auto;
-            pointer-events: auto;
+            box-sizing: border-box;
         }
 
         #quiz-question {
@@ -591,10 +596,9 @@
             <img src="Rahmen.jpg" id="rahmen" class="layer" alt="Theaterrahmen">
         </div>
 
-        <!-- Finale Analyse-Szene -->
+        <!-- Finale Analyse-Szene mit Gitter-Layout -->
         <div id="final-scene">
             <div class="portrait-container left">
-                <!-- Die Sprechblase liegt jetzt fließend ÜBER dem Bild -->
                 <div id="wilhelm-instruction" class="final-instruction">
                     <div id="wilhelm-dialog-text"></div>
                     <div id="wilhelm-checkmark"></div>
@@ -603,13 +607,14 @@
                 <h2>König Wilhelm III.</h2>
             </div>
             
-            <div id="scroll-container-final">
-                <img src="Schriftrolle.png" id="scroll-bg" alt="Schriftrolle Hintergrund">
-                <div id="interactive-text"></div>
+            <div class="center-column">
+                <div id="scroll-container-final">
+                    <img src="Schriftrolle.png" id="scroll-bg" alt="Schriftrolle Hintergrund">
+                    <div id="interactive-text"></div>
+                </div>
             </div>
 
             <div class="portrait-container right">
-                <!-- Die Sprechblase liegt jetzt fließend ÜBER dem Bild -->
                 <div id="final-instruction-maria" class="final-instruction">
                     <strong>Leitfrage zur Quellenanalyse:</strong><br><br>
                     Liebe Lernende, an welchen Stellen im Text wird besonders deutlich, dass der Monarch seine absolute Macht verliert und das Parlament massiv gestärkt wird?<br><br>
@@ -629,15 +634,16 @@
                 <h2>König Wilhelm III.</h2>
             </div>
             
-            <div id="quiz-container">
-                <h2 id="quiz-question">Frage lädt...</h2>
-                <div id="quiz-options"></div>
-                <button id="quiz-submit">Antwort prüfen</button>
-                
-                <!-- Download-Bereich mit Namensfeld -->
-                <div id="download-section" style="display: none;">
-                    <input type="text" id="student-name" placeholder="Dein Vor- und Nachname..." required>
-                    <button id="quiz-download-btn" class="action-btn" style="display: block;">PDF herunterladen & an Lehrkraft senden</button>
+            <div class="center-column">
+                <div id="quiz-container">
+                    <h2 id="quiz-question">Frage lädt...</h2>
+                    <div id="quiz-options"></div>
+                    <button id="quiz-submit">Antwort prüfen</button>
+                    
+                    <div id="download-section" style="display: none;">
+                        <input type="text" id="student-name" placeholder="Dein Vor- und Nachname..." required>
+                        <button id="quiz-download-btn" class="action-btn" style="display: block;">PDF herunterladen & an Lehrkraft senden</button>
+                    </div>
                 </div>
             </div>
 
