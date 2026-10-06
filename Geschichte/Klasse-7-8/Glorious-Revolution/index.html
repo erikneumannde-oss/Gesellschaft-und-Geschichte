@@ -216,13 +216,16 @@
             text-align: center;
         }
 
+        /* NEU: Formstabiler Container für die Schriftrolle */
         #scroll-container-final {
             position: relative;
-            width: 52%; 
-            height: 95vh;
+            height: 85vh;           /* Zieht sich fast über die gesamte Höhe */
+            max-width: 50vw;        /* Wird nicht breiter als der Platz zwischen den Porträts erlaubt */
+            aspect-ratio: 3 / 4;    /* DER TRICK: Zwingt die Box immer in dieses fixe Seitenverhältnis */
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 0 auto;
         }
 
         #scroll-bg {
@@ -234,13 +237,15 @@
             object-fit: contain; 
             z-index: 1;
             filter: drop-shadow(0 0 20px rgba(0,0,0,0.8));
+            pointer-events: none; /* Textklicks durchlassen */
         }
 
+        /* Da der Container jetzt proportional fixiert ist, kann der Text relative Prozentwerte nutzen, ohne jemals zu verutschen */
         #interactive-text {
             position: relative;
             z-index: 2;
-            width: 60%;  /* Breiter gemacht, um weniger quetschig zu wirken */
-            height: 65%;
+            width: 65%;  
+            height: 70%;
             margin-top: 2%; 
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
@@ -285,7 +290,6 @@
 
         .number-trigger:hover { color: #d32f2f; transform: scale(1.1); }
 
-        /* NEUE ANKER-LOGIK FÜR SPRECHBLASEN */
         .final-instruction {
             position: absolute;
             bottom: 105%; 
