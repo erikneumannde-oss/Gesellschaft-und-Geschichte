@@ -108,7 +108,7 @@
             pointer-events: none; 
         }
 
-        /* RPG-Sprechblase (Untertitel-Box) */
+        /* RPG-Sprechblase (Untertitel-Box in der Story) */
         #dialog-box {
             position: absolute;
             bottom: 30px;
@@ -170,7 +170,7 @@
         .action-btn:hover { background-color: #d32f2f; }
 
         /* ---------------------------------------------------
-           STYLES FÜR DIE FINALE ANALYSE-SZENE
+           STYLES FÜR DIE FINALE ANALYSE-SZENE UND DAS QUIZ
            --------------------------------------------------- */
         
         #final-scene, #quiz-scene {
@@ -178,8 +178,8 @@
             top: 0; left: 0; width: 100%; height: 100%;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 0 3%; 
+            align-items: stretch; /* Zieht die 3 Spalten auf volle Höhe */
+            padding: 2% 3%; 
             box-sizing: border-box;
             background-color: #1a1a1a;
             background-image: radial-gradient(circle, #2a2a2a 0%, #000 100%);
@@ -189,13 +189,21 @@
             transition: opacity 1s ease-in-out;
         }
 
+        /* 
+         * FIX 1: Feste linke und rechte Spalte (jeweils 25%).
+         * Sprechblasen und Figuren sind jetzt Teil der Spalte und können nicht ausbrechen.
+         */
         .portrait-container {
             display: flex;
             flex-direction: column;
+            justify-content: flex-end; /* Drückt die Porträts an den unteren Rand */
             align-items: center;
-            width: 20%; /* Mehr Breite für das Porträt, um die Sprechblase besser zu tragen */
+            width: 25%; 
+            height: 100%;
+            padding-bottom: 2vh;
+            box-sizing: border-box;
             position: relative;
-            margin-top: 25vh; 
+            pointer-events: auto; /* Erlaubt Klicks in diesem Bereich */
         }
 
         .portrait-container img {
@@ -203,32 +211,96 @@
             max-width: 220px;
             image-rendering: pixelated;
             filter: drop-shadow(0 0 15px rgba(255,215,0,0.2));
+            margin-top: auto; /* Schiebt das Bild ganz nach unten */
         }
 
         .portrait-container h2 {
             color: #fff;
             font-family: serif;
-            font-size: clamp(1rem, 1.2vw, 1.2rem);
+            font-size: 1.2rem;
             margin-top: 15px;
+            margin-bottom: 0;
             text-shadow: 2px 2px 4px #000;
             text-align: center;
         }
 
         /* 
-         * FIX: aspect-ratio: 1 / 1; friert die Rolle quadratisch ein.
-         * max-width: 48vw; (statt 55vw) schafft eine sichere Pufferzone zu den Porträts!
+         * FIX 2: Die Sprechblasen sind jetzt Teil des regulären Layouts (relative)
+         * und wachsen dynamisch nach unten/oben, ohne zu überlappen!
+         */
+        .final-instruction {
+            position: relative; 
+            width: 100%; /* Füllt die 25%-Spalte voll aus */
+            background: #f8f8f8;
+            border: 4px solid #444;
+            border-radius: 12px;
+            padding: 15px 20px 25px 20px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+            font-size: clamp(13px, 1.2vw, 16px);
+            line-height: 1.4;
+            color: #000;
+            margin-bottom: 30px; /* Sicherer Abstand zum Kopf der Figur */
+            box-sizing: border-box;
+            z-index: 210;
+        }
+
+        .final-instruction strong { color: #5c1a1a; font-size: 1.1em; }
+
+        /* Der Pfeil an der Sprechblase */
+        .final-instruction::after {
+            content: '';
+            position: absolute;
+            top: 100%; /* Heftet den Pfeil unten an die Box an */
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 12px 12px 0 12px;
+            border-style: solid;
+            border-color: #f8f8f8 transparent transparent transparent;
+            z-index: 2;
+        }
+        
+        .final-instruction::before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 16px 16px 0 16px;
+            border-style: solid;
+            border-color: #444 transparent transparent transparent;
+            z-index: 1;
+        }
+
+        #wilhelm-instruction.interactive { cursor: pointer; }
+        #wilhelm-instruction.interactive:hover { background-color: #f0f0f0; }
+
+        #wilhelm-checkmark {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            width: 10px; 
+            height: 20px; 
+            border-bottom: 5px solid #2e7d32; 
+            border-right: 5px solid #2e7d32;
+            transform: rotate(45deg);
+            animation: blink 0.8s infinite;
+            display: none; 
+        }
+
+        /* 
+         * FIX 3: Die mittlere Spalte. 
+         * aspect-ratio: 4/5 garantiert, dass das Bild sich exakt so verhält wie der Text.
          */
         #scroll-container-final {
             position: relative;
-            aspect-ratio: 1 / 1; 
-            width: 100%;
-            max-width: 48vw; 
-            height: 100%;
-            max-height: 85vh;
+            width: 48%; /* Bleibt exakt zwischen den 25%-Spalten */
+            aspect-ratio: 4 / 5; /* Zwingt die Rolle in die perfekte Form */
+            max-height: 95vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 0 auto;
+            margin: auto;
+            pointer-events: auto;
         }
 
         #scroll-bg {
@@ -243,7 +315,6 @@
             pointer-events: none; 
         }
 
-        /* Originale Prozentwerte - garantiert passgenau im quadratischen Container */
         #interactive-text {
             position: relative;
             z-index: 2;
@@ -257,7 +328,7 @@
             padding: 20px 40px; 
             box-sizing: border-box;
             font-family: 'Times New Roman', Times, serif; 
-            font-size: 18px; 
+            font-size: 18px;
             line-height: 1.6;
             color: #2b1b0b; 
             white-space: pre-wrap; 
@@ -292,78 +363,6 @@
         }
 
         .number-trigger:hover { color: #d32f2f; transform: scale(1.1); }
-
-        /* SPRECHBLASEN - Dynamische Breite mit 'clamp' gegen das Überlappen */
-        .final-instruction {
-            position: absolute;
-            bottom: 105%; 
-            width: clamp(200px, 24vw, 320px); 
-            background: #f8f8f8;
-            border: 4px solid #444;
-            border-radius: 12px;
-            padding: 15px 15px 35px 15px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.8);
-            font-size: clamp(13px, 1.4vw, 16px);
-            line-height: 1.4;
-            color: #000;
-            z-index: 210;
-            box-sizing: border-box;
-        }
-
-        .final-instruction strong { color: #5c1a1a; font-size: 1.1em; }
-
-        /* Wilhelm (Links) - fest am linken Rand verankert */
-        .portrait-container.left .final-instruction {
-            left: -10px; /* Leicht überhängend für mehr Platz nach innen */
-            transform: none;
-        }
-        .portrait-container.left .final-instruction::after {
-            content: ''; position: absolute; bottom: -11px;
-            left: calc(50% + 10px); transform: translateX(-50%);
-            border-width: 12px 12px 0 12px; border-style: solid;
-            border-color: #f8f8f8 transparent transparent transparent;
-        }
-        .portrait-container.left .final-instruction::before {
-            content: ''; position: absolute; bottom: -17px; z-index: -1;
-            left: calc(50% + 10px); transform: translateX(-50%);
-            border-width: 16px 16px 0 16px; border-style: solid;
-            border-color: #444 transparent transparent transparent;
-        }
-
-        /* Maria (Rechts) - fest am rechten Rand verankert */
-        .portrait-container.right .final-instruction {
-            left: auto;
-            right: -10px;
-            transform: none;
-        }
-        .portrait-container.right .final-instruction::after {
-            content: ''; position: absolute; bottom: -11px;
-            left: auto; right: calc(50% + 10px); transform: translateX(50%);
-            border-width: 12px 12px 0 12px; border-style: solid;
-            border-color: #f8f8f8 transparent transparent transparent;
-        }
-        .portrait-container.right .final-instruction::before {
-            content: ''; position: absolute; bottom: -17px; z-index: -1;
-            left: auto; right: calc(50% + 10px); transform: translateX(50%);
-            border-width: 16px 16px 0 16px; border-style: solid;
-            border-color: #444 transparent transparent transparent;
-        }
-
-        #wilhelm-instruction.interactive { cursor: pointer; }
-        #wilhelm-instruction.interactive:hover { background-color: #f0f0f0; }
-
-        #wilhelm-checkmark {
-            position: absolute;
-            bottom: 10px;
-            right: 20px;
-            width: 10px; 
-            height: 20px; 
-            border-bottom: 5px solid #2e7d32; 
-            border-right: 5px solid #2e7d32;
-            transform: rotate(45deg);
-            animation: blink 0.8s infinite;
-            display: none; 
-        }
 
         /* ---------------------------------------------------
            CSS-Verfassungsschema für den Epilog
@@ -433,17 +432,20 @@
            QUIZ STYLES & DOWNLOAD BEREICH
            --------------------------------------------------- */
         #quiz-container {
-            width: 50%;
-            max-height: 85vh;
+            width: 48%; /* Passt sich wie die Rolle der Mitte an */
+            max-height: 90vh;
             overflow-y: auto;
             background: #f8f8f8;
             border: 6px solid #8a6a24;
             border-radius: 12px;
             padding: 30px;
+            box-sizing: border-box;
             box-shadow: inset 0 0 0 4px #000, 0 10px 30px rgba(0,0,0,0.8);
             font-family: 'Times New Roman', Times, serif;
             color: #000;
             z-index: 10;
+            margin: auto;
+            pointer-events: auto;
         }
 
         #quiz-question {
@@ -592,6 +594,7 @@
         <!-- Finale Analyse-Szene -->
         <div id="final-scene">
             <div class="portrait-container left">
+                <!-- Die Sprechblase liegt jetzt fließend ÜBER dem Bild -->
                 <div id="wilhelm-instruction" class="final-instruction">
                     <div id="wilhelm-dialog-text"></div>
                     <div id="wilhelm-checkmark"></div>
@@ -606,6 +609,7 @@
             </div>
 
             <div class="portrait-container right">
+                <!-- Die Sprechblase liegt jetzt fließend ÜBER dem Bild -->
                 <div id="final-instruction-maria" class="final-instruction">
                     <strong>Leitfrage zur Quellenanalyse:</strong><br><br>
                     Liebe Lernende, an welchen Stellen im Text wird besonders deutlich, dass der Monarch seine absolute Macht verliert und das Parlament massiv gestärkt wird?<br><br>
