@@ -49,7 +49,6 @@
             left: 50%;
             transform: translate(-50%, -50%);
             max-height: 60vh;
-            max-width: 30vw;
             image-rendering: pixelated;
             opacity: 0;
             transition: opacity 1.5s ease-in-out;
@@ -109,26 +108,26 @@
             pointer-events: none; 
         }
 
-        /* RPG-Sprechblase (Untertitel-Box) */
+        /* RPG-Sprechblase (Untertitel-Box) - Stabilisiert */
         #dialog-box {
             position: absolute;
-            bottom: clamp(10px, 3vh, 30px);
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            width: 85%;
+            width: 80%;
             max-width: 900px;
             background: #f8f8f8;
             border: 6px solid #444;
             border-radius: 12px;
-            padding: clamp(10px, 2vh, 25px) clamp(15px, 3vw, 30px);
+            padding: 25px 30px;
             box-shadow: inset 0 0 0 4px #000, 0 10px 20px rgba(0,0,0,0.8);
             color: #000;
-            font-size: clamp(14px, 2vh, 20px);
+            font-size: clamp(16px, 2vh, 20px); /* Leicht flexibel, aber stabil */
             font-weight: bold;
             line-height: 1.5;
             z-index: 1000;
             cursor: pointer;
-            min-height: clamp(60px, 10vh, 100px);
+            min-height: 100px;
             transition: opacity 1s ease;
             display: flex;
             flex-direction: column;
@@ -155,14 +154,14 @@
 
         .action-btn {
             display: none;
-            margin-top: 10px;
-            padding: clamp(6px, 1vh, 8px) 16px;
+            margin-top: 15px;
+            padding: 8px 16px;
             background-color: #5c1a1a;
             color: white;
             border: 2px solid #000;
             border-radius: 6px;
             font-family: inherit;
-            font-size: clamp(14px, 1.5vh, 16px);
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.2s;
@@ -181,7 +180,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 2%; 
+            padding: 0 3%; 
             box-sizing: border-box;
             background-color: #1a1a1a;
             background-image: radial-gradient(circle, #2a2a2a 0%, #000 100%);
@@ -195,14 +194,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 22%; 
+            width: 18%; 
             position: relative;
-            margin-top: clamp(10vh, 20vh, 25vh); 
+            margin-top: 25vh; 
         }
 
         .portrait-container img {
             width: 100%;
-            max-width: clamp(120px, 15vw, 220px);
+            max-width: 220px;
             image-rendering: pixelated;
             filter: drop-shadow(0 0 15px rgba(255,215,0,0.2));
         }
@@ -210,22 +209,20 @@
         .portrait-container h2 {
             color: #fff;
             font-family: serif;
-            font-size: clamp(1rem, 1.5vw, 1.2rem);
-            margin-top: 10px;
+            font-size: 1.2rem;
+            margin-top: 15px;
             text-shadow: 2px 2px 4px #000;
             text-align: center;
         }
 
-        /* NEU: Formstabiler Container für die Schriftrolle */
+        /* ZURÜCK AUF DIE STABIELEN WERTE FÜR DIE ROLLE */
         #scroll-container-final {
             position: relative;
-            height: 85vh;           /* Zieht sich fast über die gesamte Höhe */
-            max-width: 50vw;        /* Wird nicht breiter als der Platz zwischen den Porträts erlaubt */
-            aspect-ratio: 3 / 4;    /* DER TRICK: Zwingt die Box immer in dieses fixe Seitenverhältnis */
+            width: 60%; 
+            height: 95vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 0 auto;
         }
 
         #scroll-bg {
@@ -237,30 +234,30 @@
             object-fit: contain; 
             z-index: 1;
             filter: drop-shadow(0 0 20px rgba(0,0,0,0.8));
-            pointer-events: none; /* Textklicks durchlassen */
+            pointer-events: none; /* Wichtig für Touch/Klicks auf Text */
         }
 
-        /* Da der Container jetzt proportional fixiert ist, kann der Text relative Prozentwerte nutzen, ohne jemals zu verutschen */
+        /* ZURÜCK AUF DIE STABIELEN WERTE FÜR DEN TEXT */
         #interactive-text {
             position: relative;
             z-index: 2;
-            width: 65%;  
-            height: 70%;
+            width: 45%;  
+            height: 60%;
             margin-top: 2%; 
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             touch-action: pan-y;
             overscroll-behavior-y: contain;
-            padding: clamp(5px, 1vh, 15px) clamp(10px, 2vw, 25px); 
+            padding: 20px 40px; 
             box-sizing: border-box;
             font-family: 'Times New Roman', Times, serif; 
-            font-size: clamp(12px, 1.6vh, 17px);
-            line-height: 1.5;
+            font-size: clamp(14px, 1.8vh, 18px); /* Schrift bleibt flexibel, aber bricht nicht aus */
+            line-height: 1.6;
             color: #2b1b0b; 
             white-space: pre-wrap; 
         }
 
-        #interactive-text::-webkit-scrollbar { width: 6px; }
+        #interactive-text::-webkit-scrollbar { width: 8px; }
         #interactive-text::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 4px; }
         #interactive-text::-webkit-scrollbar-thumb { background: rgba(138, 106, 36, 0.7); border-radius: 4px; }
 
@@ -290,6 +287,7 @@
 
         .number-trigger:hover { color: #d32f2f; transform: scale(1.1); }
 
+        /* SPRECHBLASEN DER PORTRÄTS (Die Ränder-Logik bleibt, damit sie nicht aus dem Bild fliegen) */
         .final-instruction {
             position: absolute;
             bottom: 105%; 
@@ -297,9 +295,9 @@
             background: #f8f8f8;
             border: 4px solid #444;
             border-radius: 12px;
-            padding: clamp(10px, 1.5vh, 15px) clamp(10px, 1.5vw, 20px) clamp(25px, 4vh, 40px) clamp(10px, 1.5vw, 20px); 
+            padding: 15px 20px 40px 20px; 
             box-shadow: 0 10px 20px rgba(0,0,0,0.8);
-            font-size: clamp(12px, 1.6vh, 16px);
+            font-size: clamp(13px, 1.6vh, 16px);
             line-height: 1.4;
             color: #000;
             z-index: 210;
@@ -386,21 +384,21 @@
             justify-content: center;
             align-items: flex-start;
             width: 100%;
-            margin: clamp(5px, 1vh, 10px) 0;
+            margin: 10px 0;
         }
 
         .schema-box {
             background: rgba(0, 0, 0, 0.7);
             border: 2px solid #8a6a24;
             border-radius: 8px;
-            padding: clamp(8px, 1.5vh, 15px) clamp(10px, 2vw, 25px);
-            margin: 0 clamp(5px, 1vw, 15px);
+            padding: 15px 25px;
+            margin: 0 15px;
             text-align: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.8);
             transition: all 0.5s ease;
             opacity: 0; 
             transform: translateY(20px);
-            font-size: clamp(12px, 1.6vh, 16px);
+            font-size: clamp(14px, 1.6vh, 16px);
         }
 
         .schema-box.visible { transform: translateY(0); }
@@ -423,7 +421,7 @@
         #box-voters { width: 35%; }
         #box-nonvoters { width: 55%; opacity: 0; }
 
-        .schema-arrow { font-size: clamp(1rem, 2vh, 1.5rem); color: #d4af37; margin: 0 10px; opacity: 0; transition: opacity 0.5s ease; }
+        .schema-arrow { font-size: clamp(1.2rem, 2vh, 1.5rem); color: #d4af37; margin: 0 10px; opacity: 0; transition: opacity 0.5s ease; }
 
         /* ---------------------------------------------------
            QUIZ STYLES & DOWNLOAD BEREICH
@@ -435,7 +433,7 @@
             background: #f8f8f8;
             border: 6px solid #8a6a24;
             border-radius: 12px;
-            padding: clamp(15px, 3vh, 30px);
+            padding: 30px;
             box-sizing: border-box;
             box-shadow: inset 0 0 0 4px #000, 0 10px 30px rgba(0,0,0,0.8);
             font-family: 'Times New Roman', Times, serif;
@@ -444,7 +442,7 @@
         }
 
         #quiz-question {
-            font-size: clamp(16px, 2.2vh, 24px);
+            font-size: clamp(18px, 2.2vh, 24px);
             color: #5c1a1a;
             margin-top: 0;
             margin-bottom: 15px;
@@ -456,7 +454,7 @@
             background: #fff;
             border: 2px solid #ccc;
             border-radius: 6px;
-            padding: clamp(8px, 1.5vh, 12px) 15px;
+            padding: 12px 15px;
             margin-bottom: 8px;
             cursor: pointer;
             font-size: clamp(14px, 1.8vh, 18px);
@@ -472,13 +470,13 @@
             display: block;
             width: 100%;
             margin-top: 15px;
-            padding: clamp(10px, 1.5vh, 12px);
+            padding: 12px;
             background-color: #5c1a1a;
             color: white;
             border: 2px solid #000;
             border-radius: 6px;
             font-family: inherit;
-            font-size: clamp(16px, 2vh, 18px);
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.2s;
@@ -488,13 +486,13 @@
 
         #student-name {
             width: 100%;
-            padding: clamp(8px, 1.5vh, 12px);
+            padding: 12px;
             margin-top: 15px;
             margin-bottom: 10px;
             border: 2px solid #ccc;
             border-radius: 6px;
             font-family: inherit;
-            font-size: clamp(14px, 1.8vh, 16px);
+            font-size: 16px;
             box-sizing: border-box;
         }
 
@@ -540,7 +538,7 @@
             <div id="schema-container">
                 <div class="schema-row">
                     <div class="schema-box" id="box-crown">
-                        <img src="Krone.png" alt="Krone" style="height: clamp(30px, 5vh, 45px); margin-bottom: 5px; filter: drop-shadow(0 0 5px rgba(255,215,0,0.5));">
+                        <img src="Krone.png" alt="Krone" style="height: 45px; margin-bottom: 5px; filter: drop-shadow(0 0 5px rgba(255,215,0,0.5));">
                         <strong>Krone</strong>
                         Monarch & Regierung
                     </div>
