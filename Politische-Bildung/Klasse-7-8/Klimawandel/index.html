@@ -390,12 +390,43 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: rgba(13, 27, 42, 0.92); /* Passender Farbton zum Body-Background */
+            background-color: rgba(13, 27, 42, 0.92); 
             z-index: 9997;
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+        }
+
+        /* =========================================
+           NEU: RESPONSIVE TABLET-ANSICHT (Skalierung)
+           Verhindert das Abschneiden des linken Randes auf Tablets,
+           OHNE das interne Layout oder Abstände zu verändern!
+        ========================================= */
+        @media screen and (max-width: 1550px) {
+            body {
+                /* Ändert die Zentrierung auf kleinen Screens, damit links nichts abgeschnitten wird */
+                justify-content: flex-start; 
+            }
+            #main-layout {
+                /* Skaliert das gesamte feste Layout proportional herunter, damit es auf den Screen passt */
+                transform: scale(calc((100vw - 40px) / 1510));
+                transform-origin: top left;
+                margin-top: 50px; 
+            }
+            #map-wrapper {
+                transform: scale(calc((100vw - 40px) / 1400));
+                transform-origin: top left;
+                margin-top: 50px;
+            }
+        }
+
+        /* Damit die Textboxen von Lily auch auf ganz kleinen Tablets/Handys nicht abgeschnitten werden */
+        @media screen and (max-width: 850px) {
+            #pokemon-dialog-box, #pokemon-dialog-box-2, #pokemon-dialog-box-3 {
+                transform: scale(calc((100vw - 40px) / 800));
+                transform-origin: center;
+            }
         }
     </style>
 </head>
@@ -506,7 +537,7 @@
 
     </div>
 
-    <!-- ZWEITES INTRO VOR DEM MODUL -->
+    <!-- ZWEITES INTRO VOR DEM MODUL (Direkt über der Simulation) -->
     <div id="lily-module-intro">
         <img id="lily-avatar-2" src="lily.png" alt="Lily Braun" style="width: 220px; height: auto; margin-bottom: 30px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));">
         <div id="pokemon-dialog-box-2" onclick="advanceModuleIntro()" style="position: relative; width: 800px; height: 140px; background: #ffffff; color: #111111; border: 5px solid #2b3a4a; border-radius: 15px; padding: 25px 35px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.7); cursor: pointer; display: flex; flex-direction: column; justify-content: space-between;">
@@ -518,7 +549,7 @@
     <!-- DRITTES INTRO VOR DER WELTKARTE (Zentriert vor der Weltkarte) -->
     <div id="lily-map-intro">
         <img src="lily.png" alt="Lily Braun" style="width: 220px; height: auto; margin-bottom: 30px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));">
-        <div onclick="advanceMapIntro()" style="position: relative; width: 800px; height: 140px; background: #ffffff; color: #111111; border: 5px solid #2b3a4a; border-radius: 15px; padding: 25px 35px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.7); cursor: pointer; display: flex; flex-direction: column; justify-content: space-between;">
+        <div id="pokemon-dialog-box-3" onclick="advanceMapIntro()" style="position: relative; width: 800px; height: 140px; background: #ffffff; color: #111111; border: 5px solid #2b3a4a; border-radius: 15px; padding: 25px 35px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.7); cursor: pointer; display: flex; flex-direction: column; justify-content: space-between;">
             <div id="dialog-text-map" style="font-size: 18px; font-weight: 600; line-height: 1.4; height: 80px; overflow: hidden;">Herzlichen Glückwunsch! Ihr habt nun verstanden, wie der Klimawandel entstanden ist bzw. noch immer voranschreitet.</div>
             <div style="position: absolute; bottom: 15px; right: 25px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 15px solid #1E90FF; animation: blink-arrow 1s infinite;"></div>
         </div>
@@ -590,7 +621,6 @@
         if (currentMapIndex < mapDialogues.length) {
             document.getElementById('dialog-text-map').innerText = mapDialogues[currentMapIndex];
         } else {
-            // Weltkarten-Intro ausblenden und das Weltkarten-Modul unverändert anzeigen
             document.getElementById('lily-map-intro').style.display = 'none';
             document.getElementById('map-wrapper').style.display = 'flex';
         }
@@ -878,15 +908,11 @@
     }
 
     function showMapPhase() {
-        // Altes Simulations-Modul verstecken
         document.getElementById('col-left').style.display = 'none';
         document.getElementById('col-mid').style.display = 'none';
         document.getElementById('col-right').style.display = 'none';
 
-        // Weltkarte im Hintergrund vorbereiten (wird aber vom Intro überlagert)
         document.getElementById('map-wrapper').style.display = 'flex';
-
-        // Statt direkt die Hotspots zu nutzen, das Intro von Lily vor der Weltkarte einblenden
         document.getElementById('lily-map-intro').style.display = 'flex';
     }
 
