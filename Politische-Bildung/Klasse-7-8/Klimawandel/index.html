@@ -400,21 +400,29 @@
 
         /* =========================================
            RESPONSIVE TABLET-ANSICHT (Skalierung)
-           Nutzt CSS "zoom", damit das iPad-Layout inkl. 
-           Thermometer links exakt bestehen bleibt.
+           Firefox-kompatibel über transform statt zoom.
         ========================================= */
         @media screen and (max-width: 1550px) {
+            body {
+                /* Ändert die Zentrierung auf kleinen Screens, damit Firefox links nichts abschneidet */
+                justify-content: flex-start; 
+            }
             #main-layout {
-                zoom: calc((100vw - 40px) / 1510);
+                transform: scale(calc((100vw - 40px) / 1510));
+                transform-origin: top left;
+                margin-top: 50px; 
             }
             #map-wrapper {
-                zoom: calc((100vw - 40px) / 1400);
+                transform: scale(calc((100vw - 40px) / 1400));
+                transform-origin: top left;
+                margin-top: 50px;
             }
         }
 
         @media screen and (max-width: 850px) {
             #pokemon-dialog-box, #pokemon-dialog-box-2, #pokemon-dialog-box-3 {
-                zoom: calc((100vw - 40px) / 800);
+                transform: scale(calc((100vw - 40px) / 800));
+                transform-origin: center;
             }
         }
     </style>
@@ -526,7 +534,7 @@
 
     </div>
 
-    <!-- ZWEITES INTRO VOR DEM MODUL (Direkt über der Simulation) -->
+    <!-- ZWEITES INTRO VOR DEM MODUL -->
     <div id="lily-module-intro">
         <img id="lily-avatar-2" src="lily.png" alt="Lily Braun" style="width: 220px; height: auto; margin-bottom: 30px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));">
         <div id="pokemon-dialog-box-2" onclick="advanceModuleIntro()" style="position: relative; width: 800px; height: 140px; background: #ffffff; color: #111111; border: 5px solid #2b3a4a; border-radius: 15px; padding: 25px 35px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.7); cursor: pointer; display: flex; flex-direction: column; justify-content: space-between;">
