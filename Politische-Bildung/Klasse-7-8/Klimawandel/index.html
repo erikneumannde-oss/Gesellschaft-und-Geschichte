@@ -400,14 +400,17 @@
 
         /* =========================================
            RESPONSIVE TABLET-ANSICHT (Skalierung)
-           Firefox-kompatibel über transform statt zoom.
         ========================================= */
         @media screen and (max-width: 1550px) {
             body {
-                /* Ändert die Zentrierung auf kleinen Screens, damit Firefox links nichts abschneidet */
                 justify-content: flex-start; 
             }
             #main-layout {
+                /* NEU: Zwingt den Container exakt auf die Inhaltsbreite, damit links nichts abgeschnitten wird */
+                width: 1510px;
+                min-width: 1510px;
+                max-width: none;
+                
                 transform: scale(calc((100vw - 40px) / 1510));
                 transform-origin: top left;
                 margin-top: 50px; 
@@ -534,7 +537,7 @@
 
     </div>
 
-    <!-- ZWEITES INTRO VOR DEM MODUL -->
+    <!-- ZWEITES INTRO VOR DEM MODUL (Direkt über der Simulation) -->
     <div id="lily-module-intro">
         <img id="lily-avatar-2" src="lily.png" alt="Lily Braun" style="width: 220px; height: auto; margin-bottom: 30px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));">
         <div id="pokemon-dialog-box-2" onclick="advanceModuleIntro()" style="position: relative; width: 800px; height: 140px; background: #ffffff; color: #111111; border: 5px solid #2b3a4a; border-radius: 15px; padding: 25px 35px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.7); cursor: pointer; display: flex; flex-direction: column; justify-content: space-between;">
