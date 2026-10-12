@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klimawandel Animation (7. Klasse)</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d1b2a; 
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        #main-layout {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 150px; 
+            margin-bottom: 50px;
+            width: 100%;
+            max-width: 1500px; 
+        }
+
+        /* =========================================
+           LINKE SPALTE: THERMOMETER (Riesig)
+        ========================================= */
+        #col-left {
+            position: relative;
+            width: 180px; 
+            height: 506px; /* Exakt so hoch wie die Simulations-Kuppel */
+            flex-shrink: 0;
+        }
+
+        .thermo-img {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 100%; /* Zwingt das Thermometer, die vollen 506px in der Höhe zu nutzen */
+            width: auto; /* Behält die originalen Proportionen des PNGs bei */
+            transition: opacity 1.5s ease-in-out;
+            pointer-events: none;
+        }
+
+        #img-0 { z-index: 1; opacity: 1; } 
+        #img-15 { z-index: 2; opacity: 0; }
+        #img-minus20 { z-index: 3; opacity: 0; }
+        #img-plus20 { z-index: 4; opacity: 0; }
+
+        /* =========================================
+           MITTLERE SPALTE: SIMULATION
+        ========================================= */
+        #col-mid {
+            width: 900px;
+            height: 506px;
+            position: relative;
+            background-color: transparent; 
+            overflow: visible; 
+            flex-shrink: 0;
+        }
+
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 1.5s ease-in-out;
+            pointer-events: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.5);
+        }
+        
+        #bg-noforest { background-image: url('bg_noforest.jpg'); z-index: 1; opacity: 1; } 
+        #bg-start    { background-image: url('bg_start.jpg');    z-index: 2; opacity: 1; } 
+        #bg-smoke    { background-image: url('bg_smoke.jpg');    z-index: 3; opacity: 0; }
+        #bg-flood    { background-image: url('bg_flood.jpg');    z-index: 4; opacity: 0; }
+        #bg-ice      { background-image: url('bg_ice.jpg');      z-index: 5; opacity: 0; }
+
+        .clickbox { position: absolute; cursor: pointer; z-index: 20; display: none; }
+        #sun-clickbox { top: 30px; right: 40px; width: 120px; height: 120px; border-radius: 50%; display: block; z-index: 30; } 
+        #factory-clickbox { bottom: 60px; right: 260px; width: 90px; height: 90px; }
+        #forest-clickbox { bottom: 60px; right: 20px; width: 200px; height: 120px; }
+
+        /* =========================================
+           CO2 ANPASSUNGEN
+        ========================================= */
+        #co2-layer {
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            pointer-events: none; 
+            z-index: 15;
+            opacity: 0.8; 
+            transition: opacity 1s; 
+        }
+        
+        .co2-molecule { 
+            position: absolute;
+            color: #000000; 
+            font-weight: bold; 
+            font-size: 13px; 
+            display: none; 
+            transform: translate(-50%, -50%); 
+        }
+        .co2-molecule sub {
+            font-size: 9px;
+            bottom: -0.2em;
+        }
+
+        #co2-1 { top: 250px; left: 18%; }
+        #co2-2 { top: 200px; left: 28%; }
+        #co2-3 { top: 165px; left: 38%; }
+        #co2-4 { top: 150px; left: 45%; }
+        #co2-5 { top: 145px; left: 50%; }
+        #co2-6 { top: 150px; left: 55%; }
+        #co2-7 { top: 165px; left: 62%; }
+        #co2-8 { top: 200px; left: 72%; }
+        #co2-9 { top: 250px; left: 82%; }
+        
+        #co2-10 { top: 230px; left: 35%; }
+        #co2-11 { top: 185px; left: 50%; }
+        #co2-12 { top: 230px; left: 65%; }
+
+        #rays-svg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 25; overflow: visible;
+        }
+
+        /* =========================================
+           RECHTE SPALTE: TEXT & KONTROLLEN
+        ========================================= */
+        #col-right {
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        #text-box {
+            background: #162436; 
+            padding: 20px; 
+            border-radius: 10px; 
+            border: 2px solid #3a4f66;
+            font-size: 16px; 
+            line-height: 1.5; 
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            min-height: 150px;
+        }
+
+        .btn {
+            margin-top: 15px; padding: 10px 20px; background: #1E90FF; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%;
+        }
+        .btn:hover { background: #40a0ff; }
+        .btn:disabled { background: #555; color: #888; cursor: not-allowed; }
+
+        #controls {
+            background: #162436; padding: 20px; border-radius: 10px; border: 2px solid #3a4f66;
+            display: flex; flex-direction: column; align-items: center; gap: 15px; text-align: center;
+        }
+
+        .knob-container {
+            position: relative; width: 100px; height: 100px;
+            background: radial-gradient(circle, #2a3d52, #111d2b);
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            border: 3px solid #3a4f66; box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+        }
+        
+        #co2-knob {
+            width: 65px; height: 65px; border-radius: 50%;
+            background: linear-gradient(135deg, #555, #222);
+            border: 2px solid #111; cursor: not-allowed;
+            position: relative; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: rotate(90deg);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        
+        #co2-knob.active { cursor: pointer; }
+        #co2-knob.zero-state { transform: rotate(-90deg); }
+
+        .knob-marker {
+            position: absolute; top: 5px; left: 50%; transform: translateX(-50%);
+            width: 6px; height: 18px; background: #1E90FF; border-radius: 3px;
+        }
+
+        .knob-labels {
+            width: 100%; display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; color: #8ba3bf; padding: 0 10px; box-sizing: border-box;
+        }
+
+        @keyframes dash { to { stroke-dashoffset: 0; } }
+
+        /* =========================================
+           KARTEN-ANSICHT (Am Rand)
+        ========================================= */
+        #map-wrapper {
+            display: none;
+            position: relative;
+            width: 1400px; 
+            height: 720px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #map-section {
+            position: relative; 
+            width: 1000px; 
+            height: 720px; 
+            background: url('ohne makierung.jpg') center/contain no-repeat; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 25px rgba(0,0,0,0.5);
+        }
+
+        .map-hotspot {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            background-color: rgba(255, 69, 0, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            transition: background-color 0.2s, transform 0.2s;
+            box-shadow: 0 0 10px rgba(255,69,0,0.5);
+        }
+
+        .map-hotspot:hover {
+            background-color: rgba(255, 69, 0, 0.8);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        #map-popup {
+            display: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ffffff;
+            color: #000000;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            z-index: 100;
+            width: 330px; 
+            font-size: 15px;
+            line-height: 1.5;
+            cursor: pointer; 
+            border: 3px solid #1E90FF;
+        }
+
+        .popup-left { left: 20px; }
+        .popup-right { right: 20px; }
+
+        #map-popup h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #0d1b2a;
+            font-size: 18px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .large-emoji {
+            font-size: 38px;
+            margin-right: 12px;
+        }
+
+        #map-popup-close-hint {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* =========================================
+           LILY BRAUN INTRO & POKÉMON-STIL DIALOG
+        ========================================= */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #050b14;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease-in-out;
+        }
+
+        #lily-avatar {
+            width: 220px;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+        }
+
+        /* Pokémon-Sprechblase */
+        #pokemon-dialog-box {
+            position: relative;
+            width: 800px;
+            height: 140px;
+            background: #ffffff;
+            color: #111111;
+            border: 5px solid #2b3a4a;
+            border-radius: 15px;
+            padding: 25px 35px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        #dialog-text {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.4;
+            height: 80px;
+            overflow: hidden;
+        }
+
+        @keyframes blink-arrow {
+            0%, 100% { opacity: 0; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(4px); }
+        }
+
+        #dialog-arrow {
+            position: absolute;
+            bottom: 15px;
+            right: 25px;
+            width: 0; 
+            height: 0; 
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid #1E90FF;
+            animation: blink-arrow 1s infinite;
+        }
+
+        /* Schwarze Überblende */
+        #black-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
+            z-index: 9998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        /* Overlay für Lily direkt vor dem Modul */
+        #lily-module-intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(5,11,20,0.85);
+            z-index: 9997;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Overlay für Lily direkt vor der Weltkarte (zentriert vor der Karte, kein dunkler Hintergrund) */
+        #lily-map-intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(13, 27, 42, 0.92); /* Passender Farbton zum Body-Background */
+            z-index: 9997;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ERSTES INTRO (Dunkler Bildschirm) -->
+    <div id="intro-screen">
+        <img id="lily-avatar" src="lily.png" alt="Lily Braun">
+        <div id="pokemon-dialog-box" onclick="advanceLilyDialogue()">
+            <div id="dialog-text">Seid gegrüßt, liebe Schülerinnen und Schüler! Mein Name ist Lily Braun. Ich wurde im Jahr 1865 in eine Zeit des großen Umbruchs hineingeboren und habe als Schriftstellerin und Kämpferin für soziale Gerechtigkeit erlebt, wie sich die Welt rasant wandelte.</div>
+            <div id="dialog-arrow"></div>
+        </div>
+    </div>
+
+    <div id="black-overlay"></div>
+
+    <!-- HAUPT-LAYOUT (Modul im Hintergrund während des zweiten Intros) -->
+    <div id="main-layout" style="display: none;">
+        
+        <!-- LINKE SPALTE: THERMOMETER -->
+        <div id="col-left">
+            <img id="img-0" class="thermo-img" src="0grad.png" alt="0 Grad Thermometer">
+            <img id="img-15" class="thermo-img" src="15grad.png" alt="15 Grad Thermometer">
+            <img id="img-minus20" class="thermo-img" src="minus20grad.png" alt="-20 Grad Thermometer">
+            <img id="img-plus20" class="thermo-img" src="plus20grad.png" alt="20 Grad Thermometer">
+        </div>
+
+        <!-- MITTLERE SPALTE: SIMULATION -->
+        <div id="col-mid">
+            <div id="bg-noforest" class="bg-image"></div>
+            <div id="bg-start" class="bg-image"></div>
+            <div id="bg-smoke" class="bg-image"></div>
+            <div id="bg-flood" class="bg-image"></div>
+            <div id="bg-ice" class="bg-image"></div>
+
+            <div id="co2-layer">
+                <div id="co2-1" class="co2-molecule">CO<sub>2</sub></div>
+                <div id="co2-2" class="co2-molecule">CO<sub>2</sub></div>
+                <div id="co2-3" class="co2-molecule">CO<sub>2</sub></div>
+                <div id="co2-4" class="co2-molecule">CO<sub>2</sub></div>
+                <div id="co2-5" class="co2-molecule">CO<sub>2</sub></div>
+                <div id="co2-6" class="co2-molecule">CO<sub>2</sub></div>
+                <div id="co2-7" class="co2-molecule">CO<sub>2</sub></div>
+                <div id="co2-8" class="co2-molecule">CO<sub>2</sub></div>
+                <div id="co2-9" class="co2-molecule">CO<sub>2</sub></div>
+                <div id="co2-10" class="co2-molecule">CO<sub>2</sub></div>
+                <div id="co2-11" class="co2-molecule">CO<sub>2</sub></div>
+                <div id="co2-12" class="co2-molecule">CO<sub>2</sub></div>
+            </div>
+            
+            <svg id="rays-svg"></svg>
+            
+            <div id="sun-clickbox" class="clickbox" style="z-index: 30;" onclick="handleSunClick()" title="Klick auf die Sonne!"></div>
+            <div id="factory-clickbox" class="clickbox" onclick="handleFactoryClick()" title="Klick auf die Fabrik, um sie einzuschalten!"></div>
+            <div id="forest-clickbox" class="clickbox" onclick="handleForestClick()" title="Klick auf den Wald, um ihn abzuholzen!"></div>
+        </div>
+
+        <!-- RECHTE SPALTE: TEXT & KONTROLLEN -->
+        <div id="col-right">
+            <div id="text-box">
+                <div id="story-text">Willkommen! Wir befinden uns in der Zeit vor dem Klimawandel.<br><br><strong>Klicke auf die Sonne</strong>, um zu sehen, wie der <i>natürliche Treibhauseffekt</i> funktioniert.</div>
+                <button id="next-btn" class="btn" style="display:none;" onclick="nextText()">Weiter</button>
+            </div>
+
+            <div id="controls">
+                <label style="color: white; font-weight: bold; font-size: 18px;">CO₂-Regler</label>
+                <div class="knob-container">
+                    <div id="co2-knob" onclick="handleKnobClick()">
+                        <div class="knob-marker"></div>
+                    </div>
+                </div>
+                <div class="knob-labels">
+                    <span>0</span>
+                    <span>Normal</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- KARTEN-ANSICHT AUSSERHALB (Am Rand) -->
+        <div id="map-wrapper">
+            <div id="map-section">
+                
+                <svg id="golfstrom-arrow" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:5;">
+                    <defs>
+                        <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="rgba(255, 69, 0, 0.8)" />
+                        </marker>
+                    </defs>
+                    <path d="M 210 330 Q 360 250 510 220" fill="none" stroke="rgba(255, 69, 0, 0.8)" stroke-width="8" stroke-dasharray="10,5" marker-end="url(#arrow-red)"/>
+                </svg>
+
+                <div class="map-hotspot" style="left: 15%; top: 28%;" onclick="showMapInfo('na', this)" title="Nordamerika"></div>
+                <div class="map-hotspot" style="left: 36%; top: 14%;" onclick="showMapInfo('arktis', this)" title="Arktis (Grönland)"></div>
+                <div class="map-hotspot" style="left: 19%; top: 46%;" onclick="showMapInfo('golfstrom', this)" title="Golfstrom (Golf von Mexiko)"></div>
+                <div class="map-hotspot" style="left: 26%; top: 61%;" onclick="showMapInfo('sa', this)" title="Lateinamerika"></div>
+                <div class="map-hotspot" style="left: 54%; top: 29%;" onclick="showMapInfo('europa', this)" title="Europa"></div>
+                <div class="map-hotspot" style="left: 49%; top: 50%;" onclick="showMapInfo('afrika', this)" title="Afrika & Mittlerer Osten"></div>
+                <div class="map-hotspot" style="left: 73%; top: 28%;" onclick="showMapInfo('asien', this)" title="Asien"></div>
+                <div class="map-hotspot" style="left: 86%; top: 62%;" onclick="showMapInfo('ozeanien', this)" title="Ozeanien"></div>
+
+            </div>
+
+            <div id="map-popup" onclick="hideMapInfo()">
+                <div id="map-popup-content"></div>
+                <div id="map-popup-close-hint">(Klicken zum Schließen)</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ZWEITES INTRO VOR DEM MODUL -->
+    <div id="lily-module-intro">
+        <img id="lily-avatar-2" src="lily.png" alt="Lily Braun" style="width: 220px; height: auto; margin-bottom: 30px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));">
+        <div id="pokemon-dialog-box-2" onclick="advanceModuleIntro()" style="position: relative; width: 800px; height: 140px; background: #ffffff; color: #111111; border: 5px solid #2b3a4a; border-radius: 15px; padding: 25px 35px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.7); cursor: pointer; display: flex; flex-direction: column; justify-content: space-between;">
+            <div id="dialog-text-2" style="font-size: 18px; font-weight: 600; line-height: 1.4; height: 80px; overflow: hidden;">Um den Klimawandel und seine Folgen zu verstehen, müssen wir erst einmal erfahren, wie der Klimawandel überhaupt entstanden ist.</div>
+            <div id="dialog-arrow-2" style="position: absolute; bottom: 15px; right: 25px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 15px solid #1E90FF; animation: blink-arrow 1s infinite;"></div>
+        </div>
+    </div>
+
+    <!-- DRITTES INTRO VOR DER WELTKARTE (Zentriert vor der Weltkarte) -->
+    <div id="lily-map-intro">
+        <img src="lily.png" alt="Lily Braun" style="width: 220px; height: auto; margin-bottom: 30px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));">
+        <div onclick="advanceMapIntro()" style="position: relative; width: 800px; height: 140px; background: #ffffff; color: #111111; border: 5px solid #2b3a4a; border-radius: 15px; padding: 25px 35px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.7); cursor: pointer; display: flex; flex-direction: column; justify-content: space-between;">
+            <div id="dialog-text-map" style="font-size: 18px; font-weight: 600; line-height: 1.4; height: 80px; overflow: hidden;">Herzlichen Glückwunsch! Ihr habt nun verstanden, wie der Klimawandel entstanden ist bzw. noch immer voranschreitet.</div>
+            <div style="position: absolute; bottom: 15px; right: 25px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 15px solid #1E90FF; animation: blink-arrow 1s infinite;"></div>
+        </div>
+    </div>
+
+<script>
+    // LILY BRAUN DIALOG LOGIK
+    const lilyDialogues = [
+        "Seid gegrüßt, liebe Schülerinnen und Schüler! Mein Name ist Lily Braun. Ich wurde im Jahr 1865 in eine Zeit des großen Umbruchs hineingeboren und habe als Schriftstellerin und Kämpferin für soziale Gerechtigkeit erlebt, wie sich die Welt rasant wandelte.",
+        "Ihr heute lebt in einer viel größeren, globaleren Welt als wir damals. Ihr könnt euch in Sekundenschnelle mit Menschen am anderen Ende der Erde austauschen, reisen und von einem unglaublichen technischen Fortschritt und Wohlstand profitieren.",
+        "Doch diese Globalisierung hat auch eine Kehrseite. Ihr seid heute einer weitaus größeren, globalen Bedrohung konfrontiert, die eng mit diesem weltweiten Fortschritt verknüpft ist: dem Klimawandel.",
+        "Einen ersten Grundstein dafür haben damals auch schon wir und meine Generation mit der Industrialisierung gelegt.",
+        "Lasst uns nun gemeinsam in dieses interaktive Modul eintauchen, um die Mechanismen dahinter zu verstehen."
+    ];
+
+    const moduleDialogues = [
+        "Um den Klimawandel und seine Folgen zu verstehen, müssen wir erst einmal erfahren, wie der Klimawandel überhaupt entstanden ist.",
+        "Schaut euch die Simulation dazu genau an, probiert die Regler aus und macht euch am besten gleich ein paar eigene Notizen dazu. Viel Erfolg dabei!"
+    ];
+
+    const mapDialogues = [
+        "Herzlichen Glückwunsch! Ihr habt nun verstanden, wie der Klimawandel entstanden ist bzw. noch immer voranschreitet.",
+        "Nun wollen wir uns den weltweiten Folgen widmen, die im ungünstigsten Fall eintreten könnten, wenn die Menschheit nichts dagegen unternimmt.",
+        "Vergesst nicht, euch auch hierzu wichtige Notizen zu machen. Das Modul kann beendet werden, sobald alle Punkte auf der Karte angeklickt wurden.",
+        "Ich verabschiede mich hiermit schon einmal von euch. Viel Erfolg beim Erkunden der Weltkarte und bis zum nächsten Mal!"
+    ];
+
+    let currentLilyIndex = 0;
+    let currentModuleIndex = 0;
+    let currentMapIndex = 0;
+
+    function advanceLilyDialogue() {
+        currentLilyIndex++;
+        if (currentLilyIndex < lilyDialogues.length) {
+            document.getElementById('dialog-text').innerText = lilyDialogues[currentLilyIndex];
+        } else {
+            triggerBlackTransition();
+        }
+    }
+
+    function triggerBlackTransition() {
+        const overlay = document.getElementById('black-overlay');
+        const intro = document.getElementById('intro-screen');
+        
+        overlay.style.opacity = '1';
+        
+        setTimeout(() => {
+            intro.style.display = 'none';
+            document.getElementById('main-layout').style.display = 'flex';
+            document.getElementById('lily-module-intro').style.display = 'flex';
+            
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+            }, 500);
+        }, 1500);
+    }
+
+    function advanceModuleIntro() {
+        currentModuleIndex++;
+        if (currentModuleIndex < moduleDialogues.length) {
+            document.getElementById('dialog-text-2').innerText = moduleDialogues[currentModuleIndex];
+        } else {
+            document.getElementById('lily-module-intro').style.display = 'none';
+        }
+    }
+
+    function advanceMapIntro() {
+        currentMapIndex++;
+        if (currentMapIndex < mapDialogues.length) {
+            document.getElementById('dialog-text-map').innerText = mapDialogues[currentMapIndex];
+        } else {
+            // Weltkarten-Intro ausblenden und das Weltkarten-Modul unverändert anzeigen
+            document.getElementById('lily-map-intro').style.display = 'none';
+            document.getElementById('map-wrapper').style.display = 'flex';
+        }
+    }
+
+    // =========================================
+    // BESTEHENDER CODE AB HIER UNVERÄNDERT
+    // =========================================
+    let step = 0;
+    let textIndex = 0;
+    let textQueue = [];
+    let forestClicked = false;
+    let factoryClicked = false;
+    
+    const svg = document.getElementById('rays-svg');
+    const co2Knob = document.getElementById('co2-knob');
+    const co2Molecules = document.querySelectorAll('.co2-molecule');
+    
+    const storyText = document.getElementById('story-text');
+    const nextBtn = document.getElementById('next-btn');
+    
+    const factoryBtn = document.getElementById('factory-clickbox');
+    const forestBtn = document.getElementById('forest-clickbox');
+
+    const bgStart = document.getElementById('bg-start');
+    const bgIce = document.getElementById('bg-ice');
+    const bgSmoke = document.getElementById('bg-smoke');
+    const bgFlood = document.getElementById('bg-flood');
+
+    const img0 = document.getElementById('img-0');
+    const img15 = document.getElementById('img-15');
+    const imgMinus20 = document.getElementById('img-minus20');
+    const imgPlus20 = document.getElementById('img-plus20');
+
+    function setCO2Level(level) {
+        co2Molecules.forEach(mol => mol.style.display = 'none');
+        let visibleIndices = [];
+        if (level === 1) visibleIndices = [1, 3, 5, 7]; 
+        if (level === 2) visibleIndices = [0, 2, 4, 6, 8, 10]; 
+        if (level === 3) visibleIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+        visibleIndices.forEach(i => {
+            if (co2Molecules[i]) co2Molecules[i].style.display = 'block';
+        });
+    }
+    setCO2Level(1);
+
+    function setTemperatureImage(temp) {
+        img0.style.opacity = 0;
+        img15.style.opacity = 0;
+        imgMinus20.style.opacity = 0;
+        imgPlus20.style.opacity = 0;
+
+        if (temp === 0) img0.style.opacity = 1;
+        if (temp === 15) img15.style.opacity = 1;
+        if (temp === -20) imgMinus20.style.opacity = 1;
+        if (temp === 20) imgPlus20.style.opacity = 1;
+    }
+    
+    setTemperatureImage(0);
+
+    function drawRay(id, pathStr, color, delay, duration = 1.5) {
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", pathStr);
+        path.setAttribute("fill", "transparent");
+        path.setAttribute("stroke", color);
+        path.setAttribute("stroke-width", "4");
+        
+        svg.appendChild(path);
+        const length = path.getTotalLength();
+        path.style.strokeDasharray = length;
+        path.style.strokeDashoffset = length;
+        
+        setTimeout(() => { path.style.animation = `dash ${duration}s linear forwards`; }, delay);
+        setTimeout(() => {
+            path.setAttribute("marker-end", "url(#arrowhead-" + color.replace('#','') + ")");
+        }, delay + (duration * 1000));
+        return path;
+    }
+
+    function createMarkers() {
+        const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+        const colors = ['#FFD700', '#FF4500'];
+        colors.forEach(color => {
+            const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+            marker.setAttribute("id", "arrowhead-" + color.replace('#',''));
+            marker.setAttribute("markerWidth", "10"); marker.setAttribute("markerHeight", "7");
+            marker.setAttribute("refX", "9"); marker.setAttribute("refY", "3.5");
+            marker.setAttribute("orient", "auto");
+            const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            polygon.setAttribute("points", "0 0, 10 3.5, 0 7"); polygon.setAttribute("fill", color);
+            marker.appendChild(polygon); defs.appendChild(marker);
+        });
+        svg.appendChild(defs);
+    }
+    createMarkers();
+
+    function clearRays() {
+        while (svg.lastChild) {
+            if (svg.lastChild.tagName !== 'defs') svg.removeChild(svg.lastChild);
+            else break;
+        }
+    }
+
+    function drawOuterRays() {
+        drawRay("r1", "M 780 80 L 600 50 L 450 -250", "#FFD700", 0);
+        drawRay("r2", "M 780 80 L 450 50 L 250 -250", "#FFD700", 200);
+        drawRay("r3", "M 780 80 L 300 100 L 50 -250", "#FFD700", 400);
+    }
+
+    function showTextSequence(texts) {
+        textQueue = texts; textIndex = 0;
+        storyText.innerHTML = textQueue[textIndex];
+        nextBtn.style.display = textQueue.length > 1 ? "block" : "none";
+    }
+
+    function nextText() {
+        textIndex++;
+        if (textIndex < textQueue.length) {
+            storyText.innerHTML = textQueue[textIndex];
+            if (textIndex === textQueue.length - 1) {
+                if (step === 6) {
+                    nextBtn.style.display = "block";
+                    nextBtn.innerText = "Folgen auf der Weltkarte ansehen";
+                    nextBtn.onclick = showMapPhase;
+                } else {
+                    nextBtn.style.display = "none";
+                    triggerPostTextAction();
+                }
+            }
+        }
+    }
+
+    function triggerPostTextAction() {
+        if (step === 1) {
+            clearRays();
+            setTemperatureImage(0); 
+            
+            co2Knob.classList.add('active'); 
+            storyText.innerHTML += "<br><br><strong style='color:#1E90FF'>Aufgabe:</strong> Was passiert ganz ohne Treibhausgase? Drehe den CO₂-Regler auf 0, indem du ihn anklickst!";
+        }
+        else if (step === 3) {
+            co2Knob.classList.remove('zero-state');
+            setCO2Level(1); 
+            bgIce.style.opacity = 0;
+            setTemperatureImage(0); 
+            
+            step = 4;
+            clearRays();
+            
+            forestBtn.style.display = "block";
+            factoryBtn.style.display = "block";
+            storyText.innerHTML += "<br><br>Das CO₂ ist wieder auf dem natürlichen Level und das Eis geschmolzen.<br><br><strong style='color:#1E90FF'>Aufgabe:</strong> Lernende, der Mensch greift nun ein! Klicke auf den <strong>Wald</strong> (Abholzung) und auf die <strong>Fabrik</strong> (Abgase).";
+        }
+    }
+
+    function handleSunClick() {
+        if (step === 0) {
+            step = 1;
+            clearRays();
+            drawOuterRays();
+            
+            drawRay("r4a", "M 780 80 L 400 400", "#FFD700", 600);
+            drawRay("r4b", "M 400 400 L 0 -250", "#FF4500", 2100); 
+            drawRay("r5a", "M 780 80 L 550 400", "#FFD700", 800);
+            drawRay("r5b", "M 550 400 L 450 150 L 350 400", "#FF4500", 2300);
+            drawRay("r6a", "M 780 80 L 700 400", "#FFD700", 1000);
+            drawRay("r6b", "M 700 400 L 600 150 L 500 400", "#FF4500", 2500);
+
+            setTimeout(() => { setTemperatureImage(15); }, 2000);
+
+            showTextSequence([
+                "Die Sonne sendet <b>Lichtstrahlen (gelb)</b> zur Erde. Ein Teil des Lichts wird sofort an der äußeren Atmosphäre wie von einem Spiegel abgewehrt.",
+                "Die restlichen Lichtstrahlen dringen durch, treffen auf den Erdboden und erwärmen ihn. Der warme Boden gibt diese Energie dann als <b>Wärmestrahlung (rot)</b> wieder ab.",
+                "Ein Teil der Wärmestrahlung entkommt ins Weltall. Ein anderer Teil der Wärmestrahlung wird von CO₂ und anderen Treibhausgasen abgefangen und wieder zur Erde zurückgeworfen! Diese Schicht ähnelt dem Glasdach eines Treibhauses, weshalb wir das den natürlichen Treibhauseffekt nennen.",
+                "Dieser natürliche Treibhauseffekt hebt die globale Durchschnittstemperatur auf für uns ideale 15°C."
+            ]);
+        }
+        else if (step === 2) {
+            step = 3;
+            clearRays();
+            drawOuterRays(); 
+
+            drawRay("r4a", "M 780 80 L 400 400", "#FFD700", 600);
+            drawRay("r4b", "M 400 400 L 0 -250", "#FF4500", 2100);
+            drawRay("r5a", "M 780 80 L 550 400", "#FFD700", 800);
+            drawRay("r5b", "M 550 400 L 150 -250", "#FF4500", 2300);
+            drawRay("r6a", "M 780 80 L 700 400", "#FFD700", 1000);
+            drawRay("r6b", "M 700 400 L 300 -250", "#FF4500", 2500);
+
+            bgIce.style.opacity = 1;
+            
+            setTimeout(() => { setTemperatureImage(-20); }, 1500);
+
+            showTextSequence([
+                "Keine Treibhausgase mehr da! Das schützende 'Glasdach' fehlt nun komplett. Die rote Wärmestrahlung wird nicht mehr aufgehalten und entweicht ungehindert in das eisige Weltall.",
+                "Die Erde verliert dadurch fast all ihre Wärme. Ohne Treibhausgase würde die globale Durchschnittstemperatur auf -18 °C sinken.",
+                "Dies würde letztendlich einen Großteil der Welt gefrieren lassen. Ein Überleben für Pflanzen, Tiere und uns Menschen wäre unter diesen eisigen Bedingungen unmöglich.",
+                "Wir sind daher zwingend auf den natürlichen Treibhauseffekt angewiesen, um auf der Erde existieren zu können!"
+            ]);
+        }
+        else if (step === 5) {
+            step = 6;
+            clearRays();
+            
+            setCO2Level(3); 
+            drawOuterRays();
+            
+            drawRay("r4a", "M 780 80 L 400 400", "#FFD700", 600);
+            drawRay("r4b", "M 400 400 L 300 150 L 200 400", "#FF4500", 2100); 
+            drawRay("r5a", "M 780 80 L 550 400", "#FFD700", 800);
+            drawRay("r5b", "M 550 400 L 450 150 L 350 400", "#FF4500", 2300);
+            drawRay("r6a", "M 780 80 L 700 400", "#FFD700", 1000);
+            drawRay("r6b", "M 700 400 L 600 150 L 500 400", "#FF4500", 2500);
+            
+            setTimeout(() => {
+                setTemperatureImage(20); 
+                bgFlood.style.opacity = 1; 
+                
+                showTextSequence([
+                    "Durch die industrielle Revolution im 18./19. Jh. und die Verwendung fossiler Energien wie Gas, Kohle und Öl ist der Treibhausgas- und CO₂-Anteil massiv gestiegen.",
+                    "Dieser Anstieg des CO₂ und der Treibhausgase ist insgesamt zwar nur sehr wenig, aber dies reicht eben schon, dass die durchschnittliche globale Temperatur bis 2100 um 4°C steigt!",
+                    "Das Treibhaus-Glasdach ist zu dick geworden. Fast die gesamte rote Wärmestrahlung wird nun blockiert und zurückgeworfen. Das ist der menschengemachte Klimawandel.",
+                    "Diese steigende Temperatur löst gravierende Folgen aus: Das ewige Eis in der Antarktis schmilzt massiv ab, der Meeresspiegel steigt extrem an und überflutet unsere Küsten."
+                ]);
+            }, 3000);
+        }
+    }
+
+    function handleKnobClick() {
+        if (step === 1 && co2Knob.classList.contains('active')) {
+            co2Knob.classList.remove('active');
+            co2Knob.classList.add('zero-state');
+            
+            setCO2Level(0); 
+            
+            step = 2;
+            storyText.innerHTML = "Das CO₂ ist weg! <br><br><strong style='color:#1E90FF'>Aufgabe:</strong> Klicke erneut auf die <strong>Sonne</strong>, um zu sehen, was jetzt passiert.";
+        }
+    }
+
+    function handleForestClick() {
+        if (step === 4 && !forestClicked) {
+            forestClicked = true;
+            forestBtn.style.display = "none";
+            bgStart.style.opacity = 0; 
+            
+            setCO2Level(2); 
+            updateIndustrialText();
+        }
+    }
+
+    function handleFactoryClick() {
+        if (step === 4 && !factoryClicked) {
+            factoryClicked = true;
+            factoryBtn.style.display = "none";
+            bgSmoke.style.opacity = 1; 
+            bgStart.style.opacity = 0; 
+            
+            setCO2Level(3); 
+            updateIndustrialText();
+        }
+    }
+
+    function updateIndustrialText() {
+        let texts = [];
+        if (forestClicked) {
+            texts.push("<b>Wald abgeholzt:</b> Wälder nehmen natürlicherweise CO₂ auf. Durch die Abholzung fehlt dieser wichtige Speicher, weshalb mehr CO₂ in der Atmosphäre verbleibt.");
+        }
+        if (factoryClicked) {
+            texts.push("<b>Fabrik aktiv:</b> Durch die Industrie werden große Mengen an Treibhausgasen direkt in die Luft gepumpt. Der Anteil in der Atmosphäre steigt weiter an.");
+        }
+
+        let htmlString = texts.join("<br><br>");
+
+        if (forestClicked && factoryClicked) {
+            step = 5;
+            htmlString += "<br><br><strong style='color:#1E90FF'>Aufgabe:</strong> Klicke nun wieder auf die <strong>Sonne</strong>, um die dramatischen Folgen zu betrachten!";
+        } else {
+            htmlString += "<br><br><strong style='color:#1E90FF'>Aufgabe:</strong> Klicke auf das noch fehlende Element (Wald oder Fabrik).";
+        }
+        
+        nextBtn.style.display = "none";
+        storyText.innerHTML = htmlString;
+    }
+
+    function showMapPhase() {
+        // Altes Simulations-Modul verstecken
+        document.getElementById('col-left').style.display = 'none';
+        document.getElementById('col-mid').style.display = 'none';
+        document.getElementById('col-right').style.display = 'none';
+
+        // Weltkarte im Hintergrund vorbereiten (wird aber vom Intro überlagert)
+        document.getElementById('map-wrapper').style.display = 'flex';
+
+        // Statt direkt die Hotspots zu nutzen, das Intro von Lily vor der Weltkarte einblenden
+        document.getElementById('lily-map-intro').style.display = 'flex';
+    }
+
+    const mapData = {
+        'na': '<h3><span class="large-emoji">🌪️ 🌊</span> Nordamerika</h3>In Nordamerika führt der Klimawandel zu einer starken Zunahme von extremen Wetterlagen wie schweren Stürmen und Hitzewellen. Der stetig steigende Meeresspiegel bedroht insbesondere die dicht besiedelten Küstenregionen. Im Landesinneren kommt es zunehmend zu einer Rivalität um knapper werdendes Trinkwasser. Zudem leiden viele Menschen unter Krankheiten, die durch extreme Hitze und hohe Ozonbelastungen verursacht werden, was leider auch zu erhöhten Todesfällen führt.',
+        'sa': '<h3><span class="large-emoji">🏜️ 💧</span> Lateinamerika & El Niño</h3>In Lateinamerika führt die globale Erwärmung zu einem dramatischen Schmelzen der Anden-Gletscher, wodurch für Millionen von Menschen langfristig ein massiver Wassermangel entsteht. Gleichzeitig droht das riesige Amazonasgebiet, welches oft als die grüne Lunge der Erde bezeichnet wird, allmählich zu einer trockenen Savanne zu werden. Verstärkt werden diese Probleme durch das Wetterphänomen El Niño, bei dem sich die Meeresströmungen im Pazifik umkehren. Dies löst an den Küsten verheerende Hochwasser, gefährliche Hurrikane und in anderen Gebieten extreme Dürreperioden aus.',
+        'golfstrom': '<h3><span class="large-emoji">🥶 🐟</span> Golfstrom</h3>Der Golfstrom, eine enorm wichtige warme Meeresströmung im Nordatlantik, gerät durch die Eisschmelze aus dem Gleichgewicht. Eine Verlagerung oder Abschwächung dieses Stroms beeinträchtigt nicht nur massiv die Lebensräume von Fischen und Seevögeln, sondern hat auch drastische Folgen für das Klima in Nord- und Westeuropa. Wenn diese gigantische planetare "Wärmepumpe" ausfällt, könnten die Winter bei uns in Europa künftig so eisig und streng werden wie im kalten Kanada.',
+        'arktis': '<h3><span class="large-emoji">🐻‍❄️ 🧊</span> Arktis</h3>In der Arktis rund um Grönland schmilzt das Eis aufgrund der steigenden Temperaturen in einem besorgniserregenden Tempo. Dieses rapide tauende Eis zerstört den natürlichen Lebensraum der Eisbären, denen dadurch buchstäblich der Boden unter den Pfoten wegbricht. Da sie auf das Packeis angewiesen sind, um Robben zu jagen, sind sie zunehmend vom Verhungern bedroht. Auch der globale Meeresspiegel steigt durch die schmelzenden grönländischen Landeismassen massiv an.',
+        'europa': '<h3><span class="large-emoji">🌾 🌊</span> Europa</h3>In Europa sind die Folgen der globalen Erwärmung stark zweigeteilt: Im Norden des Kontinents kommt es durch vermehrte starke Niederschläge und rapide Schneeschmelzen verstärkt zu katastrophalen Überschwemmungen und einer gefährlichen Küstenerosion. Der Süden Europas leidet hingegen unter extremer Trockenheit. Langanhaltende Dürreperioden, enorme Hitzewellen und Waldbrände vernichten dort regelmäßig die landwirtschaftlichen Erträge, was zu großen Ernteausfällen führt.',
+        'asien': '<h3><span class="large-emoji">🏔️ 🚱</span> Asien</h3>In weiten Teilen Asiens sorgt der Klimawandel für dramatische Ernteausfälle. Ein zentrales Problem ist das schnelle Verschwinden der großen Himalaya-Gletscher. Da diese Gletscher die wichtigsten Ströme in der Region speisen, kommt es zunächst oft zu katastrophalen Überschwemmungen durch das viele Schmelzwasser. Langfristig droht der gesamten asiatischen Region jedoch eine extreme Wasserknappheit, die das Leben und die Landwirtschaft von Milliarden Menschen gefährdet.',
+        'afrika': '<h3><span class="large-emoji">🌍 🏜️</span> Afrika & Mittlerer Osten</h3>Der afrikanische Kontinent ist besonders hart von der Erderwärmung betroffen. Es drohen extremer Wassermangel und verheerende Ernteausfälle von bis zu 50 Prozent, was den Hunger für Millionen von Menschen in der Zukunft drastisch verschärft. Weiter nördlich im Mittleren Osten breiten sich die trockenen Wüsten unaufhaltsam aus, während gleichzeitig das tief gelegene und dicht besiedelte Nil-Delta stark von verheerenden Hochwassern und dem durch den Klimawandel steigenden Meeresspiegel bedroht ist.',
+        'ozeanien': '<h3><span class="large-emoji">🪸 🏝️</span> Ozeanien</h3>In Ozeanien hat die stetige Erwärmung der Ozeane tödliche Folgen für die fragilen Meeresbewohner, was sich besonders im massiven Korallensterben am berühmten australischen Great Barrier Reef zeigt. Gleichzeitig steigt der Meeresspiegel unaufhaltsam an. Für viele der flachen Pazifik-Inseln ist dies eine direkte existentielle Bedrohung, da sie in absehbarer Zeit komplett überschwemmt und im Meer versinken werden, was die Bewohner zur Flucht in andere Regionen zwingt.'
+    };
+
+    function showMapInfo(regionId, hotspotElement) {
+        const arrow = document.getElementById('golfstrom-arrow');
+        if (regionId === 'golfstrom') {
+            arrow.style.display = 'block';
+        } else {
+            arrow.style.display = 'none';
+        }
+
+        const popup = document.getElementById('map-popup');
+        const leftRegions = ['na', 'sa', 'golfstrom', 'arktis'];
+        const isLeft = leftRegions.includes(regionId);
+
+        if (isLeft) {
+            popup.className = 'popup-left';
+        } else {
+            popup.className = 'popup-right';
+        }
+
+        document.getElementById('map-popup-content').innerHTML = mapData[regionId];
+        popup.style.display = 'block';
+    }
+
+    function hideMapInfo() {
+        document.getElementById('map-popup').style.display = 'none';
+        document.getElementById('golfstrom-arrow').style.display = 'none';
+    }
+
+</script>
+</body>
+</html>
