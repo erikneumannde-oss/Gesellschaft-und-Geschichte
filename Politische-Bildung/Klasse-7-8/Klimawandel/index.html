@@ -383,7 +383,7 @@
             justify-content: center;
         }
 
-        /* Overlay für Lily direkt vor der Weltkarte (zentriert vor der Karte, kein dunkler Hintergrund) */
+        /* Overlay für Lily direkt vor der Weltkarte */
         #lily-map-intro {
             position: fixed;
             top: 0;
@@ -399,33 +399,22 @@
         }
 
         /* =========================================
-           NEU: RESPONSIVE TABLET-ANSICHT (Skalierung)
-           Verhindert das Abschneiden des linken Randes auf Tablets,
-           OHNE das interne Layout oder Abstände zu verändern!
+           RESPONSIVE TABLET-ANSICHT (Skalierung)
+           Nutzt CSS "zoom", damit das iPad-Layout inkl. 
+           Thermometer links exakt bestehen bleibt.
         ========================================= */
         @media screen and (max-width: 1550px) {
-            body {
-                /* Ändert die Zentrierung auf kleinen Screens, damit links nichts abgeschnitten wird */
-                justify-content: flex-start; 
-            }
             #main-layout {
-                /* Skaliert das gesamte feste Layout proportional herunter, damit es auf den Screen passt */
-                transform: scale(calc((100vw - 40px) / 1510));
-                transform-origin: top left;
-                margin-top: 50px; 
+                zoom: calc((100vw - 40px) / 1510);
             }
             #map-wrapper {
-                transform: scale(calc((100vw - 40px) / 1400));
-                transform-origin: top left;
-                margin-top: 50px;
+                zoom: calc((100vw - 40px) / 1400);
             }
         }
 
-        /* Damit die Textboxen von Lily auch auf ganz kleinen Tablets/Handys nicht abgeschnitten werden */
         @media screen and (max-width: 850px) {
             #pokemon-dialog-box, #pokemon-dialog-box-2, #pokemon-dialog-box-3 {
-                transform: scale(calc((100vw - 40px) / 800));
-                transform-origin: center;
+                zoom: calc((100vw - 40px) / 800);
             }
         }
     </style>
