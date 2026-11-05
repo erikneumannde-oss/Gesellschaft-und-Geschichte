@@ -142,29 +142,101 @@
             min-height: 100vh;
             padding: 30px 20px; 
             text-align: center; 
-            background: linear-gradient(rgba(26, 24, 22, 0.9), rgba(26, 24, 22, 0.9)), url('start_bg.jpg') center/cover;
+            background: linear-gradient(rgba(20, 18, 16, 0.55), rgba(20, 18, 16, 0.55)), url('start_bg.jpg') center/cover;
             overflow-y: auto;
         }
+
+        /* --- Erklärung (Pflicht vor dem ersten Spiel) --- */
+        #gate-box { width: 100%; max-width: 500px; margin: 0 0 18px; padding: 14px 16px; background: rgba(0,0,0,0.45); border: 1px solid #7c6d59; border-radius: 6px; }
+        #gate-box p { margin: 0 0 10px; font-size: 1.05em; }
+        #gate-box.gelesen { border-color: #5f8a4f; }
+        .help-btn { text-align: center; font-weight: bold; background-color: #5a4f40; }
+        .start-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .start-btn:disabled:hover { background-color: #3b3328; transform: none; }
+        #help-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.78); z-index: 5000; display: flex; align-items: center; justify-content: center; padding: 14px; }
+        #help-box { background: #1f1b16; border: 2px solid #7c6d59; border-radius: 10px; max-width: 780px; width: 100%; max-height: 92vh; display: flex; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.7); }
+        #help-box h2 { margin: 0; padding: 18px 22px 10px; color: #d4c5a0; font-size: 1.4em; }
+        #help-body { overflow-y: auto; padding: 0 22px 10px; line-height: 1.6; -webkit-overflow-scrolling: touch; }
+        #help-body h3 { color: #d4c5a0; margin: 22px 0 6px; font-size: 1.15em; }
+        #help-body p, #help-body li { margin: 6px 0; }
+        #help-body ul { padding-left: 20px; }
+        .help-hist { background: rgba(212,197,160,0.08); border-left: 4px solid #d4c5a0; padding: 8px 12px; margin: 8px 0; font-size: 0.97em; }
+        #help-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 22px 16px; border-top: 1px solid #3a3227; }
+        #help-hint { font-size: 0.9em; color: #a59682; flex: 1; min-width: 160px; }
+        #help-ok:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .status-item.help-open { cursor: pointer; border: 1px solid #7c6d59; color: #e3dcc8; font-size: 0.85em; }
+        /* --- Rückmeldungen im Spiel --- */
+        .stimme { background: rgba(212,197,160,0.08); border-left: 4px solid #d4c5a0; padding: 10px 14px; margin: 0 0 20px; font-style: italic; }
+        .stimme-kopf { font-style: normal; font-weight: bold; color: #d4c5a0; font-size: 0.9em; margin-bottom: 4px; }
+        .info-card { background: rgba(204, 154, 68, 0.15); border-left: 4px solid #cc9a44; padding: 10px; margin-bottom: 20px; }
+        .vergleich { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.95em; }
+        .vergleich th, .vergleich td { border: 1px solid #5a4f40; padding: 6px 8px; text-align: left; }
+        .vergleich th { background: rgba(0,0,0,0.35); color: #d4c5a0; }
+        @media (max-width: 600px) { #help-box h2 { font-size: 1.2em; padding: 14px 16px 8px; } #help-body { padding: 0 16px 8px; } #help-footer { padding: 10px 16px 14px; } .vergleich { font-size: 0.85em; } }
         h1 { font-size: 2.2em; margin-bottom: 10px; color: #d4c5a0; }
+        #start-screen h1, #start-screen p { text-shadow: 0 1px 3px rgba(0,0,0,.95), 0 0 14px rgba(0,0,0,.85); }
         .hidden { display: none !important; }
         .alert-text { color: #cc4444; font-weight: bold; }
     </style>
 </head>
 <body>
 
+
+<div id="help-overlay" class="hidden" role="dialog" aria-modal="true" aria-labelledby="help-title">
+  <div id="help-box">
+    <h2 id="help-title">📖 So funktioniert das Spiel</h2>
+    <div id="help-body">
+      <h3>🎯 Ziel und Ablauf</h3>
+      <p>Du spielst sechs Jahre im Paris Ludwigs XIV. Jedes Jahr triffst du eine Entscheidung. Danach werden Miete und Essen abgezogen. Spiele beide Figuren, um zu sehen, wie unterschiedlich ihre Wege waren.</p>
+      <p>Das Spiel endet, wenn du <b>stirbst</b> (Gesundheit 0), <b>eingesperrt</b> wirst (Beobachtung 100 %) oder <b>sechs Jahre überstehst</b>. Es gibt keinen Weg ohne Verluste.</p>
+
+      <h3>🪙 Sous – das Geld</h3>
+      <p>Der Sou war die Kleinmünze des Alltags. Ein Livre, die größere Rechnungseinheit, hatte 20 Sous.</p>
+      <div class="help-hist"><b>Historisch:</b> Arme Familien gaben für Brot oft die Hälfte ihres Einkommens aus, in Hungerjahren bis zu 80 %. Steigende Brotpreise machten schnell aus Knappheit echte Not. Frauen verdienten für vergleichbare Arbeit meist nur etwa die Hälfte bis zwei Drittel des Männerlohns.</div>
+      <p><b>Im Spiel:</b> Die Zahlen sind vereinfacht. Jedes Jahr kommen Einnahmen dazu und feste Kosten gehen ab. Reicht das Geld nicht, hungerst du, und deine Gesundheit bricht ein.</p>
+
+      <h3>❤️ Gesundheit</h3>
+      <p>Sie zeigt, wie viel Kraft dein Körper noch hat. Hunger, Kälte, harte Arbeit und Krankheit zehren sie auf. Medizinische Versorgung für Arme gab es kaum, auch keine Lohnfortzahlung oder Krankenversicherung.</p>
+      <div class="help-hist"><b>Historisch:</b> Die Lebenserwartung bei der Geburt lag in Frankreich um 1700 bei etwa 25 bis 30 Jahren, vor allem wegen der hohen Kindersterblichkeit: Etwa jedes vierte Kind starb im ersten Lebensjahr. Die Hungerkrisen von 1693/94 und 1709 kosteten nach Schätzungen insgesamt weit über eine Million Menschen das Leben.</div>
+
+      <h3>👁️ Staatliche Beobachtung</h3>
+      <p>Sie zeigt, wie sehr du den Behörden auffällst. Betteln, Schmuggeln, Stehlen, Arbeit ohne Zunft oder unehrenhafte Wege lassen sie steigen. Bei 100 % holen dich die Wachen.</p>
+      <div class="help-hist"><b>Historisch:</b> 1656 gründete Ludwig XIV. in Paris das Hôpital Général. Dorthin wurden Bettler, Arbeitslose und andere Arme eingesperrt und zur Arbeit gezwungen, Frauen vor allem in der Salpêtrière, Männer in Bicêtre. Armut galt nicht als Not, sondern als Vergehen. Die Steuern (Taille, Gabelle) trafen vor allem die Armen, weil Adel und Klerus weitgehend befreit waren. Salzschmugglern drohten die Galeeren.</div>
+
+      <h3>👶 Kinder (nur bei Marguerite)</h3>
+      <p>Jedes Kind verursacht Kosten. Es zu verlieren oder abgeben zu müssen, belastet die Familie auch seelisch. Frauen trugen die Sorge für die Kinder meist allein.</p>
+
+      <h3>🗣️ Stimme der Gesellschaft</h3>
+      <p>Nach vielen Entscheidungen hörst du, was Menschen über Arme sagten: Pfarrer, Nachbarn, Beamte. Die Sätze sind erfunden, aber an typische Vorurteile der Zeit angelehnt. Achte darauf, wer dir die Schuld gibt und wer nicht fragt, warum du in dieser Lage bist.</p>
+
+      <h3>⚖️ Ein Hinweis zu den Zahlen</h3>
+      <p>Das Spiel vereinfacht vieles, zum Beispiel Löhne, Fristen und Preise. Es soll zeigen, wie Armut funktionierte, keine genauen Werte nachbilden.</p>
+    </div>
+    <div id="help-footer">
+      <span id="help-hint">Lies bis zum Ende, dann kannst du bestätigen.</span>
+      <button id="help-close" onclick="closeHelp(false)">Schließen</button>
+      <button id="help-ok" onclick="closeHelp(true)" disabled>Gelesen – verstanden</button>
+    </div>
+  </div>
+</div>
+
 <div id="game-container">
     <div id="start-screen">
         <h1>Paris 1695: Im Schatten des Sonnenkönigs</h1>
         <p style="font-size: 1.1em; max-width: 650px; line-height: 1.6; margin-bottom: 15px;">Frankreich unter Ludwig XIV. führt zahllose Kriege. Der Bau von Versailles und das stehende Heer verschlingen Unsummen. Das einfache Volk trägt die gesamte Last.</p>
         <p style="font-size: 1.05em; max-width: 650px; line-height: 1.6; margin-bottom: 20px; color: #d4c5a0;"><b>Dein Ziel:</b> Spiele <u>beide</u> Charaktere (Marguerite und Jean) und schaffe es, jeden von ihnen über einen Zeitraum von <b>6 Jahren</b> am Leben zu halten, ohne im Zuchthaus zu landen oder an Erschöpfung zu sterben. Schafft ein Charakter das Ziel nicht, musst du einen neuen Anlauf wagen und so lange verschiedene Strategien ausprobieren, bis du den optimalen Überlebenspfad gefunden hast!</p>
+        <div id="gate-box">
+            <p id="gate-text">📖 Bevor du spielst, lies bitte die Erklärung zu Sous, Gesundheit und staatlicher Beobachtung.</p>
+            <button class="help-btn" onclick="openHelp()">📖 Erklärung lesen</button>
+        </div>
         <div class="button-container" style="width: 100%; max-width: 500px;">
             
-            <button class="start-btn" onclick="startGame('frau')">
+            <button class="start-btn" id="start-frau" onclick="startGame('frau')" disabled>
                 <div class="sprite state-normal" style="background-image: url('maguerite.png');"></div>
                 Marguerite spielen (Witwe mit 2 Kindern)
             </button>
             
-            <button class="start-btn" onclick="startGame('mann')">
+            <button class="start-btn" id="start-mann" onclick="startGame('mann')" disabled>
                 <div class="sprite state-normal" style="background-image: url('jean.png');"></div>
                 Jean spielen (Tagelöhner aus der Provinz)
             </button>
@@ -176,8 +248,9 @@
         <div id="status-bar">
             <div class="status-item" id="sous-container" title="Währung">🪙 Sous: <span id="sous-val">0</span></div>
             <div class="status-item" id="gesundheit-container" title="Körperliche Verfassung">❤️ Gesundheit: <span id="gesundheit-val">0</span>%</div>
-            <div class="status-item" id="fokus-container" title="Gefahr durch Wachen/Armenhaus">👁️ Fokus: <span id="fokus-val">0</span>%</div>
+            <div class="status-item" id="fokus-container" title="Gefahr durch Wachen/Armenhaus">👁️ Beobachtung: <span id="fokus-val">0</span>%</div>
             <div class="status-item" id="kinder-container" title="Abhängige Kinder" style="display: none;">👶 Kinder: <span id="kinder-val">0</span></div>
+            <button class="status-item help-open" onclick="openHelp()" title="Erklärung der Symbole noch einmal lesen">ℹ️ Erklärung</button>
         </div>
         
         <div id="main-content">
@@ -202,43 +275,55 @@
         charakter: '', 
         runde: 0,
         schmiedeAbtretung: false,
-        waisenhausGewählt: false
+        waisenhausGewählt: false,
+        hinweis: '',
+        stimmen: []
     };
+
+    // Frauen erhielten für vergleichbare Arbeit deutlich weniger (hier: 70 % des Männerlohns, vereinfacht)
+    const LOHN_FAKTOR = 0.7;
+
+    // Ergebnisse beider Durchgänge merken, solange der Tab offen ist
+    function speichern(key, val) { try { sessionStorage.setItem(key, val); } catch (e) {} }
+    function laden(key) { try { return sessionStorage.getItem(key); } catch (e) { return null; } }
+    let runs = {};
+    try { runs = JSON.parse(laden('armut_runs') || '{}') || {}; } catch (e) { runs = {}; }
+    let erklaerungGelesen = laden('armut_gelesen') === '1';
 
     let aktSzenarien = [];
 
     // --- Storyline: Die Frau (Marguerite) ---
     const szenarienFrau = [
         {
-            text: "<b>Jahr 1: Der Husten</b><br><br>Dein Mann leitet eine kleine Schmiede im Faubourg Saint-Antoine. Ihr habt zwei kleine Kinder, die ernährt werden müssen. Doch diesen Winter erkrankt dein Mann schwer und fällt aus. Eure Rücklagen schmelzen.",
+            text: "<b>Jahr 1: Der Husten</b><br><br>Dein Mann leitet eine kleine Schmiede im Faubourg Saint-Antoine. Ihr habt zwei kleine Kinder, die ernährt werden müssen. Sein Geselle Étienne hält den Betrieb am Laufen – ein jähzorniger Mann, vor dem selbst die Lehrlinge Angst haben. Doch diesen Winter erkrankt dein Mann schwer und fällt aus. Eure Rücklagen schmelzen.",
             choices: [
-                { text: "Einen teuren Medicus bezahlen und hoffen.", effect: () => { state.sous -= 25; state.gesundheit -= 5; } },
-                { text: "Die Schmiede nachts heimlich allein weiterführen.", effect: () => { state.sous += 12; state.gesundheit -= 35; state.fokus += 25; } },
-                { text: "Die Arbeit ruhen lassen, um ihn zu pflegen.", effect: () => { state.sous -= 15; state.gesundheit -= 10; } },
-                { text: "Vor der Kirche stundenlang in der Kälte um milde Gaben bitten.", effect: () => { state.sous += 6; state.gesundheit -= 20; state.fokus += 15; } }
+                { typ: 'verzicht', text: "Einen teuren Medicus bezahlen und hoffen.", effect: () => { state.sous -= 25; state.gesundheit -= 5; } },
+                { typ: 'illegal', text: "Die Schmiede nachts heimlich selbst weiterführen, wenn Étienne fort ist.", effect: () => { state.sous += 12; state.gesundheit -= 35; state.fokus += 25; } },
+                { typ: 'verzicht', text: "Die Arbeit ruhen lassen, um ihn zu pflegen.", effect: () => { state.sous -= 15; state.gesundheit -= 10; } },
+                { typ: 'bettel', text: "Vor der Kirche stundenlang in der Kälte um milde Gaben bitten.", effect: () => { state.sous += 6; state.gesundheit -= 20; state.fokus += 15; } }
             ]
         },
         {
-            text: "<b>Jahr 2: Der Zunftzwang</b><br><br>Dein Mann ist gestorben. Die Zunft verbietet dir als Frau das Führen der Werkstatt. Du stehst ohne Einnahmen da, aber die Mäuler deiner Kinder müssen gestopft werden.",
+            text: "<b>Jahr 2: Das Übergangsjahr</b><br><br>Dein Mann ist gestorben. Nach dem Zunftrecht darfst du die Schmiede als Witwe nur ein Übergangsjahr weiterführen. Danach soll ein Geselle sie übernehmen – meist heiratet die Witwe ihn, damit der Betrieb in der Familie bleibt. Der Geselle deines Mannes ist Étienne. Er hat Lehrlinge geprügelt und dich schon bedroht. Ihn zu heiraten kommt für dich nicht in Frage. Ohne Heirat bleibt dir nur die Frist der Zunft, und die Mäuler deiner Kinder müssen gestopft werden.<br><br><span style='font-size:0.85em;color:#a59682;'><i>(Vereinfachung im Spiel: Historisch dauerte die Übergangszeit für Witwen oft etwa drei Jahre. Im Spiel ist sie auf ein Jahr verkürzt.)</i></span>",
             choices: [
-                { text: "Die Werkstatt zwangsweise an die Zunft abtreten.", effect: () => { state.sous += 30; state.fokus -= 10; state.gesundheit -= 10; state.schmiedeAbtretung = true; state.waisenhausGewählt = false; } },
-                { text: "Dich weigern und illegal weiter schmieden.", effect: () => { state.sous += 15; state.fokus += 65; state.gesundheit -= 20; state.schmiedeAbtretung = false; state.waisenhausGewählt = false; } },
-                { text: "Eines deiner Kinder ins Waisenhaus geben.", effect: () => { state.sous += 22; state.fokus += 15; state.gesundheit -= 15; state.kinder -= 1; state.schmiedeAbtretung = false; state.waisenhausGewählt = true; } },
-                { text: "Die Werkstatt heimlich an zwielichtige Hehler verramschen.", effect: () => { state.sous += 26; state.fokus += 45; state.gesundheit -= 15; state.schmiedeAbtretung = false; state.waisenhausGewählt = false; } }
+                { typ: 'dienst', text: "Die Werkstatt nach Ablauf der Frist an die Zunft abtreten.", effect: () => { state.sous += 30; state.fokus -= 10; state.gesundheit -= 10; state.schmiedeAbtretung = true; state.waisenhausGewählt = false; } },
+                { typ: 'illegal', text: "Dich über die Frist hinwegsetzen und illegal weiter schmieden.", effect: () => { state.sous += 15; state.fokus += 65; state.gesundheit -= 20; state.schmiedeAbtretung = false; state.waisenhausGewählt = false; } },
+                { typ: 'kind', text: "Eines deiner Kinder ins Waisenhaus geben.", effect: () => { state.sous += 22; state.fokus += 15; state.gesundheit -= 15; state.kinder -= 1; state.schmiedeAbtretung = false; state.waisenhausGewählt = true; } },
+                { typ: 'illegal', text: "Die Werkstatt heimlich an zwielichtige Hehler verramschen.", effect: () => { state.sous += 26; state.fokus += 45; state.gesundheit -= 15; state.schmiedeAbtretung = false; state.waisenhausGewählt = false; } }
             ]
         },
         {
-            text: "<b>Jahr 3: Die Steuerlast der Frauen</b><br><br>Du bist auf ungelernte Hungerlohn-Arbeit reduziert. Nun werden die direkte Grundsteuer (Taille) und die horrende Salzsteuer (Gabelle) fällig. Salz ist zum Konservieren von Essen überlebenswichtig.",
+            text: "<b>Jahr 3: Hungerlohn und Steuern</b><br><br>Du bist auf ungelernte Hungerlohn-Arbeit reduziert. Nun werden die direkte Grundsteuer (Taille) und die horrende Salzsteuer (Gabelle) fällig. Salz ist zum Konservieren von Essen überlebenswichtig.",
             choices: [
                 { 
-                    text: "14 Stunden täglich am kalten Ufer der Seine als Wäscherin schuften.", 
+                    typ: 'arbeit', lohn: true, text: "14 Stunden täglich am kalten Ufer der Seine als Wäscherin schuften.", 
                     effect: () => { 
-                        if (state.schmiedeAbtretung) { state.gesundheit -= 100; } 
+                        if (state.schmiedeAbtretung) { state.gesundheit -= 100; state.hinweis = 'Ohne Werkstatt hast du Ofen, Werkzeug und Rücklagen verloren. In der eiskalten Wäscherei am Fluss, ohne Wärme zu Hause und mit Kindern, die versorgt werden müssen, bricht dein Körper zusammen.'; } 
                         else { state.sous += 30; state.gesundheit -= 18; } 
                     } 
                 },
                 { 
-                    text: "Als Amme für den Adel arbeiten.", 
+                    typ: 'dienst', lohn: true, text: "Als Amme für den Adel arbeiten.", 
                     effect: () => { 
                         if (state.schmiedeAbtretung) { 
                             state.kinder -= 1; 
@@ -252,21 +337,22 @@
                             // Anpassung: Das Baby stirbt nun ebenfalls, wenn die Mutter extrem beansprucht wurde
                             state.kinder -= 1; 
                             state.gesundheit -= 100; 
+                            state.hinweis = 'Als Amme musstest du im Haus der Adligen leben. Deine eigenen Kinder waren sich selbst überlassen, eines ist gestorben. Die Doppelbelastung hältst du nicht aus.'; 
                         } 
                     } 
                 },
-                { text: "Heimlich illegales, unbesteuertes Salz kaufen und nachts auf der Straße betteln.", effect: () => { state.sous += 10; state.fokus += 55; state.gesundheit -= 15; } },
-                { text: "Deine Haare an einen adligen Perückenmacher verkaufen (sozial geächtet, gerätst schnell unter Beobachtung).", effect: () => { state.sous += 14; state.gesundheit -= 15; state.fokus += 25; } }
+                { typ: 'illegal', text: "Heimlich illegales, unbesteuertes Salz kaufen und nachts auf der Straße betteln.", effect: () => { state.sous += 10; state.fokus += 55; state.gesundheit -= 15; } },
+                { typ: 'ruf', text: "Deine Haare an einen adligen Perückenmacher verkaufen (sozial geächtet, gerätst schnell unter Beobachtung).", effect: () => { state.sous += 14; state.gesundheit -= 15; state.fokus += 25; } }
             ]
         },
         {
             text: "<b>Jahr 4: Die Brot-Inflation</b><br><br>Eine Missernte lässt die Getreidepreise explodieren. Der Preis für einen Laib Brot verzehnfacht sich. Der Hunger im Arbeiterviertel wird allgegenwärtig.",
             choices: [
-                { text: "Essensrationen radikal kürzen und den Hunger ertragen.", effect: () => { state.sous -= 0; state.gesundheit -= 30; } },
-                { text: "Geld bei einem skrupellosen Wucherer leihen, um Brot zu kaufen.", effect: () => { state.sous += 18; state.fokus += 50; state.gesundheit -= 10; } },
-                { text: "In einer illegalen Seidenweberei arbeiten, fernab jeglicher Zunftkontrolle.", effect: () => { state.sous += 16; state.fokus += 45; state.gesundheit -= 20; } },
+                { typ: 'verzicht', text: "Essensrationen radikal kürzen und den Hunger ertragen.", effect: () => { state.sous -= 0; state.gesundheit -= 30; } },
+                { typ: 'ruf', text: "Geld bei einem skrupellosen Wucherer leihen, um Brot zu kaufen.", effect: () => { state.sous += 18; state.fokus += 50; state.gesundheit -= 10; } },
+                { typ: 'illegal', lohn: true, text: "In einer illegalen Seidenweberei arbeiten, fernab jeglicher Zunftkontrolle.", effect: () => { state.sous += 16; state.fokus += 45; state.gesundheit -= 20; } },
                 { 
-                    text: () => state.kinder > 0 ? "Dich mit den Kindern in ein völlig überfülltes, kirchliches Armenspital flüchten." : "Allein anstehen bei der kirchlichen Brotverteilung (Aumônes) der Pfarrei.", 
+                    typ: 'bettel', text: () => state.kinder > 0 ? "Dich mit den Kindern in ein völlig überfülltes, kirchliches Armenspital flüchten." : "Allein anstehen bei der kirchlichen Brotverteilung (Aumônes) der Pfarrei.", 
                     effect: () => { state.sous += 6; state.gesundheit -= 20; state.fokus -= 15; } 
                 }
             ]
@@ -274,19 +360,19 @@
         {
             text: "<b>Jahr 5: Die Seuche</b><br><br>Die mangelnde Hygiene und der ständige Hunger fordern ihren Tribut. Eine Seuche bricht in den engen Gassen von Paris aus. Deine Familie ist extrem anfällig.",
             choices: [
-                { text: "Dich als Leichenwäscherin verdingen.", effect: () => { state.sous += 22; state.gesundheit -= 10; state.fokus -= 10; } },
-                { text: "Arznei und sauberes Wasser von fahrenden Händlern stehlen.", effect: () => { state.sous += 0; state.fokus += 70; state.gesundheit -= 15; } },
-                { text: "Trotz Fieber und Verbot heimlich alte Kleider von Verstorbenen flicken.", effect: () => { state.sous += 14; state.gesundheit -= 20; state.fokus += 25; } },
-                { text: "Angebliche 'Wunderheiler'-Medizin aus dubiosen Quellen teuer kaufen.", effect: () => { state.sous -= 10; state.gesundheit -= 15; state.fokus += 10; } }
+                { typ: 'arbeit', lohn: true, text: "Dich als Leichenwäscherin verdingen.", effect: () => { state.sous += 22; state.gesundheit -= 10; state.fokus -= 10; } },
+                { typ: 'illegal', text: "Arznei und sauberes Wasser von fahrenden Händlern stehlen.", effect: () => { state.sous += 0; state.fokus += 70; state.gesundheit -= 15; } },
+                { typ: 'illegal', lohn: true, text: "Trotz Fieber und Verbot heimlich alte Kleider von Verstorbenen flicken.", effect: () => { state.sous += 14; state.gesundheit -= 20; state.fokus += 25; } },
+                { typ: 'ruf', text: "Angebliche 'Wunderheiler'-Medizin aus dubiosen Quellen teuer kaufen.", effect: () => { state.sous -= 10; state.gesundheit -= 15; state.fokus += 10; } }
             ]
         },
         {
             text: "<b>Jahr 6: Ausweglosigkeit</b><br><br>Es ist der kälteste Winter des Jahrzehnts. Das Brennholz ist unbezahlbar. Wachen patrouillieren verstärkt, um verarmte Menschen ins Zuchthaus zu sperren.",
             choices: [
-                { text: "Dich aus reiner Verzweiflung auf dem billigen Straßenstrich prostituieren.", effect: () => { state.sous += 20; state.gesundheit -= 30; state.fokus += 70; } },
-                { text: "In einer Spinnmanufaktur bei Wasser und Brot bis zur völligen Erschöpfung arbeiten.", effect: () => { state.sous += 12; state.gesundheit -= 35; } },
-                { text: "Einen Laib Brot stehlen, um das nackte Überleben für heute zu sichern.", effect: () => { state.sous += 12; state.fokus += 90; } },
-                { text: "Als 'Fille de Joie' in einem heimlichen Edelbordell arbeiten.", effect: () => { state.sous += 32; state.gesundheit -= 30; state.fokus += 45; } }
+                { typ: 'sex', text: "Dich aus reiner Verzweiflung auf dem billigen Straßenstrich prostituieren.", effect: () => { state.sous += 20; state.gesundheit -= 30; state.fokus += 70; } },
+                { typ: 'arbeit', lohn: true, text: "In einer Spinnmanufaktur bei Wasser und Brot bis zur völligen Erschöpfung arbeiten.", effect: () => { state.sous += 12; state.gesundheit -= 35; } },
+                { typ: 'illegal', text: "Einen Laib Brot stehlen, um das nackte Überleben für heute zu sichern.", effect: () => { state.sous += 12; state.fokus += 90; } },
+                { typ: 'sex', text: "Als 'Fille de Joie' in einem heimlichen Edelbordell arbeiten.", effect: () => { state.sous += 32; state.gesundheit -= 30; state.fokus += 45; } }
             ]
         }
     ];
@@ -296,63 +382,192 @@
         {
             text: "<b>Jahr 1: Der Bau von Versailles</b><br><br>Du bist als Tagelöhner in Paris. Der König sucht Arbeiter für den Bau seines Schlosses in Versailles. Die Arbeit in den morastigen Sümpfen ist lebensgefährlich, wird aber relativ hoch entlohnt.",
             choices: [
-                { text: "In Versailles anheuern.", effect: () => { state.sous += 14; state.gesundheit -= 30; } },
-                { text: "Als Wasserträger in Paris arbeiten.", effect: () => { state.sous += 9; state.gesundheit -= 12; } },
-                { text: "Dich beim königlichen Militär verpflichten.", effect: () => { state.sous += 18; state.gesundheit -= 40; state.fokus += 15; } },
-                { text: "Versuchen, als niederer Lakai bei einem Adligen unterzukommen.", effect: () => { state.sous += 7; state.gesundheit -= 5; state.fokus -= 20; } }
+                { typ: 'arbeit', text: "In Versailles anheuern.", effect: () => { state.sous += 14; state.gesundheit -= 30; } },
+                { typ: 'arbeit', text: "Als Wasserträger in Paris arbeiten.", effect: () => { state.sous += 9; state.gesundheit -= 12; } },
+                { typ: 'dienst', text: "Dich beim königlichen Militär verpflichten.", effect: () => { state.sous += 18; state.gesundheit -= 40; state.fokus += 15; } },
+                { typ: 'dienst', text: "Versuchen, als niederer Lakai bei einem Adligen unterzukommen.", effect: () => { state.sous += 7; state.gesundheit -= 5; state.fokus -= 20; } }
             ]
         },
         {
             text: "<b>Jahr 2: Die Steuereintreiber</b><br><br>Eine Missernte treibt die Brotpreise in die Höhe. Die Eintreiber fordern die Grundsteuer (Taille) und die Salzsteuer (Gabelle). Ohne Rücklagen bist du gezwungen, jede harte Arbeit anzunehmen.",
             choices: [
-                { text: "Auf einer königlichen Werft Schiffe abdichten.", effect: () => { state.sous += 12; state.gesundheit -= 35; } },
-                { text: "Als Handlanger für einen Maurer ackern.", effect: () => { state.sous += 10; state.gesundheit -= 18; } },
-                { text: "Als 'Faux-saunier' nachts illegales Salz schmuggeln.", effect: () => { state.sous += 28; state.fokus += 40; state.gesundheit -= 15; } },
-                { text: "Auf einen Bauernhof fliehen und dich als Knecht verstecken.", effect: () => { state.sous += 6; state.gesundheit -= 10; state.fokus -= 25; } }
+                { typ: 'arbeit', text: "Auf einer königlichen Werft Schiffe abdichten.", effect: () => { state.sous += 12; state.gesundheit -= 35; } },
+                { typ: 'arbeit', text: "Als Handlanger für einen Maurer ackern.", effect: () => { state.sous += 10; state.gesundheit -= 18; } },
+                { typ: 'illegal', text: "Als 'Faux-saunier' nachts illegales Salz schmuggeln.", effect: () => { state.sous += 28; state.fokus += 40; state.gesundheit -= 15; } },
+                { typ: 'dienst', text: "Auf einen Bauernhof fliehen und dich als Knecht verstecken.", effect: () => { state.sous += 6; state.gesundheit -= 10; state.fokus -= 25; } }
             ]
         },
         {
             text: "<b>Jahr 3: Der Krieg des Königs</b><br><br>Ludwig XIV. führt den Pfälzischen Erbfolgekrieg. Die Armee braucht ständigen Nachschub. Werber durchstreifen Paris und zwingen Tagelöhner mit brutalen Methoden in den Dienst.",
             choices: [
-                { text: "Freiwillig melden.", effect: () => { state.sous += 16; state.gesundheit -= 50; } },
-                { text: "Untertauchen und illegal als Dieb überleben.", effect: () => { state.sous += 9; state.fokus += 50; state.gesundheit -= 15; } },
-                { text: "Dich in den dunklen Kohlekellern als Träger verdingen, um den Werbern zu entgehen.", effect: () => { state.sous += 10; state.gesundheit -= 22; } },
-                { text: "Dich auf einem adligen Landsitz unauffällig als Knecht verbergen.", effect: () => { state.sous += 6; state.gesundheit -= 8; state.fokus -= 20; } }
+                { typ: 'dienst', text: "Freiwillig melden.", effect: () => { state.sous += 16; state.gesundheit -= 50; } },
+                { typ: 'illegal', text: "Untertauchen und illegal als Dieb überleben.", effect: () => { state.sous += 9; state.fokus += 50; state.gesundheit -= 15; } },
+                { typ: 'arbeit', text: "Dich in den dunklen Kohlekellern als Träger verdingen, um den Werbern zu entgehen.", effect: () => { state.sous += 10; state.gesundheit -= 22; } },
+                { typ: 'dienst', text: "Dich auf einem adligen Landsitz unauffällig als Knecht verbergen.", effect: () => { state.sous += 6; state.gesundheit -= 8; state.fokus -= 20; } }
             ]
         },
         {
             text: "<b>Jahr 4: Die große Hungersnot</b><br><br>Gegen Ende des Jahrzehnts trifft eine historische Kältewelle Frankreich. Die Ernten fallen aus. Auf den Straßen von Paris brechen Verzweifelte tot zusammen.",
             choices: [
-                { text: "Dich den gewaltsamen Brotunruhen anschließen und Bäckereien plündern.", effect: () => { state.sous += 10; state.fokus += 65; state.gesundheit -= 20; } },
-                { text: "Für 16 Stunden am Tag Leichenkarren aus der Stadt ziehen.", effect: () => { state.sous += 12; state.gesundheit -= 38; } },
-                { text: "Alles Ersparte für gestrecktes Sägemehl-Brot ausgeben und hungern.", effect: () => { state.sous -= 6; state.gesundheit -= 30; } },
-                { text: "Sich stundenlang in die Schlange für die kirchliche Brotverteilung (Aumônes) einreihen.", effect: () => { state.sous += 5; state.gesundheit -= 12; state.fokus -= 15; } }
+                { typ: 'illegal', text: "Dich den gewaltsamen Brotunruhen anschließen und Bäckereien plündern.", effect: () => { state.sous += 10; state.fokus += 65; state.gesundheit -= 20; } },
+                { typ: 'arbeit', text: "Für 16 Stunden am Tag Leichenkarren aus der Stadt ziehen.", effect: () => { state.sous += 12; state.gesundheit -= 38; } },
+                { typ: 'verzicht', text: "Alles Ersparte für gestrecktes Sägemehl-Brot ausgeben und hungern.", effect: () => { state.sous -= 6; state.gesundheit -= 30; } },
+                { typ: 'bettel', text: "Sich stundenlang in die Schlange für die kirchliche Brotverteilung (Aumônes) einreihen.", effect: () => { state.sous += 5; state.gesundheit -= 12; state.fokus -= 15; } }
             ]
         },
         {
             text: "<b>Jahr 5: Der Arbeitsunfall</b><br><br>Bei Verladearbeiten am Hafen stürzt eine schwere Kiste auf dein Bein. Es gibt keine Lohnfortzahlung und keine Krankenversicherung im 17. Jahrhundert.",
             choices: [
-                { text: "Die Schmerzen ignorieren und humpelnd weiterarbeiten.", effect: () => { state.sous += 9; state.gesundheit -= 35; } },
-                { text: "Einen Quacksalber bezahlen, der das Bein notdürftig schient.", effect: () => { state.sous -= 12; state.gesundheit -= 6; } },
-                { text: "Arbeitsunfähig auf der Straße betteln gehen.", effect: () => { state.sous += 6; state.fokus += 40; state.gesundheit -= 15; } },
-                { text: "In einer Kirche Asyl suchen und auf die Barmherzigkeit der Mönche hoffen.", effect: () => { state.sous += 4; state.gesundheit -= 4; state.fokus -= 15; } }
+                { typ: 'verzicht', text: "Die Schmerzen ignorieren und humpelnd weiterarbeiten.", effect: () => { state.sous += 9; state.gesundheit -= 35; } },
+                { typ: 'verzicht', text: "Einen Quacksalber bezahlen, der das Bein notdürftig schient.", effect: () => { state.sous -= 12; state.gesundheit -= 6; } },
+                { typ: 'bettel', text: "Arbeitsunfähig auf der Straße betteln gehen.", effect: () => { state.sous += 6; state.fokus += 40; state.gesundheit -= 15; } },
+                { typ: 'bettel', text: "In einer Kirche Asyl suchen und auf die Barmherzigkeit der Mönche hoffen.", effect: () => { state.sous += 4; state.gesundheit -= 4; state.fokus -= 15; } }
             ]
         },
         {
             text: "<b>Jahr 6: Das Vagabunden-Edikt</b><br><br>Um die rebellierenden Massen zu kontrollieren, erlässt der König ein hartes Edikt: Jeder ohne feste Arbeit wird verhaftet und auf die Galeeren oder ins Arbeitshaus geschickt.",
             choices: [
-                { text: "In die sicheren Kellergewölbe der Stadt abtauchen.", effect: () => { state.sous += 6; state.gesundheit -= 12; state.fokus -= 20; } },
-                { text: "Einen korrupten Gardisten bestechen, um falsche Arbeitspapiere zu erhalten.", effect: () => { state.sous -= 14; state.fokus -= 25; state.gesundheit -= 8; } },
-                { text: "Mit einer Schmugglerbande einen riskanten Überfall wagen.", effect: () => { state.sous += 16; state.fokus += 65; state.gesundheit -= 20; } },
-                { text: "Dich einer religiösen Bruderschaft anschließen, die Schutz bietet.", effect: () => { state.sous += 6; state.gesundheit -= 8; state.fokus -= 25; } }
+                { typ: 'illegal', text: "In die sicheren Kellergewölbe der Stadt abtauchen.", effect: () => { state.sous += 6; state.gesundheit -= 12; state.fokus -= 20; } },
+                { typ: 'illegal', text: "Einen korrupten Gardisten bestechen, um falsche Arbeitspapiere zu erhalten.", effect: () => { state.sous -= 14; state.fokus -= 25; state.gesundheit -= 8; } },
+                { typ: 'illegal', text: "Mit einer Schmugglerbande einen riskanten Überfall wagen.", effect: () => { state.sous += 16; state.fokus += 65; state.gesundheit -= 20; } },
+                { typ: 'dienst', text: "Dich einer religiösen Bruderschaft anschließen, die Schutz bietet.", effect: () => { state.sous += 6; state.gesundheit -= 8; state.fokus -= 25; } }
             ]
         }
     ];
 
+
+    // --- Stimme der Gesellschaft (erfundene, aber typische Urteile über Arme) ---
+    const STIMMEN = {
+        arbeit: {
+            frau: [
+                { w: 'Zunftmeister', t: 'Für Frauenarbeit zahlt man eben nur den halben Lohn. Sie ist ja bloß Hilfsarbeit.' },
+                { w: 'Nachbarin', t: 'Sie schuftet, das stimmt. Aber wer so viele Kinder hat, hätte besser vorsorgen müssen.' }
+            ],
+            mann: [
+                { w: 'Aufseher', t: 'Fleiß ist Pflicht. Wer klagt, soll sich eben mehr anstrengen.' },
+                { w: 'Pfarrer', t: 'Gott hat jedem seinen Stand gegeben. Wer im Schweiße seines Angesichts arbeitet, soll nicht murren.' }
+            ]
+        },
+        bettel: {
+            frau: [
+                { w: 'Pfarrer', t: 'Almosen gibt es nur für die würdigen Armen. Sie soll erst beweisen, dass sie nicht selbst an ihrem Unglück schuld ist.' },
+                { w: 'Passantin', t: 'Hat sie nicht zwei Hände zum Arbeiten? Faulheit steht niemandem gut.' }
+            ],
+            mann: [
+                { w: 'Gardist', t: 'Betteln ist verboten. Wer gesunde Glieder hat, soll arbeiten gehen.' },
+                { w: 'Pfarrer', t: 'Wer gesund ist und bettelt, nimmt den wirklich Bedürftigen das Brot weg.' }
+            ]
+        },
+        illegal: {
+            frau: [
+                { w: 'Richter', t: 'Eine Frau, die stiehlt, hat nicht nur das Gesetz verletzt, sondern auch ihre Pflicht als Mutter.' },
+                { w: 'Nachbarin', t: 'Man hat ja gleich gewusst, dass mit dieser Familie etwas nicht stimmt.' }
+            ],
+            mann: [
+                { w: 'Beamter', t: 'Schmuggler und Diebe sind Feinde des Königs. Sie haben es sich selbst zuzuschreiben.' },
+                { w: 'Wirt', t: 'Wer ehrlich arbeitet, wird nicht zum Dieb. Das ist Charakterschwäche.' }
+            ]
+        },
+        sex: {
+            frau: [
+                { w: 'Pfarrer', t: 'Eine gefallene Frau. Sie hat Schande über sich und ihre Kinder gebracht.' },
+                { w: 'Polizeikommissar', t: 'Solche Frauen gehören in die Salpêtrière. Ihr Weg war ihre eigene Wahl.' }
+            ]
+        },
+        verzicht: {
+            frau: [
+                { w: 'Nachbarin', t: 'Eine gute Mutter kommt auch mit wenig aus.' },
+                { w: 'Pfarrer', t: 'Hunger ist eine Prüfung Gottes. Klagen ist Undankbarkeit.' }
+            ],
+            mann: [
+                { w: 'Vorarbeiter', t: 'Wer sich nicht einmal Brot leisten kann, hat vorher schlecht gewirtschaftet.' },
+                { w: 'Pfarrer', t: 'Der Arme soll sich in Geduld üben. Der Lohn kommt im Himmel.' }
+            ]
+        },
+        dienst: {
+            frau: [
+                { w: 'Zunftmeister', t: 'Das Handwerk gehört den Meistern. Eine Frau kann es höchstens verwalten, nie führen.' },
+                { w: 'Hausherrin', t: 'Sei dankbar, dass wir dich aufnehmen. Eine Amme hat keine Ansprüche zu stellen.' }
+            ],
+            mann: [
+                { w: 'Adliger', t: 'Diener schätzen sich glücklich, uns dienen zu dürfen. Undank wäre ein Laster.' },
+                { w: 'Werber', t: 'Ein Mann ohne feste Arbeit gehört zum König. Das ist eine Ehre für ihn.' }
+            ]
+        },
+        kind: {
+            frau: [
+                { w: 'Pfarrer', t: 'Wer seine Kinder nicht ernähren kann, handelt unverantwortlich. Das Waisenhaus wird sie Gehorsam lehren.' },
+                { w: 'Nachbarin', t: 'Ein Kind abzugeben! Eine richtige Mutter hätte einen anderen Weg gefunden.' }
+            ]
+        },
+        ruf: {
+            frau: [
+                { w: 'Nachbarin', t: 'Sie verkauft ihr Haar? Eitelkeit und Schande. Das hat sie nun davon.' },
+                { w: 'Händler', t: 'Wer Schulden macht, lebt über seine Verhältnisse. Das ist ihre Sache.' }
+            ],
+            mann: [
+                { w: 'Händler', t: 'Wer Schulden macht, lebt über seine Verhältnisse. Das ist seine Sache.' }
+            ]
+        }
+    };
+
+    function stimmeFuer(wahl, r) {
+        const pool = STIMMEN[wahl.typ] || STIMMEN.arbeit;
+        const liste = pool[state.charakter] || pool.frau || pool.mann;
+        return liste[r % liste.length];
+    }
+
+    // --- Erklärung (Pflicht vor dem ersten Spiel) ---
+    function startFreigeben() {
+        document.getElementById('start-frau').disabled = !erklaerungGelesen;
+        document.getElementById('start-mann').disabled = !erklaerungGelesen;
+        const box = document.getElementById('gate-box');
+        box.classList.toggle('gelesen', erklaerungGelesen);
+        document.getElementById('gate-text').innerHTML = erklaerungGelesen
+            ? '✅ Erklärung gelesen. Du kannst jetzt eine Figur wählen.'
+            : '📖 Bevor du spielst, lies bitte die Erklärung zu Sous, Gesundheit und staatlicher Beobachtung.';
+    }
+
+    function helpBodyAmEnde() {
+        const b = document.getElementById('help-body');
+        return b.scrollTop + b.clientHeight >= b.scrollHeight - 12;
+    }
+
+    function helpPruefen() {
+        const ok = document.getElementById('help-ok');
+        const hint = document.getElementById('help-hint');
+        if (erklaerungGelesen) { ok.disabled = false; hint.textContent = 'Du hast die Erklärung bereits gelesen.'; return; }
+        const amEnde = helpBodyAmEnde();
+        ok.disabled = !amEnde;
+        hint.textContent = amEnde ? 'Du kannst jetzt bestätigen.' : 'Lies bis zum Ende, dann kannst du bestätigen. ↓';
+    }
+
+    function openHelp() {
+        document.getElementById('help-overlay').classList.remove('hidden');
+        const b = document.getElementById('help-body');
+        b.scrollTop = 0;
+        requestAnimationFrame(helpPruefen);
+        document.getElementById('help-close').focus();
+    }
+
+    function closeHelp(bestaetigt) {
+        if (bestaetigt && (erklaerungGelesen || helpBodyAmEnde())) {
+            erklaerungGelesen = true;
+            speichern('armut_gelesen', '1');
+            startFreigeben();
+        }
+        document.getElementById('help-overlay').classList.add('hidden');
+    }
+
+    document.getElementById('help-body').addEventListener('scroll', helpPruefen);
+    window.addEventListener('resize', () => { if (!document.getElementById('help-overlay').classList.contains('hidden')) helpPruefen(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeHelp(false); });
+    startFreigeben();
+
     function refreshStats() {
         document.getElementById('sous-val').innerText = state.sous;
-        document.getElementById('gesundheit-val').innerText = state.gesundheit;
-        document.getElementById('fokus-val').innerText = state.fokus;
+        document.getElementById('gesundheit-val').innerText = Math.max(0, state.gesundheit);
+        document.getElementById('fokus-val').innerText = Math.min(100, Math.max(0, state.fokus));
         document.getElementById('kinder-val').innerText = state.kinder;
 
         if (state.gesundheit <= 20) {
@@ -369,7 +584,10 @@
     }
 
     function startGame(charakterWahl) {
+        if (!erklaerungGelesen) { openHelp(); return; }
         state.charakter = charakterWahl;
+        state.hinweis = '';
+        state.stimmen = [];
         state.runde = 0;
         state.schmiedeAbtretung = false;
         state.waisenhausGewählt = false;
@@ -402,16 +620,31 @@
         updateUI();
     }
 
-    function applyChoice(effectFunction) {
-        // Die aktuelle Kinderzahl speichern, BEVOR der Effekt ausgeführt wird
-        let alteKinderzahl = state.kinder;
-        
-        // Den spezifischen Effekt der Auswahl ausführen
-        effectFunction();
-        
+    function applyChoice(r, idx) {
+        const wahl = aktSzenarien[r].choices[idx];
+        const alteKinderzahl = state.kinder;
+        const sousVorher = state.sous;
+        state.hinweis = '';
+
+        wahl.effect();
+
         let eventFeedback = "";
-        
-        // Jetzt vergleichen wir, ob die Zahl nach dem Effekt kleiner ist als vorher
+
+        if (state.hinweis) {
+            eventFeedback += `<div class="info-card"><span class="alert-text">Warum ist das passiert?</span><br>${state.hinweis}</div>`;
+        }
+
+        // Lohnabschlag: Frauen bekamen für vergleichbare Arbeit weniger
+        if (state.charakter === 'frau' && wahl.lohn) {
+            const plus = state.sous - sousVorher;
+            if (plus > 0) {
+                const bekommt = Math.round(plus * LOHN_FAKTOR);
+                const fehlt = plus - bekommt;
+                state.sous -= fehlt;
+                eventFeedback += `<div class="info-card"><span class="alert-text">Frauenlohn</span><br>Für dieselbe Arbeit hätte ein Mann etwa ${fehlt} Sous mehr bekommen. Frauen verdienten meist nur etwa die Hälfte bis zwei Drittel des Männerlohns.</div>`;
+            }
+        }
+
         if (state.kinder < alteKinderzahl) {
             eventFeedback += `<div style="background: rgba(204, 68, 68, 0.2); border-left: 4px solid #cc4444; padding: 10px; margin-bottom: 20px;">
                                 <span class="alert-text">Ein Kind ist verloren...</span><br>
@@ -421,15 +654,13 @@
 
         let kosten = 0;
         if (state.charakter === 'frau') {
-            let kinderKosten = state.kinder * 2;
-            let grundKosten = 10; 
-            kosten = grundKosten + kinderKosten; 
+            kosten = 10 + state.kinder * 2;
         } else {
             kosten = 9;
         }
 
         state.sous -= kosten;
-        
+
         if (state.sous < 0) {
             state.gesundheit -= 40; 
             state.sous = 0;
@@ -439,8 +670,13 @@
                               </div>`;
         }
 
+        // Stimme der Gesellschaft
+        const stimme = stimmeFuer(wahl, r);
+        state.stimmen.push({ w: stimme.w, typ: wahl.typ });
+        eventFeedback += `<div class="stimme"><div class="stimme-kopf">🗣️ Stimme der Gesellschaft: ${stimme.w}</div>„${stimme.t}“</div>`;
+
         state.runde++;
-        
+
         if (state.gesundheit <= 0 && state.gesundheit >= -25 && state.runde >= aktSzenarien.length) {
             state.gesundheit = 1; 
         }
@@ -455,17 +691,13 @@
             endGame("Verhaftet und ins Hôpital Général (Zuchthaus) eingesperrt.", "fokus", eventFeedback);
             return;
         }
-        
+
         updateUI(eventFeedback);
     }
 
     function updateUI(extraText = "") {
         let sprite = document.getElementById('game-sprite');
-        
-        // Alle Zustandsklassen entfernen
         sprite.classList.remove('state-normal', 'state-exhausted', 'state-workhouse', 'state-dead');
-        
-        // Sprite Logik anwenden (angepasst auf <= 60)
         if (state.fokus >= 70 || state.gesundheit <= 60) {
             sprite.classList.add('state-exhausted');
         } else {
@@ -474,7 +706,7 @@
 
         if (state.runde < aktSzenarien.length) {
             let aktuellesSzenario = aktSzenarien[state.runde];
-            
+
             let kostenText = 0;
             if (state.charakter === 'frau') {
                 kostenText = 10 + (state.kinder * 2);
@@ -483,14 +715,13 @@
             }
 
             let hint = `<br><br><span style="font-size: 0.85em; color: #a59682;"><i>(Nach deiner Wahl werden feste Lebenshaltungskosten für Miete & Essen abgezogen: ${kostenText} Sous)</i></span>`;
-            
+
             document.getElementById('scenario-text').innerHTML = extraText + aktuellesSzenario.text + hint;
-            
+
             let buttonsHtml = '';
             aktuellesSzenario.choices.forEach((choice, index) => {
                 let btnText = typeof choice.text === 'function' ? choice.text() : choice.text;
-                // Hier wurde der Bug behoben, indem die Funktion korrekt als Parameter übergeben wird
-                buttonsHtml += `<button onclick="applyChoice(aktSzenarien[${state.runde}].choices[${index}].effect)">${btnText}</button>`;
+                buttonsHtml += `<button onclick="applyChoice(${state.runde}, ${index})">${btnText}</button>`;
             });
             document.getElementById('choices-container').innerHTML = buttonsHtml;
         } else {
@@ -498,20 +729,71 @@
         }
     }
 
+    function backToStart() {
+        document.getElementById('game-screen').classList.add('hidden');
+        document.getElementById('start-screen').classList.remove('hidden');
+        window.scrollTo({ top: 0 });
+    }
+
+    function schuldBlock() {
+        const rollen = Array.from(new Set(state.stimmen.map(s => s.w)));
+        const liste = rollen.length ? rollen.join(', ') : 'niemand';
+        return `<hr style="border-color: #5a4f40; margin: 20px 0;">
+                <h3 style="color: #d4c5a0; margin-top: 0;">Wer gab dir die Schuld?</h3>
+                <p>Während du gespielt hast, hast du ${state.stimmen.length} Stimmen gehört (${liste}). Fast jede legte nahe, du seist selbst verantwortlich: zu faul, zu leichtsinnig, zu unehrenhaft. Keine fragte, wer die Preise, Steuern und Regeln gemacht hatte, die dich in diese Lage brachten.</p>
+                <p style="color:#d4c5a0;">Historisch: Armen wurde unterstellt, an ihrer Lage selbst schuld zu sein. Man unterschied zwischen „würdigen“ Armen (alt, krank, ohne Kraft) und „unwürdigen“ (gesund, aber ohne Arbeit). Wer zu den „unwürdigen“ zählte, galt als arbeitsscheu und wurde bestraft, zum Beispiel mit Einsperren im Hôpital Général.</p>`;
+    }
+
+    function vergleichBlock() {
+        const f = runs.frau, m = runs.mann;
+        if (!f || !m) {
+            const andere = state.charakter === 'frau' ? 'mann' : 'frau';
+            const name = andere === 'mann' ? 'Jean' : 'Marguerite';
+            return `<hr style="border-color: #5a4f40; margin: 20px 0;">
+                    <h3 style="color: #d4c5a0; margin-top: 0;">Und die andere Seite?</h3>
+                    <p>Spiele jetzt auch ${name}. Danach erscheint ein Vergleich beider Wege.</p>`;
+        }
+        const ausgang = r => r.grund === 'survival' ? 'Überlebt' : (r.grund === 'gesundheit' ? 'Gestorben' : 'Eingesperrt');
+        return `<hr style="border-color: #5a4f40; margin: 20px 0;">
+            <h3 style="color: #d4c5a0; margin-top: 0;">Vergleich: Marguerite und Jean</h3>
+            <table class="vergleich">
+                <tr><th></th><th>Marguerite</th><th>Jean</th></tr>
+                <tr><td>Ausgang</td><td>${ausgang(f)}</td><td>${ausgang(m)}</td></tr>
+                <tr><td>Jahre überstanden</td><td>${f.jahre} von 6</td><td>${m.jahre} von 6</td></tr>
+                <tr><td>Gesundheit am Ende</td><td>${Math.max(0, f.gesundheit)} %</td><td>${Math.max(0, m.gesundheit)} %</td></tr>
+                <tr><td>Staatliche Beobachtung</td><td>${Math.min(100, Math.max(0, f.fokus))} %</td><td>${Math.min(100, Math.max(0, m.fokus))} %</td></tr>
+                <tr><td>Kinder verloren</td><td>${f.kinderVerloren}</td><td>0</td></tr>
+                <tr><td>Stimmen, die Schuld zuwiesen</td><td>${f.stimmen}</td><td>${m.stimmen}</td></tr>
+            </table>
+            <p><b>Was war für Marguerite anders?</b></p>
+            <ul style="text-align: left; line-height: 1.6;">
+                <li><b>Lohn:</b> Für vergleichbare Arbeit bekam sie meist nur etwa die Hälfte bis zwei Drittel des Männerlohns.</li>
+                <li><b>Rechte:</b> Als Witwe durfte sie die Werkstatt nur befristet weiterführen. Ohne Heirat mit dem Gesellen verlor sie den Betrieb.</li>
+                <li><b>Kinder:</b> Sie trug die Sorge allein. Jedes Kind kostete Geld, und sie musste Kinder abgeben oder verlieren.</li>
+                <li><b>Moral:</b> Wenn sie sich prostituieren musste, galt sie als „gefallen“ und konnte in der Salpêtrière eingesperrt werden. Der Mann, der sie kaufte, wurde nicht bestraft.</li>
+            </ul>
+            <p><b>Fragen für das Gespräch:</b></p>
+            <ol style="text-align: left; line-height: 1.6;">
+                <li>Wer hat euch in den Stimmen die Schuld gegeben? Wer hätte wirklich etwas ändern können?</li>
+                <li>Welche Möglichkeiten hatte Jean, die Marguerite nicht hatte, und umgekehrt?</li>
+                <li>Welche Vorurteile gegenüber armen Menschen gibt es heute noch?</li>
+            </ol>`;
+    }
+
     function endGame(titel, grund, extraText = "") {
         let todesErklaerung = "";
-        
+
         if (grund === "gesundheit") {
             if (state.charakter === 'frau') {
                 if (state.kinder === 0 && state.waisenhausGewählt) {
                     todesErklaerung = `<p style="color: #cc4444; font-weight: bold;">Warum ist deine Figur zusammengebrochen?</p>
-                                       <p>Der Körper hat unter der extremen Doppelbelastung aus schwerster, unbezahlter Knochenarbeit, permanenter Unterernährung und den physischen Folgen völlig kapituliert. Die harte Realität des Absolutismus hat deine Kräfte restlos aufgebraucht.</p>`;
+                                       <p>Der Körper hat unter der extremen Doppelbelastung aus schwerster, schlecht bezahlter Knochenarbeit, permanenter Unterernährung und den physischen Folgen völlig kapituliert. Die harte Realität des Absolutismus hat deine Kräfte restlos aufgebraucht.</p>`;
                 } else if (state.kinder === 0) {
                     todesErklaerung = `<p style="color: #cc4444; font-weight: bold;">Warum ist deine Figur zusammengebrochen?</p>
                                        <p>Deine physischen Reserven sind restlos aufgebraucht. Die Kombination aus brutalem körperlichen Raubbau, tagtäglicher Schwerstarbeit und permanenter Unterernährung hat deinen Körper an die absolute Belastungsgrenze getrieben, bis der gesundheitliche Zusammenbruch unausweichlich war.</p>`;
                 } else {
                     todesErklaerung = `<p style="color: #cc4444; font-weight: bold;">Warum ist deine Figur zusammengebrochen?</p>
-                                       <p>Deine Kräfte sind am Ende. Der körperliche Raubbau durch unbezahlte Hungerlohn-Arbeit und der ständige Mangel an Nahrung haben dich besiegt. Deine verbliebenen Kinder sind nun völlig schutzlos. Ohne dich erwartet sie ein qualvolles Leben oder das gefürchtete Waisenhaus.</p>`;
+                                       <p>Deine Kräfte sind am Ende. Der körperliche Raubbau durch Hungerlohn-Arbeit und der ständige Mangel an Nahrung haben dich besiegt. Deine verbliebenen Kinder sind nun völlig schutzlos. Ohne dich erwartet sie ein qualvolles Leben oder das gefürchtete Waisenhaus.</p>`;
                 }
             } else {
                 todesErklaerung = `<p style="color: #cc4444; font-weight: bold;">Warum ist deine Figur zusammengebrochen?</p>
@@ -519,45 +801,56 @@
             }
         } else if (grund === "fokus") {
             todesErklaerung = `<p style="color: #cc4444; font-weight: bold;">Warum wurdest du weggesperrt?</p>
-                               <p>Der absolutistische Staat sah Armut als kriminelles Sicherheitsrisiko. Salzschmuggel, Betteln oder Prostitution wurden rigoros verfolgt. Im Hôpital Général wurdest du unter widrigsten Bedingungen zur Zwangsarbeit verpflichtet. Historiker schätzen, dass aufgrund von Hunger, Seuchen und der extremen körperlichen Belastung die durchschnittliche Überlebenszeit in diesen absolutistischen Zwangsanstalten bei gerade einmal <b>1 bis 2 Jahren</b> lag.</p>`;
+                               <p>Der absolutistische Staat sah Armut als kriminelles Sicherheitsrisiko. Salzschmuggel, Betteln oder Prostitution wurden rigoros verfolgt. Im Hôpital Général wurdest du unter widrigsten Bedingungen zur Zwangsarbeit verpflichtet. Hunger, Seuchen und die extreme körperliche Belastung machten die Überlebenszeit in solchen Anstalten oft kurz.</p>`;
         } else if (grund === "survival") {
-             todesErklaerung = `<p style="color: #d4c5a0; font-weight: bold;">Ein Überleben am Abgrund</p>
+            todesErklaerung = `<p style="color: #d4c5a0; font-weight: bold;">Ein Überleben am Abgrund</p>
                                <p>Du hast sechs brutale Jahre überstanden. Doch im Absolutismus bedeutete Überleben für die Unterschicht lediglich den Aufschub des Unvermeidlichen. Die strukturelle Ausbeutung bleibt bestehen.</p>`;
         }
 
-        let auswertung = "";
+        // Ergebnis merken
+        runs[state.charakter] = {
+            grund: grund,
+            jahre: Math.min(state.runde, 6),
+            gesundheit: state.gesundheit,
+            fokus: state.fokus,
+            kinderVerloren: state.charakter === 'frau' ? 2 - state.kinder : 0,
+            stimmen: state.stimmen.length
+        };
+        speichern('armut_runs', JSON.stringify(runs));
+
+        let erkenntnisse = '';
         if (state.charakter === 'frau') {
-            auswertung = `
-                <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; border: 1px solid #7c6d59; margin-top: 20px;">
-                    ${todesErklaerung}
-                    <hr style="border-color: #5a4f40; margin: 20px 0;">
-                    <h3 style="color: #d4c5a0; margin-top: 0;">Historische Erkenntnisse der Simulation</h3>
-                    <ul style="text-align: left; line-height: 1.6;">
-                        <li><b>Steuerlast als Todesurteil:</b> Die absolutistische Steuerpolitik (Taille, Gabelle) wälzte die gesamten Staatskosten auf die ärmste Schicht ab und zwang sie oft in die Kriminalität.</li>
-                        <li><b>Systemische Ungleichheit:</b> Zunftordnungen und Gesetze schlossen Frauen systematisch von eigenständigen Erwerbsquellen aus, wodurch sie in extrem prekäre und gesundheitsgefährdende Arbeitsverhältnisse gedrängt wurden.</li>
-                    </ul>
-                </div>
-            `;
+            erkenntnisse = `
+                <li><b>Steuerlast als Todesurteil:</b> Die absolutistische Steuerpolitik (Taille, Gabelle) wälzte die gesamten Staatskosten auf die ärmste Schicht ab und zwang sie oft in die Kriminalität.</li>
+                <li><b>Eingeschränkte Rechte:</b> Das Zunftrecht erlaubte Witwen, einen Betrieb oft nur befristet weiterzuführen. Meist blieb ihnen nur die Heirat mit einem Gesellen, wenn sie ihn behalten wollten. Dazu verdienten Frauen für vergleichbare Arbeit deutlich weniger. Beides drängte sie in prekäre und gesundheitsgefährdende Arbeit.</li>
+                <li><b>Doppelte Last:</b> Frauen trugen Arbeit und Sorge für die Kinder zugleich und wurden für ihre Notlage zusätzlich moralisch verurteilt.</li>`;
         } else {
-            auswertung = `
-                <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; border: 1px solid #7c6d59; margin-top: 20px;">
-                    ${todesErklaerung}
-                    <hr style="border-color: #5a4f40; margin: 20px 0;">
-                    <h3 style="color: #d4c5a0; margin-top: 0;">Historische Erkenntnisse der Simulation</h3>
-                    <ul style="text-align: left; line-height: 1.6;">
-                        <li><b>Ausbeutung der Arbeitskraft:</b> Großprojekte wie Schloss Versailles und die ständigen Kriege Ludwigs XIV. verschlangen das Proletariat und erforderten extreme körperliche Opfer von Tagelöhnern.</li>
-                        <li><b>Kriminalisierung von Armut:</b> Ohne festen Arbeitsvertrag oder Schutz durch Zünfte galten Männer schnell als Vagabunden, was im absolutistischen Staat drakonische Strafen wie Galeerenarbeit oder Zuchthaus nach sich ziehen konnte.</li>
-                    </ul>
-                </div>
-            `;
+            erkenntnisse = `
+                <li><b>Ausbeutung der Arbeitskraft:</b> Großprojekte wie Schloss Versailles und die ständigen Kriege Ludwigs XIV. verschlangen das Proletariat und erforderten extreme körperliche Opfer von Tagelöhnern.</li>
+                <li><b>Kriminalisierung von Armut:</b> Ohne festen Arbeitsvertrag oder Schutz durch Zünfte galten Männer schnell als Vagabunden, was im absolutistischen Staat drakonische Strafen wie Galeerenarbeit oder Zuchthaus nach sich ziehen konnte.</li>`;
         }
 
+        const andere = state.charakter === 'frau' ? 'mann' : 'frau';
+        const andererName = andere === 'mann' ? 'Jean' : 'Marguerite';
+        let auswertung = `
+            <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; border: 1px solid #7c6d59; margin-top: 20px;">
+                ${todesErklaerung}
+                <hr style="border-color: #5a4f40; margin: 20px 0;">
+                <h3 style="color: #d4c5a0; margin-top: 0;">Historische Erkenntnisse der Simulation</h3>
+                <ul style="text-align: left; line-height: 1.6;">${erkenntnisse}</ul>
+                ${schuldBlock()}
+                ${vergleichBlock()}
+            </div>`;
+
         document.getElementById('scenario-text').innerHTML = extraText + `<b style="font-size: 1.4em;">Ende: ${titel}</b><br>${auswertung}`;
-        document.getElementById('choices-container').innerHTML = `<button onclick="location.reload()" style="background-color: #5a4f40; font-weight: bold; text-align: center;">Die Simulation neu starten</button>`;
-        
+        document.getElementById('choices-container').innerHTML =
+            `<button onclick="startGame('${andere}')" style="background-color: #5a4f40; font-weight: bold; text-align: center;">Jetzt als ${andererName} spielen</button>` +
+            `<button onclick="startGame('${state.charakter}')" style="text-align: center;">Noch einmal mit derselben Figur</button>` +
+            `<button onclick="backToStart()" style="text-align: center;">Zurück zum Start</button>`;
+
         let sprite = document.getElementById('game-sprite');
         sprite.classList.remove('state-normal', 'state-exhausted', 'state-workhouse', 'state-dead');
-        
+
         if (grund === "fokus") {
             sprite.classList.add('state-workhouse');
         } else if (grund === "gesundheit") {
