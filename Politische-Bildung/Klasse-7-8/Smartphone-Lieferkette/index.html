@@ -854,113 +854,7 @@ applyClasses();
 
 
 // ---------------- QUIZ (Modus 3) ----------------
-const quizQuestions = [
-  { question:"1. Wo wird Coltan unter anderem abgebaut?", multi:false,
-    answers:[
-      {text:"Brasilien", correct:false},
-      {text:"Demokratische Republik Kongo", correct:true},
-      {text:"Kanada", correct:false},
-      {text:"Japan", correct:false}
-    ]},
-  { question:"2. Welche Probleme können beim Rohstoffabbau auftreten?", multi:true,
-    answers:[
-      {text:"Fehlende Sicherheitsausrüstung", correct:true},
-      {text:"Einstürzende Schächte", correct:true},
-      {text:"Zu viele Touristen", correct:false},
-      {text:"Geringe Löhne", correct:true}
-    ]},
-  { question:"3. Warum reisen Rohstoffe um die Welt?", multi:true,
-    answers:[
-      {text:"Länder sind auf bestimmte Produktionsschritte spezialisiert", correct:true},
-      {text:"Weil es keine Häfen gibt", correct:false},
-      {text:"Bauteile entstehen in verschiedenen Ländern", correct:true},
-      {text:"Aus sportlichen Gründen", correct:false}
-    ]},
-  { question:"4. Welche Transportmittel strukturieren die globale Lieferkette laut Text maßgeblich?", multi:true,
-    answers:[
-      {text:"LKW", correct:true},
-      {text:"Containerschiffe", correct:true},
-      {text:"U-Boote", correct:false},
-      {text:"Flugzeuge", correct:false}
-    ]},
-  { question:"5. Was bedeutet „Just-in-time“?", multi:false,
-    answers:[
-      {text:"Teile werden lange gelagert", correct:false},
-      {text:"Teile kommen genau dann an, wenn sie gebraucht werden", correct:true},
-      {text:"Produktion pausiert regelmäßig", correct:false},
-      {text:"Alle Teile kommen gleichzeitig", correct:false}
-    ]},
-  { question:"6. Welche Folgen kann ein Hafenstreik haben?", multi:true,
-    answers:[
-      {text:"Lieferverzögerungen", correct:true},
-      {text:"Fehlende Bauteile", correct:true},
-      {text:"Sofortige Preisreduzierung", correct:false},
-      {text:"Produktionsstopp", correct:true}
-    ]},
-  { question:"7. Welche ökologischen Folgen des Transports werden genannt?", multi:true,
-    answers:[
-      {text:"Treibhausgase", correct:true},
-      {text:"Emissionen durch Schiffe", correct:true},
-      {text:"Mehr Waldflächen", correct:false},
-      {text:"Weniger Verkehr", correct:false}
-    ]},
-  { question:"8. Welche Gründe machen Lieferketten anfällig?", multi:true,
-    answers:[
-      {text:"Störungen auf Transportwegen", correct:true},
-      {text:"Politische Konflikte", correct:true},
-      {text:"Immer gleiche Preise", correct:false},
-      {text:"Extremes Wetter", correct:true}
-    ]},
-  { question:"9. Welche Rolle spielen bewaffnete Gruppen laut Text?", multi:false,
-    answers:[
-      {text:"Sie können vom Rohstoffhandel profitieren", correct:true},
-      {text:"Sie bauen Displays", correct:false},
-      {text:"Sie programmieren Apps", correct:false},
-      {text:"Sie betreiben Elektronikmärkte", correct:false}
-    ]},
-  { question:"10. Welche Faktoren können den Preis eines Smartphones beeinflussen?", multi:true,
-    answers:[
-      {text:"Transportkosten", correct:true},
-      {text:"Treibstoffpreise", correct:true},
-      {text:"Jahreszeit im Laden", correct:false},
-      {text:"Lieferverzögerungen", correct:true}
-    ]},
-  { question:"11. Warum sind manche Minen schwer erreichbar?", multi:true,
-    answers:[
-      {text:"Abgelegene Lage", correct:true},
-      {text:"Schlechte Straßen", correct:true},
-      {text:"Regenzeit", correct:true},
-      {text:"Weil es keine Smartphones gibt", correct:false}
-    ]},
-  { question:"12. Wofür wird Tantal im Smartphone genutzt?", multi:false,
-    answers:[
-      {text:"In winzigen Bauteilen auf Leiterplatten", correct:true},
-      {text:"Als Gehäusematerial", correct:false},
-      {text:"Als Displayglas", correct:false},
-      {text:"Als Lautsprecher-Membran", correct:false}
-    ]},
-  { question:"13. Welche wirtschaftlichen Folgen können Transportprobleme haben?", multi:true,
-    answers:[
-      {text:"Produktionsstopps", correct:true},
-      {text:"Mehr Lagerkosten oder teure Umwege", correct:true},
-      {text:"Garantiert sinkende Preise", correct:false},
-      {text:"Kostensteigerungen", correct:true}
-    ]},
-  { question:"14. Welche Aussage passt zum Fazit des Textes?", multi:false,
-    answers:[
-      {text:"Smartphones hängen nur von Software ab", correct:false},
-      {text:"Smartphones verbinden Rohstoffabbau, Produktion und globalen Handel", correct:true},
-      {text:"Smartphones werden komplett in einem Land hergestellt", correct:false},
-      {text:"Transport spielt keine Rolle", correct:false}
-    ]},
-  { question:"15. Warum ist die Produktionskette komplex?", multi:true,
-    answers:[
-      {text:"Viele Länder sind beteiligt", correct:true},
-      {text:"Spezialisierte Schritte greifen ineinander", correct:true},
-      {text:"Nur ein Transportweg", correct:false},
-      {text:"Abhängigkeit vom globalen Handel", correct:true}
-    ]}
-];
+const quizQuestions = [ { "question": "1. Wo wird Coltan laut Text unter anderem abgebaut?", "multi": false, "answers": [ { "text": "Im Osten der Demokratischen Republik Kongo", "correct": true }, { "text": "Im Norden Japans", "correct": false }, { "text": "In Norwegen", "correct": false }, { "text": "In Mexiko", "correct": false } ] }, { "question": "2. Welche Probleme beim Rohstoffabbau nennt der Text?", "multi": true, "answers": [ { "text": "Einstürzende Schächte", "correct": true }, { "text": "Fehlende Sicherheitsausrüstung", "correct": true }, { "text": "Zu strenge staatliche Kontrolle", "correct": false }, { "text": "Zu geringe Nachfrage nach Coltan", "correct": false } ] }, { "question": "3. Warum reisen Rohstoffe und Bauteile um die Welt?", "multi": true, "answers": [ { "text": "Einzelne Länder sind auf bestimmte Verarbeitungsschritte spezialisiert", "correct": true }, { "text": "In Industrie- und Schwellenländern werden die Materialien weiterverarbeitet", "correct": true }, { "text": "In den Abbauländern ist die Weiterverarbeitung gesetzlich verboten", "correct": false }, { "text": "Lange Wege sind billiger als kurze, weil dort weniger Zoll anfällt", "correct": false } ] }, { "question": "4. Wie werden die Rohstoffe laut Text bis zu den Häfen und von dort weiter transportiert?", "multi": true, "answers": [ { "text": "Per LKW bis zu großen Seehäfen", "correct": true }, { "text": "Mit Containerschiffen in andere Weltregionen", "correct": true }, { "text": "Mit Güterzügen quer durch den Kongo bis zur Küste", "correct": false }, { "text": "Durch Pipelines bis zu den Fabriken", "correct": false } ] }, { "question": "5. Was bedeutet „Just-in-time“?", "multi": false, "answers": [ { "text": "Bauteile treffen genau dann ein, wenn sie gebraucht werden", "correct": true }, { "text": "Bauteile werden in großen Mengen im Voraus gekauft und gelagert", "correct": false }, { "text": "Smartphones werden schneller als bei der Konkurrenz ausgeliefert", "correct": false }, { "text": "Alle Bauteile kommen gleichzeitig aus demselben Werk", "correct": false } ] }, { "question": "6. Was kann nach dem Text bei einem Hafenstreik oder extremem Wetter passieren?", "multi": true, "answers": [ { "text": "Es fehlen Bauteile für die Produktion", "correct": true }, { "text": "Das empfindliche Just-in-time-System gerät ins Stocken", "correct": true }, { "text": "Die Lagerkosten sinken sofort, weil weniger Ware ankommt", "correct": false }, { "text": "Die Rohstoffpreise im Abbauland sinken", "correct": false } ] }, { "question": "7. Welche Umweltfolgen des Transports nennt der Text?", "multi": true, "answers": [ { "text": "Der weltweite Transport verursacht Treibhausgase", "correct": true }, { "text": "Lufttransporte verursachen besonders viele Emissionen pro Kilogramm Fracht", "correct": true }, { "text": "Moderne Containerschiffe stoßen keine Emissionen mehr aus", "correct": false }, { "text": "LKW-Transporte sind umweltfreundlicher als jeder andere Transport", "correct": false } ] }, { "question": "8. Welche Gründe machen Lieferketten laut Text anfällig?", "multi": true, "answers": [ { "text": "Das Just-in-time-Prinzip mit wenig Lagerbestand", "correct": true }, { "text": "Politische Konflikte auf Handelsrouten", "correct": true }, { "text": "Extreme Wetterereignisse", "correct": true }, { "text": "Zu viele Lagerräume bei den Herstellern", "correct": false } ] }, { "question": "9. Welche Rolle spielen bewaffnete Gruppen laut Text?", "multi": false, "answers": [ { "text": "Sie versuchen, vom Rohstoffhandel zu profitieren", "correct": true }, { "text": "Sie sichern die Minen und verbessern die Arbeitsbedingungen", "correct": false }, { "text": "Sie legen die Rohstoffpreise auf den Weltmärkten fest", "correct": false }, { "text": "Sie sorgen dafür, dass Rohstoffe sicher bei den Häfen ankommen", "correct": false } ] }, { "question": "10. Wie kann sich der weltweite Transport laut Text auf den Preis eines Smartphones auswirken?", "multi": false, "answers": [ { "text": "Steigende Treibstoffpreise erhöhen die Transportkosten und damit den Verkaufspreis", "correct": true }, { "text": "Weite Wege machen Smartphones günstiger, weil große Mengen transportiert werden", "correct": false }, { "text": "Der Preis hängt allein von den Kosten der Software ab", "correct": false }, { "text": "Transportkosten spielen für den Verkaufspreis keine Rolle", "correct": false } ] }, { "question": "11. Warum sind manche Minen schwer erreichbar?", "multi": true, "answers": [ { "text": "Sie liegen in abgelegenen Gebieten", "correct": true }, { "text": "Die Straßen sind oft unbefestigt", "correct": true }, { "text": "In der Regenzeit sind die Straßen kaum befahrbar", "correct": true }, { "text": "Dort gilt ein dauerhaftes Betretungsverbot", "correct": false } ] }, { "question": "12. Wofür wird Tantal im Smartphone genutzt?", "multi": false, "answers": [ { "text": "In sehr kleinen Bauteilen auf Leiterplatten, die Spannungen stabilisieren", "correct": true }, { "text": "Als Hauptmaterial des Akkus", "correct": false }, { "text": "Als Gehäusematerial", "correct": false }, { "text": "Als Material für das Displayglas", "correct": false } ] }, { "question": "13. Welche wirtschaftlichen Folgen können Probleme beim Transport haben?", "multi": true, "answers": [ { "text": "Bauteile fehlen und die Produktion kann stocken", "correct": true }, { "text": "Steigende Transportkosten können den Verkaufspreis beeinflussen", "correct": true }, { "text": "Smartphones werden dadurch garantiert günstiger", "correct": false }, { "text": "Die Rohstoffe kommen dadurch schneller bei den Fabriken an", "correct": false } ] }, { "question": "14. Welche Aussage passt zum Fazit des Textes?", "multi": false, "answers": [ { "text": "Ein Smartphone verbindet Rohstoffabbau, industrielle Produktion und globalen Handel", "correct": true }, { "text": "Smartphones hängen heute vor allem von Software ab", "correct": false }, { "text": "Die meisten Herstellungsschritte finden in einem einzigen Land statt", "correct": false }, { "text": "Der Rohstoffabbau spielt für die Herstellung kaum noch eine Rolle", "correct": false } ] }, { "question": "15. Warum ist die Produktionskette komplex?", "multi": true, "answers": [ { "text": "Viele Länder sind beteiligt", "correct": true }, { "text": "Spezialisierte Schritte greifen ineinander", "correct": true }, { "text": "Das System ist vom globalen Handel abhängig", "correct": true }, { "text": "Alle Bauteile werden in einer einzigen Fabrik gefertigt", "correct": false } ] } ];
 
 function renderQuiz(){
   const container = document.getElementById("quizContainer");
@@ -975,7 +869,10 @@ function renderQuiz(){
     title.textContent = q.question;
     qDiv.appendChild(title);
 
-    q.answers.forEach((a,ai)=>{
+    const order = q.answers.map((_,i)=>i);
+    for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+    order.forEach((ai)=>{
+      const a = q.answers[ai];
       const opt = document.createElement("label");
       opt.className = "quizOpt";
       const type = "checkbox";

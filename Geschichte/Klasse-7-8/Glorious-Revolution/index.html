@@ -1045,7 +1045,10 @@ II. Die besagten in Westminster versammelten geistlichen und weltlichen Lords un
             const optionsContainer = document.getElementById('quiz-options');
             optionsContainer.innerHTML = '';
             
-            qData.options.forEach((opt, idx) => {
+            const order = qData.options.map((_, i) => i);
+            for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+            order.forEach((idx) => {
+                const opt = qData.options[idx];
                 const div = document.createElement('div');
                 div.className = 'quiz-option';
                 div.innerText = opt;
