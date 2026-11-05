@@ -197,3 +197,47 @@ body { min-height: 100vh; display: flex; flex-direction: column; justify-content
   .notes.viele { gap: 28px 18px; }
   .notes.viele .note { min-height: 96px; padding: 1.9em 1.1em 1.1em; }
 }
+
+/* ===== Farben je Bereich: Rahmen, Titel, Logo ===== */
+body { --board: url("pinnwand.jpg"); --akzent: #0f766e; }
+body[data-fach="geschichte"] { --board: url("pinnwand-geschichte.jpg"); --akzent: #7a2626; }
+body[data-fach="politik"]    { --board: url("pinnwand-politik.jpg");    --akzent: #2c5c96; }
+body[data-fach="sonstiges"]  { --board: url("pinnwand-sonstiges.jpg");  --akzent: #2f7a50; }
+.paper h1, .paper h2 { color: var(--akzent); }
+@media (max-aspect-ratio: 1/1) { .stage { background-image: var(--board); } }
+
+/* Logo-Stempel unten auf dem Blatt */
+.stempel {
+  position: absolute; left: 0; right: 0; bottom: 1.3em;
+  display: flex; align-items: center; justify-content: center; gap: .7em;
+  color: var(--akzent); font-size: .85em; font-weight: 700; line-height: 1.15; letter-spacing: .02em;
+  opacity: .95;
+}
+.stempel img { width: 3.6em; height: 3.6em; display: block; }
+@media (max-aspect-ratio: 1/1) { .paper { padding-bottom: 6.2em; } .stempel { font-size: 14px; } }
+
+/* ===== Klasse 7/8: bunt und verspielt ===== */
+body[data-stufe="7-8"] .stage { font-family: "Trebuchet MS", "Segoe UI", "Arial Rounded MT Bold", system-ui, sans-serif; }
+body[data-stufe="7-8"] .paper { border-radius: 1.2em; border: .35em dashed var(--akzent); padding-top: 3.2em; }
+body[data-stufe="7-8"] .paper h1 { font-size: 1.75em; padding-bottom: .3em; border-bottom: .16em dotted #ffb300; }
+body[data-stufe="7-8"] .note { border-radius: 1.1em .4em 1.1em .4em; font-weight: 700; box-shadow: 0 .35em .8em rgba(0,0,0,.35), inset 0 0 0 .22em rgba(255,255,255,.55); }
+body[data-stufe="7-8"] .note b { font-size: 1.2em; }
+body[data-stufe="7-8"] .note .ico { font-size: 1.6em; display: block; line-height: 1; margin-bottom: .2em; }
+body[data-stufe="7-8"] .note::after { display: inline-block; margin-top: .5em; padding: .15em .7em; border-radius: 2em; background: rgba(255,255,255,.7); color: #374151; font-weight: 700; }
+body[data-stufe="7-8"] .note:nth-child(odd) { --rot: -3deg; }
+body[data-stufe="7-8"] .note:nth-child(even) { --rot: 2.6deg; }
+
+/* ===== Klasse 9/10: kariertes Schulheft-Papier ===== */
+body[data-stufe="9-10"] .paper { background-image: linear-gradient(rgba(44,92,150,.13) 1px, transparent 1px), linear-gradient(90deg, rgba(44,92,150,.13) 1px, transparent 1px); background-size: 1.1em 1.1em; border-left: .5em solid var(--akzent); }
+body[data-stufe="9-10"] .note { border-radius: .15em; background-image: linear-gradient(rgba(0,0,0,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.08) 1px, transparent 1px); background-size: .95em .95em; }
+body[data-stufe="9-10"] .note:nth-child(n) { --rot: -.8deg; }
+body[data-stufe="9-10"] .note:nth-child(even) { --rot: .9deg; }
+
+/* ===== Oberstufe: Karteikarten, ruhig und seriös ===== */
+body[data-stufe="oberstufe"] .stage { font-family: Georgia, "Times New Roman", serif; }
+body[data-stufe="oberstufe"] .paper { border: 1px solid #cfc7b4; box-shadow: inset 0 0 0 .45em #fffdf6, inset 0 0 0 .5em #cfc7b4; background: #fffdf6; padding-top: 3.4em; }
+body[data-stufe="oberstufe"] .paper h1 { font-weight: 700; letter-spacing: .01em; }
+body[data-stufe="oberstufe"] .note:nth-child(n) { --rot: 0deg; background-color: #fffdf6; border-radius: .1em; background-image: linear-gradient(transparent calc(100% - 1px), rgba(44,92,150,.25) 1px); background-size: 100% 1.5em; border-top: .35em solid var(--akzent); }
+body[data-stufe="oberstufe"] .note:nth-child(even) { --rot: .6deg; }
+body[data-stufe="oberstufe"] .note:nth-child(odd) { --rot: -.5deg; }
+body[data-stufe="oberstufe"] .note::before { background: radial-gradient(circle at 35% 30%, #e9d8a6 0, #b08d3c 55%, #5c4513 100%); }
