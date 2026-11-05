@@ -76,6 +76,7 @@ select{font:inherit;border:1.5px solid #b9c7e6;border-radius:8px;padding:6px;bac
 .toplinks{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .toplinks a{background:rgba(0,0,0,.35);color:#fff;text-decoration:none;border-radius:8px;padding:5px 11px;font-size:.85rem}
 .note{font-size:.84rem;color:#51607c;margin-top:18px}
+.resetlink{background:none;border:none;padding:0;font:inherit;color:#51607c;text-decoration:underline;cursor:pointer}
 .imp{position:fixed;right:10px;bottom:10px;font-size:12px;color:#333;background:rgba(255,255,255,.92);padding:4px 8px;border-radius:4px;text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.25)}
 .vote{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:10px 0}
 .vote button{border:2px solid #b9c7e6;background:#fff;border-radius:12px;padding:14px 10px;font:inherit;font-weight:700;cursor:pointer;color:var(--blue)}
@@ -133,8 +134,15 @@ select{font:inherit;border:1.5px solid #b9c7e6;border-radius:8px;padding:6px;bac
 const mem={};
 const store={
   get(k){try{const v=localStorage.getItem(k);return v===null?(mem[k]??null):v;}catch(e){return mem[k]??null;}},
-  set(k,v){mem[k]=v;try{localStorage.setItem(k,v);}catch(e){}}
+  set(k,v){mem[k]=v;try{localStorage.setItem(k,v);}catch(e){}},
+  clearAll(){Object.keys(mem).forEach(k=>delete mem[k]);try{Object.keys(localStorage).filter(k=>k.startsWith('eu_')).forEach(k=>localStorage.removeItem(k));}catch(e){}}
 };
+function resetBtn(){
+  const p=document.createElement('p');p.className='note';
+  const b=document.createElement('button');b.type='button';b.className='resetlink';b.textContent='Gespeicherte Eingaben auf diesem Gerät löschen';
+  b.onclick=()=>{if(confirm('Alle gespeicherten Antworten, die Rolle und den Fortschritt auf diesem Gerät löschen?')){store.clearAll();location.reload();}};
+  p.appendChild(b);return p;
+}
 const $=(s,r=document)=>r.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const num=s=>parseFloat(String(s).replace(/\s/g,'').replace(/\.(?=\d{3}(\D|$))/g,'').replace(',','.').replace('%','').replace('$','').replace('€',''));
@@ -565,6 +573,7 @@ function renderStart(m){
     h.innerHTML='<p style="margin-top:12px">Ab jetzt denkst du aus der Sicht von <b>'+esc(ROLES[role()].name)+'</b>. Du kannst die Rolle jederzeit hier wechseln.</p>';
     const b=document.createElement('button');b.className='btn gold';b.textContent='Los geht’s →';b.onclick=()=>go('geschichte');h.appendChild(b);
   }
+  m.appendChild(resetBtn());
 }
 function renderStation(m,id){
   const C=CONTENT[id];
@@ -619,6 +628,7 @@ function renderVote(m){
   n.textContent='Novarien ist ein erfundenes Land. Alle Zahlen zu Novarien sind frei erfunden. Das Bild der Ministerpräsidentin wurde mit KI erzeugt und zeigt eine erfundene Person. Die Angaben zu Euro, EU und Eurokrise beruhen auf öffentlichen Informationen der EU, der EZB und der Bundesregierung.';
   m.appendChild(n);
   navButtons(m);
+  m.appendChild(resetBtn());
 }
 function openRole(){
   const r=ROLES[role()];if(!r)return;
