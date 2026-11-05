@@ -214,6 +214,12 @@
             background-color: var(--highlight-color) !important;
         }
         
+        .mehr { margin: 14px 0; }
+        .mehr summary { display: inline-block; list-style: none; cursor: pointer; font-weight: bold; color: white; background: #8e44ad; border: none; padding: 10px 18px; border-radius: 6px; box-shadow: 0 3px 0 #6c3483; }
+        .mehr summary::-webkit-details-marker { display: none; }
+        .mehr summary:hover { background: #7d3c98; }
+        .mehr[open] summary { background: #6c3483; box-shadow: none; }
+        .mehr > :not(summary) { margin-top: 12px; }
         .paragraph-break {
             display: block;
             margin-bottom: 15px;
@@ -557,7 +563,7 @@
         
         <div class="quiz-grid">
             <div class="quiz-item">
-                <div class="quiz-text">1. Ludwig XIV. erlässt das "Edikt von Fontainebleau" – eine völlig neue Rechtsvorschrift, die den protestantischen Glauben in Frankreich offiziell verbietet.</div>
+                <div class="quiz-text">1. Ludwig XIV. erlässt das "Edikt von Fontainebleau" – der protestantische Glaube wird in Frankreich offiziell verboten, Pastoren müssen das Land verlassen.</div>
                 <select id="q1">
                     <option value="">-- Bitte wählen --</option>
                     <option value="legislative">Legislative (Gesetzgebung)</option>
@@ -567,7 +573,7 @@
             </div>
             
             <div class="quiz-item">
-                <div class="quiz-text">2. Der König erteilt seiner Armee den direkten militärischen Befehl, in die Spanischen Niederlande einzumarschieren, um die Grenzen zu erweitern.</div>
+                <div class="quiz-text">2. Der König schickt seine Armee in die Spanischen Niederlande, um die Grenzen zu erweitern.</div>
                 <select id="q2">
                     <option value="">-- Bitte wählen --</option>
                     <option value="legislative">Legislative (Gesetzgebung)</option>
@@ -587,7 +593,7 @@
             </div>
 
             <div class="quiz-item">
-                <div class="quiz-text">4. Der König verfasst den sogenannten "Code Louis", ein einheitliches Regelwerk für das ganze Land, an das sich alle Bürger halten müssen.</div>
+                <div class="quiz-text">4. Der König lässt den "Code Louis" ausarbeiten. Er legt fest, wie Zivilprozesse im ganzen Land ablaufen müssen, und gilt für alle Gerichte.</div>
                 <select id="q4">
                     <option value="">-- Bitte wählen --</option>
                     <option value="legislative">Legislative (Gesetzgebung)</option>
@@ -597,7 +603,7 @@
             </div>
 
             <div class="quiz-item">
-                <div class="quiz-text">5. Ludwig XIV. beauftragt seine königlichen Steuereintreiber, die "Taille" (eine direkte Steuer) bei den Bauern von Haus zu Haus einzusammeln, um sein Schloss zu finanzieren.</div>
+                <div class="quiz-text">5. Im Auftrag Ludwigs XIV. ziehen königliche Beamte die "Taille" (eine direkte Steuer) bei den Bauern ein. Mit dem Geld wird sein Schloss finanziert.</div>
                 <select id="q5">
                     <option value="">-- Bitte wählen --</option>
                     <option value="legislative">Legislative (Gesetzgebung)</option>
@@ -607,7 +613,7 @@
             </div>
 
             <div class="quiz-item">
-                <div class="quiz-text">6. Zwei adlige Familien streiten um Ländereien. Der König entzieht dem zuständigen Gericht den Fall, liest die Akten selbst und fällt als oberste Instanz ein endgültiges Urteil.</div>
+                <div class="quiz-text">6. Zwei adlige Familien streiten um Ländereien. Der König entzieht dem zuständigen Gericht den Fall und entscheidet ihn selbst.</div>
                 <select id="q6">
                     <option value="">-- Bitte wählen --</option>
                     <option value="legislative">Legislative (Gesetzgebung)</option>
@@ -632,10 +638,47 @@
     <div class="module" id="modul3">
         <h2>Modul 3: Schein und Sein – Wie regiert man 20 Millionen Menschen?</h2>
         <div class="instruction">
-            Lies den folgenden, ausführlichen Text aufmerksam durch. <strong>Tippe auf die Textstellen und Sätze, die dir besonders wichtig erscheinen. Sie werden dann gelb markiert.</strong> <br>Deine Aufgabe: Finde heraus, warum der König trotz seiner theoretischen Alleinherrschaft in der Praxis auf unzählige Helfer, Minister und Beamte angewiesen war.
+            Lies den folgenden Text aufmerksam durch. Wenn du mehr wissen möchtest, kannst du über den Button den ausführlichen Text lesen. <strong>Tippe auf die Textstellen und Sätze, die dir besonders wichtig erscheinen. Sie werden dann gelb markiert.</strong> <br>Deine Aufgabe: Finde heraus, warum der König trotz seiner theoretischen Alleinherrschaft in der Praxis auf unzählige Helfer, Minister und Beamte angewiesen war.
         </div>
         
         <div class="text-container" id="text-container">
+            <span class="highlightable paragraph-break">Der Satz "L'État, c'est moi" (Der Staat bin ich) wird König Ludwig XIV. gerne in den Mund gelegt.</span>
+            <span class="highlightable paragraph-break">Die theoretische Grundlage für diese Machtfülle lieferte der Hofprediger Bossuet mit der Idee des "Gottesgnadentums".</span>
+            <span class="highlightable paragraph-break">Bossuet argumentierte, dass Könige von Gott selbst als seine Stellvertreter auf Erden eingesetzt seien.</span>
+            <span class="highlightable paragraph-break">Aus diesem Grund sei der König niemandem auf der Erde Rechenschaft schuldig – weder dem Volk noch dem Adel noch der Kirche.</span>
+            <span class="highlightable paragraph-break">Da er über den Menschen stand, stand er folglich auch über den Gesetzen. Der Herrscher war "absolutus" (lateinisch für "losgelöst" von den Gesetzen), weshalb wir diese Epoche den Absolutismus nennen.</span>
+            
+            <span class="highlightable paragraph-break">In Modul 2 hast du gesehen, dass Ludwig theoretisch die völlige Kontrolle über die Gesetzgebung, die Ausführung und die Rechtsprechung besaß.</span>
+            <span class="highlightable paragraph-break">Doch in der Realität sah der Alltag im 17. Jahrhundert völlig anders aus. Der absolute Anspruch war zu einem großen Teil eine geschickte Illusion.</span>
+            <span class="highlightable paragraph-break">Frankreich war damals mit rund 20 Millionen Einwohnern das bevölkerungsreichste Land Europas und flächenmäßig riesig.</span>
+            <span class="highlightable paragraph-break">Es gab keine schnellen Kommunikationsmittel. Eine Kutsche brauchte von Paris in die südlichen Provinzen oft mehrere Wochen.</span>
+            <span class="highlightable paragraph-break">Ein solch riesiges und unübersichtliches Land konnte unmöglich von einem einzigen Mann an seinem Schreibtisch im Schloss Versailles kontrolliert und regiert werden.</span>
+            
+            <span class="highlightable paragraph-break">Um den Staat am Laufen zu halten, brauchte Ludwig XIV. einen gigantischen und gut organisierten Verwaltungsapparat.</span>
+            <span class="highlightable paragraph-break">Ganz oben in der Machtzentrale, direkt unter dem König, arbeiteten die königlichen Räte (die sogenannten Conseils).</span>
+            <span class="highlightable paragraph-break">Hier saßen Fachleute, die Gesetzesentwürfe schrieben, Verträge ausarbeiteten und politische Pläne schmiedeten.</span>
+            <span class="highlightable paragraph-break">Besonders wichtig waren die Fachminister. Ludwig traute dem alten Hochadel nicht, da dieser in der Vergangenheit oft gegen die Könige rebelliert hatte.</span>
+            
+            <span class="highlightable paragraph-break">Die echte Regierungsarbeit übergab der König stattdessen an bürgerliche oder niederadlige Fachleute, die ihm ihre Karriere verdankten und ihm treu ergeben waren.</span>
+            <span class="highlightable paragraph-break">Der fähigste und berühmteste von ihnen war Jean-Baptiste Colbert. Als Finanz- und Wirtschaftsminister lenkte Colbert fast die gesamte Innenpolitik.</span>
+            <span class="highlightable paragraph-break">Er erfand das Wirtschaftssystem des Merkantilismus, förderte Manufakturen, baute Straßen und trieb gnadenlos Steuern ein, um die enormen Ausgaben für das Schloss Versailles und den Hofstaat zu decken.</span>
+            <span class="highlightable paragraph-break">Ein anderer mächtiger Mann war der Kriegsminister Marquis de Louvois. Er formte das französische Militär von einem wilden Haufen Söldner zu einer streng organisierten, stehenden Armee mit einheitlichen Uniformen und Kasernen.</span>
+            <span class="highlightable paragraph-break">Männer wie Colbert und Louvois dachten sich die weitreichenden Gesetze aus und legten sie dem König oft nur noch zur endgültigen Unterschrift vor. Sie übernahmen also in der Praxis große Teile der Legislative.</span>
+            
+            <span class="highlightable paragraph-break">Doch wie setzte man diese Gesetze in den weit entfernten Provinzen durch?</span>
+            <span class="highlightable paragraph-break">Dafür baute der König das System der "Intendanten" massiv aus. Das waren hochgebildete königliche Sonderbeauftragte, die aus der Hauptstadt in die Provinzen entsandt wurden.</span>
+            <span class="highlightable paragraph-break">Sie waren die Augen und Ohren des Königs vor Ort. Die Intendanten beaufsichtigten die Steuereintreiber, kontrollierten die lokale Polizei, organisierten den Straßenbau und berichteten regelmäßig per Brief nach Versailles.</span>
+            <span class="highlightable paragraph-break">Sie sorgten gemeinsam mit Beamten dafür, dass die Exekutive auch hunderte Kilometer vom König entfernt funktionierte.</span>
+            
+            <span class="highlightable paragraph-break">Auch bei der Rechtsprechung (Judikative) sah die Praxis anders aus als die Theorie. Zwar konnte der König als oberster Richter jederzeit eingreifen, doch die massenhafte Alltagsarbeit bewältigten unzählige lokale Richter.</span>
+            <span class="highlightable paragraph-break">Besonders wichtig waren die sogenannten "Parlements". Achtung: Im Frankreich des 17. Jahrhunderts waren das keine Volksvertretungen (wie unser heutiger Bundestag), sondern die höchsten regionalen Gerichtshöfe.</span>
+            <span class="highlightable paragraph-break">Die Richter dort prüften Streitigkeiten und verurteilten Kriminelle. Obwohl der König sie zwingen konnte, seine Gesetze offiziell in ihre Bücher einzutragen, hatten diese Gerichte auf lokaler Ebene enormen Einfluss.</span>
+            <span class="highlightable paragraph-break">Zusätzlich musste selbst ein absoluter König bestimmte Grenzen akzeptieren: Er konnte alte Traditionen, Sonderrechte von Städten oder Privilegien der katholischen Kirche nicht einfach per Fingerschnippen abschaffen, ohne einen gewaltigen Aufstand zu riskieren.</span>
+        </div>
+        
+        <details class="mehr">
+            <summary>📖 Ausführlichen Text lesen</summary>
+            <div class="text-container">
             <span class="highlightable paragraph-break">Der Satz "L'État, c'est moi" (Der Staat bin ich) wird König Ludwig XIV. gerne in den Mund gelegt.</span>
             <span class="highlightable paragraph-break">Zwar ist unter Historikern umstritten, ob er diese Worte jemals wörtlich so ausgesprochen hat, aber sie fassen sein Selbstverständnis perfekt zusammen.</span>
             <span class="highlightable paragraph-break">Ludwig wählte die Sonne als sein Symbol. So wie sich die Planeten um die Sonne drehen, sollte sich in Frankreich alles um ihn drehen.</span>
@@ -678,6 +721,7 @@
             <span class="highlightable paragraph-break">Tausende Fachleute – Räte, Minister, Intendanten, Steuereintreiber und Richter – hielten die gigantische Machtmaschinerie Frankreichs am Laufen.</span>
             <span class="highlightable paragraph-break">König Ludwig XIV. thronte zwar als strahlende Sonne an der Spitze, aber ohne seine unzähligen Helfer wäre sein Reich im Chaos versunken.</span>
         </div>
+        </details>
         
         <div class="nav-buttons">
             <button onclick="prevModule(2)">&#8592; Zurück</button>
@@ -776,6 +820,22 @@
         updateStepper(moduleNum);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // --- Modul 2: Reihenfolge der Fälle und der Antwortmöglichkeiten wird gemischt ---
+    (function mischeModul2() {
+        function mische(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
+        const grid = document.querySelector('#modul2 .quiz-grid');
+        if (!grid) return;
+        const items = mische(Array.from(grid.querySelectorAll('.quiz-item')));
+        items.forEach((item, n) => {
+            const text = item.querySelector('.quiz-text');
+            text.textContent = (n + 1) + '. ' + text.textContent.replace(/^\d+\.\s*/, '');
+            const sel = item.querySelector('select');
+            const opts = Array.from(sel.querySelectorAll('option')).filter(o => o.value !== '');
+            mische(opts).forEach(o => sel.appendChild(o));
+            grid.appendChild(item);
+        });
+    })();
 
     // --- Logik für Modul 2 (Quiz) ---
     function checkQuiz() {
