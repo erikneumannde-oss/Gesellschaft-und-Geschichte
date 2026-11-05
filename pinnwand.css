@@ -241,3 +241,7 @@ body[data-stufe="oberstufe"] .note:nth-child(n) { --rot: 0deg; background-color:
 body[data-stufe="oberstufe"] .note:nth-child(even) { --rot: .6deg; }
 body[data-stufe="oberstufe"] .note:nth-child(odd) { --rot: -.5deg; }
 body[data-stufe="oberstufe"] .note::before { background: radial-gradient(circle at 35% 30%, #e9d8a6 0, #b08d3c 55%, #5c4513 100%); }
+
+/* Gedrehte Zettel dürfen nie über den Bildschirmrand hinausragen (sonst zoomt Safari auf dem iPad heraus) */
+html, body { overflow-x: hidden; }
+.stage { overflow-x: clip; max-width: 100%; }
