@@ -98,6 +98,17 @@ select{font:inherit;border:1.5px solid #b9c7e6;border-radius:8px;padding:6px;bac
 .matchrow .t{flex:1;min-width:220px}
 .matchrow.good{border-color:#6fc593;background:#effaf3}.matchrow.wrong{border-color:#e0928c;background:#fff3f2}
 @media(max-width:640px){.land{grid-template-columns:1fr}}
+
+.rolefab{position:fixed;left:12px;bottom:12px;z-index:50;border:none;border-radius:999px;background:var(--gold);color:#241a00;font:inherit;font-weight:700;padding:10px 16px;box-shadow:0 4px 14px rgba(0,0,0,.4);cursor:pointer;display:none}
+.rolefab.show{display:inline-flex;gap:6px;align-items:center}
+#rolebadge{cursor:pointer;font:inherit;font-size:.9rem}
+.modal{position:fixed;inset:0;background:rgba(5,15,50,.7);z-index:100;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.open{display:flex}
+.modal .card{background:#fff;border-radius:16px;max-width:460px;width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:20px 22px;box-shadow:0 20px 50px rgba(0,0,0,.5);text-align:center}
+.modal .card .big{font-size:3rem;line-height:1}
+.modal .card h3{margin:6px 0 8px;color:var(--blue);font-size:1.3rem}
+.modal .card p{text-align:left}
+.modal .card .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
 @media(max-width:640px){main{padding:16px 14px 22px}.sortcard{flex-direction:column;align-items:stretch}.sortcard .sw{justify-content:flex-start}}
 </style>
 </head>
@@ -108,11 +119,13 @@ select{font:inherit;border:1.5px solid #b9c7e6;border-radius:8px;padding:6px;bac
   <header class="top">
     <svg class="coin" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f2c230" stroke="#c99a0a" stroke-width="4"/><circle cx="32" cy="32" r="22" fill="none" stroke="#c99a0a" stroke-width="2" stroke-dasharray="3 3"/><text x="32" y="43" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="32" fill="#7a5a00">€</text></svg>
     <h1>Der Euro – Soll Novarien beitreten?<small>Planspiel zur Währungsunion</small></h1>
-    <div id="rolebadge" hidden></div>
+    <button id="rolebadge" type="button" hidden aria-label="Meine Rolle ansehen"></button>
   </header>
   <nav id="tabs"></nav>
   <main id="main"></main>
 </div>
+<button class="rolefab" id="rolefab" type="button">🎭 Meine Rolle</button>
+<div class="modal" id="rolemodal" role="dialog" aria-modal="true"><div class="card" id="rolecard"></div></div>
 <a class="imp" href="../../../impressum.html">Impressum &amp; Datenschutz</a>
 
 <script>
@@ -500,7 +513,8 @@ function drawTabs(){
     nav.appendChild(b);
   });
   const rb=$('#rolebadge');
-  if(role()&&ROLES[role()]){rb.hidden=false;rb.textContent=ROLES[role()].ic+' '+ROLES[role()].name;}else rb.hidden=true;
+  if(role()&&ROLES[role()]){rb.hidden=false;rb.textContent=ROLES[role()].ic+' '+ROLES[role()].name+' ℹ️';}else rb.hidden=true;
+  $('#rolefab').classList.toggle('show',!!(role()&&ROLES[role()]&&cur!=='start'));
 }
 function go(id){cur=id;store.set('eu_station',id);render();window.scrollTo({top:0,behavior:'smooth'});}
 function render(){
@@ -606,6 +620,18 @@ function renderVote(m){
   m.appendChild(n);
   navButtons(m);
 }
+function openRole(){
+  const r=ROLES[role()];if(!r)return;
+  $('#rolecard').innerHTML='<div class="big">'+r.ic+'</div><h3>'+esc(r.name)+'</h3><p>'+esc(r.txt)+'</p><p><b>Beantworte alle Fragen aus der Sicht dieser Person.</b></p><div class="acts"><button class="btn gold" id="rclose" type="button">Verstanden</button><button class="btn ghost" id="rchange" type="button">Rolle wechseln</button></div>';
+  $('#rolemodal').classList.add('open');
+  $('#rclose').onclick=closeRole;
+  $('#rchange').onclick=()=>{closeRole();go('start');};
+}
+function closeRole(){$('#rolemodal').classList.remove('open');}
+$('#rolebadge').onclick=openRole;
+$('#rolefab').onclick=openRole;
+$('#rolemodal').addEventListener('click',e=>{if(e.target.id==='rolemodal')closeRole();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeRole();});
 render();
 </script>
 </body>
