@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Der Euro – Soll Novarien beitreten?</title>
+<style>
+:root{--blue:#0b2f7a;--blue2:#17469f;--gold:#f2c230;--gold2:#c99a0a;--ink:#1d2433;--paper:#ffffff;--soft:#eef3fc;--ok:#1f8a4c;--bad:#b3261e}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;position:relative;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);background:#0b3a9e;min-height:100vh;line-height:1.55}
+.euflag{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:14px 14px 70px}
+header.top{display:flex;align-items:center;gap:12px;color:#fff;padding:6px 2px 10px;flex-wrap:wrap}
+.coin{width:46px;height:46px;flex:none}
+header.top h1{margin:0;font-size:1.3rem;line-height:1.2}
+header.top small{display:block;color:#cfdcf7;font-weight:400;font-size:.8rem}
+#rolebadge{margin-left:auto;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:5px 14px;font-size:.9rem}
+nav#tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin}
+nav#tabs button{flex:none;border:2px solid rgba(255,255,255,.45);background:rgba(8,30,90,.78);color:#fff;border-radius:12px;padding:8px 12px;font:inherit;font-size:.88rem;cursor:pointer;white-space:nowrap}
+nav#tabs button.act{background:var(--gold);color:#241a00;border-color:var(--gold);font-weight:700}
+nav#tabs button .ck{display:none;margin-left:4px;color:#7ee2a0}
+nav#tabs button.act .ck{color:#1c6b3b}
+nav#tabs button.done .ck{display:inline}
+nav#tabs button:disabled{opacity:.45;cursor:default}
+main{background:var(--paper);border-radius:16px;padding:20px 22px 26px;box-shadow:0 14px 40px rgba(0,0,0,.35)}
+h2{margin:0 0 4px;color:var(--blue);font-size:1.5rem}
+.sub{color:#51607c;margin:0 0 14px}
+h3{color:var(--blue2);margin:22px 0 6px;font-size:1.1rem}
+p{margin:0 0 10px}
+.box{background:var(--soft);border-left:5px solid var(--blue2);border-radius:8px;padding:10px 14px;margin:12px 0}
+.box.gold{background:#fff7da;border-left-color:var(--gold2)}
+.task{border:2px solid #d4def2;border-radius:12px;padding:12px 14px;margin:14px 0;background:#fcfdff}
+.task.ok{border-color:#9bd5b2;background:#f4fbf7}
+.task .q{font-weight:600;margin-bottom:8px}
+.task .nr{display:inline-block;background:var(--blue2);color:#fff;border-radius:999px;min-width:26px;height:26px;text-align:center;line-height:26px;font-size:.85rem;margin-right:6px}
+textarea{width:100%;min-height:92px;border:1.5px solid #b9c7e6;border-radius:8px;padding:9px 11px;font:inherit;resize:vertical;background:#fff;color:var(--ink)}
+input[type=text]{border:1.5px solid #b9c7e6;border-radius:8px;padding:7px 10px;font:inherit;width:120px;background:#fff;color:var(--ink)}
+.btn{border:none;border-radius:10px;padding:9px 16px;font:inherit;font-weight:700;cursor:pointer;background:var(--blue2);color:#fff}
+.btn.gold{background:var(--gold);color:#241a00}
+.btn.ghost{background:#e4ebf8;color:var(--blue)}
+.btn:disabled{opacity:.5}
+.fb{margin-top:8px;font-weight:600;min-height:1.2em}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.ordrow{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #c7d3ee;border-radius:9px;padding:7px 10px;margin:6px 0}
+.ordrow .t{flex:1}
+.ordrow button{border:1px solid #9fb2dc;background:#eef3fc;border-radius:7px;width:34px;height:34px;cursor:pointer;font-size:1rem}
+.ordrow.good{border-color:#6fc593;background:#effaf3}
+.ordrow.wrong{border-color:#e0928c;background:#fff3f2}
+.roles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin:12px 0}
+.role{border:2px solid #c7d3ee;border-radius:12px;padding:12px 14px;background:#fff;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.role:hover{border-color:var(--blue2)}
+.role.sel{border-color:var(--gold2);background:#fff7da;box-shadow:0 0 0 3px rgba(242,194,48,.45)}
+.role b{display:block;color:var(--blue)}
+.role .ic{font-size:1.8rem;display:block}
+.role small{display:block;color:#51607c;margin-top:4px}
+table.crit{width:100%;border-collapse:collapse;margin:8px 0;font-size:.95rem}
+table.crit th,table.crit td{border:1px solid #cdd8ef;padding:7px 8px;text-align:left;vertical-align:top}
+table.crit th{background:#e9effb;color:var(--blue)}
+table.crit tr.good td{background:#effaf3}
+table.crit tr.wrong td{background:#fff3f2}
+select{font:inherit;border:1.5px solid #b9c7e6;border-radius:8px;padding:6px;background:#fff}
+.sortcard{display:flex;gap:10px;align-items:center;border:1.5px solid #c7d3ee;border-radius:9px;padding:8px 10px;margin:6px 0;background:#fff}
+.sortcard .t{flex:1}
+.sortcard .sw{display:flex;gap:5px;flex:none}
+.sortcard .sw button{border:1.5px solid #9fb2dc;background:#eef3fc;border-radius:8px;padding:6px 10px;font:inherit;font-size:.85rem;cursor:pointer}
+.sortcard .sw button.on.v{background:#d9f3e3;border-color:#6fc593;font-weight:700}
+.sortcard .sw button.on.n{background:#fde0dd;border-color:#e0928c;font-weight:700}
+.sortcard.good{border-color:#6fc593}.sortcard.wrong{border-color:#e0928c;background:#fff3f2}
+.choices{display:flex;flex-direction:column;gap:7px}
+.choices button{text-align:left;border:1.5px solid #b9c7e6;background:#fff;border-radius:9px;padding:8px 12px;font:inherit;cursor:pointer}
+.choices button.on{background:#e6eefc;border-color:var(--blue2)}
+.choices button.right{background:#d9f3e3;border-color:#6fc593}
+.choices button.wrongc{background:#fde0dd;border-color:#e0928c}
+.nav2{display:flex;justify-content:space-between;gap:10px;margin-top:22px;flex-wrap:wrap}
+.toplinks{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.toplinks a{background:rgba(0,0,0,.35);color:#fff;text-decoration:none;border-radius:8px;padding:5px 11px;font-size:.85rem}
+.note{font-size:.84rem;color:#51607c;margin-top:18px}
+.imp{position:fixed;right:10px;bottom:10px;font-size:12px;color:#333;background:rgba(255,255,255,.92);padding:4px 8px;border-radius:4px;text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.vote{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:10px 0}
+.vote button{border:2px solid #b9c7e6;background:#fff;border-radius:12px;padding:14px 10px;font:inherit;font-weight:700;cursor:pointer;color:var(--blue)}
+.vote button.on{border-color:var(--gold2);background:#fff7da;box-shadow:0 0 0 3px rgba(242,194,48,.45)}
+.mine{background:#f6f8fd;border:1px dashed #9fb2dc;border-radius:10px;padding:8px 12px;margin:8px 0;font-size:.92rem;white-space:pre-wrap}
+
+.land{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;background:linear-gradient(135deg,#eaf4f6,#f7f1dc);border:2px solid #b7d3d8;border-radius:14px;padding:14px 16px;margin:14px 0}
+.land .emb{display:flex;gap:12px;align-items:flex-end}
+.land .emb svg{display:block}
+.land h3{margin:0 0 4px;color:#0d6a73}
+.land ul{margin:6px 0 0;padding-left:18px;font-size:.93rem}
+.mp{display:flex;gap:12px;align-items:flex-start;margin:6px 0 16px}
+.mp img{flex:none;width:72px;height:72px;border-radius:50%;border:3px solid #0d7c86;object-fit:cover}
+.mp .sp{position:relative;background:#e9f6f7;border:2px solid #9fcdd3;border-radius:12px;padding:8px 12px;font-style:italic;color:#14424a}
+.mp .sp small{display:block;font-style:normal;font-weight:700;color:#0d6a73;font-size:.78rem;margin-bottom:2px}
+.help{background:#f3f7ff;border:1.5px dashed #8fa9dc;border-radius:10px;padding:8px 12px;margin:10px 0}
+.help summary{cursor:pointer;font-weight:700;color:var(--blue2)}
+.help p,.help ul{margin:6px 0 2px}
+.matchrow{display:flex;gap:10px;align-items:center;border:1.5px solid #c7d3ee;border-radius:9px;padding:8px 10px;margin:6px 0;background:#fff;flex-wrap:wrap}
+.matchrow .t{flex:1;min-width:220px}
+.matchrow.good{border-color:#6fc593;background:#effaf3}.matchrow.wrong{border-color:#e0928c;background:#fff3f2}
+@media(max-width:640px){.land{grid-template-columns:1fr}}
+@media(max-width:640px){main{padding:16px 14px 22px}.sortcard{flex-direction:column;align-items:stretch}.sortcard .sw{justify-content:flex-start}}
+</style>
+</head>
+<body>
+<svg class="euflag" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="600" height="400" fill="#0b3a9e"/><g fill="#ffd21f" opacity=".6"><polygon points="300.0,-88.0 308.5,-61.7 336.1,-61.7 313.8,-45.5 322.3,-19.3 300.0,-35.5 277.7,-19.3 286.2,-45.5 263.9,-61.7 291.5,-61.7"/><polygon points="425.0,-54.5 433.5,-28.3 461.1,-28.2 438.8,-12.0 447.3,14.2 425.0,-2.0 402.7,14.2 411.2,-12.0 388.9,-28.2 416.5,-28.3"/><polygon points="516.5,37.0 525.0,63.3 552.6,63.3 530.3,79.5 538.8,105.7 516.5,89.5 494.2,105.7 502.7,79.5 480.4,63.3 508.0,63.3"/><polygon points="550.0,162.0 558.5,188.3 586.1,188.3 563.8,204.5 572.3,230.7 550.0,214.5 527.7,230.7 536.2,204.5 513.9,188.3 541.5,188.3"/><polygon points="516.5,287.0 525.0,313.3 552.6,313.3 530.3,329.5 538.8,355.7 516.5,339.5 494.2,355.7 502.7,329.5 480.4,313.3 508.0,313.3"/><polygon points="425.0,378.5 433.5,404.8 461.1,404.8 438.8,421.0 447.3,447.2 425.0,431.0 402.7,447.2 411.2,421.0 388.9,404.8 416.5,404.8"/><polygon points="300.0,412.0 308.5,438.3 336.1,438.3 313.8,454.5 322.3,480.7 300.0,464.5 277.7,480.7 286.2,454.5 263.9,438.3 291.5,438.3"/><polygon points="175.0,378.5 183.5,404.8 211.1,404.8 188.8,421.0 197.3,447.2 175.0,431.0 152.7,447.2 161.2,421.0 138.9,404.8 166.5,404.8"/><polygon points="83.5,287.0 92.0,313.3 119.6,313.3 97.3,329.5 105.8,355.7 83.5,339.5 61.2,355.7 69.7,329.5 47.4,313.3 75.0,313.3"/><polygon points="50.0,162.0 58.5,188.3 86.1,188.3 63.8,204.5 72.3,230.7 50.0,214.5 27.7,230.7 36.2,204.5 13.9,188.3 41.5,188.3"/><polygon points="83.5,37.0 92.0,63.3 119.6,63.3 97.3,79.5 105.8,105.7 83.5,89.5 61.2,105.7 69.7,79.5 47.4,63.3 75.0,63.3"/><polygon points="175.0,-54.5 183.5,-28.3 211.1,-28.2 188.8,-12.0 197.3,14.2 175.0,-2.0 152.7,14.2 161.2,-12.0 138.9,-28.2 166.5,-28.3"/></g></svg>
+<div class="wrap">
+  <div class="toplinks"><a href="../index.html">← Zurück zu Klasse 10</a><a href="../../../index.html">⌂ Startseite</a></div>
+  <header class="top">
+    <svg class="coin" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f2c230" stroke="#c99a0a" stroke-width="4"/><circle cx="32" cy="32" r="22" fill="none" stroke="#c99a0a" stroke-width="2" stroke-dasharray="3 3"/><text x="32" y="43" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="32" fill="#7a5a00">€</text></svg>
+    <h1>Der Euro – Soll Novarien beitreten?<small>Planspiel zur Währungsunion</small></h1>
+    <div id="rolebadge" hidden></div>
+  </header>
+  <nav id="tabs"></nav>
+  <main id="main"></main>
+</div>
+<a class="imp" href="../../../impressum.html">Impressum &amp; Datenschutz</a>
+
+<script>
+/* ===== Speicher (localStorage, mit Ersatz im Arbeitsspeicher) ===== */
+const mem={};
+const store={
+  get(k){try{const v=localStorage.getItem(k);return v===null?(mem[k]??null):v;}catch(e){return mem[k]??null;}},
+  set(k,v){mem[k]=v;try{localStorage.setItem(k,v);}catch(e){}}
+};
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const num=s=>parseFloat(String(s).replace(/\s/g,'').replace(/\.(?=\d{3}(\D|$))/g,'').replace(',','.').replace('%','').replace('$','').replace('€',''));
+
+
+/* ===== Novarien: Flagge, Wappen, Ministerpräsidentin (eigene Zeichnungen) ===== */
+const SVG_FLAG='<svg viewBox="0 0 150 100" width="120" height="80" role="img" aria-label="Flagge Novariens"><rect width="150" height="100" fill="#fff"/><rect width="150" height="34" fill="#0d7c86"/><rect y="66" width="150" height="34" fill="#e8a317"/><circle cx="75" cy="50" r="23" fill="#fff" stroke="#c99a0a" stroke-width="3"/><path d="M71 66 L73 40 H77 L79 66Z" fill="#fff" stroke="#9b2c2c" stroke-width="1.6"/><rect x="72" y="46" width="6" height="5" fill="#9b2c2c"/><rect x="72" y="55" width="6" height="5" fill="#9b2c2c"/><path d="M71 40 H79 L75 33Z" fill="#9b2c2c"/><path d="M62 66 Q75 60 88 66" stroke="#0d7c86" stroke-width="2" fill="none"/><rect x="0" y="0" width="150" height="100" fill="none" stroke="#999" stroke-width="1"/></svg>';
+const SVG_WAPPEN='<svg viewBox="0 0 100 124" width="82" height="102" role="img" aria-label="Staatswappen Novariens"><path d="M32 12 L36 2 L44 9 L50 0 L56 9 L64 2 L68 12Z" fill="#e8a317" stroke="#9b6f00" stroke-width="1.5"/><defs><clipPath id="sh"><path d="M10 14 H90 V62 C90 92 70 110 50 120 C30 110 10 92 10 62Z"/></clipPath></defs><g clip-path="url(#sh)"><rect x="0" y="0" width="100" height="70" fill="#0d7c86"/><rect x="0" y="70" width="100" height="60" fill="#e8a317"/><path d="M0 72 Q12 66 25 72 T50 72 T75 72 T100 72 V78 H0Z" fill="#fff" opacity=".85"/></g><path d="M10 14 H90 V62 C90 92 70 110 50 120 C30 110 10 92 10 62Z" fill="none" stroke="#7a5a00" stroke-width="3"/><path d="M45 74 L47 34 H53 L55 74Z" fill="#fff" stroke="#9b2c2c" stroke-width="1.5"/><rect x="47" y="42" width="6" height="7" fill="#9b2c2c"/><rect x="46.6" y="56" width="6.8" height="7" fill="#9b2c2c"/><path d="M45 34 H55 L50 25Z" fill="#9b2c2c"/><path d="M50 30 L28 24 M50 30 L72 24" stroke="#ffe27a" stroke-width="1.5"/><path d="M26 108 Q24 92 30 82 M34 106 Q32 92 38 84 M74 108 Q76 92 70 82 M66 106 Q68 92 62 84" stroke="#7a5a00" stroke-width="2" fill="none"/></svg>';
+const IMG_MP='data:image/jpeg;base64,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';
+const SVG_MP='<img src="'+IMG_MP+'" alt="Ministerpräsidentin Livia Marek (KI-generiertes Bild einer fiktiven Person)">';
+function mpBubble(txt){return '<div class="mp">'+SVG_MP+'<div class="sp"><small>Ministerpräsidentin Livia Marek</small>'+txt+'</div></div>';}
+
+/* ===== Rollen ===== */
+const ROLES={
+  unternehmerin:{ic:'🏭',name:'Mara, Unternehmerin',short:'Unternehmerin',txt:'Sie führt einen Maschinenbaubetrieb und verkauft rund 60 % ihrer Maschinen in Länder der Eurozone. Sie kauft Teile und nimmt Kredite auf.'},
+  familie:{ic:'🛒',name:'Jonas, Familienvater',short:'Familienvater',txt:'Er kauft häufig online in anderen EU-Ländern ein und fährt jedes Jahr in den Urlaub in den Euroraum. Er rechnet genau, was im Alltag kostet.'},
+  rentnerin:{ic:'👵',name:'Frau Weiß, Rentnerin',short:'Rentnerin',txt:'Sie lebt von ihrer Rente und hat ihre Ersparnisse auf einem Sparkonto in Novar. Ihr ist wichtig, dass ihr Geld stabil bleibt.'},
+  landwirt:{ic:'🌾',name:'Tomás, Landwirt',short:'Landwirt',txt:'Er verkauft hauptsächlich auf regionalen Märkten und hat einen Kredit für einen neuen Stall aufgenommen. Das Ausland spielt für ihn kaum eine Rolle.'},
+  ministerin:{ic:'🏛️',name:'Reiter, Finanzministerin',short:'Finanzministerin',txt:'Sie ist für den Staatshaushalt verantwortlich, kennt die Schulden des Landes und muss dafür sorgen, dass der Staat Kredite zu guten Zinsen bekommt.'},
+  zentralbank:{ic:'🏦',name:'Hallström, Zentralbankchef',short:'Zentralbankchef',txt:'Er leitet die Zentralbank Novariens. Sie legt bisher die Zinsen fest und kann den Wert des Novar beeinflussen.'}
+};
+const role=()=>store.get('eu_role');
+function roleName(){const r=role();return r&&ROLES[r]?ROLES[r].short:'deine Rolle';}
+
+/* ===== Stationen ===== */
+const ST=[
+ {id:'start',tab:'Start',title:'Das Planspiel'},
+ {id:'geschichte',tab:'1 Weg zum Euro'},
+ {id:'huerden',tab:'2 Die Hürden'},
+ {id:'procontra',tab:'3 Pro und Contra'},
+ {id:'wert',tab:'4 Wert des Geldes'},
+ {id:'krise',tab:'5 Die Eurokrise'},
+ {id:'abstimmung',tab:'6 Abstimmung'}
+];
+
+/* ===== Aufgaben-Bausteine ===== */
+function mkTyped(key,label,min,ph){
+  const wrap=document.createElement('div');
+  const ta=document.createElement('textarea');ta.placeholder=ph||'Deine Antwort …';
+  ta.value=store.get('eu_ans_'+key)||'';
+  const upd=()=>{store.set('eu_ans_'+key,ta.value);wrap.dispatchEvent(new Event('state',{bubbles:true}));};
+  ta.addEventListener('input',upd);
+  wrap.appendChild(ta);
+  wrap.isDone=()=>ta.value.trim().length>=min;
+  return wrap;
+}
+function mkOrder(key,items,start){
+  const wrap=document.createElement('div');
+  let order=null;try{order=JSON.parse(store.get('eu_ord_'+key)||'null');}catch(e){}
+  if(!order||order.length!==items.length)order=start.slice();
+  const list=document.createElement('div');
+  const fb=document.createElement('div');fb.className='fb';
+  const chk=document.createElement('button');chk.className='btn';chk.textContent='Reihenfolge prüfen';
+  let solved=store.get('eu_solved_'+key)==='1';
+  function draw(marks){
+    list.innerHTML='';
+    order.forEach((idx,pos)=>{
+      const r=document.createElement('div');r.className='ordrow'+(marks?(idx===pos?' good':' wrong'):'');
+      r.innerHTML='<span class="t">'+items[idx]+'</span>';
+      const up=document.createElement('button');up.textContent='▲';up.setAttribute('aria-label','nach oben');
+      const dn=document.createElement('button');dn.textContent='▼';dn.setAttribute('aria-label','nach unten');
+      up.onclick=()=>{if(pos>0){[order[pos-1],order[pos]]=[order[pos],order[pos-1]];save();draw();}};
+      dn.onclick=()=>{if(pos<order.length-1){[order[pos+1],order[pos]]=[order[pos],order[pos+1]];save();draw();}};
+      r.appendChild(up);r.appendChild(dn);list.appendChild(r);
+    });
+  }
+  function save(){store.set('eu_ord_'+key,JSON.stringify(order));fb.textContent='';fb.className='fb';solved=false;store.set('eu_solved_'+key,'0');wrap.dispatchEvent(new Event('state',{bubbles:true}));}
+  chk.onclick=()=>{
+    const right=order.filter((idx,pos)=>idx===pos).length;
+    draw(true);
+    if(right===order.length){fb.textContent='✓ Richtig. Die Reihenfolge stimmt.';fb.className='fb ok';solved=true;store.set('eu_solved_'+key,'1');}
+    else{fb.textContent=right+' von '+order.length+' Karten stehen an der richtigen Stelle.';fb.className='fb bad';solved=false;store.set('eu_solved_'+key,'0');}
+    wrap.dispatchEvent(new Event('state',{bubbles:true}));
+  };
+  draw(solved);
+  if(solved){fb.textContent='✓ Richtig. Die Reihenfolge stimmt.';fb.className='fb ok';}
+  wrap.append(list,chk,fb);
+  wrap.isDone=()=>solved;
+  return wrap;
+}
+function mkSort(key,cards){
+  const wrap=document.createElement('div');
+  let st={};try{st=JSON.parse(store.get('eu_sort_'+key)||'{}');}catch(e){}
+  const list=document.createElement('div');
+  const fb=document.createElement('div');fb.className='fb';
+  const chk=document.createElement('button');chk.className='btn';chk.textContent='Zuordnung prüfen';
+  let solved=store.get('eu_solved_'+key)==='1';
+  function draw(marks){
+    list.innerHTML='';
+    cards.forEach((c,i)=>{
+      const d=document.createElement('div');
+      const cur=st[i];
+      d.className='sortcard'+(marks&&cur?(cur===c.a?' good':' wrong'):'');
+      d.innerHTML='<span class="t">'+c.t+'</span>';
+      const sw=document.createElement('span');sw.className='sw';
+      [['v','Vorteil'],['n','Nachteil']].forEach(([k,l])=>{
+        const b=document.createElement('button');b.textContent=l;b.className=(cur===k?'on ':'')+k;
+        b.onclick=()=>{st[i]=k;store.set('eu_sort_'+key,JSON.stringify(st));solved=false;store.set('eu_solved_'+key,'0');fb.textContent='';fb.className='fb';draw();wrap.dispatchEvent(new Event('state',{bubbles:true}));};
+        sw.appendChild(b);
+      });
+      d.appendChild(sw);list.appendChild(d);
+    });
+  }
+  chk.onclick=()=>{
+    const set=Object.keys(st).length;
+    if(set<cards.length){fb.textContent='Ordne zuerst alle Karten zu.';fb.className='fb bad';return;}
+    const right=cards.filter((c,i)=>st[i]===c.a).length;
+    draw(true);
+    if(right===cards.length){fb.textContent='✓ Alles richtig zugeordnet.';fb.className='fb ok';solved=true;store.set('eu_solved_'+key,'1');}
+    else{fb.textContent=right+' von '+cards.length+' Karten sind richtig zugeordnet. Prüfe die rot markierten noch einmal.';fb.className='fb bad';solved=false;store.set('eu_solved_'+key,'0');}
+    wrap.dispatchEvent(new Event('state',{bubbles:true}));
+  };
+  draw(solved);
+  if(solved){fb.textContent='✓ Alles richtig zugeordnet.';fb.className='fb ok';}
+  wrap.append(list,chk,fb);
+  wrap.isDone=()=>solved;
+  return wrap;
+}
+function mkNum(key,tol,okmsg,badmsg,unit){
+  const wrap=document.createElement('div');
+  const inp=document.createElement('input');inp.type='text';inp.inputMode='decimal';inp.value=store.get('eu_ans_'+key)||'';
+  const u=document.createElement('span');u.textContent=' '+(unit||'');
+  const b=document.createElement('button');b.className='btn ghost';b.textContent='Prüfen';b.style.marginLeft='10px';
+  const fb=document.createElement('div');fb.className='fb';
+  let solved=store.get('eu_solved_'+key)==='1';
+  if(solved){fb.textContent='✓ '+okmsg;fb.className='fb ok';}
+  b.onclick=()=>{
+    store.set('eu_ans_'+key,inp.value);
+    const v=num(inp.value);
+    if(!isNaN(v)&&Math.abs(v-tol.v)<=tol.d){fb.textContent='✓ '+okmsg;fb.className='fb ok';solved=true;store.set('eu_solved_'+key,'1');}
+    else{fb.textContent=badmsg;fb.className='fb bad';solved=false;store.set('eu_solved_'+key,'0');}
+    wrap.dispatchEvent(new Event('state',{bubbles:true}));
+  };
+  inp.addEventListener('input',()=>{solved=false;store.set('eu_solved_'+key,'0');fb.textContent='';fb.className='fb';wrap.dispatchEvent(new Event('state',{bubbles:true}));});
+  wrap.append(inp,u,b,fb);
+  wrap.isDone=()=>solved;
+  return wrap;
+}
+function mkChoice(key,opts,right,okmsg,badmsg){
+  const wrap=document.createElement('div');
+  const box=document.createElement('div');box.className='choices';
+  const fb=document.createElement('div');fb.className='fb';
+  let sel=store.get('eu_ans_'+key);sel=sel===null?null:parseInt(sel,10);
+  let solved=store.get('eu_solved_'+key)==='1';
+  function draw(){
+    box.innerHTML='';
+    opts.forEach((o,i)=>{
+      const b=document.createElement('button');b.textContent=o;
+      if(sel===i){b.className=solved?(i===right?'right':'on'):'on';}
+      b.onclick=()=>{
+        sel=i;store.set('eu_ans_'+key,String(i));
+        if(i===right){solved=true;store.set('eu_solved_'+key,'1');fb.textContent='✓ '+okmsg;fb.className='fb ok';}
+        else{solved=false;store.set('eu_solved_'+key,'0');fb.textContent=badmsg;fb.className='fb bad';}
+        draw();wrap.dispatchEvent(new Event('state',{bubbles:true}));
+      };
+      box.appendChild(b);
+    });
+  }
+  draw();
+  if(solved){fb.textContent='✓ '+okmsg;fb.className='fb ok';}
+  wrap.append(box,fb);
+  wrap.isDone=()=>solved;
+  return wrap;
+}
+
+
+function mkMatch(key,items,opts){
+  const wrap=document.createElement('div');
+  let st={};try{st=JSON.parse(store.get('eu_match_'+key)||'{}');}catch(e){}
+  const list=document.createElement('div');
+  const fb=document.createElement('div');fb.className='fb';
+  const chk=document.createElement('button');chk.className='btn';chk.textContent='Zuordnung prüfen';
+  let solved=store.get('eu_solved_'+key)==='1';
+  items.forEach((it,i)=>{
+    const r=document.createElement('div');r.className='matchrow';
+    r.innerHTML='<span class="t">'+it.t+'</span>';
+    const s=document.createElement('select');
+    s.innerHTML='<option value="">– wählen –</option>'+opts.map((o,j)=>'<option value="'+j+'">'+o+'</option>').join('');
+    s.value=st[i]===undefined?'':st[i];
+    s.onchange=()=>{st[i]=s.value;store.set('eu_match_'+key,JSON.stringify(st));solved=false;store.set('eu_solved_'+key,'0');fb.textContent='';fb.className='fb';list.querySelectorAll('.matchrow').forEach(x=>x.classList.remove('good','wrong'));wrap.dispatchEvent(new Event('state',{bubbles:true}));};
+    r.appendChild(s);list.appendChild(r);
+  });
+  chk.onclick=()=>{
+    let right=0;const rows=list.querySelectorAll('.matchrow');
+    items.forEach((it,i)=>{const ok=String(st[i])===String(it.a);rows[i].classList.remove('good','wrong');rows[i].classList.add(ok?'good':'wrong');if(ok)right++;});
+    if(right===items.length){fb.textContent='✓ Alles richtig zugeordnet.';fb.className='fb ok';solved=true;store.set('eu_solved_'+key,'1');}
+    else{fb.textContent=right+' von '+items.length+' sind richtig. Lies bei den rot markierten noch einmal nach.';fb.className='fb bad';solved=false;store.set('eu_solved_'+key,'0');}
+    wrap.dispatchEvent(new Event('state',{bubbles:true}));
+  };
+  wrap.append(list,chk,fb);
+  if(solved){list.querySelectorAll('.matchrow').forEach(x=>x.classList.add('good'));fb.textContent='✓ Alles richtig zugeordnet.';fb.className='fb ok';}
+  wrap.isDone=()=>solved;
+  return wrap;
+}
+
+/* Tabelle der Konvergenzkriterien */
+function mkCrit(){
+  const wrap=document.createElement('div');
+  const rows=[
+    {k:'preis',n:'Preisstabilität',d:'Inflationsrate in Novarien: <b>3,3 %</b>.<br>Die drei preisstabilsten EU-Länder haben: 1,2 % · 1,4 % · 1,6 %.<br>Erlaubt: höchstens <b>1,5 Prozentpunkte</b> über deren Durchschnitt.',calc:[{id:'a',l:'Durchschnitt der drei Länder',v:1.4},{id:'b',l:'Erlaubter Höchstwert',v:2.9}],ok:false},
+    {k:'defizit',n:'Neuverschuldung des Staates',d:'Novarien macht neue Schulden von <b>2,6 %</b> der Wirtschaftsleistung (BIP).<br>Erlaubt: höchstens 3 %.',ok:true},
+    {k:'schuld',n:'Gesamtschuldenstand',d:'Die Staatsschulden Novariens betragen <b>71 %</b> des BIP.<br>Erlaubt: höchstens 60 % (oder deutlich sinkend, was hier nicht der Fall ist).',ok:false},
+    {k:'wk',n:'Wechselkursstabilität',d:'Der Novar hat <b>zwei Jahre lang</b> am Wechselkursmechanismus II teilgenommen und blieb dabei stabil.<br>Verlangt: mindestens zwei Jahre ohne starke Schwankungen.',ok:true},
+    {k:'zins',n:'Langfristige Zinsen',d:'Novarien zahlt für langfristige Staatsanleihen <b>4,1 %</b>.<br>Die drei preisstabilsten Länder zahlen: 2,8 % · 3,0 % · 3,2 %.<br>Erlaubt: höchstens <b>2 Prozentpunkte</b> über deren Durchschnitt.',calc:[{id:'a',l:'Durchschnitt der drei Länder',v:3.0},{id:'b',l:'Erlaubter Höchstwert',v:5.0}],ok:true}
+  ];
+  let st={};try{st=JSON.parse(store.get('eu_crit')||'{}');}catch(e){}
+  const tbl=document.createElement('table');tbl.className='crit';
+  tbl.innerHTML='<tr><th>Kriterium</th><th>Daten Novariens</th><th>Dein Urteil</th></tr>';
+  const fb=document.createElement('div');fb.className='fb';
+  let solved=store.get('eu_solved_crit')==='1';
+  function save(){store.set('eu_crit',JSON.stringify(st));solved=false;store.set('eu_solved_crit','0');fb.textContent='';fb.className='fb';tbl.querySelectorAll('tr.good,tr.wrong').forEach(r=>r.className='');wrap.dispatchEvent(new Event('state',{bubbles:true}));}
+  rows.forEach(r=>{
+    const tr=document.createElement('tr');tr.dataset.k=r.k;
+    const td1=document.createElement('td');td1.innerHTML='<b>'+r.n+'</b>';
+    const td2=document.createElement('td');td2.innerHTML=r.d;
+    if(r.calc){
+      r.calc.forEach(c=>{
+        const p=document.createElement('div');p.style.marginTop='6px';
+        p.innerHTML=c.l+': ';
+        const i=document.createElement('input');i.type='text';i.inputMode='decimal';i.style.width='70px';i.value=st[r.k+'_'+c.id]||'';
+        i.addEventListener('input',()=>{st[r.k+'_'+c.id]=i.value;save();});
+        p.appendChild(i);p.appendChild(document.createTextNode(' %'));td2.appendChild(p);
+      });
+    }
+    const td3=document.createElement('td');
+    const sel=document.createElement('select');
+    sel.innerHTML='<option value="">– wählen –</option><option value="y">erfüllt</option><option value="n">nicht erfüllt</option>';
+    sel.value=st[r.k]||'';
+    sel.addEventListener('change',()=>{st[r.k]=sel.value;save();});
+    td3.appendChild(sel);
+    tr.append(td1,td2,td3);tbl.appendChild(tr);
+  });
+  const chk=document.createElement('button');chk.className='btn';chk.textContent='Prüfen';
+  chk.onclick=()=>{
+    let all=true,right=0;
+    rows.forEach(r=>{
+      const tr=tbl.querySelector('tr[data-k="'+r.k+'"]');
+      let good=(st[r.k]===(r.ok?'y':'n'));
+      if(r.calc){r.calc.forEach(c=>{const v=num(st[r.k+'_'+c.id]||'');if(isNaN(v)||Math.abs(v-c.v)>0.051)good=false;});}
+      tr.className=good?'good':'wrong';
+      if(good)right++;else all=false;
+    });
+    if(all){fb.textContent='✓ Alles richtig.';fb.className='fb ok';solved=true;store.set('eu_solved_crit','1');}
+    else{fb.textContent=right+' von '+rows.length+' Kriterien sind vollständig richtig. Rechne und prüfe die rot markierten noch einmal.';fb.className='fb bad';solved=false;store.set('eu_solved_crit','0');}
+    wrap.dispatchEvent(new Event('state',{bubbles:true}));
+  };
+  wrap.append(tbl,chk,fb);
+  if(solved){tbl.querySelectorAll('tr[data-k]').forEach(t=>t.className='good');fb.textContent='✓ Alles richtig.';fb.className='fb ok';}
+  wrap.isDone=()=>solved;
+  return wrap;
+}
+
+/* ===== Inhalte ===== */
+const CONTENT={
+ geschichte:{
+  mp:'Bevor wir entscheiden, will ich wissen, woher der Euro überhaupt kommt.',
+  title:'Station 1 – Wie kam es zum Euro?',
+  sub:'Von der Friedensidee zur gemeinsamen Währung',
+  text:`<p>Nach dem Zweiten Weltkrieg wollten sich die Staaten Westeuropas nie wieder bekriegen. Der französische Außenminister Robert Schuman schlug am 9. Mai 1950 vor, die Kohle- und Stahlproduktion Frankreichs und Deutschlands unter eine gemeinsame Aufsicht zu stellen. Wer wirtschaftlich voneinander abhängig ist, so die Überlegung, greift nicht so schnell zu den Waffen.</p>
+  <p>Mit den Römischen Verträgen von 1957 entstand die Europäische Wirtschaftsgemeinschaft. Ziel war ein gemeinsamer Markt, in dem Waren, Dienstleistungen, Personen und Kapital frei fließen können. Doch jedes Land hatte weiter sein eigenes Geld, und Wechselkurse schwankten.</p>
+  <p>Im Vertrag von Maastricht, unterzeichnet am 7. Februar 1992, vereinbarten die Staaten die Wirtschafts- und Währungsunion. Er legte auch fest, welche Bedingungen ein Land erfüllen muss, um beim Euro mitzumachen. Am 1. Januar 1999 wurde der Euro zunächst als Buchgeld eingeführt, in elf Ländern. Die Zentralbank, die Europäische Zentralbank (EZB) in Frankfurt am Main, übernahm die gemeinsame Geldpolitik. Am 1. Januar 2002 kamen Münzen und Scheine in Umlauf. Seitdem sind weitere Länder beigetreten: Kroatien 2023 und Bulgarien am 1. Januar 2026. Der Euro ist heute die Währung in 21 EU-Staaten.</p>`,
+  tasks:[
+   {q:'Bringe die Ereignisse in die richtige zeitliche Reihenfolge.',w:()=>mkOrder('geschichte',[
+     'Schuman-Plan: Kohle und Stahl sollen gemeinsam verwaltet werden',
+     'Römische Verträge: Gründung der Europäischen Wirtschaftsgemeinschaft',
+     'Vertrag von Maastricht: Beschluss zur Währungsunion',
+     'Der Euro wird als Buchgeld eingeführt',
+     'Euro-Münzen und -Scheine kommen in Umlauf',
+     'Bulgarien führt den Euro ein'],[3,0,5,1,4,2])},
+   {q:'Ein gemeinsamer Markt gab es schon seit den 1950er-Jahren. Warum wollten viele Politiker trotzdem zusätzlich eine gemeinsame Währung? Nenne zwei Gründe.',w:()=>mkTyped('geschichte_2','',30,'Überlege, was Unternehmen und Reisende erleben, wenn sie in einem anderen Land bezahlen müssen.')}
+  ]},
+ huerden:{
+  mp:'Die anderen Länder fragen als Erstes: Erfüllt Novarien die Kriterien? Bitte rechnet genau nach.',
+  title:'Station 2 – Die Hürden: Wer darf den Euro einführen?',
+  sub:'Die Konvergenzkriterien von Maastricht',
+  text:`<p>Ein Land darf den Euro nicht einfach übernehmen. Die Volkswirtschaften sollen sich zuvor einander angenähert haben („Konvergenz“), weil sonst Spannungen entstehen, wenn alle dasselbe Geld und dieselbe Zinspolitik haben. Dazu wurden fünf Kriterien festgelegt:</p>
+  <ul>
+   <li><b>Preisstabilität:</b> Die Inflationsrate darf höchstens 1,5 Prozentpunkte über dem Durchschnitt der drei preisstabilsten EU-Länder liegen.</li>
+   <li><b>Neuverschuldung:</b> Der Staat darf pro Jahr höchstens neue Schulden von 3 % des Bruttoinlandsprodukts (BIP) machen.</li>
+   <li><b>Gesamtschulden:</b> Die Staatsschulden dürfen höchstens 60 % des BIP betragen.</li>
+   <li><b>Wechselkurs:</b> Die Währung muss mindestens zwei Jahre im Wechselkursmechanismus II ohne starke Schwankungen gehalten haben.</li>
+   <li><b>Langfristige Zinsen:</b> Sie dürfen höchstens 2 Prozentpunkte über dem Durchschnitt der drei preisstabilsten Länder liegen.</li>
+  </ul>
+  <h3>Kurz erklärt: Inflation</h3>
+  <p><b>Inflation</b> bedeutet, dass die Preise allgemein steigen. Das Geld verliert dadurch an Kaufkraft. Beispiel: Bei 3,3 % Inflation kostet ein Warenkorb, der heute 100 € kostet, in einem Jahr 103,30 €. Wer sein Geld nur auf dem Konto liegen hat, kann sich dann weniger davon kaufen.</p>
+  <div class="box"><b>Wie lässt sich Inflation bekämpfen?</b><br>Die Zentralbank kann die <b>Zinsen erhöhen</b>. Kredite werden dann teurer, Menschen und Firmen leihen sich weniger Geld und geben weniger aus. Die Nachfrage sinkt, und die Preise steigen langsamer. Der Nachteil: Die Wirtschaft wächst langsamer, und Kredite, etwa für Hauskäufe, werden teurer.</div>
+  <div class="box"><b>Wie lassen sich Neuverschuldung und Staatsschulden senken?</b><br>Der Staat kann <b>weniger ausgeben</b> (zum Beispiel weniger Subventionen oder Bauprojekte) oder <b>mehr einnehmen</b> (zum Beispiel höhere Steuern). Gibt er weniger aus, als er einnimmt, sinken die Schulden Jahr für Jahr. Der Nachteil: Sparen trifft die Bevölkerung, etwa durch schlechtere Leistungen oder höhere Abgaben.</div>
+  <details class="help"><summary>Hilfe: Wie rechne ich den Höchstwert aus?</summary>
+   <p><b>Schritt 1:</b> Rechne den Durchschnitt der drei Werte aus: Zähle sie zusammen und teile durch 3.</p>
+   <p><b>Schritt 2:</b> Addiere den erlaubten Abstand (bei Preisstabilität 1,5 Prozentpunkte, bei den Zinsen 2 Prozentpunkte).</p>
+   <p><b>Beispiel mit anderen Zahlen:</b> Drei Länder haben 2,0 % · 2,2 % · 2,4 %. Summe: 6,6. Durchschnitt: 6,6 ÷ 3 = 2,2. Höchstwert bei Preisstabilität: 2,2 + 1,5 = 3,7 %. Liegt ein Land darunter oder genau darauf, erfüllt es das Kriterium.</p>
+  </details>
+  <div class="box gold"><b>Zur Lage in Novarien:</b> Die Regierung hat die aktuellen Zahlen zusammengestellt. Das Beratungsteam, also ihr, soll prüfen, ob Novarien die Kriterien schon erfüllt.</div>`,
+  tasks:[
+   {q:'Prüfe alle fünf Kriterien. Rechne die Höchstwerte aus und entscheide, ob Novarien das Kriterium erfüllt.',w:()=>mkCrit()},
+   {q:'Welche Maßnahme hilft bei welchem Kriterium? Ordne zu.',w:()=>mkMatch('huerden_m',[
+     {t:'Die Zentralbank erhöht die Zinsen, damit die Nachfrage sinkt und die Preise langsamer steigen.',a:0},
+     {t:'Der Staat streicht Ausgaben und erhöht Steuern, damit er in einem Jahr weniger neue Schulden macht.',a:1},
+     {t:'Der Staat macht über viele Jahre weniger Ausgaben als Einnahmen und zahlt Schulden zurück.',a:2},
+     {t:'Die Zentralbank kauft und verkauft Devisen, damit der Kurs des Novar nicht stark schwankt.',a:3}],
+     ['Preisstabilität','Neuverschuldung (Defizit)','Gesamtschulden','Wechselkursstabilität'])},
+   {q:'Kann Novarien den Euro jetzt schon einführen? Begründe und überlege, was sich ändern müsste.',w:()=>mkTyped('huerden_2','',40,'Novarien erfüllt … Kriterien nicht, nämlich … Deshalb …')},
+   {q:'Welche Maßnahmen müsste Novarien ergreifen, um die nicht erfüllten Kriterien zu schaffen? Welche Nachteile hätte das für die Menschen im Land?',w:()=>mkTyped('huerden_4','',40,'Novarien könnte … Das hätte zur Folge, dass …')},
+   {q:'Warum sind solche Kriterien aus Sicht der anderen Euro-Länder sinnvoll? Beziehe dich auf mindestens ein Kriterium.',w:()=>mkTyped('huerden_3','',30,'Die anderen Länder wollen verhindern, dass …')}
+  ]},
+ procontra:{
+  mp:'Die Menschen fragen mich: Was haben wir davon? Und was kostet es uns?',
+  title:'Station 3 – Pro und Contra: Was bringt der Euro?',
+  sub:'Vorteile und Nachteile einer Gemeinschaftswährung',
+  text:`<p>Wer den Euro einführt, gibt die eigene Währung auf. Die Geldpolitik, also vor allem die Festlegung der Zinsen, übernimmt die EZB für das ganze Euro-Gebiet. Das hat Folgen, die je nach Lage unterschiedlich wirken. Unten findet ihr zehn Aussagen zur Währungsunion.</p>`,
+  tasks:[
+   {q:'Ordne jede Aussage zu: Ist sie ein Vorteil oder ein Nachteil eines Euro-Beitritts für Novarien?',w:()=>mkSort('procontra',[
+     {t:'Beim Handel und auf Reisen im Euroraum entfällt das Umtauschen von Geld samt Gebühren.',a:'v'},
+     {t:'Die Zinsen legt die EZB für den gesamten Euroraum fest. Sie passen nicht immer zur Lage in Novarien.',a:'n'},
+     {t:'Preise in verschiedenen Euro-Ländern lassen sich direkt vergleichen.',a:'v'},
+     {t:'Gerät die Wirtschaft in eine Krise, kann Novarien seine Währung nicht mehr abwerten, um seine Waren im Ausland billiger zu machen.',a:'n'},
+     {t:'Exportunternehmen müssen beim Verkauf in die Eurozone keine Wechselkursschwankungen mehr einkalkulieren.',a:'v'},
+     {t:'Der Staat muss sich an gemeinsame Regeln zu Defizit und Schulden halten und kann sich nicht mehr beliebig verschulden.',a:'n'},
+     {t:'Investoren vertrauen einer großen, stabilen Währung eher. Kredite können dadurch günstiger werden.',a:'v'},
+     {t:'Gerät ein anderes Euro-Land in Zahlungsprobleme, kann das auch Novarien Geld kosten, zum Beispiel über Rettungsschirme.',a:'n'},
+     {t:'Ein großer gemeinsamer Wirtschaftsraum mit einer Währung gibt Europa mehr Gewicht in der Weltwirtschaft.',a:'v'},
+     {t:'Die Umstellung kostet Geld und Mühe: Preisschilder, Automaten, Software. Der Novar als nationales Symbol geht verloren.',a:'n'}])},
+   {q:()=>'Wähle die zwei Argumente aus, die für '+roleName()+' am wichtigsten sind. Begründe deine Wahl.',w:()=>mkTyped('procontra_2','',40,'Dein Argument 1 … Dein Argument 2 …'),roleKey:true}
+  ]},
+ wert:{
+  mp:'Unsere Exportfirmen sorgen sich um den Wechselkurs. Helft mir, ihn zu verstehen.',
+  title:'Station 4 – Der Wert des Geldes',
+  sub:'Kaufkraft, Binnenwert, Außenwert und Wechselkurs',
+  text:`<p>Was ist ein Euro wert? Das kann man auf zwei Arten messen:</p>
+  <ul>
+   <li>Der <b>Binnenwert</b> sagt, wie viele Waren und Dienstleistungen man im eigenen Land für das Geld bekommt. Man nennt das auch seine Kaufkraft.</li>
+   <li>Der <b>Außenwert</b> sagt, wie viel das Geld im Vergleich zu einer fremden Währung wert ist. Er zeigt sich im <b>Wechselkurs</b>.</li>
+  </ul>
+  <p>Stimmen Binnenwert und Außenwert überein, spricht man von <b>Kaufkraftparität</b>. Wechselkurse schwanken, weil Angebot und Nachfrage nach einer Währung sich ändern. Für Unternehmen, die ins Ausland verkaufen, sind sie wichtig, denn sie bestimmen, wie teuer ihre Waren dort sind.</p>`,
+  tasks:[
+   {q:'Am Devisenmarkt entspricht 1 € genau 1,10 US-$. Wie viele Euro kostet dann 1 US-$ (auf zwei Stellen gerundet)?',w:()=>mkNum('wert_1',{v:0.91,d:0.011},'Richtig: 1 US-$ entspricht etwa 0,91 €.','Noch nicht. Rechne 1 ÷ 1,10.','€')},
+   {q:'Ein Auto kostet in Deutschland 40.000 €. Der Kurs steigt von 1 € = 1,10 US-$ auf 1 € = 1,25 US-$. Wie viel US-$ muss ein Käufer in den USA jetzt für das Auto bezahlen?',w:()=>mkNum('wert_2',{v:50000,d:50},'Richtig: 50.000 US-$.','Noch nicht. Rechne 40.000 × 1,25.','US-$')},
+   {q:'Was bedeutet der höhere Eurokurs für den Verkauf des Autos in den USA?',w:()=>mkChoice('wert_3',['Das Auto wird für US-Käufer billiger, der Absatz steigt.','Das Auto wird für US-Käufer teurer, der Absatz kann sinken.','Es ändert sich nichts.'],1,'Richtig. Ein starker Euro verteuert Exporte.','Überlege, wie sich der Preis in US-$ verändert hat.')},
+   {q:'Wann spricht man von Kaufkraftparität?',w:()=>mkChoice('wert_4',['Wenn alle Länder dieselbe Währung haben.','Wenn Binnenwert und Außenwert einer Währung übereinstimmen.','Wenn der Wechselkurs jeden Tag gleich bleibt.'],1,'Richtig.','Lies die Definition oben noch einmal.')},
+   {q:'Erkläre mit einem eigenen Beispiel, warum Binnenwert und Außenwert einer Währung auseinanderfallen können.',w:()=>mkTyped('wert_5','',40)}
+  ]},
+ krise:{
+  mp:'Ich habe die Proteste in Griechenland gesehen. Ich will verstehen, wie es dazu kommen konnte.',
+  title:'Station 5 – Die Eurokrise: Wenn es schiefgeht',
+  sub:'Eine Zerreißprobe für die Währungsunion',
+  text:`<p>Ab 2007 erschütterte die weltweite Finanzkrise die Banken. Viele Staaten retteten Banken mit Steuergeld und stützten die Wirtschaft, ihre Schulden stiegen stark. Ende 2009 zeigte sich, dass Griechenlands Schulden und Defizit deutlich höher waren als gemeldet. Anleger verloren das Vertrauen: Sie verlangten für Kredite an Griechenland immer höhere Zinsen, und das Land konnte sich kaum noch Geld leihen.</p>
+  <p>Im Mai 2010 sagten die anderen Euro-Länder und der Internationale Währungsfonds (IWF) Griechenland Kredite zu, verlangten dafür aber strenge Sparauflagen. Später erhielten auch Irland, Portugal, Spanien (für seine Banken) und Zypern Hilfe. Zur Absicherung entstanden Rettungsschirme, aus denen ab 2012 der dauerhafte Euro-Rettungsschirm ESM wurde. Im Sommer 2012 kündigte der EZB-Präsident Mario Draghi an, die EZB werde alles Nötige tun, um den Euro zu erhalten. Danach beruhigten sich die Märkte. In Griechenland blieben die Folgen: Die Wirtschaft schrumpfte, die Arbeitslosigkeit stieg stark, es gab Proteste. Das letzte Hilfsprogramm endete im August 2018.</p>`,
+  tasks:[
+   {q:'Bringe den Ablauf der Krise in die richtige Reihenfolge.',w:()=>mkOrder('krise',[
+     'Die Finanzkrise bringt Banken in Not, Staaten retten sie und häufen Schulden an.',
+     'Anleger misstrauen Griechenland und verlangen hohe Zinsen auf seine Staatsanleihen.',
+     'Griechenland kann sich kaum noch Geld leihen und braucht Hilfe.',
+     'Euro-Länder und IWF geben Kredite, verlangen aber Sparauflagen.',
+     'Die EZB kündigt an, alles Nötige für den Erhalt des Euro zu tun. Die Märkte beruhigen sich.'],[3,0,4,2,1])},
+   {q:'Griechenland konnte als Euro-Land seine Währung nicht abwerten. Erkläre, warum das in der Krise ein Problem war (siehe Station 3).',w:()=>mkTyped('krise_2','',40)},
+   {q:()=>'Die Hilfen gab es nur gegen Sparauflagen. Beurteile aus Sicht von '+roleName()+', ob das gerecht war.',w:()=>mkTyped('krise_3','',40,'Aus meiner Rolle sehe ich das so, weil …'),roleKey:true},
+   {q:'Was bedeutet die Eurokrise für die Frage, ob Novarien den Euro einführen sollte? Nenne ein Argument dafür, ein Argument dagegen.',w:()=>mkTyped('krise_4','',50)}
+  ]}
+};
+
+/* ===== Rendering ===== */
+let cur=store.get('eu_station')||'start';
+function done(id){
+  if(id==='start')return !!role();
+  if(id==='abstimmung')return !!store.get('eu_vote')&&(store.get('eu_ans_vote_why')||'').trim().length>=40;
+  return store.get('eu_done_'+id)==='1';
+}
+function drawTabs(){
+  const nav=$('#tabs');nav.innerHTML='';
+  ST.forEach(s=>{
+    const b=document.createElement('button');
+    b.className=(s.id===cur?'act ':'')+(done(s.id)?'done':'');
+    b.innerHTML=esc(s.tab)+'<span class="ck"> ✓</span>';
+    b.disabled=(s.id!=='start'&&!role());
+    b.onclick=()=>go(s.id);
+    nav.appendChild(b);
+  });
+  const rb=$('#rolebadge');
+  if(role()&&ROLES[role()]){rb.hidden=false;rb.textContent=ROLES[role()].ic+' '+ROLES[role()].name;}else rb.hidden=true;
+}
+function go(id){cur=id;store.set('eu_station',id);render();window.scrollTo({top:0,behavior:'smooth'});}
+function render(){
+  drawTabs();
+  const m=$('#main');m.innerHTML='';
+  if(cur==='start')return renderStart(m);
+  if(cur==='abstimmung')return renderVote(m);
+  renderStation(m,cur);
+}
+function navButtons(m){
+  const i=ST.findIndex(s=>s.id===cur);
+  const d=document.createElement('div');d.className='nav2';
+  const prev=document.createElement('button');prev.className='btn ghost';prev.textContent='← Zurück';prev.onclick=()=>go(ST[i-1].id);
+  const next=document.createElement('button');next.className='btn gold';next.textContent='Weiter →';next.onclick=()=>go(ST[i+1].id);
+  if(i>0)d.appendChild(prev);else d.appendChild(document.createElement('span'));
+  if(i<ST.length-1)d.appendChild(next);
+  m.appendChild(d);
+}
+function renderStart(m){
+  m.innerHTML=`<h2>Soll Novarien den Euro einführen?</h2>
+  <p class="sub">Ein Planspiel für das Beratungsteam der Regierung</p>
+  <p>Novarien ist ein kleines, fiktives Land. Es ist seit einigen Jahren Mitglied der Europäischen Union, bezahlt aber noch mit dem <b>Novar</b>. Die Regierung überlegt, den Euro einzuführen. In wenigen Wochen soll das Volk darüber abstimmen.</p>
+  <p>Ihr arbeitet als Beratungsteam. Ihr schaut euch die Geschichte des Euro an, prüft die Bedingungen für den Beitritt, wägt Vor- und Nachteile ab, lernt die Eurokrise kennen und stimmt am Ende ab. Dabei schlüpft jede und jeder in eine Rolle von Menschen, die der Beitritt ganz unterschiedlich betrifft.</p>
+  <div class="land"><div class="emb">${SVG_FLAG}${SVG_WAPPEN}</div><div><h3>Das Land Novarien</h3><ul><li>Hauptstadt: Aurelburg am Meer, rund 4,2 Millionen Einwohner</li><li>Währung: der Novar</li><li>Wappen: ein Leuchtturm zwischen Meer und Kornfeldern</li><li>Regierungschefin: Ministerpräsidentin Livia Marek</li></ul></div></div>
+  ${mpBubble('Willkommen im Beratungsteam. In wenigen Wochen stimmt unser Volk über den Euro ab, und ich brauche eure Einschätzung. Ihr habt sechs Stationen vor euch.')}
+  <h3>Das erwartet euch</h3>
+  <ol>
+   <li><b>Weg zum Euro:</b> Wie kam es zur gemeinsamen Währung?</li>
+   <li><b>Die Hürden:</b> Welche Bedingungen muss Novarien erfüllen?</li>
+   <li><b>Pro und Contra:</b> Was bringt der Euro, und was kostet er?</li>
+   <li><b>Wert des Geldes:</b> Wechselkurs und Kaufkraft</li>
+   <li><b>Die Eurokrise:</b> Was passierte in Griechenland und anderen Ländern, und was bedeutet das für Novarien?</li>
+   <li><b>Abstimmung:</b> Ihr entscheidet und begründet.</li>
+  </ol>
+  <div class="box">Die Aufgaben bearbeitet ihr allein oder zu zweit. Eure Antworten werden nur in diesem Browser gespeichert. Die Ergebnisse besprecht ihr anschließend im Unterricht.</div>
+  <h3>Wähle deine Rolle</h3>
+  <div class="roles" id="roles"></div>
+  <div id="rolehint"></div>`;
+  const box=$('#roles');
+  Object.entries(ROLES).forEach(([k,r])=>{
+    const b=document.createElement('button');b.className='role'+(role()===k?' sel':'');
+    b.innerHTML='<span class="ic">'+r.ic+'</span><b>'+esc(r.name)+'</b><small>'+esc(r.txt)+'</small>';
+    b.onclick=()=>{store.set('eu_role',k);render();};
+    box.appendChild(b);
+  });
+  if(role()){
+    const h=$('#rolehint');
+    h.innerHTML='<p style="margin-top:12px">Ab jetzt denkst du aus der Sicht von <b>'+esc(ROLES[role()].name)+'</b>. Du kannst die Rolle jederzeit hier wechseln.</p>';
+    const b=document.createElement('button');b.className='btn gold';b.textContent='Los geht’s →';b.onclick=()=>go('geschichte');h.appendChild(b);
+  }
+}
+function renderStation(m,id){
+  const C=CONTENT[id];
+  m.innerHTML='<h2>'+C.title+'</h2><p class="sub">'+C.sub+'</p>'+(C.mp?mpBubble(C.mp):'')+C.text;
+  const doneCheck=()=>{
+    const all=widgets.every(w=>w.isDone());
+    store.set('eu_done_'+id,all?'1':'0');
+    drawTabs();
+  };
+  const widgets=[];
+  C.tasks.forEach((t,i)=>{
+    const d=document.createElement('div');d.className='task';
+    const q=document.createElement('div');q.className='q';
+    q.innerHTML='<span class="nr">'+(i+1)+'</span>'+(typeof t.q==='function'?t.q():t.q);
+    d.appendChild(q);
+    const w=t.w();widgets.push(w);
+    d.appendChild(w);
+    w.addEventListener('state',()=>{d.classList.toggle('ok',w.isDone());doneCheck();});
+    d.classList.toggle('ok',w.isDone());
+    m.appendChild(d);
+  });
+  navButtons(m);
+}
+function renderVote(m){
+  const myTyped=(k,label)=>{const v=(store.get('eu_ans_'+k)||'').trim();return v?'<div class="mine"><b>'+label+'</b>\n'+esc(v)+'</div>':'';};
+  m.innerHTML=`<h2>Station 6 – Die Abstimmung</h2>
+  <p class="sub">Dein Votum als <b>${esc(ROLES[role()].name)}</b></p>
+  ${mpBubble('Die Wahllokale öffnen bald. Wie entscheidet ihr, und warum?')}
+  <p>Jetzt entscheidest du, wie du aus der Sicht deiner Rolle abstimmen würdest. Entscheide mit Blick auf alles, was du erarbeitet hast: die Kriterien, die Vor- und Nachteile und die Eurokrise.</p>
+  <details style="margin:10px 0"><summary style="cursor:pointer;font-weight:700;color:var(--blue2)">Meine Notizen anzeigen</summary>
+   ${myTyped('procontra_2','Meine wichtigsten Argumente (Station 3):')||'<p><i>Noch keine Notizen aus Station 3.</i></p>'}
+   ${myTyped('krise_3','Meine Einschätzung zu den Sparauflagen (Station 5):')}
+   ${myTyped('krise_4','Eurokrise und Beitritt (Station 5):')}
+  </details>
+  <h3>Wie stimmst du ab?</h3>
+  <div class="vote" id="vote"></div>
+  <h3>Begründe dein Votum</h3>
+  <p>Nutze mindestens zwei Argumente aus dem Planspiel und beziehe die Lage deiner Rolle ein.</p>`;
+  const vb=$('#vote');
+  [['ja','Ja, Novarien führt den Euro ein'],['nein','Nein, Novarien behält den Novar'],['spaeter','Noch nicht, erst wenn bestimmte Bedingungen erfüllt sind']].forEach(([k,l])=>{
+    const b=document.createElement('button');b.textContent=l;b.className=store.get('eu_vote')===k?'on':'';
+    b.onclick=()=>{store.set('eu_vote',k);vb.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');drawTabs();};
+    vb.appendChild(b);
+  });
+  const w=mkTyped('vote_why','',40,'Ich stimme so ab, weil …');
+  w.addEventListener('state',drawTabs);
+  m.appendChild(w);
+  const d=document.createElement('div');d.className='box gold';
+  d.innerHTML='<b>Zum Schluss:</b> Im Unterricht stellt ihr eure Entscheidungen vor. Überlegt, wie unterschiedlich die Rollen abgestimmt haben und welche Bedingungen für ein „Noch nicht“ erfüllt sein müssten.';
+  m.appendChild(d);
+  const n=document.createElement('p');n.className='note';
+  n.textContent='Novarien ist ein erfundenes Land. Alle Zahlen zu Novarien sind frei erfunden. Das Bild der Ministerpräsidentin wurde mit KI erzeugt und zeigt eine erfundene Person. Die Angaben zu Euro, EU und Eurokrise beruhen auf öffentlichen Informationen der EU, der EZB und der Bundesregierung.';
+  m.appendChild(n);
+  navButtons(m);
+}
+render();
+</script>
+</body>
+</html>
