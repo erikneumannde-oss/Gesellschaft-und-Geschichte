@@ -98,15 +98,6 @@
             100% { transform: translateX(-100%); }
         }
 
-        #rahmen {
-            z-index: 100;
-            width: 100vw;
-            height: 100vh;
-            object-fit: fill; 
-            opacity: 0; 
-            transition: opacity 2s ease;
-            pointer-events: none; 
-        }
 
         /* RPG-Sprechblase in der Story */
         #dialog-box {
@@ -646,7 +637,6 @@
                 </div>
             </div>
 
-            <img src="Rahmen.jpg" id="rahmen" class="layer" alt="Theaterrahmen">
         </div>
 
         <!-- Finale Analyse-Szene mit Gitter-Layout -->
@@ -872,7 +862,7 @@ II. Die besagten in Westminster versammelten geistlichen und weltlichen Lords un
             { text: "Seid gegrüßt! Ich bin Maria Stuart, später bekannt als Königin Maria II. von England, Schottland und Irland. Meine Geschichte ist eine von Macht, Verrat und einer Revolution, die die Welt veränderte.", action: () => { show('portrait-maria'); } },
             { text: "Dies ist mein Vater, König Jakob II. Er saß auf dem Thron, als das englische Volk längst genug von Königen hatte, die sich wie unfehlbare Herrscher aufführten. Sein Streben nach absoluter Macht kostete ihn die Krone.", action: () => { hide('portrait-maria'); show('portrait-jakob'); } },
             { text: "Ich werde euch nun erzählen, wie mein eigener Vater vertrieben wurde und wie ich an seine Stelle trat. Diese Ereignisse nennen wir heute die 'Glorious Revolution' – ein Ereignis, das unsere Demokratien bis heute prägt.", action: () => { hide('portrait-jakob'); show('portrait-maria'); } },
-            { text: "Um das zu verstehen, müssen wir zurückblicken: Mein Großvater Karl I. glaubte fest daran, dass Könige nur Gott, nicht aber dem Parlament Rechenschaft schuldig seien. Er wollte ungestört vom Parlament Steuern erheben und regieren.", action: () => { hide('portrait-maria'); show('stage'); show('rahmen'); setTimeout(() => show('jakob'), 1000); } },
+            { text: "Um das zu verstehen, müssen wir zurückblicken: Mein Großvater Karl I. glaubte fest daran, dass Könige nur Gott, nicht aber dem Parlament Rechenschaft schuldig seien. Er wollte ungestört vom Parlament Steuern erheben und regieren.", action: () => { hide('portrait-maria'); show('stage'); setTimeout(() => show('jakob'), 1000); } },
             { text: "Dieser Machtkampf eskalierte in einem blutigen Bürgerkrieg. Er endete 1649 mit einem Schock für ganz Europa: Das Parlament ließ meinen Großvater wegen Hochverrats enthaupten! Es folgte eine strenge, königslose Republik.", action: () => {} },
             { text: "Die Republik hielt jedoch nicht lange. Zunächst wurde die Monarchie mit Karl II. wiederhergestellt. Da dieser aber ohne legitimen Erben starb, ging die Krone schließlich an meinen Vater Jakob II.", action: () => {} },
             { text: "Doch Jakob II. hatte aus der blutigen Geschichte nichts gelernt. Obwohl England protestantisch war, besetzte er hohe Ämter mit Katholiken, baute ein gewaltiges stehendes Heer auf und ignorierte die Gesetze des Parlaments völlig.", action: () => {} },
@@ -899,7 +889,7 @@ II. Die besagten in Westminster versammelten geistlichen und weltlichen Lords un
             }},
             { text: "Die politische Macht verschob sich lediglich von der Krone zum Parlament. Doch wer hatte dort eigentlich das Sagen? Das einfache Volk war es ganz bestimmt nicht.", action: () => {} },
             { text: "Nach 1689 bestand das Parlament weiterhin aus zwei Kammern: dem House of Lords und dem House of Commons.", action: () => { 
-                hide('portrait-wilhelm-epilogue'); show('stage'); show('rahmen'); show('schema-container'); show('box-crown'); 
+                hide('portrait-wilhelm-epilogue'); show('stage'); show('schema-container'); show('box-crown'); 
                 setTimeout(() => { show('box-lords'); show('box-commons'); }, 1000);
                 hide('jakob'); hide('schiff'); hide('wellen-wrapper'); hide('wilhelm'); hide('maria'); hide('krone'); hide('schriftrolle'); hide('parlament');
                 document.getElementById('stage').style.background = "radial-gradient(circle, #2a2a2a 0%, #000 100%)";
