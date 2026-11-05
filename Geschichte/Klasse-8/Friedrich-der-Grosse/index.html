@@ -350,6 +350,7 @@ const mem={};
 const store={
   get(k){try{const v=localStorage.getItem(k);return v===null?(mem[k]??null):v;}catch(e){return mem[k]??null;}},
   set(k,v){mem[k]=v;try{localStorage.setItem(k,v);}catch(e){}},
+  keys(){const s=new Set(Object.keys(mem));try{for(let i=0;i<localStorage.length;i++)s.add(localStorage.key(i));}catch(e){}return [...s].filter(k=>k.startsWith('fr_'));},
   clearAll(){Object.keys(mem).forEach(k=>delete mem[k]);try{Object.keys(localStorage).filter(k=>k.startsWith('fr_')).forEach(k=>localStorage.removeItem(k));}catch(e){}}
 };
 function unlocked(){try{return JSON.parse(store.get('fr_unlocked')||'[]');}catch(e){return [];}}
@@ -604,6 +605,8 @@ function renderPoster(){
     qList(k).forEach(q=>{cards+='<div class="pq"><label for="pf_'+k+'_'+q.i+'">'+q.label+'</label><textarea id="pf_'+k+'_'+q.i+'"></textarea><div class="pc" id="pc_'+k+'_'+q.i+'"></div></div>';});
     cards+='</div></div>';});
   v.innerHTML='<div class="topnav noprint"><button class="btn grey" id="f1">← Zurück zum Bild</button><button class="btn gold" id="fpdf">📄 Als PDF speichern</button><button class="btn grey" id="fprint">🖨️ Drucken</button></div>'+
+  '<div class="topnav noprint" style="margin-top:-4px"><button class="btn grey small" id="fsave">💾 Zwischenstand sichern (Datei)</button><button class="btn grey small" id="fload">📂 Zwischenstand laden</button><input type="file" id="ffile" accept=".json,application/json" hidden></div>'+
+  '<p class="noprint" id="fstate" role="status" aria-live="polite" style="color:#f3d77d;margin:0 0 10px;min-height:1.2em;font-weight:700"></p>'+
   '<p class="noprint" style="color:#e6e9ff;margin:0 0 12px">Eure eigenen Antworten stehen schon auf dem Plakat. Die Antworten der anderen drei Kapitel tragt ihr aus den Berichten eurer Gruppe ein, kurz und in ganzen Sätzen. Danach macht euch Gedanken zum Urteil. Mit „Als PDF speichern“ bekommt ihr das Plakat als Datei auf einer A4-Seite.</p>'+
   '<div id="poster"><div class="p-head"><h2 class="p-title">Friedrich der Große</h2><p class="p-sub">Unser Plakat – ein aufgeklärter Herrscher?</p></div>'+
   '<div class="p-names"><label for="pn">Gruppe:</label><input id="pn" placeholder="Namen eintragen"><div class="pc" id="pc_pn" style="font-weight:700"></div></div>'+
@@ -625,6 +628,9 @@ function renderPoster(){
     sync();
   });
   v.querySelectorAll('#f1,#f2').forEach(b=>b.onclick=()=>show('v-home'));
+  v.querySelector('#fsave').onclick=saveState;
+  v.querySelector('#fload').onclick=()=>v.querySelector('#ffile').click();
+  v.querySelector('#ffile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)loadState(f);};
   v.querySelector('#fpdf').onclick=savePdf;v.querySelector('#fprint').onclick=()=>window.print();
   show('v-final');
   v.querySelectorAll('textarea').forEach(t=>autosize(t));
@@ -648,6 +654,35 @@ window.addEventListener('afterprint',unfitPoster);
 
 /* ===== Plakat als PDF-Datei (ohne Internet, Bibliotheken liegen im Ordner lib/) ===== */
 function loadScript(src){return new Promise((res,rej)=>{if(document.querySelector('script[data-lib="'+src+'"]'))return res();const s=document.createElement('script');s.src=src;s.dataset.lib=src;s.onload=res;s.onerror=()=>rej(new Error(src));document.head.appendChild(s);});}
+function stateMsg(t){const m=document.getElementById('fstate');if(m)m.textContent=t;}
+function saveState(){
+  try{
+    const data={};store.keys().forEach(k=>{const v=store.get(k);if(typeof v==='string')data[k]=v;});
+    const out={app:'friedrich-der-grosse',version:1,gespeichert:new Date().toISOString(),data};
+    const blob=new Blob([JSON.stringify(out,null,1)],{type:'application/json'});
+    const d=new Date(),p=n=>String(n).padStart(2,'0');
+    const grp=(store.get('fr_poster_pn')||'').trim().replace(/[^A-Za-z0-9ÄÖÜäöüß]+/g,'-').replace(/^-+|-+$/g,'').slice(0,30);
+    const name='Friedrich-Plakat'+(grp?'_'+grp:'')+'_'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())+'.json';
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);
+    stateMsg('Gesichert als „'+name+'“. Bewahrt die Datei gut auf (z. B. in der Dateien-App).');
+  }catch(e){stateMsg('Das Sichern hat nicht geklappt. Bitte meldet es eurer Lehrkraft.');}
+}
+function loadState(file){
+  const r=new FileReader();
+  r.onerror=()=>stateMsg('Die Datei konnte nicht gelesen werden.');
+  r.onload=()=>{
+    let o;try{o=JSON.parse(r.result);}catch(e){o=null;}
+    if(!o||o.app!=='friedrich-der-grosse'||!o.data||typeof o.data!=='object'){stateMsg('Das ist keine Plakat-Datei aus diesem Modul.');return;}
+    const keys=Object.keys(o.data).filter(k=>k.startsWith('fr_')&&typeof o.data[k]==='string');
+    if(!keys.length){stateMsg('In der Datei sind keine Antworten gespeichert.');return;}
+    const hasOwn=store.keys().some(k=>(k.startsWith('fr_poster_')||k.startsWith('fr_ans_'))&&(store.get(k)||'').trim());
+    if(hasOwn&&!confirm('Der geladene Stand ersetzt eure aktuellen Eingaben auf diesem Gerät. Fortfahren?'))return;
+    store.clearAll();keys.forEach(k=>store.set(k,o.data[k]));
+    renderPoster();stateMsg('Zwischenstand geladen.');
+  };
+  r.readAsText(file);
+}
 async function savePdf(){
   const btn=document.getElementById('fpdf');const old=btn.textContent;btn.disabled=true;btn.textContent='⏳ PDF wird erstellt …';
   let wrap;

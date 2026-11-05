@@ -708,6 +708,14 @@
 
     </div>
 
+    <!-- Zwischenstand sichern / laden -->
+    <div id="statebar" style="position:fixed;top:6px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:6px;align-items:center;font-family:sans-serif;white-space:nowrap">
+        <span id="state-msg" role="status" aria-live="polite" style="display:none;position:absolute;top:36px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#ffe9a8;font-size:12px;font-weight:700;padding:5px 9px;border-radius:5px;white-space:normal;width:max-content;max-width:min(420px,90vw);text-align:center"></span>
+        <button id="state-save" type="button" style="font-size:12px;font-weight:700;padding:6px 10px;border-radius:5px;border:1px solid #8a6a24;background:rgba(255,250,235,.92);color:#3a2a0a;cursor:pointer">💾 Zwischenstand sichern</button>
+        <button id="state-load" type="button" style="font-size:12px;font-weight:700;padding:6px 10px;border-radius:5px;border:1px solid #8a6a24;background:rgba(255,250,235,.92);color:#3a2a0a;cursor:pointer">📂 Zwischenstand laden</button>
+        <input type="file" id="state-file" accept=".json,application/json" hidden>
+    </div>
+
     <script>
         // DOM Elemente
         const dialogBox = document.getElementById('dialog-box');
@@ -916,8 +924,8 @@ II. Die besagten in Westminster versammelten geistlichen und weltlichen Lords un
         let typeInterval;
         let fullText = "";
 
-        function show(id) { document.getElementById(id).classList.add('visible'); document.getElementById(id).classList.remove('hidden'); }
-        function hide(id) { document.getElementById(id).classList.remove('visible'); document.getElementById(id).classList.add('hidden'); }
+        function show(id) { const el = document.getElementById(id); if (!el) return; el.classList.add('visible'); el.classList.remove('hidden'); }
+        function hide(id) { const el = document.getElementById(id); if (!el) return; el.classList.remove('visible'); el.classList.add('hidden'); }
 
         function typeText(text) {
             if(text === "") return; 
@@ -968,8 +976,7 @@ II. Die besagten in Westminster versammelten geistlichen und weltlichen Lords un
         
         document.addEventListener('keydown', (e) => { if (e.code === 'Space' && dialogBox.classList.contains('visible') !== false && dialogBox.style.display !== 'none') advanceStory(); });
 
-        startQuizBtn.onclick = startQuiz;
-        setTimeout(() => { playScene(0); }, 500);
+        startQuizBtn.onclick = () => startQuiz();
 
         // --- QUIZ LOGIK ---
         const quizData = [
@@ -1029,11 +1036,11 @@ II. Die besagten in Westminster versammelten geistlichen und weltlichen Lords un
         let consecutiveMistakes = 0;
         let feedbackTurn = 'maria';
 
-        function startQuiz() {
+        function startQuiz(startIndex) {
             hide('schema-container'); 
             hide('dialog-box'); 
             show('quiz-scene');
-            currentQuizIndex = 0; 
+            currentQuizIndex = startIndex || 0; 
             consecutiveMistakes = 0;
             loadQuestion();
         }
@@ -1184,7 +1191,113 @@ II. Die besagten in Westminster versammelten geistlichen und weltlichen Lords un
             }).save();
         };
 
+
+        // --- ZWISCHENSTAND SICHERN / LADEN (als JSON-Datei) ---
+        const STATE_APP = 'glorious-revolution';
+        function stateMsg(text) {
+            const m = document.getElementById('state-msg');
+            m.textContent = text; m.style.display = 'block';
+            clearTimeout(stateMsg.t); stateMsg.t = setTimeout(() => { m.style.display = 'none'; }, 7000);
+        }
+
+        function collectState() {
+            const quizVisible = document.getElementById('quiz-scene').classList.contains('visible');
+            let phase = 'story', quizIndex = 0;
+            if (quizVisible) {
+                quizIndex = Math.min(currentQuizIndex, quizData.length);
+                phase = quizIndex >= quizData.length ? 'quizdone' : 'quiz';
+            }
+            const words = Array.from(document.querySelectorAll('#interactive-text .word'));
+            const highlights = [];
+            words.forEach((w, i) => { if (w.classList.contains('highlight')) highlights.push(i); });
+            return {
+                app: STATE_APP, version: 1, gespeichert: new Date().toISOString(),
+                phase, scene: phase === 'story' ? currentScene : story.length - 1,
+                analysisDone: analysisCompleted, quizIndex, highlights,
+                name: document.getElementById('student-name').value || ''
+            };
+        }
+
+        function saveState() {
+            try {
+                const s = collectState();
+                const blob = new Blob([JSON.stringify(s, null, 1)], { type: 'application/json' });
+                const d = new Date(), p = n => String(n).padStart(2, '0');
+                const nm = s.name.trim().replace(/[^A-Za-z0-9ÄÖÜäöüß]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 30);
+                const fn = 'Glorious-Revolution_Stand' + (nm ? '_' + nm : '') + '_' + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + '-' + p(d.getHours()) + p(d.getMinutes()) + '.json';
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob); a.download = fn;
+                document.body.appendChild(a); a.click();
+                setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+                stateMsg('Gesichert als „' + fn + '“. Bewahre die Datei gut auf (z. B. in der Dateien-App).');
+            } catch (e) { stateMsg('Das Sichern hat nicht geklappt. Bitte melde es deiner Lehrkraft.'); }
+        }
+
+        function readPending() {
+            let raw = null;
+            try { raw = sessionStorage.getItem('gr_pending'); sessionStorage.removeItem('gr_pending'); } catch (e) {}
+            if (!raw && /^GRSTATE:/.test(window.name)) { raw = window.name.slice(8); }
+            if (/^GRSTATE:/.test(window.name)) window.name = '';
+            if (!raw) return null;
+            try { return JSON.parse(raw); } catch (e) { return null; }
+        }
+
+        function validState(s) {
+            return s && s.app === STATE_APP && ['story', 'quiz', 'quizdone'].includes(s.phase)
+                && Number.isInteger(s.scene) && s.scene >= 0 && s.scene < story.length
+                && Number.isInteger(s.quizIndex) && s.quizIndex >= 0 && s.quizIndex <= quizData.length
+                && Array.isArray(s.highlights) && s.highlights.every(n => Number.isInteger(n) && n >= 0);
+        }
+
+        function applyState(s) {
+            const realTimeout = window.setTimeout;
+            window.setTimeout = (f) => { try { f(); } catch (e) {} return 0; };   // Animationen sofort ausführen
+            const upTo = (s.phase === 'story') ? s.scene : story.length;           // Szenen vorher nachspielen
+            try { for (let i = 0; i < upTo; i++) { story[i].action(); } } finally { window.setTimeout = realTimeout; }
+            const analysisIdx = story.findIndex(sc => sc.text === "");
+            const reached = (s.phase !== 'story') || s.scene >= analysisIdx;       // Quelltext wurde schon gezeigt
+            const passed = (s.phase !== 'story') || s.scene > analysisIdx || s.analysisDone;
+            currentScene = s.phase === 'story' ? s.scene : story.length - 1;
+            if (s.phase === 'story' && s.scene === analysisIdx) { playScene(s.scene); }
+            if (reached && !document.querySelector('#interactive-text .word')) { renderInteractiveText(); }
+            const words = Array.from(document.querySelectorAll('#interactive-text .word'));
+            s.highlights.forEach(i => { if (words[i]) words[i].classList.add('highlight'); });
+            if (passed) { analysisCompleted = false; checkAnalysisCompletion(); analysisCompleted = true; hide('final-scene'); }
+            else if (s.phase === 'story' && s.scene === analysisIdx) { checkAnalysisCompletion(); }
+            if (s.phase === 'story') {
+                if (s.scene !== analysisIdx) playScene(s.scene);
+            } else {
+                document.getElementById('student-name').value = (typeof s.name === 'string' ? s.name : '').slice(0, 100);
+                startQuiz(s.phase === 'quizdone' ? 0 : s.quizIndex);
+                if (s.phase === 'quizdone') { currentQuizIndex = quizData.length; quizSuccess(); }
+            }
+        }
+
+        document.getElementById('state-save').onclick = saveState;
+        document.getElementById('state-load').onclick = () => document.getElementById('state-file').click();
+        document.getElementById('state-file').onchange = (e) => {
+            const f = e.target.files[0]; e.target.value = '';
+            if (!f) return;
+            const r = new FileReader();
+            r.onerror = () => stateMsg('Die Datei konnte nicht gelesen werden.');
+            r.onload = () => {
+                let s = null; try { s = JSON.parse(r.result); } catch (err) {}
+                if (!validState(s)) { stateMsg('Das ist keine Zwischenstand-Datei aus diesem Modul.'); return; }
+                const raw = JSON.stringify(s);
+                try { sessionStorage.setItem('gr_pending', raw); } catch (err) { window.name = 'GRSTATE:' + raw; }
+                location.reload();
+            };
+            r.readAsText(f);
+        };
+
+        // Start: entweder geladenen Stand wiederherstellen oder normal beginnen
+        (function () {
+            const pending = readPending();
+            if (pending && validState(pending)) { applyState(pending); stateMsg('Zwischenstand geladen.'); }
+            else { setTimeout(() => { playScene(0); }, 500); }
+        })();
     </script>
+
 <a href="../../../impressum.html" style="position: fixed; bottom: 10px; right: 10px; font-size: 12px; color: #333; background: rgba(255,255,255,0.9); padding: 4px 8px; border-radius: 4px; text-decoration: none; z-index: 1000; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">Impressum & Datenschutz</a>
 </body>
 </html>
