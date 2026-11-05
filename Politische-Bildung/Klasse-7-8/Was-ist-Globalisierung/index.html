@@ -278,31 +278,40 @@
         .name-input-container { margin: 20px 0; text-align: center; display: flex; justify-content: center; gap: 15px; align-items: center;}
         .name-input-container input { padding: 12px; font-size: 18px; width: 350px; border: 2px solid var(--primary); border-radius: 6px; background: #fff; color: #333;}
         
-        /* Druckbereich */
-        .print-area { 
-            background: #fdfbfb; background-image: repeating-linear-gradient(45deg, #fdfbfb 0px, #fdfbfb 20px, #f4f4f4 20px, #f4f4f4 40px);
-            color: #333; padding: 40px; margin: 20px auto; position: relative;
-            border: 12px solid var(--gold); outline: 4px solid #fff; outline-offset: -16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-            
-            width: 100%;
-            max-width: 750px; 
-            min-height: 1050px;
-            box-sizing: border-box;
+        /* Druckbereich: immer genau eine A4-Seite (794 x 1122 px entspricht 210 x 297 mm).
+           Alle Größen hängen an --fit; das Skript verkleinert sie, bis alles auf die Seite passt. */
+        .print-wrap { width: 100%; display: flex; justify-content: center; }
+        .print-area {
+            --fit: 1;
+            background-color: #fdfbfb;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpolygon points='0,20 20,0 40,0 0,40' fill='%23f4f4f4'/%3E%3Cpolygon points='40,20 40,40 20,40' fill='%23f4f4f4'/%3E%3C/svg%3E");
+            background-size: 40px 40px;
+            color: #333; margin: 20px auto; position: relative; flex-shrink: 0;
+            border: 12px solid var(--gold);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 793px; height: 1120px;
+            padding: 36px 36px 160px 36px; /* unten Platz für das Siegel */
+            box-sizing: border-box; overflow: hidden;
         }
-        
-        .cert-name-top { position: absolute; top: 30px; right: 40px; font-size: 14px; font-weight: bold; color: #333; }
-        .cert-title { text-align: center; color: #2c3e50; font-size: 30px; text-transform: uppercase; letter-spacing: 2px; margin-top: 20px; margin-bottom: 40px; font-family: Georgia, serif;}
-        
-        .cert-badge { position: absolute; bottom: 40px; right: 40px; width: 120px; height: 120px; background: var(--gold); border-radius: 50%; border: 4px dashed #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; font-size: 16px; text-align: center; transform: rotate(-15deg); z-index: 10;}
+        .cert-frame { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 4px solid #fff; pointer-events: none; }
 
-        .cert-box { background: rgba(255,255,255,0.9); padding: 20px; border-left: 6px solid var(--secondary); margin-bottom: 30px; }
-        
-        .cert-columns { display: flex; flex-direction: column; gap: 25px; margin-bottom: 40px;}
-        .cert-col { background: rgba(255,255,255,0.9); padding: 20px; border-top: 4px solid var(--primary); }
-        .cert-col h4 { margin-top: 0; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px;}
-        .cert-ul { padding-left: 20px; margin: 0; font-size: 14px;}
-        .cert-ul li { margin-bottom: 8px; word-break: break-word;}
+        .cert-name-top { position: absolute; top: 24px; right: 36px; font-size: 14px; font-weight: bold; color: #333; }
+        .cert-title { position: relative; text-align: center; color: #2c3e50; font-size: calc(30px * var(--fit)); text-transform: uppercase; letter-spacing: 2px; margin-top: calc(28px * var(--fit)); margin-bottom: calc(32px * var(--fit)); font-family: Georgia, serif;}
+
+        .cert-seal { position: absolute; bottom: 24px; right: 28px; width: 130px; height: 130px; z-index: 10; }
+
+        .cert-box { position: relative; background: rgba(255,255,255,0.9); padding: calc(20px * var(--fit)); border-left: 6px solid var(--secondary); margin-bottom: calc(24px * var(--fit)); }
+        .cert-box h4 { margin: 0 0 calc(10px * var(--fit)) 0; color: #2c3e50; font-size: calc(16px * var(--fit)); }
+        .cert-box p { margin: 0; font-size: calc(15px * var(--fit)); line-height: 1.4; }
+        .cert-subtitle { position: relative; text-align: center; color: #333; font-size: calc(19px * var(--fit)); margin: calc(20px * var(--fit)) 0 calc(16px * var(--fit)) 0; }
+
+        .cert-columns { position: relative; display: flex; flex-direction: column; gap: calc(20px * var(--fit)); }
+        .cert-columns.side-by-side { flex-direction: row; align-items: flex-start; }
+        .cert-columns.side-by-side .cert-col { flex: 1 1 0; min-width: 0; }
+        .cert-col { background: rgba(255,255,255,0.9); padding: calc(16px * var(--fit)) calc(20px * var(--fit)); border-top: 4px solid var(--primary); }
+        .cert-col h4 { margin: 0 0 calc(10px * var(--fit)) 0; color: #2c3e50; font-size: calc(16px * var(--fit)); border-bottom: 1px solid #eee; padding-bottom: calc(8px * var(--fit)); }
+        .cert-ul { padding-left: 20px; margin: 0; font-size: calc(14px * var(--fit)); line-height: 1.35; }
+        .cert-ul li { margin-bottom: calc(7px * var(--fit)); word-break: break-word;}
     </style>
 </head>
 <body>
@@ -455,18 +464,20 @@
             <button class="btn" style="margin: 0;" onclick="downloadPDF()">📥 Arbeitsblatt (PDF) speichern</button>
         </div>
 
+        <div class="print-wrap" id="print-wrap">
         <div class="print-area" id="print-area">
+            <div class="cert-frame"></div>
             <div class="cert-name-top" id="cert-name-display">Name: _________________</div>
             <div class="cert-title">Die Globalisierung - wird die Welt ein Dorf?</div>
             
             <div class="cert-box">
-                <h4 style="margin-top:0; color: #2c3e50;">Erfolgreich erarbeitete Definition:</h4>
-                <p style="margin-bottom:0; font-size: 15px;"><strong>Globalisierung</strong> bezeichnet die zunehmende weltweite Vernetzung von Staaten und Gesellschaften über nationale Grenzen hinweg. Sie findet auf verschiedenen Ebenen statt. So prägen der weltweite Transport von Waren und globale Lieferketten die Dimension Wirtschaft & Technologie. Filme, Serien und Musik verbreiten sich um die ganze Welt und verändern unsere Kultur. Durch das Internet und Social Media entsteht eine grenzenlose Kommunikation. Gleichzeitig führen der massenhafte weltweite Konsum und der enorme Rohstoffabbau zu internationalen Herausforderungen für die Umwelt. Um Krisen gemeinsam zu lösen, bilden Staaten Verträge und internationale Bündnisse (wie die EU), was die Dimension der Politik darstellt.</p>
+                <h4>Erfolgreich erarbeitete Definition:</h4>
+                <p><strong>Globalisierung</strong> bezeichnet die zunehmende weltweite Vernetzung von Staaten und Gesellschaften über nationale Grenzen hinweg. Sie findet auf verschiedenen Ebenen statt. So prägen der weltweite Transport von Waren und globale Lieferketten die Dimension Wirtschaft & Technologie. Filme, Serien und Musik verbreiten sich um die ganze Welt und verändern unsere Kultur. Durch das Internet und Social Media entsteht eine grenzenlose Kommunikation. Gleichzeitig führen der massenhafte weltweite Konsum und der enorme Rohstoffabbau zu internationalen Herausforderungen für die Umwelt. Um Krisen gemeinsam zu lösen, bilden Staaten Verträge und internationale Bündnisse (wie die EU), was die Dimension der Politik darstellt.</p>
             </div>
 
-            <h3 style="text-align: center; color: #333; margin-top: 30px;">Eigenständig analysierte Vor- und Nachteile</h3>
+            <h3 class="cert-subtitle">Eigenständig analysierte Vor- und Nachteile</h3>
             
-            <div class="cert-columns">
+            <div class="cert-columns" id="cert-columns">
                 <div class="cert-col">
                     <h4>Chancen / Vorteile</h4>
                     <ul class="cert-ul" id="cert-vorteile-list"></ul>
@@ -476,7 +487,8 @@
                     <ul class="cert-ul" id="cert-risiken-list"></ul>
                 </div>
             </div>
-            <div class="cert-badge">Erfolgreich<br>Absolviert</div>
+            <img class="cert-seal" id="cert-seal" alt="Siegel: Erfolgreich Absolviert" width="130" height="130" src="data:image/svg+xml;charset=utf-8,%3Csvg%20width=%22130%22%20height=%22130%22%20viewBox=%220%200%20140%20140%22%20xmlns=%22http://www.w3.org/2000/svg%22%20aria-label=%22Erfolgreich%20absolviert%22%3E%20%3Cg%20transform=%22rotate(-15%2070%2070)%22%3E%20%3Ccircle%20cx=%2270%22%20cy=%2270%22%20r=%2266%22%20fill=%22%23F1C40F%22/%3E%20%3Ccircle%20cx=%2270%22%20cy=%2270%22%20r=%2258%22%20fill=%22none%22%20stroke=%22%23ffffff%22%20stroke-width=%223%22%20stroke-dasharray=%227%205%22/%3E%20%3Ctext%20x=%2270%22%20y=%2266%22%20text-anchor=%22middle%22%20font-family=%22Arial,%20Helvetica,%20sans-serif%22%20font-weight=%22700%22%20font-size=%2216%22%20fill=%22%23ffffff%22%3EErfolgreich%3C/text%3E%20%3Ctext%20x=%2270%22%20y=%2286%22%20text-anchor=%22middle%22%20font-family=%22Arial,%20Helvetica,%20sans-serif%22%20font-weight=%22700%22%20font-size=%2216%22%20fill=%22%23ffffff%22%3EAbsolviert%3C/text%3E%20%3C/g%3E%20%3C/svg%3E">
+        </div>
         </div>
     </div>
 
@@ -761,6 +773,7 @@
                 }
             });
             nextScreen('screen-certificate');
+            fitCertificate();
         }
 
         function updateCertName() {
@@ -768,49 +781,85 @@
             document.getElementById('cert-name-display').innerText = name.trim() !== "" ? "Name: " + name : "Name: _________________";
         }
 
-        // --- DER FINALE, ECHTE FIX OHNE CSS-HACKS ---
+        // --- ARBEITSBLATT: immer genau eine A4-Seite ---
+        // Die Seite hat feste Maße (794 x 1122 px = 210 x 297 mm). Ist der Inhalt zu lang,
+        // werden Schrift und Abstände (--fit) schrittweise verkleinert, bei sehr vielen
+        // Einträgen stehen Vor- und Nachteile zusätzlich nebeneinander.
+        const CERT_W = 793;
+        const CERT_RESERVE_BOTTOM = 160 + 12;   // Platz fürs Siegel + Rahmen
+
+        function certContentFits() {
+            const el = document.getElementById('print-area');
+            const cols = document.getElementById('cert-columns');
+            const limit = el.getBoundingClientRect().top + el.offsetHeight - CERT_RESERVE_BOTTOM;
+            return cols.getBoundingClientRect().bottom <= limit;
+        }
+
+        function fitCertificate() {
+            const wrap = document.getElementById('print-wrap');
+            const el = document.getElementById('print-area');
+            const cols = document.getElementById('cert-columns');
+            if (!el || el.offsetParent === null) return;
+            const oldZoom = wrap.style.zoom;
+            wrap.style.zoom = 1;                      // in Originalgröße messen
+
+            cols.classList.remove('side-by-side');
+            let fit = 1;
+            el.style.setProperty('--fit', fit);
+            while (!certContentFits() && fit > 0.75) { fit = Math.round((fit - 0.02) * 100) / 100; el.style.setProperty('--fit', fit); }
+            if (!certContentFits()) {
+                cols.classList.add('side-by-side');
+                fit = 1; el.style.setProperty('--fit', fit);
+                while (!certContentFits() && fit > 0.5) { fit = Math.round((fit - 0.02) * 100) / 100; el.style.setProperty('--fit', fit); }
+            }
+            wrap.style.zoom = oldZoom;
+            previewZoom();
+        }
+
+        // Vorschau auf kleinen Bildschirmen verkleinern (nur Ansicht, das PDF ist immer gleich groß)
+        function previewZoom() {
+            const wrap = document.getElementById('print-wrap');
+            if (!wrap || wrap.offsetParent === null) return;
+            wrap.style.zoom = 1;
+            const avail = wrap.parentElement.clientWidth - 8;
+            wrap.style.zoom = avail < CERT_W + 24 ? Math.max(0.3, avail / (CERT_W + 24)) : 1;
+        }
+        window.addEventListener('resize', previewZoom);
+
         function downloadPDF() {
+            const wrap = document.getElementById('print-wrap');
             const element = document.getElementById('print-area');
-            
-            // Keine CSS-Tricks mehr mit scale() oder Wrappern.
-            // Wir entfernen nur kurz Schatten und äußere Ränder für sauberes Messen.
+
+            // Immer in Originalgröße erzeugen, egal wie klein die Vorschau gerade ist
+            wrap.style.zoom = 1;
+            fitCertificate();
+            wrap.style.zoom = 1;
             const originalMargin = element.style.margin;
             const originalBoxShadow = element.style.boxShadow;
             element.style.margin = '0';
             element.style.boxShadow = 'none';
-            
-            setTimeout(() => {
-                // Die ECHTEN und aktuellen Pixelmaße deines Arbeitsblatts holen
-                const pxWidth = element.offsetWidth;
-                const pxHeight = element.offsetHeight;
-                
-                // Wir definieren jetzt ein 100% maßgeschneidertes "Stück Papier" für das PDF.
-                // Die Breite bleibt wie bei A4 (210mm). Die Höhe berechnen wir proportional 
-                // zur aktuellen Pixel-Höhe deines Inhalts.
-                const mmWidth = 210;
-                const mmHeight = (pxHeight * mmWidth) / pxWidth;
 
-                if (typeof html2pdf !== 'undefined') {
-                    const opt = {
-                        // WICHTIG: Absolut kein Rand (margin: 0), der den Umbruch provoziert!
-                        margin:       0, 
-                        filename:     'Arbeitsblatt_Globalisierung.pdf',
-                        image:        { type: 'jpeg', quality: 1 },
-                        html2canvas:  { scale: 2 },
-                        // Der Schlüssel: Wir zwingen html2pdf, das Papier exakt so lang zu machen
-                        // wie das Element ist. Es gibt keinen A4-Zwang mehr.
-                        jsPDF:        { unit: 'mm', format: [mmWidth, mmHeight], orientation: 'portrait' }
-                    };
-                    
-                    html2pdf().set(opt).from(element).save().then(() => {
-                        element.style.margin = originalMargin;
-                        element.style.boxShadow = originalBoxShadow;
-                    });
-                } else {
+            const restore = () => {
+                element.style.margin = originalMargin;
+                element.style.boxShadow = originalBoxShadow;
+                previewZoom();
+            };
+
+            setTimeout(() => {
+                if (typeof html2pdf === 'undefined') {
                     alert("Hinweis: html2pdf.bundle.min.js fehlt.");
-                    element.style.margin = originalMargin;
-                    element.style.boxShadow = originalBoxShadow;
+                    restore();
+                    return;
                 }
+                const opt = {
+                    margin:       0,
+                    filename:     'Arbeitsblatt_Globalisierung.pdf',
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    pagebreak:    { mode: 'avoid-all' }
+                };
+                html2pdf().set(opt).from(element).save().then(restore).catch(restore);
             }, 100);
         }
     </script>
