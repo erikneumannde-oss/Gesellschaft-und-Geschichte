@@ -3,179 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Geschichte - Gesellschaft und Geschichte</title>
-  <style>
-    /* Grundlegendes Layout und Typografie */
-    body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background-color: #f4f6f8;
-      color: #333;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* Kopfbereich (Header) */
-    header {
-      background-color: #2c3e50;
-      color: #ffffff;
-      padding: 3rem 1rem;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-      letter-spacing: 1px;
-    }
-
-    header p {
-      margin: 10px 0 0 0;
-      font-size: 1.2rem;
-      color: #bdc3c7;
-    }
-
-    /* Hauptbereich mit den Themen-Karten */
-    main {
-      flex: 1;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      padding: 3rem 1rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* Gestaltung der einzelnen Karten */
-    .card {
-      background: #ffffff;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-      width: 300px;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border-top: 4px solid #34495e;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .card h2 {
-      color: #2c3e50;
-      margin-top: 0;
-      font-size: 1.5rem;
-      border-bottom: 2px solid #ecf0f1;
-      padding-bottom: 0.5rem;
-    }
-
-    .card p {
-      flex-grow: 1;
-      color: #555;
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-    }
-
-    /* Button-Links in den Karten */
-    .card a {
-      display: block;
-      text-align: center;
-      padding: 0.75rem 1rem;
-      background-color: #34495e;
-      color: #ffffff;
-      text-decoration: none;
-      border-radius: 4px;
-      font-weight: 600;
-      transition: background-color 0.2s ease;
-    }
-
-    .card a:hover {
-      background-color: #4a69bd;
-    }
-
-    /* Zurück-Link Container */
-    .back-link-container {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .back-link-container a {
-      color: #34495e;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 0.5rem 1rem;
-      transition: color 0.2s ease;
-    }
-
-    .back-link-container a:hover {
-      color: #4a69bd;
-    }
-
-    /* Fußzeile (Footer) mit Impressum */
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      background-color: #e2e6ea;
-      border-top: 1px solid #d1d8dd;
-    }
-
-    footer a {
-      color: #555;
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: color 0.2s ease;
-    }
-
-    footer a:hover {
-      color: #2c3e50;
-      text-decoration: underline;
-    }
-  </style>
+  <title>Geschichte</title>
+  <link rel="stylesheet" href="../pinnwand.css">
 </head>
 <body>
 
-  <header>
-    <h1>Geschichte</h1>
-    <p>Unterrichtsmaterialien geordnet nach Jahrgangsstufen</p>
-  </header>
+  <div class="stage">
+    <img class="board" src="../pinnwand.jpg" alt="">
 
-  <main>
-    <!-- Karte: Klasse 7/8 -->
-    <div class="card">
-      <h2>Klasse 7/8</h2>
-      <p>Materialien für die Mittelstufe, beginnend vom Mittelalter bis hin zur Frühen Neuzeit. Altersgerechte Quellen und interaktive Einstiege.</p>
-      <a href="./Klasse-7-8/index.html">Zu den Materialien</a>
+    <section class="paper">
+      <h1>Geschichte</h1>
+      <p>Unterrichtsmaterialien geordnet nach Jahrgangsstufen.</p>
+    </section>
+
+    <div class="notes">
+      <a class="note" data-tag="Jahrgang" href="./Klasse-7-8/index.html" title="Vom Mittelalter bis zur Frühen Neuzeit"><b>Klasse 7/8</b><small>Vom Mittelalter bis zur Frühen Neuzeit</small></a>
+      <a class="note" data-tag="Jahrgang" href="./Klasse-9-10/index.html" title="19. und 20. Jahrhundert"><b>Klasse 9/10</b><small>19. und 20. Jahrhundert</small></a>
+      <a class="note" data-tag="Jahrgang" href="./Oberstufe/index.html" title="Quellenarbeit und Abiturvorbereitung"><b>Oberstufe</b><small>Quellenarbeit und Abiturvorbereitung</small></a>
     </div>
 
-    <!-- Karte: Klasse 9/10 -->
-    <div class="card">
-      <h2>Klasse 9/10</h2>
-      <p>Inhalte zum 19. und 20. Jahrhundert. Fokus auf Industrialisierung, die Weltkriege, die Teilung Deutschlands und den Weg in die Gegenwart.</p>
-      <a href="./Klasse-9-10/index.html">Zu den Materialien</a>
-    </div>
-
-    <!-- Karte: Oberstufe -->
-    <div class="card">
-      <h2>Oberstufe</h2>
-      <p>Tiefgehende Analysen, komplexere Quellenarbeit und Klausur- bzw. Abiturvorbereitung für die Sekundarstufe II.</p>
-      <a href="./Oberstufe/index.html">Zu den Materialien</a>
-    </div>
-  </main>
-
-  <div class="back-link-container">
-    <a href="../index.html">← Zurück zur Startseite</a>
+    <div class="topbar"><a href="../index.html" class="back-link">← Zurück zur Startseite</a></div>
   </div>
 
-  <footer>
-    <a href="../impressum.html">Impressum & Datenschutzerklärung</a>
-  </footer>
-
+  <a href="../impressum.html" class="impressum-link">Impressum &amp; Datenschutz</a>
 </body>
 </html>

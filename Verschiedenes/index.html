@@ -3,172 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Verschiedenes - Gesellschaft und Geschichte</title>
-  <style>
-    /* Grundlegendes Layout und Typografie */
-    body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background-color: #f4f6f8;
-      color: #333;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* Kopfbereich (Header) */
-    header {
-      background-color: #2c3e50;
-      color: #ffffff;
-      padding: 3rem 1rem;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-      letter-spacing: 1px;
-    }
-
-    header p {
-      margin: 10px 0 0 0;
-      font-size: 1.2rem;
-      color: #bdc3c7;
-    }
-
-    /* Hauptbereich mit den Themen-Karten */
-    main {
-      flex: 1;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      padding: 3rem 1rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* Gestaltung der einzelnen Karten */
-    .card {
-      background: #ffffff;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-      width: 300px;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border-top: 4px solid #34495e;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .card h2 {
-      color: #2c3e50;
-      margin-top: 0;
-      font-size: 1.5rem;
-      border-bottom: 2px solid #ecf0f1;
-      padding-bottom: 0.5rem;
-    }
-
-    .card p {
-      flex-grow: 1;
-      color: #555;
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-    }
-
-    /* Button-Links in den Karten */
-    .card a {
-      display: block;
-      text-align: center;
-      padding: 0.75rem 1rem;
-      background-color: #34495e;
-      color: #ffffff;
-      text-decoration: none;
-      border-radius: 4px;
-      font-weight: 600;
-      transition: background-color 0.2s ease;
-    }
-
-    .card a:hover {
-      background-color: #4a69bd;
-    }
-
-    /* Zurück-Link Container */
-    .back-link-container {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .back-link-container a {
-      color: #34495e;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 0.5rem 1rem;
-      transition: color 0.2s ease;
-    }
-
-    .back-link-container a:hover {
-      color: #4a69bd;
-    }
-
-    /* Fußzeile (Footer) mit Impressum */
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      background-color: #e2e6ea;
-      border-top: 1px solid #d1d8dd;
-    }
-
-    footer a {
-      color: #555;
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: color 0.2s ease;
-    }
-
-    footer a:hover {
-      color: #2c3e50;
-      text-decoration: underline;
-    }
-  </style>
+  <title>Verschiedenes</title>
+  <link rel="stylesheet" href="../pinnwand.css">
 </head>
 <body>
 
-  <header>
-    <h1>Verschiedenes</h1>
-    <p>Allgemeine Schultools und Werkzeuge</p>
-  </header>
+  <div class="stage">
+    <img class="board" src="../pinnwand.jpg" alt="">
 
-  <main>
-    <!-- Karte: Notenrechner -->
-    <div class="card">
-      <h2>Notenrechner</h2>
-      <p>Ein digitales Hilfsmittel zur Berechnung, Gewichtung und transparenten Dokumentation von Schülerleistungen.</p>
-      <a href="./Notenrechner/index.html">Zum Notenrechner</a>
+    <section class="paper">
+      <h1>Verschiedenes</h1>
+      <p>Allgemeine Schultools und Werkzeuge für den Unterrichtsalltag.</p>
+    </section>
+
+    <div class="notes">
+      <a class="note" data-tag="Werkzeug" href="./Notenrechner/index.html" title="Leistungen berechnen und dokumentieren"><b>Notenrechner</b><small>Leistungen berechnen und dokumentieren</small></a>
+      <a class="note" data-tag="Werkzeug" href="./Textmarkierer/index.html" title="Texte farbig markieren und bearbeiten"><b>Textmarkierer</b><small>Texte farbig markieren und bearbeiten</small></a>
     </div>
 
-    <!-- Karte: Textmarkierer -->
-    <div class="card">
-      <h2>Textmarkierer</h2>
-      <p>Ein Werkzeug zum farbigen Hervorheben, Strukturieren und Bearbeiten von digitalen Texten für die Unterrichtsvorbereitung oder den direkten Einsatz.</p>
-      <a href="./Textmarkierer/index.html">Zum Textmarkierer</a>
-    </div>
-  </main>
-
-  <div class="back-link-container">
-    <a href="../index.html">← Zurück zur Startseite</a>
+    <div class="topbar"><a href="../index.html" class="back-link">← Zurück zur Startseite</a></div>
   </div>
 
-  <footer>
-    <a href="../impressum.html">Impressum & Datenschutzerklärung</a>
-  </footer>
-
+  <a href="../impressum.html" class="impressum-link">Impressum &amp; Datenschutz</a>
 </body>
 </html>
