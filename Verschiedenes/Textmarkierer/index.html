@@ -936,7 +936,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   // selecting creates new mark
-  el.doc.addEventListener("mouseup", ()=>{
+  function handleSelectionEnd(){
     if(!state.pdf.text || !state.eh) return;
 
     if(state.mode!=="work" && !(state.mode==="eval" && state.practice_after_unlock.enabled)) return;
@@ -950,7 +950,21 @@ window.addEventListener("DOMContentLoaded", () => {
     if(!r || (r.end-r.start)<2) return;
     const sel=window.getSelection(); if(sel) sel.removeAllRanges();
     openModal("add", null, r);
-  });
+  }
+  el.doc.addEventListener("mouseup", handleSelectionEnd);
+
+  // Tablets/Touch: Eine Auswahl per Finger endet ohne mouseup – daher kurz nach der letzten Änderung der Auswahl auswerten
+  if (navigator.maxTouchPoints > 0 || 'ontouchstart' in window) {
+    let selTimer = null;
+    document.addEventListener("selectionchange", ()=>{
+      clearTimeout(selTimer);
+      selTimer = setTimeout(()=>{
+        const s = window.getSelection();
+        if(!s || s.isCollapsed || !s.anchorNode || !el.doc.contains(s.anchorNode)) return;
+        handleSelectionEnd();
+      }, 700);
+    });
+  }
 
   // -------- Eval computation --------
   function overlapRatio(a,b){

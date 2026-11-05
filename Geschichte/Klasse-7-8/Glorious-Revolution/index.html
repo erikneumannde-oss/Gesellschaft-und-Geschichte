@@ -199,11 +199,7 @@
             padding-bottom: 5vh; 
             position: relative;
             box-sizing: border-box;
-<<<<<<< HEAD
             /* pointer-events: auto; ENTFERNT: Dies war die durchsichtige Wand! */
-=======
-            pointer-events: auto; 
->>>>>>> 4093381617119b352e8cf6c62b5a69ec555d09f5
         }
 
         .portrait-container img {
@@ -292,21 +288,13 @@
             justify-content: center;
             align-items: center;
             position: relative;
-<<<<<<< HEAD
             /* pointer-events: auto; ENTFERNT: Dies war die zweite durchsichtige Wand! */
-=======
-            pointer-events: auto;
->>>>>>> 4093381617119b352e8cf6c62b5a69ec555d09f5
         }
 
         /* 
          * DER ULTIMATIVE SCHRIFTROLLEN-FIX:
          * Aspect-Ratio zwingt die Box IMMER genau in dieselben Proportionen. 
-<<<<<<< HEAD
          * Dadurch bleibt das skalierte Bild zu 100% synchron mit dem Text! 
-=======
-         * Dadurch bleibt das skalierte Bild zu 100% synchron mit dem Text, egal wie groß der Bildschirm ist! 
->>>>>>> 4093381617119b352e8cf6c62b5a69ec555d09f5
          */
         #scroll-container-final {
             position: relative;
@@ -463,10 +451,7 @@
             color: #000;
             z-index: 10;
             box-sizing: border-box;
-<<<<<<< HEAD
             /* pointer-events: auto; ENTFERNT: Dies war die dritte durchsichtige Wand! */
-=======
->>>>>>> 4093381617119b352e8cf6c62b5a69ec555d09f5
         }
 
         #quiz-question {
@@ -536,6 +521,58 @@
         .sail-in { transform: translate(-50%, -50%) !important; transition: transform 6s ease-out, opacity 1.5s !important; }
         .descend-crown { transform: translate(-50%, calc(-50% - 35vh)) !important; transition: transform 4s ease-out, opacity 2s !important; }
         .show-scroll { transform: translate(-50%, -50%) scale(1) !important; transition: transform 5s ease-out, opacity 4s !important; }
+
+        /* ---------------------------------------------------
+           TABLET-ANSICHT für Quellenanalyse & Quiz
+           --------------------------------------------------- */
+        @media (max-width: 1200px) {
+            #interactive-text { padding: 12px 18px; }
+        }
+
+        @media (max-width: 1100px) and (orientation: portrait), (max-width: 820px) {
+            #final-scene, #quiz-scene {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto minmax(0, 1fr);
+                column-gap: 3%;
+                padding: 10px 2% 0;
+            }
+            .portrait-container {
+                width: auto;
+                height: auto;
+                padding-bottom: 0;
+                justify-content: flex-start;
+                grid-row: 1;
+            }
+            .portrait-container.left { grid-column: 1; }
+            .portrait-container.right { grid-column: 2; }
+            .portrait-container img {
+                width: auto;
+                height: 11vh;
+                max-width: 100%;
+                object-fit: contain;
+                margin-top: 0;
+            }
+            .portrait-container h2 { font-size: 0.9rem; margin-top: 6px; }
+            .final-instruction {
+                font-size: 14px;
+                margin-bottom: 20px;
+                padding: 12px 14px 18px;
+            }
+            .center-column {
+                grid-column: 1 / -1;
+                grid-row: 2;
+                width: 100%;
+                min-height: 0;
+            }
+            #scroll-container-final {
+                width: auto;
+                height: 100%;
+                max-width: 100%;
+                max-height: 100%;
+            }
+            #quiz-container { max-height: 100%; padding: 20px; }
+        }
     </style>
 </head>
 <body>

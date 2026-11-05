@@ -401,30 +401,31 @@
         /* =========================================
            RESPONSIVE TABLET-ANSICHT (Skalierung)
         ========================================= */
+        /* Die Skalierungsfaktoren (--ui-scale, --box-scale) setzt ein kleines Skript am Seitenende
+           (calc() kann in scale() keine Länge durch eine Zahl teilen, daher funktioniert eine reine CSS-Lösung nicht). */
         @media screen and (max-width: 1550px) {
             body {
                 justify-content: flex-start; 
             }
             #main-layout {
-                /* NEU: Zwingt den Container exakt auf die Inhaltsbreite, damit links nichts abgeschnitten wird */
+                /* Zwingt den Container exakt auf die Inhaltsbreite, damit links nichts abgeschnitten wird */
                 width: 1510px;
                 min-width: 1510px;
                 max-width: none;
                 
-                transform: scale(calc((100vw - 40px) / 1510));
+                transform: scale(var(--ui-scale, 1));
                 transform-origin: top left;
                 margin-top: 50px; 
             }
+            /* #map-wrapper liegt innerhalb von #main-layout und wird daher schon mitskaliert */
             #map-wrapper {
-                transform: scale(calc((100vw - 40px) / 1400));
-                transform-origin: top left;
                 margin-top: 50px;
             }
         }
 
         @media screen and (max-width: 850px) {
             #pokemon-dialog-box, #pokemon-dialog-box-2, #pokemon-dialog-box-3 {
-                transform: scale(calc((100vw - 40px) / 800));
+                transform: scale(var(--box-scale, 1));
                 transform-origin: center;
             }
         }
@@ -954,6 +955,28 @@
         document.getElementById('golfstrom-arrow').style.display = 'none';
     }
 
+</script>
+<script>
+    // Skalierung für Tablets: passt die Ansicht an die Bildschirmbreite an
+    (function () {
+        var root = document.documentElement;
+        function updateScale() {
+            var w = root.clientWidth;
+            var ui = Math.min(1, (w - 40) / 1510);
+            root.style.setProperty('--ui-scale', ui);
+            root.style.setProperty('--box-scale', Math.min(1, (w - 40) / 800));
+            // Durch die Skalierung bleibt sonst unten leerer Platz: ausgleichen
+            var main = document.getElementById('main-layout');
+            if (main) main.style.marginBottom = (w <= 1550 && ui < 1) ? (-(1 - ui) * main.offsetHeight + 50) + 'px' : '';
+        }
+        window.addEventListener('resize', updateScale);
+        window.addEventListener('orientationchange', updateScale);
+        if (window.ResizeObserver) {
+            var main = document.getElementById('main-layout');
+            if (main) new ResizeObserver(updateScale).observe(main);
+        }
+        updateScale();
+    })();
 </script>
 </body>
 </html>

@@ -814,5 +814,127 @@
             }, 100);
         }
     </script>
+<!-- Touch-Unterstützung für Drag & Drop (Tablets/Smartphones): übersetzt Fingerbewegungen in die gewohnten Drag-Ereignisse -->
+<script>
+(function () {
+    if (!('ontouchstart' in window) && !(navigator.maxTouchPoints > 0)) return;
+
+    var st = document.createElement('style');
+    st.textContent = '[draggable="true"]{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;}';
+    document.head.appendChild(st);
+
+    var src = null, ghost = null, dt = null, over = null, canDrop = false;
+    var sx = 0, sy = 0, gx = 0, gy = 0, lx = 0, ly = 0, dragging = false, scrollTimer = null;
+
+    function makeDT() {
+        var store = {};
+        return {
+            dropEffect: 'move', effectAllowed: 'all', types: [], files: [],
+            setData: function (t, v) { store[t] = String(v); if (this.types.indexOf(t) < 0) this.types.push(t); },
+            getData: function (t) {
+                if (store[t] !== undefined) return store[t];
+                if (t === 'text') return store['text/plain'] || '';
+                if (t === 'text/plain') return store['text'] || '';
+                return '';
+            },
+            clearData: function () { store = {}; this.types = []; },
+            setDragImage: function () {}
+        };
+    }
+
+    function fire(el, type, x, y) {
+        var ev = document.createEvent('Event');
+        ev.initEvent(type, true, true);
+        ev.dataTransfer = dt; ev.clientX = x; ev.clientY = y;
+        el.dispatchEvent(ev);
+        return ev;
+    }
+
+    function scrollable(el) {
+        while (el && el !== document.body && el !== document.documentElement) {
+            var o = getComputedStyle(el).overflowY;
+            if ((o === 'auto' || o === 'scroll') && el.scrollHeight > el.clientHeight + 2) return el;
+            el = el.parentElement;
+        }
+        return document.scrollingElement || document.documentElement;
+    }
+
+    function autoScroll() {
+        var d = 0;
+        if (ly < 70) d = -14; else if (ly > window.innerHeight - 70) d = 14;
+        if (!d) return;
+        var t = document.elementFromPoint(lx, ly);
+        scrollable(t).scrollBy(0, d);
+    }
+
+    function cleanup() {
+        if (ghost && ghost.parentNode) ghost.parentNode.removeChild(ghost);
+        clearInterval(scrollTimer);
+        src = ghost = dt = over = null; dragging = false; canDrop = false;
+    }
+
+    function begin(t) {
+        dragging = true;
+        dt = makeDT();
+        var r = src.getBoundingClientRect();
+        gx = sx - r.left; gy = sy - r.top;
+        ghost = src.cloneNode(true);
+        ghost.removeAttribute('id');
+        ghost.style.cssText += ';position:fixed;margin:0;pointer-events:none;opacity:.88;z-index:2147483647;' +
+            'width:' + r.width + 'px;height:' + r.height + 'px;left:' + r.left + 'px;top:' + r.top + 'px;' +
+            'transform:scale(1.04);box-shadow:0 8px 24px rgba(0,0,0,.45);';
+        document.body.appendChild(ghost);
+        fire(src, 'dragstart', t.clientX, t.clientY);
+        scrollTimer = setInterval(autoScroll, 30);
+    }
+
+    document.addEventListener('touchstart', function (e) {
+        if (e.touches.length !== 1) return;
+        var el = e.target.closest ? e.target.closest('[draggable="true"]') : null;
+        if (!el) return;
+        src = el; dragging = false;
+        sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+        e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('touchmove', function (e) {
+        if (!src) return;
+        var t = e.touches[0];
+        lx = t.clientX; ly = t.clientY;
+        if (!dragging) {
+            if (Math.abs(lx - sx) + Math.abs(ly - sy) < 8) return;
+            begin(t);
+        }
+        e.preventDefault();
+        ghost.style.left = (lx - gx) + 'px';
+        ghost.style.top = (ly - gy) + 'px';
+        var target = document.elementFromPoint(lx, ly);
+        if (!target) return;
+        if (target !== over) {
+            if (over) fire(over, 'dragleave', lx, ly);
+            fire(target, 'dragenter', lx, ly);
+            over = target;
+        }
+        canDrop = fire(target, 'dragover', lx, ly).defaultPrevented;
+    }, { passive: false });
+
+    document.addEventListener('touchend', function (e) {
+        if (!src) return;
+        if (dragging) {
+            e.preventDefault();
+            var target = document.elementFromPoint(lx, ly);
+            if (canDrop && target) fire(target, 'drop', lx, ly);
+            else if (over) fire(over, 'dragleave', lx, ly);
+            fire(src, 'dragend', lx, ly);
+        }
+        cleanup();
+    }, { passive: false });
+
+    document.addEventListener('touchcancel', function () {
+        if (src && dragging) fire(src, 'dragend', lx, ly);
+        cleanup();
+    });
+})();
+</script>
 </body>
 </html>
