@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ökologischer Fußabdruck und Nachhaltigkeit</title>
+<style>
+:root{
+  --ink:#24352b; --paper:#fffaf0; --paper2:#fdeec7; --sun:#ffd23f; --sky:#bfe9fb; --grass:#7fce6a;
+  --c-energie:#a85f00; --c-bauen:#b0532b; --c-essen:#2f8040; --c-transport:#1f6fb2; --c-erde:#1f6fb2;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:'Avenir Next','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;line-height:1.6;color:var(--ink);
+  background:linear-gradient(180deg,#bfe9fb 0%,#dff3e6 45%,#c9e8ae 100%) fixed;min-height:100vh;touch-action:manipulation;font-size:17px}
+h1,h2,h3,h4,.comic{font-family:'Marker Felt','Chalkboard SE','Comic Neue','Comic Sans MS','Trebuchet MS',sans-serif}
+button,input,textarea{font-family:inherit;font-size:inherit}
+.view{display:none}
+.view.active{display:block;animation:fade .4s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.wrap{max-width:1050px;margin:0 auto;padding:18px}
+.box{background:var(--paper);border:3px solid var(--ink);border-radius:18px;box-shadow:5px 5px 0 var(--ink);padding:18px 24px;margin:18px 0}
+.box h2{margin:0 0 8px}
+.btn{display:inline-block;font-weight:700;color:#fff;background:var(--c-erde);border:3px solid var(--ink);border-radius:14px;padding:9px 20px;cursor:pointer;box-shadow:3px 3px 0 var(--ink);font-size:1rem;min-height:44px}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn.sun{background:var(--sun);color:var(--ink)}
+.btn.grey{background:#e9eef0;color:var(--ink)}
+.btn.small{padding:6px 14px;font-size:.9rem;min-height:38px}
+.btn[disabled]{opacity:.5;cursor:default}
+.topnav{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 12px}
+.hint{background:#e8f6d8;border:2px dashed #5a8f3a;padding:8px 14px;border-radius:12px;font-size:.95rem;margin:10px 0}
+.small{font-size:.85rem}
+.footer-note{font-size:.85rem;color:#3d5446;text-align:center;margin:20px 0 6px}
+.impressum-link{display:block;text-align:center;margin:8px 0 28px;font-size:.85rem;color:#3d5446}
+.reset{background:none;border:none;color:#3d5446;cursor:pointer;font-size:.8rem;text-decoration:underline}
+
+/* ---------- Intro ---------- */
+#v-intro{min-height:100vh;display:none;align-items:center;justify-content:center;padding:20px}
+#v-intro.active{display:flex}
+.intro{max-width:900px;width:100%;display:flex;gap:26px;align-items:center}
+.erdi{flex:0 0 240px;text-align:center}
+.erdi svg{width:100%;height:auto;animation:bob 3.4s ease-in-out infinite;filter:drop-shadow(4px 6px 0 rgba(36,53,43,.25))}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(2deg)}}
+.speech{flex:1;background:var(--paper);border:3px solid var(--ink);border-radius:22px;box-shadow:5px 5px 0 var(--ink);padding:22px 26px;min-height:200px;position:relative;display:flex;flex-direction:column;justify-content:space-between}
+.speech::before{content:"";position:absolute;left:-24px;top:70px;border:13px solid transparent;border-right-color:var(--ink);border-left:0}
+.speech::after{content:"";position:absolute;left:-18px;top:73px;border:10px solid transparent;border-right-color:var(--paper);border-left:0}
+.stext{font-size:1.25rem;font-weight:600;line-height:1.5;min-height:120px}
+.sctrl{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px}
+.skip{background:none;border:none;color:#4a6455;cursor:pointer;text-decoration:underline;font-size:.9rem}
+
+/* ---------- Hub ---------- */
+h1.title{text-align:center;color:var(--ink);margin:10px 0 2px;font-size:2.3rem;text-shadow:3px 3px 0 var(--sun)}
+.sub{text-align:center;margin:0 0 14px;color:#2f4a3a}
+.steps{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:14px 0}
+.stepcard{display:flex;gap:14px;align-items:center;cursor:pointer;background:var(--paper);border:3px solid var(--ink);border-radius:18px;box-shadow:5px 5px 0 var(--ink);padding:14px 18px;text-align:left;font:inherit;color:inherit}
+.stepcard:hover{transform:translateY(-2px)}
+.stepcard .ico{font-size:2.2rem}
+.stepcard h3{margin:0;font-size:1.15rem}
+.stepcard span.d{font-size:.9rem;color:#3d5446}
+.stepcard .tick{margin-left:auto;font-size:1.5rem}
+.scene{position:relative;border:4px solid var(--ink);border-radius:22px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);background:#bfe9fb}
+.scene svg{display:block;width:100%;height:auto}
+.hot{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;border:none;background:none;cursor:pointer;padding:0}
+.hot .badge{position:relative;width:64px;height:64px;border-radius:50%;background:#fff;border:4px solid var(--c);display:flex;align-items:center;justify-content:center;font-size:1.9rem;box-shadow:3px 3px 0 var(--ink);transition:transform .15s}
+.hot .lock{position:absolute;right:-8px;bottom:-6px;font-size:.95rem;background:var(--paper);border:2px solid var(--ink);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
+.hot .lab{background:var(--c);color:#fff;font-weight:700;font-size:.92rem;padding:3px 12px;border-radius:999px;border:2px solid var(--ink);white-space:nowrap}
+.hot:hover .badge,.hot:focus-visible .badge{transform:scale(1.12)}
+.hot:focus-visible{outline:3px solid var(--ink);outline-offset:6px;border-radius:12px}
+.hot::before{content:"";position:absolute;top:0;left:50%;width:64px;height:64px;margin-left:-32px;border-radius:50%;border:3px solid var(--c);animation:puls 2.2s ease-out infinite;pointer-events:none}
+@keyframes puls{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.7);opacity:0}}
+@media (prefers-reduced-motion:reduce){.hot::before,.erdi svg{animation:none}}
+.stepcard.final{margin:18px 0}
+
+/* ---------- Test ---------- */
+.prog{height:16px;background:#fff;border:3px solid var(--ink);border-radius:999px;overflow:hidden;margin:6px 0 14px}
+.prog i{display:block;height:100%;background:var(--grass);width:0;transition:width .4s}
+.qcard h2{font-size:1.5rem;margin:6px 0 14px}
+.qarea{display:inline-block;font-size:.8rem;font-weight:700;border:2px solid var(--ink);background:var(--sun);border-radius:999px;padding:1px 12px}
+.qopts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.qopt{display:flex;gap:12px;align-items:center;text-align:left;background:#fff;border:3px solid var(--ink);border-radius:16px;padding:12px 14px;cursor:pointer;font-size:1rem;color:var(--ink);min-height:64px;box-shadow:3px 3px 0 var(--ink)}
+.qopt .e{font-size:2rem}
+.qopt:hover{background:#fff6cc}
+.qopt.sel{background:#d8f2c2}
+.earths{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:10px 0 4px}
+.earths svg{width:78px;height:78px;animation:pop .5s ease backwards}
+@keyframes pop{0%{transform:scale(0) rotate(-40deg)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+.bignum{font-family:'Marker Felt','Chalkboard SE','Comic Sans MS',sans-serif;font-size:3rem;text-align:center;line-height:1.1;margin:4px 0}
+.bars{display:grid;gap:10px;margin:12px 0}
+.bar{display:grid;grid-template-columns:200px 1fr 56px;gap:10px;align-items:center}
+.bar .tr{background:#fff;border:3px solid var(--ink);border-radius:999px;height:26px;overflow:hidden}
+.bar .tr i{display:block;height:100%;width:0;background:var(--c);transition:width 1s ease}
+.bar b{text-align:right}
+.bar.top .nm{text-decoration:underline wavy var(--sun) 3px}
+
+/* ---------- Thema ---------- */
+.gate{max-width:520px;margin:6vh auto;text-align:center;background:var(--paper);border:3px solid var(--ink);border-radius:22px;padding:30px 28px 26px;box-shadow:6px 6px 0 var(--ink)}
+.seal{width:104px;height:104px;margin:-76px auto 10px;border-radius:50%;background:var(--c);border:4px solid var(--ink);box-shadow:4px 4px 0 var(--ink);display:flex;align-items:center;justify-content:center;font-size:3rem}
+.gate h2{margin:6px 0}
+.gate input{width:100%;font-size:1.2rem;text-align:center;padding:10px;border:3px solid var(--ink);border-radius:12px;background:#fff;margin:14px 0 6px;letter-spacing:2px}
+.gate .err{color:#a02020;font-weight:700;min-height:1.5em}
+.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.topic-head{border:3px solid var(--ink);border-radius:20px;color:#fff;padding:18px 26px;margin-bottom:16px;display:flex;align-items:center;gap:18px;background:var(--c);box-shadow:5px 5px 0 var(--ink)}
+.topic-head .ico{font-size:3rem}
+.topic-head h2{margin:0;font-size:1.8rem}
+.topic-head p{margin:4px 0 0}
+.sec{background:var(--paper);border:3px solid var(--ink);border-top:10px solid var(--c);border-radius:18px;box-shadow:5px 5px 0 var(--ink);padding:18px 26px;margin:16px 0}
+.sec h3{margin:0 0 10px;color:var(--c);font-size:1.3rem}
+.sec p{margin:0 0 .8em}
+.sec ul{margin:.3em 0 .8em;padding-left:22px}
+.task{margin:16px 0;padding:14px 16px;background:#fff;border:2px solid #b9c9a8;border-radius:14px}
+.task b.n{display:inline-block;background:var(--c);color:#fff;border-radius:50%;width:28px;height:28px;text-align:center;line-height:28px;margin-right:8px;font-size:.9rem}
+textarea.ans{width:100%;margin-top:10px;min-height:84px;resize:vertical;padding:10px 12px;border:3px solid var(--ink);border-radius:12px;background:#fffef7;color:var(--ink);line-height:1.5}
+textarea.ans:focus{outline:4px solid var(--sun)}
+.sortgrid{display:grid;gap:8px;margin-top:10px}
+.sortrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#fffef7;border:2px solid #b9c9a8;border-radius:12px;padding:8px 10px}
+.sortrow .t{flex:1 1 260px}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{font-size:.88rem;border:2px solid var(--ink);background:#fff;border-radius:10px;padding:5px 11px;cursor:pointer;min-height:36px;color:var(--ink)}
+.opt.sel{background:var(--c);color:#fff}
+.sortrow.ok,.ordrow.ok{border-color:#2f8f46;background:#effbe9}
+.sortrow.bad,.ordrow.bad{border-color:#d33;background:#fff1f1}
+.res{margin-top:10px;font-weight:700}
+.ordrow{display:flex;gap:10px;align-items:center;background:#fffef7;border:2px solid #b9c9a8;border-radius:12px;padding:8px 10px;margin-top:8px}
+.ordrow .t{flex:1}
+.ordrow button{border:2px solid var(--ink);background:#fff;border-radius:10px;width:40px;height:40px;cursor:pointer}
+.ordnum{font-weight:800;color:var(--c);width:24px}
+
+/* ---------- Begriff ---------- */
+.forest{background:linear-gradient(#d7f1fb,#d7f1fb 55%,#9ad77f 55%);border:3px solid var(--ink);border-radius:16px;padding:10px;margin:10px 0}
+.fgrid{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;min-height:130px;align-content:end}
+.fgrid svg{width:100%;height:auto;animation:grow .35s ease backwards}
+@keyframes grow{from{transform:scale(0);transform-origin:50% 100%}to{transform:scale(1);transform-origin:50% 100%}}
+.fctrl{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.fctrl input[type=range]{flex:1 1 200px;min-width:160px}
+.fstat{font-weight:700}
+.dims{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.dim{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:10px;text-align:center}
+.dim .e{font-size:2rem}
+.time table{border-collapse:collapse;width:100%;margin-top:8px}
+.time td,.time th{border:2px solid var(--ink);padding:6px 10px;text-align:center;background:#fff}
+.time th{background:var(--sun)}
+.time input{width:70px;font-size:1.1rem;text-align:center;border:3px solid var(--ink);border-radius:10px;padding:4px}
+
+/* ---------- Plakat ---------- */
+#poster{background:linear-gradient(180deg,#e4f6ff,#f6f0cf);border:5px solid var(--ink);border-radius:18px;padding:0 0 22px;box-shadow:6px 6px 0 var(--ink);overflow:hidden}
+.p-head{background:var(--c-essen);color:#fff;text-align:center;padding:14px 20px 10px;border-bottom:4px solid var(--ink)}
+.p-title{margin:0;font-size:2.3rem;letter-spacing:3px;text-transform:uppercase}
+.p-sub{margin:2px 0 0}
+.p-names{display:flex;gap:10px;align-items:center;justify-content:center;margin:12px 20px 4px;flex-wrap:wrap}
+.p-names label{font-weight:700}
+.p-names input{border:none;border-bottom:3px solid var(--ink);background:transparent;font-size:1.05rem;padding:4px 8px;min-width:260px;text-align:center;color:var(--ink)}
+.pgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:12px 22px 0}
+.pcard{border:3px solid var(--ink);border-radius:14px;background:#fffef7;overflow:hidden;break-inside:avoid;display:flex;flex-direction:column}
+.pcard h3{margin:0;padding:7px 14px;background:var(--c);color:#fff;font-size:1.1rem;display:flex;align-items:center;gap:8px}
+.pcard .own{font-size:.72rem;background:#fff;color:var(--c);border-radius:999px;padding:1px 9px;font-weight:700;margin-left:auto}
+.pcard .pb{padding:4px 14px 12px}
+.pcard textarea,.pbox textarea{width:100%;min-height:90px;border:2px dashed #7a9a6a;border-radius:10px;background:#fffef9;padding:8px 10px;font-size:.98rem;line-height:1.45;color:var(--ink);resize:vertical}
+.pc{display:none;white-space:pre-wrap;overflow-wrap:anywhere;font-size:10.5pt;line-height:1.4}
+.pbox{margin:14px 22px 0;border:3px solid var(--ink);border-radius:14px;padding:10px 14px;background:#fff6cf;break-inside:avoid}
+.pbox h3{margin:0 0 6px}
+.pcols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pcols label,.pbox>label{font-weight:700;font-size:.92rem;display:block;margin-bottom:2px}
+.pq{margin-top:8px}.pq label{display:block;font-weight:700;font-size:.85rem;color:var(--c);margin-bottom:2px}
+.pcard textarea{min-height:60px}
+.pbox textarea{min-height:70px}
+
+@media (max-width:760px){
+  .intro{flex-direction:column;text-align:center}
+  .erdi{flex-basis:auto;width:170px}
+  .speech::before,.speech::after{display:none}
+  .stext{font-size:1.1rem}
+  h1.title{font-size:1.6rem}
+  .steps,.qopts,.dims{grid-template-columns:1fr}
+  .hot .badge{width:46px;height:46px;font-size:1.3rem;border-width:3px}
+  .hot::before{width:46px;height:46px;margin-left:-23px}
+  .hot .lab{font-size:.68rem;padding:2px 7px}
+  .hot .lock{width:22px;height:22px;font-size:.7rem}
+  .topic-head{flex-direction:column;text-align:center}
+  .pgrid,.pcols{grid-template-columns:1fr}
+  .bar{grid-template-columns:1fr 50px}.bar .tr{grid-column:1/3;grid-row:2}
+  .fgrid{grid-template-columns:repeat(8,1fr)}
+}
+/* Druckansicht des Plakats: wird per Skript vor dem Drucken aktiviert und auf ein A4-Blatt eingepasst */
+#poster.pm{position:absolute;left:0;top:0;width:calc(297mm - 18mm);height:calc(210mm - 18mm - 6px);box-sizing:border-box;padding:0 0 6px;border-width:3px;box-shadow:none;font-size:var(--fs,10pt);display:flex;flex-direction:column;overflow:hidden;background:#eef8ee}
+#poster.pm textarea{display:none !important}
+#poster.pm .pc{display:block;min-height:0;font-size:var(--fs,10pt);line-height:1.3}
+#poster.pm .p-head{padding:6px 12px 5px;border-bottom-width:3px}
+#poster.pm .p-title{font-size:calc(var(--fs,10pt)*2.1);letter-spacing:2px}
+#poster.pm .p-sub{font-size:var(--fs,10pt)}
+#poster.pm .p-names{margin:4px 12px 0}
+#poster.pm .p-names input{display:none}
+#poster.pm .p-names label,#poster.pm .p-names .pc{font-size:var(--fs,10pt)}
+#poster.pm .pgrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;padding:6px 10px 0;flex:1;min-height:0}
+#poster.pm .pcard{border-width:2px}
+#poster.pm .pcard h3{font-size:calc(var(--fs,10pt)*1.12);padding:3px 7px}
+#poster.pm .pcard .own{display:none}
+#poster.pm .pcard .pb{padding:2px 7px 5px}
+#poster.pm .pq{margin-top:4px}
+#poster.pm .pq label{font-size:calc(var(--fs,10pt)*.9);margin:0}
+#poster.pm .pbox{margin:6px 10px 0;padding:4px 8px;border-width:2px}
+#poster.pm .pbox h3{font-size:calc(var(--fs,10pt)*1.12);margin:0 0 2px}
+#poster.pm .pcols label,#poster.pm .pbox>label{font-size:var(--fs,10pt);margin:0}
+@media print{
+  @page{size:A4 landscape;margin:9mm}
+  html,body{background:#fff !important;margin:0 !important;padding:0 !important;height:calc(210mm - 18mm) !important;max-height:calc(210mm - 18mm) !important;overflow:hidden !important}
+  body *{visibility:hidden}
+  #poster,#poster *{visibility:visible;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .noprint,.impressum-link{display:none !important}
+  .view:not(#v-final){display:none !important}
+  #v-final{padding:0 !important;margin:0 !important;min-height:0 !important;height:0 !important;overflow:visible !important}
+  #v-final>*:not(#poster){display:none !important}
+}
+
+/* ===== Ergänzungen v2 ===== */
+.hot.tr{transform:translate(-50%,-100%);flex-direction:column-reverse}
+.hot.tr::before{top:auto;bottom:0}
+.tbtns{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0 4px}
+.tbtns>span{font-weight:700}
+.tbtn{font:inherit;font-weight:700;background:#fff;border:3px solid var(--c);border-radius:999px;padding:8px 14px;cursor:pointer;min-height:44px;box-shadow:2px 2px 0 var(--ink)}
+.task .dtab{border-collapse:collapse;margin:10px 0;width:100%;max-width:520px;background:#fff}
+.dtab caption{text-align:left;font-weight:700;padding:0 0 6px}
+.dtab td{border:2px solid var(--ink);padding:6px 12px}
+.dtab td:last-child{font-weight:700;white-space:nowrap}
+.cl{margin:12px 0}
+.cls{font-size:1.1rem;margin:0 0 8px}
+.gap{display:inline-block;min-width:110px;border-bottom:3px solid var(--ink);text-align:center;font-weight:700;padding:0 6px}
+.gap.ok{border-bottom-color:#2f8040;color:#2f8040}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-weight:700;background:#fff;border:3px solid var(--c);border-radius:999px;padding:8px 16px;min-height:44px;cursor:pointer}
+.chip.bad{background:#fde0e0;border-color:#c0392b}
+.pres{margin:6px 0}
+.pres .pl{font-weight:700;margin-bottom:2px}
+.pres ol{margin:2px 0 0;padding-left:22px}
+.pres .pcat{margin:2px 0}
+.pres.todo{border:2px dashed #999;border-radius:10px;padding:8px}
+#poster.pm .pres.todo,#poster.pm .noprint{display:none}
+@media print{.pres.todo{display:none}}
+textarea::placeholder{color:#6b756e}
+@media (max-width:640px){.hot.tr .lab{display:none}}
+
+mark{background:#ffe066;padding:1px 4px;border-radius:4px;color:inherit}
+.erditip{display:flex;gap:12px;align-items:center;margin:14px 0;animation:tipin .5s ease}
+.erditip .ev{flex:0 0 64px}.erditip .ev svg{width:64px;height:64px;display:block}
+.erditip .eb{position:relative;background:#fff;border:3px solid var(--ink);border-radius:16px;padding:10px 14px;box-shadow:3px 3px 0 var(--ink);font-weight:600}
+.erditip .eb::before{content:"";position:absolute;left:-11px;top:50%;margin-top:-8px;border:8px solid transparent;border-right-color:var(--ink);border-left:0}
+@keyframes tipin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.erditip{animation:none}}
+@media print{.erditip{display:none}}
+
+.fgrid .cell{transform:scale(0);transform-origin:50% 100%;transition:transform .35s ease}
+.fgrid .cell.on{transform:scale(1)}
+.fgrid .cell svg{display:block;width:100%;height:auto;animation:none}
+
+</style>
+</head>
+<body>
+
+<div class="view active" id="v-intro">
+  <div class="intro">
+    <div class="erdi"><svg viewBox="0 0 200 200" role="img" aria-label="Erdi, die lächelnde Erde">
+<defs><radialGradient id="eo" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#6ec6f7"/><stop offset=".6" stop-color="#3b92e3"/><stop offset="1" stop-color="#2468b8"/></radialGradient><clipPath id="eg"><circle cx="100" cy="100" r="86"/></clipPath></defs>
+<circle cx="100" cy="100" r="86" fill="url(#eo)"/>
+<g clip-path="url(#eg)"><g fill="#66bb47" stroke="#24352b" stroke-width="3.5" stroke-linejoin="round"><path d="M18 74 C26 46 56 30 86 36 C96 40 94 50 82 54 C74 58 76 66 66 72 C58 78 54 90 46 90 C38 86 34 78 26 82 C18 82 16 78 18 74Z"/>
+<path d="M50 118 C62 108 80 114 84 130 C86 146 72 162 64 176 C56 178 52 168 54 156 C46 142 40 128 50 118Z"/>
+<path d="M116 40 C130 32 150 36 156 48 C150 58 134 56 126 60 C116 58 110 48 116 40Z"/>
+<path d="M118 98 C134 86 158 94 160 112 C162 130 148 152 136 164 C126 168 122 154 122 142 C114 128 106 112 118 98Z"/>
+<path d="M152 58 C166 54 180 64 182 78 C172 88 160 82 152 72Z"/></g>
+<g fill="#fff" opacity=".92"><path d="M30 104 q8 -12 20 -6 q10 -8 18 2 q8 2 4 10 H34 q-8 0 -4 -6z"/><path d="M118 156 q6 -10 18 -6 q10 -6 16 4 q8 2 4 8 H120 q-8 0 -2 -6z"/><path d="M96 28 q6 -8 16 -4 q8 -4 12 4 q6 2 2 6 H98 q-6 0 -2 -6z"/></g>
+<path d="M30 70 A76 76 0 0 1 90 24" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".45"/>
+<path d="M176 120 A86 86 0 0 1 70 184 A100 100 0 0 0 176 120Z" fill="#14407f" opacity=".28"/></g>
+<circle cx="100" cy="100" r="86" fill="none" stroke="#24352b" stroke-width="6"/>
+<ellipse cx="76" cy="100" rx="14" ry="16" fill="#fff" stroke="#24352b" stroke-width="4"><animate attributeName="ry" values="16;16;16;2;16" keyTimes="0;.8;.9;.94;1" dur="4.5s" repeatCount="indefinite"/></ellipse>
+<ellipse cx="124" cy="100" rx="14" ry="16" fill="#fff" stroke="#24352b" stroke-width="4"><animate attributeName="ry" values="16;16;16;2;16" keyTimes="0;.8;.9;.94;1" dur="4.5s" repeatCount="indefinite"/></ellipse>
+<circle cx="79" cy="102" r="6" fill="#24352b"/><circle cx="121" cy="102" r="6" fill="#24352b"/><circle cx="81" cy="99" r="2" fill="#fff"/><circle cx="123" cy="99" r="2" fill="#fff"/>
+<circle cx="58" cy="128" r="8" fill="#ff9aa8" opacity=".85"/><circle cx="142" cy="128" r="8" fill="#ff9aa8" opacity=".85"/>
+<path d="M80 130 Q100 152 120 130" fill="none" stroke="#24352b" stroke-width="5" stroke-linecap="round"/>
+</svg></div>
+    <div class="speech">
+      <div class="stext" id="stext" aria-live="polite"></div>
+      <div class="sctrl"><button class="skip" id="skip">Überspringen</button><button class="btn sun" id="snext">Weiter ▶</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<div class="view" id="v-test"></div>
+<div class="view" id="v-begriff"></div>
+
+<div class="view" id="v-home">
+  <h1 class="title">Nachhaltigkeit</h1>
+  <p class="sub">Ökologischer Fußabdruck · Wie leben wir so, dass es für alle reicht?</p>
+  <div class="steps">
+    <button class="stepcard" id="st1" type="button"><span class="ico">🌍</span><span><h3>1 · Fußabdruck-Test</h3><span class="d">Wie viele Erden brauchst du?</span></span><span class="tick" id="tick1"></span></button>
+    <button class="stepcard" id="st2" type="button"><span class="ico">🌳</span><span><h3>2 · Was heißt „nachhaltig“?</h3><span class="d">Wald, Definition und Zeitreise</span></span><span class="tick" id="tick2"></span></button>
+  </div>
+  <div class="box" style="margin-bottom:12px">
+    <h2>3 · Die vier Themen</h2>
+    <p style="margin:0">Jeder in eurer Vierergruppe bekommt von der Lehrkraft ein eigenes <b>Passwort</b> und schaltet damit ein Thema frei. Tippe auf das Symbol im Bild, lies den Text und löse die Aufgaben. Danach berichtet ihr euch gegenseitig.</p>
+  </div>
+  <div class="scene" id="scene"><svg viewBox="0 0 1000 540" role="img" aria-label="Eine Landschaft mit Haus, Feld, Kühen, Windrädern und einer Straße mit Auto">
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd3f5"/><stop offset="1" stop-color="#e6f7ff"/></linearGradient></defs>
+<rect width="1000" height="540" fill="url(#sky)"/>
+<g transform="translate(120,85)"><g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="70s" repeatCount="indefinite"/>
+ <line x1="0" y1="-52" x2="0" y2="-68" stroke="#ffb703" stroke-width="7" stroke-linecap="round" transform="rotate(0)"/><line x1="0" y1="-52" x2="0" y2="-68" stroke="#ffb703" stroke-width="7" stroke-linecap="round" transform="rotate(30)"/><line x1="0" y1="-52" x2="0" y2="-68" stroke="#ffb703" stroke-width="7" stroke-linecap="round" transform="rotate(60)"/><line x1="0" y1="-52" x2="0" y2="-68" stroke="#ffb703" stroke-width="7" stroke-linecap="round" transform="rotate(90)"/><line x1="0" y1="-52" x2="0" y2="-68" stroke="#ffb703" stroke-width="7" stroke-linecap="round" transform="rotate(120)"/><line x1="0" y1="-52" x2="0" y2="-68" stroke="#ffb703" stroke-width="7" stroke-linecap="round" transform="rotate(150)"/><line x1="0" y1="-52" x2="0" y2="-68" stroke="#ffb703" stroke-width="7" stroke-linecap="round" transform="rotate(180)"/><line x1="0" y1="-52" x2="0" y2="-68" stroke="#ffb703" stroke-width="7" stroke-linecap="round" transform="rotate(210)"/><line x1="0" y1="-52" x2="0" y2="-68" stroke="#ffb703" stroke-width="7" stroke-linecap="round" transform="rotate(240)"/><line x1="0" y1="-52" x2="0" y2="-68" stroke="#ffb703" stroke-width="7" stroke-linecap="round" transform="rotate(270)"/><line x1="0" y1="-52" x2="0" y2="-68" stroke="#ffb703" stroke-width="7" stroke-linecap="round" transform="rotate(300)"/><line x1="0" y1="-52" x2="0" y2="-68" stroke="#ffb703" stroke-width="7" stroke-linecap="round" transform="rotate(330)"/></g>
+ <circle r="40" fill="#ffd23f" stroke="#24352b" stroke-width="5"/>
+ <path d="M-16 6 Q0 22 16 6" fill="none" stroke="#24352b" stroke-width="4" stroke-linecap="round"/><circle cx="-14" cy="-8" r="4" fill="#24352b"/><circle cx="14" cy="-8" r="4" fill="#24352b"/></g>
+<g><animateTransform attributeName="transform" type="translate" from="-220 150" to="1100 150" dur="95s" repeatCount="indefinite"/>
+ <g fill="#fff" stroke="#24352b" stroke-width="4"><circle cx="40" cy="30" r="24"/><circle cx="70" cy="22" r="30"/><circle cx="104" cy="32" r="22"/><rect x="40" y="32" width="64" height="22" stroke="none"/></g></g>
+<g><animateTransform attributeName="transform" type="translate" from="-220 200" to="1100 200" dur="130s" begin="-60s" repeatCount="indefinite"/>
+ <g fill="#fff" stroke="#24352b" stroke-width="4"><circle cx="40" cy="30" r="20"/><circle cx="66" cy="22" r="26"/><circle cx="96" cy="32" r="18"/><rect x="40" y="32" width="56" height="18" stroke="none"/></g></g>
+<path d="M0 300 C150 230 300 285 450 255 C600 225 760 295 1000 240 L1000 540 L0 540Z" fill="#a9dc8e" stroke="#24352b" stroke-width="4"/>
+<g transform="translate(760,292) scale(0.62)">
+  <path d="M-9 0 L-5 -160 L5 -160 L9 0Z" fill="#fff" stroke="#24352b" stroke-width="6.5" stroke-linejoin="round"/>
+  <g transform="translate(0,-162)">
+    <g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="7s" begin="-2s" repeatCount="indefinite"/>
+      <path d="M0 0 L-8 -8 L0 -100 L8 -8Z" fill="#fff" stroke="#24352b" stroke-width="5.6" stroke-linejoin="round"/>
+      <path d="M0 0 L-8 -8 L0 -100 L8 -8Z" transform="rotate(120)" fill="#fff" stroke="#24352b" stroke-width="5.6" stroke-linejoin="round"/>
+      <path d="M0 0 L-8 -8 L0 -100 L8 -8Z" transform="rotate(240)" fill="#fff" stroke="#24352b" stroke-width="5.6" stroke-linejoin="round"/>
+    </g>
+    <circle r="10" fill="#ffd23f" stroke="#24352b" stroke-width="6.5"/>
+  </g></g>
+<g transform="translate(915,285) scale(0.82)">
+  <path d="M-9 0 L-5 -160 L5 -160 L9 0Z" fill="#fff" stroke="#24352b" stroke-width="4.9" stroke-linejoin="round"/>
+  <g transform="translate(0,-162)">
+    <g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="5.5s" begin="-1s" repeatCount="indefinite"/>
+      <path d="M0 0 L-8 -8 L0 -100 L8 -8Z" fill="#fff" stroke="#24352b" stroke-width="4.3" stroke-linejoin="round"/>
+      <path d="M0 0 L-8 -8 L0 -100 L8 -8Z" transform="rotate(120)" fill="#fff" stroke="#24352b" stroke-width="4.3" stroke-linejoin="round"/>
+      <path d="M0 0 L-8 -8 L0 -100 L8 -8Z" transform="rotate(240)" fill="#fff" stroke="#24352b" stroke-width="4.3" stroke-linejoin="round"/>
+    </g>
+    <circle r="10" fill="#ffd23f" stroke="#24352b" stroke-width="4.9"/>
+  </g></g>
+<path d="M0 345 C200 305 400 355 600 325 C800 295 900 335 1000 315 L1000 540 L0 540Z" fill="#86cf6b" stroke="#24352b" stroke-width="4"/>
+<!-- Haus -->
+<g>
+ <circle cx="62" cy="345" r="30" fill="#5fb85a" stroke="#24352b" stroke-width="4"/><rect x="57" y="360" width="10" height="38" fill="#8a5a33" stroke="#24352b" stroke-width="3"/>
+ <rect x="122" y="252" width="20" height="40" fill="#b0532b" stroke="#24352b" stroke-width="4"/>
+ <g fill="#ddd" stroke="#24352b" stroke-width="3">
+  <circle cx="132" cy="246" r="8"><animate attributeName="cy" values="246;196" dur="3.6s" repeatCount="indefinite"/><animate attributeName="opacity" values=".95;0" dur="3.6s" repeatCount="indefinite"/><animate attributeName="r" values="7;16" dur="3.6s" repeatCount="indefinite"/></circle>
+  <circle cx="132" cy="246" r="8"><animate attributeName="cy" values="246;196" dur="3.6s" begin="-1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values=".95;0" dur="3.6s" begin="-1.8s" repeatCount="indefinite"/><animate attributeName="r" values="7;16" dur="3.6s" begin="-1.8s" repeatCount="indefinite"/></circle></g>
+ <rect x="100" y="312" width="170" height="86" fill="#ffe2b3" stroke="#24352b" stroke-width="5"/>
+ <polygon points="86,314 185,238 284,314" fill="#c0562f" stroke="#24352b" stroke-width="5" stroke-linejoin="round"/>
+ <polygon points="206,258 240,284 230,296 196,270" fill="#2b4a8b" stroke="#24352b" stroke-width="3"/>
+ <path d="M214 264 L204 278 M224 272 L214 286 M232 279 L222 292" stroke="#9fc0ff" stroke-width="2"/>
+ <rect x="170" y="346" width="30" height="52" rx="4" fill="#8a5a33" stroke="#24352b" stroke-width="4"/><circle cx="193" cy="374" r="2.5" fill="#ffd23f"/>
+ <g fill="#bfe9fb" stroke="#24352b" stroke-width="4"><rect x="115" y="330" width="38" height="34" rx="3"/><rect x="220" y="330" width="38" height="34" rx="3"/></g>
+ <path d="M134 330 V364 M115 347 H153 M239 330 V364 M220 347 H258" stroke="#24352b" stroke-width="3"/>
+</g>
+<!-- Feld -->
+<polygon points="330,365 560,352 585,432 305,440" fill="#d9b04a" stroke="#24352b" stroke-width="4" stroke-linejoin="round"/>
+<g stroke="#5aa845" stroke-width="6" stroke-linecap="round">
+ <path d="M338 378 L563 366"/><path d="M330 396 L570 384"/><path d="M322 414 L577 402"/><path d="M314 430 L583 419"/></g>
+<g fill="#7cc65a" stroke="#24352b" stroke-width="2.5">
+ <path d="M350 381 q-5 -14 0 -20 q5 6 0 20z"/><path d="M388 381 q-5 -14 0 -20 q5 6 0 20z"/><path d="M426 381 q-5 -14 0 -20 q5 6 0 20z"/><path d="M464 381 q-5 -14 0 -20 q5 6 0 20z"/><path d="M502 381 q-5 -14 0 -20 q5 6 0 20z"/><path d="M540 381 q-5 -14 0 -20 q5 6 0 20z"/><path d="M350 399 q-5 -14 0 -20 q5 6 0 20z"/><path d="M388 399 q-5 -14 0 -20 q5 6 0 20z"/><path d="M426 399 q-5 -14 0 -20 q5 6 0 20z"/><path d="M464 399 q-5 -14 0 -20 q5 6 0 20z"/><path d="M502 399 q-5 -14 0 -20 q5 6 0 20z"/><path d="M540 399 q-5 -14 0 -20 q5 6 0 20z"/><path d="M350 417 q-5 -14 0 -20 q5 6 0 20z"/><path d="M388 417 q-5 -14 0 -20 q5 6 0 20z"/><path d="M426 417 q-5 -14 0 -20 q5 6 0 20z"/><path d="M464 417 q-5 -14 0 -20 q5 6 0 20z"/><path d="M502 417 q-5 -14 0 -20 q5 6 0 20z"/><path d="M540 417 q-5 -14 0 -20 q5 6 0 20z"/></g>
+<!-- Weide mit Kühen -->
+<path d="M600 362 L770 350 L790 440 L610 446Z" fill="#9ee07e" stroke="#24352b" stroke-width="4" stroke-linejoin="round"/>
+<g transform="translate(655,392) scale(0.78,0.78)">
+  <rect x="-22" y="8" width="8" height="24" rx="3" fill="#fff" stroke="#24352b" stroke-width="3"/>
+  <rect x="-6" y="8" width="8" height="24" rx="3" fill="#fff" stroke="#24352b" stroke-width="3"/>
+  <rect x="10" y="8" width="8" height="24" rx="3" fill="#fff" stroke="#24352b" stroke-width="3"/>
+  <rect x="24" y="8" width="8" height="24" rx="3" fill="#fff" stroke="#24352b" stroke-width="3"/>
+  <path d="M40 -8 Q58 -2 54 22" fill="none" stroke="#24352b" stroke-width="4" stroke-linecap="round"><animate attributeName="d" values="M40 -8 Q58 -2 54 22;M40 -8 Q62 6 56 24;M40 -8 Q58 -2 54 22" dur="1.8s" repeatCount="indefinite"/></path>
+  <ellipse cx="4" cy="0" rx="44" ry="24" fill="#fff" stroke="#24352b" stroke-width="4"/>
+  <ellipse cx="-12" cy="-6" rx="11" ry="8" fill="#24352b"/>
+  <ellipse cx="18" cy="6" rx="12" ry="9" fill="#24352b"/>
+  <ellipse cx="30" cy="-10" rx="7" ry="6" fill="#24352b"/>
+  <g transform="translate(-46,-8)"><animateTransform attributeName="transform" type="translate" values="-46 -8;-46 8;-46 -8" dur="2.6s" repeatCount="indefinite"/>
+    <ellipse cx="0" cy="6" rx="17" ry="14" fill="#fff" stroke="#24352b" stroke-width="4"/>
+    <ellipse cx="-8" cy="14" rx="9" ry="7" fill="#f6b8c0" stroke="#24352b" stroke-width="3"/>
+    <circle cx="-3" cy="0" r="3" fill="#24352b"/>
+    <path d="M6 -8 L16 -18 L18 -6Z" fill="#fff" stroke="#24352b" stroke-width="3" stroke-linejoin="round"/>
+  </g></g>
+<g transform="translate(735,410) scale(-0.7,0.7)">
+  <rect x="-22" y="8" width="8" height="24" rx="3" fill="#fff" stroke="#24352b" stroke-width="3"/>
+  <rect x="-6" y="8" width="8" height="24" rx="3" fill="#fff" stroke="#24352b" stroke-width="3"/>
+  <rect x="10" y="8" width="8" height="24" rx="3" fill="#fff" stroke="#24352b" stroke-width="3"/>
+  <rect x="24" y="8" width="8" height="24" rx="3" fill="#fff" stroke="#24352b" stroke-width="3"/>
+  <path d="M40 -8 Q58 -2 54 22" fill="none" stroke="#24352b" stroke-width="4" stroke-linecap="round"><animate attributeName="d" values="M40 -8 Q58 -2 54 22;M40 -8 Q62 6 56 24;M40 -8 Q58 -2 54 22" dur="1.8s" repeatCount="indefinite"/></path>
+  <ellipse cx="4" cy="0" rx="44" ry="24" fill="#fff" stroke="#24352b" stroke-width="4"/>
+  <ellipse cx="-12" cy="-6" rx="11" ry="8" fill="#24352b"/>
+  <ellipse cx="18" cy="6" rx="12" ry="9" fill="#24352b"/>
+  <ellipse cx="30" cy="-10" rx="7" ry="6" fill="#24352b"/>
+  <g transform="translate(-46,-8)"><animateTransform attributeName="transform" type="translate" values="-46 -8;-46 8;-46 -8" dur="3.2s" repeatCount="indefinite"/>
+    <ellipse cx="0" cy="6" rx="17" ry="14" fill="#fff" stroke="#24352b" stroke-width="4"/>
+    <ellipse cx="-8" cy="14" rx="9" ry="7" fill="#f6b8c0" stroke="#24352b" stroke-width="3"/>
+    <circle cx="-3" cy="0" r="3" fill="#24352b"/>
+    <path d="M6 -8 L16 -18 L18 -6Z" fill="#fff" stroke="#24352b" stroke-width="3" stroke-linejoin="round"/>
+  </g></g>
+<g stroke="#24352b" stroke-width="4" stroke-linecap="round"><path d="M597 366 L597 440 M652 364 L652 444 M708 362 L708 446 M766 360 L766 448"/><path d="M597 380 L770 368 M597 400 L772 390"/></g>
+<!-- Straße -->
+<rect x="-10" y="448" width="1020" height="80" fill="#6b7280" stroke="#24352b" stroke-width="5"/>
+<line x1="0" y1="456" x2="1000" y2="456" stroke="#fff" stroke-width="3" opacity=".7"/>
+<line x1="0" y1="520" x2="1000" y2="520" stroke="#fff" stroke-width="3" opacity=".7"/>
+<line x1="0" y1="483" x2="1000" y2="483" stroke="#ffd23f" stroke-width="5" stroke-dasharray="34 22"/>
+<rect x="-10" y="528" width="1020" height="20" fill="#6fbf5a" stroke="#24352b" stroke-width="4"/>
+<g id="car" transform="translate(-220 495) scale(.85)">
+ <g fill="#ddd" stroke="#24352b" stroke-width="3"><circle cx="-14" cy="-6" r="7"><animate attributeName="cx" values="-14;-70" dur="1.6s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="1.6s" repeatCount="indefinite"/><animate attributeName="r" values="5;14" dur="1.6s" repeatCount="indefinite"/></circle></g>
+ <path d="M0 -30 H150 Q160 -30 160 -20 V2 H-10 V-20 Q-10 -30 0 -30Z" fill="#e63946" stroke="#24352b" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M30 -30 L52 -62 H108 L132 -30Z" fill="#e63946" stroke="#24352b" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M40 -33 L57 -56 H78 V-33Z M86 -33 V-56 H105 L122 -33Z" fill="#bfe9fb" stroke="#24352b" stroke-width="3.5" stroke-linejoin="round"/>
+ <rect x="150" y="-20" width="12" height="9" rx="3" fill="#ffd23f" stroke="#24352b" stroke-width="3"/>
+ <g transform="translate(32,4)"><circle r="19" fill="#333" stroke="#24352b" stroke-width="4"/><g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="0.5s" repeatCount="indefinite"/><circle r="9" fill="#ccc"/><path d="M-9 0 H9 M0 -9 V9" stroke="#24352b" stroke-width="3"/></g></g>
+ <g transform="translate(128,4)"><circle r="19" fill="#333" stroke="#24352b" stroke-width="4"/><g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="0.5s" repeatCount="indefinite"/><circle r="9" fill="#ccc"/><path d="M-9 0 H9 M0 -9 V9" stroke="#24352b" stroke-width="3"/></g></g>
+</g>
+</svg>
+    <button class="hot" data-open="bauen" style="left:19%;top:47%;--c:var(--c-bauen)" aria-label="Wohnen & Bauen"><span class="badge">🏠<span class="lock" data-lock="bauen">🔒</span></span><span class="lab">Wohnen & Bauen</span></button>
+    <button class="hot" data-open="essen" style="left:60%;top:56%;--c:var(--c-essen)" aria-label="Ernährung"><span class="badge">🐄<span class="lock" data-lock="essen">🔒</span></span><span class="lab">Ernährung</span></button>
+    <button class="hot" data-open="energie" style="left:87%;top:50%;--c:var(--c-energie)" aria-label="Energie"><span class="badge">💨<span class="lock" data-lock="energie">🔒</span></span><span class="lab">Energie</span></button>
+    <button class="hot tr" data-open="transport" style="left:44%;top:80%;--c:var(--c-transport)" aria-label="Transport"><span class="badge">🚗<span class="lock" data-lock="transport">🔒</span></span><span class="lab">Transport</span></button>
+  </div>
+  <div class="tbtns" role="group" aria-label="Themen direkt wählen"><span>Oder wähle direkt:</span><button type="button" class="tbtn" data-open="bauen" style="--c:var(--c-bauen)">🏠 Wohnen & Bauen <span data-lock="bauen">🔒</span></button><button type="button" class="tbtn" data-open="essen" style="--c:var(--c-essen)">🐄 Ernährung <span data-lock="essen">🔒</span></button><button type="button" class="tbtn" data-open="energie" style="--c:var(--c-energie)">💨 Energie <span data-lock="energie">🔒</span></button><button type="button" class="tbtn" data-open="transport" style="--c:var(--c-transport)">🚗 Transport <span data-lock="transport">🔒</span></button></div>
+  <button class="stepcard final" id="open-final" type="button"><span class="ico">📜</span><span><h3>4 · Gemeinsames Plakat</h3><span class="d">Erst öffnen, wenn alle in der Gruppe ihr Thema fertig haben.</span></span></button>
+  <p class="footer-note">Grundlagen: Daten der Organisation Global Footprint Network zum Erdüberlastungstag (Deutschland 2026: 10. Mai, das entspricht etwa 3 Erden), Brundtland-Bericht der Vereinten Nationen (1987) und Hans Carl von Carlowitz (1713).<br>
+  Der Test ist eine grobe Schätzung. Alle Grafiken in diesem Modul sind selbst gezeichnet.<br>
+  <button class="reset" id="reset">Gespeicherte Eingaben auf diesem Gerät löschen</button></p>
+</div>
+
+<div class="view" id="v-topic"></div>
+<div class="view" id="v-final"></div>
+
+<a href="../../impressum.html" class="impressum-link noprint">Impressum &amp; Datenschutz</a>
+</div>
+
+<script>
+function hashStr(s){s=s.trim().toLowerCase();let a=0xdeadbeef,b=0x41c6ce57;for(let i=0,c;i<s.length;i++){c=s.charCodeAt(i);a=Math.imul(a^c,2654435761);b=Math.imul(b^c,1597334677);}a=Math.imul(a^(a>>>16),2246822507)^Math.imul(b^(b>>>13),3266489909);b=Math.imul(b^(b>>>16),2246822507)^Math.imul(a^(a>>>13),3266489909);return (4294967296*(2097151&b)+(a>>>0)).toString(36);}
+
+const mem={};
+const store={
+  get(k){try{const v=localStorage.getItem(k);return v===null?(mem[k]??null):v;}catch(e){return mem[k]??null;}},
+  set(k,v){mem[k]=v;try{localStorage.setItem(k,v);}catch(e){}},
+  keys(){const s=new Set(Object.keys(mem));try{for(let i=0;i<localStorage.length;i++)s.add(localStorage.key(i));}catch(e){}return [...s].filter(k=>k.startsWith('nh_'));},
+  clearAll(){Object.keys(mem).forEach(k=>delete mem[k]);try{Object.keys(localStorage).filter(k=>k.startsWith('nh_')).forEach(k=>localStorage.removeItem(k));}catch(e){}}
+};
+function unlocked(){try{return JSON.parse(store.get('nh_unlocked')||'[]');}catch(e){return [];}}
+function unlock(k){const u=unlocked(); if(!u.includes(k)){u.push(k);store.set('nh_unlocked',JSON.stringify(u));}}
+
+/* ===== Inhalte ===== */
+const HASHES = {energie:'yh79tetosn', bauen:'1quo1e9ogq5', essen:'23gq2qlzu7r', transport:'1d54t2ggbgo'};
+const ORDER = ['energie','bauen','essen','transport'];
+
+const AREAS = {
+  energie:   {name:'Energie & Geräte', icon:'💡', base:0.7, color:'var(--c-energie)'},
+  bauen:     {name:'Wohnen & Bauen',   icon:'🏠', base:0.8, color:'var(--c-bauen)'},
+  essen:     {name:'Ernährung',        icon:'🍽️', base:0.7, color:'var(--c-essen)'},
+  transport: {name:'Transport & Reisen',icon:'🚗', base:0.8, color:'var(--c-transport)'}
+};
+
+const QUESTIONS = [
+  {a:'essen', q:'Wie oft isst du Fleisch oder Wurst?', o:[
+    ['🍗','Fast jeden Tag',1.5],['🥪','Mehrmals pro Woche',1.15],['🍝','Etwa einmal pro Woche',0.75],['🥦','Nie, ich esse vegetarisch oder vegan',0.45]]},
+  {a:'essen', q:'Was passiert bei dir mit Essen, das übrig bleibt?', o:[
+    ['🗑️','Es landet oft im Müll',1.4],['🥡','Manchmal wird etwas weggeworfen',1.0],['🍱','Reste werden aufgegessen oder aufgehoben',0.7],['📝','Ich plane so, dass kaum etwas übrig bleibt',0.5]]},
+  {a:'essen', q:'Was trinkst du meistens?', o:[
+    ['🥤','Limo, Saft aus Dosen oder Einwegflaschen',1.4],['🍾','Getränke aus Mehrwegflaschen (Pfand)',0.9],['🧋','Mal Flasche, mal Leitungswasser',0.75],['🚰','Leitungswasser',0.55]]},
+  {a:'bauen', q:'Wie viel Platz gibt es bei euch zu Hause pro Person?', o:[
+    ['🏢','Wenig, wir wohnen eher eng',0.7],['🏠','Normal viel',1.0],['🏘️','Viel, zum Beispiel Haus mit Garten',1.2],['🏡','Sehr viel, viele Zimmer oder ein großes Haus',1.4]]},
+  {a:'bauen', q:'Wie warm ist es im Winter in deinem Zimmer?', o:[
+    ['🔥','So warm, dass ich im T-Shirt sitze',1.4],['🧦','Angenehm',1.0],['🧣','Eher kühl, ich ziehe einen Pulli an',0.7],['🥶','Sehr kühl, die Heizung ist fast aus',0.5]]},
+  {a:'energie', q:'Wie oft bekommst du ein neues Handy, Tablet oder anderes Gerät?', o:[
+    ['📱','Fast jedes Jahr',1.6],['🔄','Alle zwei bis drei Jahre',1.0],['📅','Alle vier bis fünf Jahre',0.8],['🔧','Ich nutze es, bis es kaputt ist, oder lasse es reparieren',0.6]]},
+  {a:'energie', q:'Licht, Ladegeräte, Fernseher: Machst du sie aus, wenn du sie nicht brauchst?', o:[
+    ['😴','Meistens vergesse ich es',1.3],['🤔','Manchmal',1.0],['👍','Meistens mache ich sie aus',0.85],['✅','Fast immer',0.7]]},
+  {a:'transport', q:'Wie kommst du meistens zur Schule?', o:[
+    ['🚶','Zu Fuß oder mit dem Fahrrad',0.35],['🚌','Mit Bus oder Bahn',0.7],['🔀','Mal mit dem Auto, mal mit Bus oder Rad',1.0],['🚗','Ich werde meistens mit dem Auto gebracht',1.7]]},
+  {a:'transport', q:'Wie kommst du zu Freunden, zum Training oder Hobby?', o:[
+    ['🚲','Zu Fuß oder mit dem Fahrrad',0.5],['🚋','Mit Bus oder Bahn',0.8],['🔀','Mal mit dem Auto, mal mit Bus oder Rad',1.1],['🚙','Meistens mit dem Auto',1.5]]},
+  {a:'transport', q:'Wie reist deine Familie meistens in den Ferien?', o:[
+    ['🏕️','Wir bleiben in der Nähe, ohne weite Reise',0.5],['🚆','Mit Zug oder Bus',0.7],['🚗','Mit dem Auto, auch ins Ausland',1.1],['✈️','Mit dem Flugzeug',2.2]]}
+];
+
+const TOPICS = {
+ energie:{title:'Energie', icon:'💨', color:'--c-energie', lead:'Woher kommt der Strom, wenn du dein Handy auflädst?',
+  text:`<ul><li><mark><b>Fossil:</b> Kohle, Erdöl und Erdgas.</mark> Sie sind vor Millionen Jahren entstanden und irgendwann aufgebraucht. Beim Verbrennen entsteht CO₂.</li>
+  <li><mark><b>Erneuerbar:</b> Sonne, Wind, Wasser und Biomasse (zum Beispiel Biogas aus Pflanzenresten).</mark> Sie werden nicht aufgebraucht. In Deutschland liefern sie schon mehr als die Hälfte des Stroms.</li></ul>
+  <p><b>Aber:</b> Nachts scheint keine Sonne und der Wind weht nicht immer. <mark>Windräder verändern die Landschaft und können Vögeln und Fledermäusen schaden.</mark> Sie machen Lärm und werfen Schatten, deshalb wollen Anwohner sie oft nicht direkt neben ihrem Haus. Solaranlagen brauchen viel Platz.</p>
+  <p><b>Energie sparen</b> hilft immer: <mark>Licht ausmachen, Geräte nicht im Standby lassen, kürzer duschen, die Heizung etwas herunterdrehen.</mark></p>`,
+  tasks:[
+   {sort:{title:'Ordne zu: erneuerbar oder fossil?', label:'Erneuerbar oder fossil?', cats:['erneuerbar','fossil'],
+     items:[['Sonne',0,'Sonne'],['Steinkohle',1,'Steinkohle'],['Wind',0,'Wind'],['Erdgas',1,'Erdgas'],['Wasserkraft',0,'Wasserkraft'],['Erdöl',1,'Erdöl'],['Biogas aus Pflanzenresten',0,'Biogas']]}},
+   {q:'Windräder sind sauber. Warum sind manche Menschen trotzdem dagegen?', ph:'Manche sind dagegen, weil …', label:'Warum gibt es Streit um Windräder?'},
+   {q:'Wie kannst du Energie sparen? Nenne zwei Beispiele.', ph:'Ich kann Energie sparen, indem ich …', label:'So sparen wir Energie'}
+  ]},
+ bauen:{title:'Wohnen & Bauen', icon:'🏠', color:'--c-bauen', lead:'Was steckt alles in einem Haus?',
+  text:`<p>Für ein Haus braucht man <b>Rohstoffe</b>: Sand, Kies, Stein, Holz, Stahl. <mark>Zement für Beton verbraucht besonders viel Energie.</mark> Etwa 7 bis 8 Prozent des weltweiten CO₂ kommen daher.</p>
+  <p>Häuser brauchen <b>Fläche</b>. <mark>In Deutschland werden jeden Tag etwa 50 Hektar neu bebaut</mark>, das sind rund 70 Fußballfelder. Der Boden wird versiegelt, Regen kann nicht mehr versickern.</p>
+  <p>Und im Winter brauchen Häuser <b>Energie</b> zum Heizen.</p>
+  <h4>Was hilft?</h4>
+  <ul><li><mark><b>Energie sparen:</b> Wände dämmen, Wärmepumpe statt Ölheizung.</mark></li>
+  <li><mark><b>Rohstoffe sparen:</b> alte Häuser umbauen statt abreißen, Material wiederverwenden.</mark> Ein Neubau braucht neuen Beton, Stahl und Holz, bei einem Umbau steht das meiste schon.</li>
+  <li><mark><b>Fläche sparen:</b> mehrere Stockwerke, Baulücken in der Stadt füllen.</mark></li></ul>
+  <p><b>Aber:</b> <mark>Wohnungen sind in Städten knapp und teuer.</mark> Umbauen und Dämmen kostet Geld, und Handwerker sind oft ausgebucht. Ein Neubau auf freier Fläche geht manchmal schneller und ist billiger.</p>`,
+  tasks:[
+   {sort:{title:'Ordne zu: Was wird gespart?', label:'Was wird gespart?', cats:['Energie','Rohstoffe','Fläche'],
+     items:[['Hauswände mit Dämmplatten verkleiden',0,'Wände dämmen'],['Ein altes Gebäude zu Wohnungen umbauen',1,'Altbau umbauen'],['Ein Hochhaus statt vieler Einzelhäuser bauen',2,'Hochhaus statt Einzelhäuser'],['Mit einer Wärmepumpe heizen',0,'Wärmepumpe'],['Alte Dachziegel noch einmal verwenden',1,'Ziegel wiederverwenden'],['Leere Grundstücke in der Stadt bebauen, statt neue Felder',2,'Baulücken füllen']]}},
+   {q:'Alte Häuser umbauen statt neu bauen: Was ist der Vorteil?', ph:'Der Vorteil ist, dass …', label:'Warum umbauen statt neu bauen?'},
+   {q:'Warum ist nachhaltiges Bauen manchmal schwierig?', ph:'Es ist schwierig, weil …', label:'Warum ist das manchmal schwierig?'}
+  ]},
+ essen:{title:'Ernährung', icon:'🐄', color:'--c-essen', lead:'Was auf deinem Teller liegt, hat eine lange Reise hinter sich.',
+  text:`<p>Für unser Essen braucht man <b>Fläche</b>, Wasser und Energie. <mark>Weltweit wird fast die Hälfte der nutzbaren Landfläche für Landwirtschaft gebraucht. Das meiste davon für Tiere: für Weiden und für ihr Futter.</mark></p>
+  <p>Tiere fressen erst viele Pflanzen, bevor wir Fleisch bekommen. Dabei geht viel verloren. <mark>Deshalb braucht Fleisch mehr Fläche als Pflanzen.</mark> Rinder stoßen außerdem Methan aus, ein Treibhausgas.</p>
+  <table class="dtab"><caption>So viel Fläche braucht man ungefähr für 1 Kilogramm:</caption><tbody>
+  <tr><td>Käse</td><td>ca. 90 m²</td></tr><tr><td>Kartoffeln</td><td>ca. 1 m²</td></tr><tr><td>Rindfleisch</td><td>ca. 330 m²</td></tr><tr><td>Hähnchenfleisch</td><td>ca. 12 m²</td></tr></tbody></table>
+  <p><b>Verschwendung:</b> <mark>Etwa ein Drittel aller Lebensmittel wird weltweit weggeworfen.</mark> Dagegen hilft: <mark>nur kaufen, was man braucht, Reste essen, einen Einkaufszettel schreiben.</mark> „Mindestens haltbar bis“ heißt nicht „danach giftig“.</p>
+  <p><b>Aber:</b> Auf Weiden wächst Gras, wo kein Acker möglich wäre. „Regional“ ist nicht automatisch besser: Tomaten aus dem beheizten Gewächshaus im Winter brauchen viel Energie.</p>`,
+  tasks:[
+   {order:{title:'Bringe in die richtige Reihenfolge: Wer braucht die wenigste Fläche für 1 kg? Fange mit der kleinsten an.', label:'Fläche für 1 kg (wenig bis viel)', items:['Kartoffeln','Hähnchenfleisch','Käse','Rindfleisch'], vals:['ca. 1 m²','ca. 12 m²','ca. 90 m²','ca. 330 m²']}},
+   {q:'Warum braucht Fleisch mehr Fläche als Kartoffeln?', ph:'Fleisch braucht mehr Fläche, weil …', label:'Warum braucht Fleisch so viel Fläche?'},
+   {q:'Wie kann man weniger Essen wegwerfen? Nenne eine Idee.', ph:'Man kann weniger wegwerfen, indem …', label:'Das hilft gegen Verschwendung'}
+  ]},
+ transport:{title:'Transport', icon:'🚗', color:'--c-transport', lead:'Zur Schule, in den Urlaub, die Ware in den Laden: Wege gehören zum Leben.',
+  text:`<p><mark>Verkehr verursacht in Deutschland etwa ein Fünftel des CO₂.</mark> Es ist in den letzten Jahrzehnten kaum weniger geworden: mehr und größere Autos, mehr Lieferverkehr, mehr Flüge.</p>
+  <table class="dtab"><caption>So viel CO₂ entsteht ungefähr pro Person und Kilometer (Quelle: Umweltbundesamt, gerundet):</caption><tbody>
+  <tr><td>Auto (Benzin, eine Person)</td><td>ca. 160 g</td></tr><tr><td>Fahrrad</td><td>ca. 0 g</td></tr><tr><td>Inlandsflug</td><td>ca. 300 g</td></tr><tr><td>Fernzug</td><td>ca. 30 g</td></tr></tbody></table>
+  <p>Elektroautos stoßen beim Fahren kein CO₂ aus. Ihre Herstellung braucht aber viele Rohstoffe und Strom. Über ihre ganze Lebensdauer sind sie meist trotzdem besser als Benzin- und Dieselautos.</p>
+  <p><b>Warum fahren trotzdem so viele Auto?</b> <mark>Das Auto ist bequem: Es fährt sofort los, bis vor die Haustür und man kann viel mitnehmen.</mark> Auf dem Land fährt der Bus nur selten, dort ist ein Auto oft nötig. Fahrkarten können teuer sein, und viele Radwege fühlen sich unsicher an.</p>
+  <h4>Ideen, die Städte und Länder ausprobieren</h4>
+  <ul><li><mark>Bus und Bahn häufiger fahren lassen</mark> und mit einer Monatskarte billiger machen (zum Beispiel das Deutschlandticket).</li>
+  <li><mark>Sichere, breite Radwege</mark> bauen.</li>
+  <li>Parken in der Innenstadt teurer machen, damit weniger Autos hineinfahren.</li>
+  <li>Fahrgemeinschaften: Mehrere Personen teilen sich ein Auto.</li></ul>`,
+  tasks:[
+   {order:{title:'Bringe in die richtige Reihenfolge: Wer stößt am wenigsten CO₂ aus? Fange mit dem kleinsten an.', label:'CO₂ pro Person und km (wenig bis viel)', items:['Fahrrad','Fernzug','Auto (Benzin, eine Person)','Inlandsflug'], vals:['ca. 0 g','ca. 30 g','ca. 160 g','ca. 300 g']}},
+   {q:'Viele fahren Auto, obwohl Bus und Bahn besser fürs Klima sind. Warum?', ph:'Viele fahren Auto, weil …', label:'Warum fahren viele trotzdem Auto?'},
+   {q:'Was könnte helfen, dass mehr Menschen Bus, Bahn oder Rad nutzen?', ph:'Es würde helfen, wenn …', label:'Was könnte helfen?'}
+  ]}
+};
+
+const LINES=[
+ 'Hallo! Ich bin Erdi. Ja, genau, die Erde. Ich wohne schon etwa 4,5 Milliarden Jahre hier.',
+ 'Ich habe ein kleines Problem: Alle Menschen zusammen verbrauchen mehr von meinen Sachen, als ich nachliefern kann. Keine Panik, das lässt sich ändern. Aber erst mal: Wie sieht es bei dir aus?',
+ 'Gleich kommen zehn kurze Fragen zu deinem Alltag. Ich rechne aus, wie viele Erden wir bräuchten, wenn alle Menschen so leben würden wie du. Es gibt keine falschen Antworten.',
+ 'Danach finden wir heraus, was „nachhaltig“ überhaupt heißt, und ihr untersucht in der Gruppe vier Bereiche, in denen sich viel entscheidet. Los geht’s!'
+];
+
+
+function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$('#'+id).classList.add('active');window.scrollTo(0,0);if(id==='v-home')refreshLocks();}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function refreshLocks(){updateSteps();const u=unlocked();document.querySelectorAll('[data-lock]').forEach(l=>{l.textContent=u.includes(l.dataset.lock)?'🔓':'🔒';});}
+function autosize(t){t.style.height='auto';t.style.height=Math.max(t.scrollHeight+4,parseInt(getComputedStyle(t).minHeight)||0)+'px';}
+function bindField(t,key,onchange){const v=store.get(key);if(v!==null)t.value=v;t.addEventListener('input',()=>{store.set(key,t.value);autosize(t);if(onchange)onchange();});setTimeout(()=>autosize(t),0);}
+
+/* ===== Aufgabentypen ===== */
+function buildSort(def,host){
+  const rows=shuffle(def.items.map(it=>({txt:it[0],ans:it[1],sel:null})));
+  const grid=document.createElement('div');grid.className='sortgrid';
+  rows.forEach(r=>{
+    const row=document.createElement('div');row.className='sortrow';
+    const t=document.createElement('div');t.className='t';t.textContent=r.txt;
+    const o=document.createElement('div');o.className='opts';
+    def.cats.forEach((c,ci)=>{const b=document.createElement('button');b.className='opt';b.type='button';b.textContent=c;
+      b.onclick=()=>{r.sel=ci;o.querySelectorAll('.opt').forEach((x,xi)=>x.classList.toggle('sel',xi===ci));row.classList.remove('ok','bad');};o.appendChild(b);});
+    row.append(t,o);r.el=row;grid.appendChild(row);
+  });
+  const res=document.createElement('div');res.className='res';
+  const btn=document.createElement('button');btn.className='btn small';btn.type='button';btn.style.marginTop='10px';btn.textContent='Prüfen';
+  btn.onclick=()=>{let ok=0,open=0;rows.forEach(r=>{r.el.classList.remove('ok','bad');if(r.sel===null){open++;return;}if(r.sel===r.ans){r.el.classList.add('ok');ok++;}else r.el.classList.add('bad');});
+    if(ok===rows.length&&def.onSolved)def.onSolved();
+    res.textContent=open?'Ordnet erst alle Aussagen zu.':(ok===rows.length?'✔ Alles richtig zugeordnet.'+(def.onSolved?' Das Ergebnis steht jetzt auf dem Plakat.':''):'✘ '+ok+' von '+rows.length+' stimmen. Lest den Text noch einmal und ändert die roten Felder.');};
+  host.append(grid,btn,res);
+}
+function buildOrder(def,host){
+  let list=shuffle(def.items.map((t,i)=>({t,i})));
+  const box=document.createElement('div');const res=document.createElement('div');res.className='res';
+  function render(){box.innerHTML='';list.forEach((it,pos)=>{
+    const row=document.createElement('div');row.className='ordrow';
+    row.innerHTML='<span class="ordnum">'+(pos+1)+'.</span><span class="t"></span>';row.querySelector('.t').textContent=it.t;
+    const up=document.createElement('button');up.type='button';up.textContent='▲';up.setAttribute('aria-label','nach oben');
+    const dn=document.createElement('button');dn.type='button';dn.textContent='▼';dn.setAttribute('aria-label','nach unten');
+    up.onclick=()=>{if(pos>0){[list[pos-1],list[pos]]=[list[pos],list[pos-1]];res.textContent='';render();}};
+    dn.onclick=()=>{if(pos<list.length-1){[list[pos+1],list[pos]]=[list[pos],list[pos+1]];res.textContent='';render();}};
+    row.append(up,dn);it.el=row;box.appendChild(row);});}
+  render();
+  const btn=document.createElement('button');btn.className='btn small';btn.type='button';btn.style.marginTop='10px';btn.textContent='Prüfen';
+  btn.onclick=()=>{let ok=0;list.forEach((it,pos)=>{it.el.classList.remove('ok','bad');if(it.i===pos){it.el.classList.add('ok');ok++;}else it.el.classList.add('bad');});
+    if(ok===list.length&&def.onSolved)def.onSolved();
+    res.textContent=ok===list.length?'✔ Die Reihenfolge stimmt. Sie steht jetzt mit den Zahlen auf dem Plakat.':'✘ '+ok+' von '+list.length+' stehen an der richtigen Stelle. Lest den Text noch einmal.';};
+  host.append(box,btn,res);
+}
+
+/* ===== Teilthema mit Siegel ===== */
+
+function fitPoster(po){
+  po=(po&&po.nodeType===1)?po:document.getElementById('poster');if(!po)return;
+  po.classList.add('pm');
+  const ok=()=>{const g=po.querySelector('.pgrid');
+    if(po.scrollWidth>po.clientWidth+1)return false;
+    if(po.scrollHeight>po.clientHeight+1)return false;
+    return [...g.children].every(c=>c.scrollHeight<=c.clientHeight+1);};
+  let fs=5.5;po.style.setProperty('--fs',fs+'pt');
+  while(fs<14){const n=fs+0.25;po.style.setProperty('--fs',n+'pt');if(!ok()){po.style.setProperty('--fs',fs+'pt');break;}fs=n;}
+}
+function unfitPoster(){const po=document.getElementById('poster');if(po){po.classList.remove('pm');po.style.removeProperty('--fs');}}
+window.addEventListener('beforeprint',()=>fitPoster());
+window.addEventListener('afterprint',unfitPoster);
+
+/* ===== Plakat als PDF-Datei (ohne Internet, Bibliotheken liegen im Ordner lib/) ===== */
+
+function loadScript(src){return new Promise((res,rej)=>{if(document.querySelector('script[data-lib="'+src+'"]'))return res();const s=document.createElement('script');s.src=src;s.dataset.lib=src;s.onload=res;s.onerror=()=>rej(new Error(src));document.head.appendChild(s);});}
+function stateMsg(t){const m=document.getElementById('fstate');if(m)m.textContent=t;}
+function saveState(){
+  try{
+    const data={};store.keys().forEach(k=>{const v=store.get(k);if(typeof v==='string')data[k]=v;});
+    const out={app:'nachhaltigkeit-fussabdruck',version:1,gespeichert:new Date().toISOString(),data};
+    const blob=new Blob([JSON.stringify(out,null,1)],{type:'application/json'});
+    const d=new Date(),p=n=>String(n).padStart(2,'0');
+    const grp=(store.get('nh_poster_pn')||'').trim().replace(/[^A-Za-z0-9ÄÖÜäöüß]+/g,'-').replace(/^-+|-+$/g,'').slice(0,30);
+    const name='Nachhaltigkeit-Plakat'+(grp?'_'+grp:'')+'_'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())+'.json';
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);
+    stateMsg('Gesichert als „'+name+'“. Bewahrt die Datei gut auf (z. B. in der Dateien-App).');
+  }catch(e){stateMsg('Das Sichern hat nicht geklappt. Bitte meldet es eurer Lehrkraft.');}
+}
+function loadState(file){
+  const r=new FileReader();
+  r.onerror=()=>stateMsg('Die Datei konnte nicht gelesen werden.');
+  r.onload=()=>{
+    let o;try{o=JSON.parse(r.result);}catch(e){o=null;}
+    if(!o||o.app!=='nachhaltigkeit-fussabdruck'||!o.data||typeof o.data!=='object'){stateMsg('Das ist keine Plakat-Datei aus diesem Modul.');return;}
+    const keys=Object.keys(o.data).filter(k=>k.startsWith('nh_')&&typeof o.data[k]==='string');
+    if(!keys.length){stateMsg('In der Datei sind keine Antworten gespeichert.');return;}
+    const hasOwn=store.keys().some(k=>(k.startsWith('nh_poster_')||k.startsWith('nh_ans_'))&&(store.get(k)||'').trim());
+    if(hasOwn&&!confirm('Der geladene Stand ersetzt eure aktuellen Eingaben auf diesem Gerät. Fortfahren?'))return;
+    store.clearAll();keys.forEach(k=>store.set(k,o.data[k]));
+    renderPoster();stateMsg('Zwischenstand geladen.');
+  };
+  r.readAsText(file);
+}
+async function savePdf(){
+  const btn=document.getElementById('fpdf');const old=btn.textContent;btn.disabled=true;btn.textContent='⏳ PDF wird erstellt …';
+  let wrap;
+  try{
+    if(!window.html2canvas)await loadScript('./lib/html2canvas.min.js');
+    if(!(window.jspdf&&window.jspdf.jsPDF))await loadScript('./lib/jspdf.umd.min.js');
+    const orig=document.getElementById('poster');
+    wrap=document.createElement('div');
+    wrap.style.cssText='position:fixed;left:-20000px;top:0;width:297mm;height:210mm;background:#fff;overflow:hidden';
+    const c=orig.cloneNode(true);
+    orig.id='poster_orig';c.id='poster';
+    c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));c.id='poster';
+    const tt=c.querySelector('.p-title');if(tt){tt.style.textTransform='none';tt.textContent='NACHHALTIGKEIT';}
+    wrap.appendChild(c);document.body.appendChild(wrap);
+    c.style.left='9mm';c.style.top='9mm';
+    fitPoster(c);
+    await new Promise(r=>setTimeout(r,60));
+    const cv=await html2canvas(wrap,{scale:2.5,backgroundColor:'#ffffff',useCORS:true,logging:false});
+    const pdf=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+    pdf.addImage(cv.toDataURL('image/jpeg',0.93),'JPEG',0,0,297,210);
+    const gn=(document.getElementById('pn').value||'').trim().replace(/[^\wÄÖÜäöüß -]+/g,'').slice(0,40);
+    pdf.save('Plakat-Nachhaltigkeit'+(gn?' - '+gn:'')+'.pdf');
+    orig.id='poster';
+  }catch(e){
+    const o=document.getElementById('poster_orig');if(o)o.id='poster';
+    console.log('SAVEERR',String(e&&e.stack||e));alert('Das PDF konnte nicht erstellt werden. Bitte nutzt stattdessen „Drucken“ und wählt „Als PDF speichern“.');
+  }finally{
+    if(wrap&&wrap.parentNode)wrap.remove();
+    const o=document.getElementById('poster_orig');if(o)o.id='poster';
+    btn.disabled=false;btn.textContent=old;
+  }
+}
+
+
+/* ===== Hilfen ===== */
+const $=s=>document.querySelector(s);
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+const de1=n=>n.toFixed(1).replace('.',',');
+function updateSteps(){
+  const t=document.getElementById('tick1'),b=document.getElementById('tick2');
+  if(t)t.textContent=store.get('nh_test_done')==='1'?'✅':'';
+  if(b)b.textContent=(store.get('nh_ans_begriff_def')||'').trim()?'✅':'';
+}
+let earthId=0;
+const LAND='<path d="M18 74 C26 46 56 30 86 36 C96 40 94 50 82 54 C74 58 76 66 66 72 C58 78 54 90 46 90 C38 86 34 78 26 82 C18 82 16 78 18 74Z"/><path d="M50 118 C62 108 80 114 84 130 C86 146 72 162 64 176 C56 178 52 168 54 156 C46 142 40 128 50 118Z"/><path d="M116 40 C130 32 150 36 156 48 C150 58 134 56 126 60 C116 58 110 48 116 40Z"/><path d="M118 98 C134 86 158 94 160 112 C162 130 148 152 136 164 C126 168 122 154 122 142 C114 128 106 112 118 98Z"/><path d="M152 58 C166 54 180 64 182 78 C172 88 160 82 152 72Z"/>';
+const ERDI_SMALL='<svg viewBox="0 0 200 200" role="img" aria-label="Erdi, die lächelnde Erde"><defs><radialGradient id="eo" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#6ec6f7"/><stop offset=".6" stop-color="#3b92e3"/><stop offset="1" stop-color="#2468b8"/></radialGradient><clipPath id="eg"><circle cx="100" cy="100" r="86"/></clipPath></defs><circle cx="100" cy="100" r="86" fill="url(#eo)"/><g clip-path="url(#eg)"><g fill="#66bb47" stroke="#24352b" stroke-width="3.5" stroke-linejoin="round"><path d="M18 74 C26 46 56 30 86 36 C96 40 94 50 82 54 C74 58 76 66 66 72 C58 78 54 90 46 90 C38 86 34 78 26 82 C18 82 16 78 18 74Z"/><path d="M50 118 C62 108 80 114 84 130 C86 146 72 162 64 176 C56 178 52 168 54 156 C46 142 40 128 50 118Z"/><path d="M116 40 C130 32 150 36 156 48 C150 58 134 56 126 60 C116 58 110 48 116 40Z"/><path d="M118 98 C134 86 158 94 160 112 C162 130 148 152 136 164 C126 168 122 154 122 142 C114 128 106 112 118 98Z"/><path d="M152 58 C166 54 180 64 182 78 C172 88 160 82 152 72Z"/></g><g fill="#fff" opacity=".92"><path d="M30 104 q8 -12 20 -6 q10 -8 18 2 q8 2 4 10 H34 q-8 0 -4 -6z"/><path d="M118 156 q6 -10 18 -6 q10 -6 16 4 q8 2 4 8 H120 q-8 0 -2 -6z"/><path d="M96 28 q6 -8 16 -4 q8 -4 12 4 q6 2 2 6 H98 q-6 0 -2 -6z"/></g><path d="M30 70 A76 76 0 0 1 90 24" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".45"/><path d="M176 120 A86 86 0 0 1 70 184 A100 100 0 0 0 176 120Z" fill="#14407f" opacity=".28"/></g><circle cx="100" cy="100" r="86" fill="none" stroke="#24352b" stroke-width="6"/><ellipse cx="76" cy="100" rx="14" ry="16" fill="#fff" stroke="#24352b" stroke-width="4"><animate attributeName="ry" values="16;16;16;2;16" keyTimes="0;.8;.9;.94;1" dur="4.5s" repeatCount="indefinite"/></ellipse><ellipse cx="124" cy="100" rx="14" ry="16" fill="#fff" stroke="#24352b" stroke-width="4"><animate attributeName="ry" values="16;16;16;2;16" keyTimes="0;.8;.9;.94;1" dur="4.5s" repeatCount="indefinite"/></ellipse><circle cx="79" cy="102" r="6" fill="#24352b"/><circle cx="121" cy="102" r="6" fill="#24352b"/><circle cx="81" cy="99" r="2" fill="#fff"/><circle cx="123" cy="99" r="2" fill="#fff"/><circle cx="58" cy="128" r="8" fill="#ff9aa8" opacity=".85"/><circle cx="142" cy="128" r="8" fill="#ff9aa8" opacity=".85"/><path d="M80 130 Q100 152 120 130" fill="none" stroke="#24352b" stroke-width="5" stroke-linecap="round"/></svg>';
+function earth(f){
+  const id='ce'+(earthId++);
+  return '<svg viewBox="0 0 200 200" aria-hidden="true"><defs><radialGradient id="o'+id+'" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#6ec6f7"/><stop offset=".6" stop-color="#3b92e3"/><stop offset="1" stop-color="#2468b8"/></radialGradient>'+
+  '<clipPath id="g'+id+'"><circle cx="100" cy="100" r="86"/></clipPath><clipPath id="'+id+'"><rect x="0" y="0" width="'+(200*f).toFixed(1)+'" height="200"/></clipPath></defs>'+
+  '<circle cx="100" cy="100" r="86" fill="#e3eaec"/><g clip-path="url(#'+id+')"><circle cx="100" cy="100" r="86" fill="url(#o'+id+')"/>'+
+  '<g clip-path="url(#g'+id+')"><g fill="#66bb47" stroke="#24352b" stroke-width="4" stroke-linejoin="round">'+LAND+'</g>'+
+  '<path d="M30 70 A76 76 0 0 1 90 24" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".45"/></g></g>'+
+  '<circle cx="100" cy="100" r="86" fill="none" stroke="#24352b" stroke-width="7"/></svg>';
+}
+
+/* ===== Erdi-Hinweis ===== */
+let tipId=0;
+function erditip(msg){
+  const k=tipId++;
+  const svg=ERDI_SMALL.replace(/id="eo"/g,'id="eo'+k+'"').replace(/url\(#eo\)/g,'url(#eo'+k+')').replace(/id="eg"/g,'id="eg'+k+'"').replace(/url\(#eg\)/g,'url(#eg'+k+')');
+  return '<div class="erditip"><div class="ev">'+svg+'</div><div class="eb">'+msg+'</div></div>';
+}
+
+/* ===== Schritt 1: Fußabdruck-Test ===== */
+let tq=0;
+function getAns(){try{const a=JSON.parse(store.get('nh_test')||'[]');return Array.isArray(a)?a:[];}catch(e){return [];}}
+function renderTest(forceNew){
+  const ans=getAns();
+  if(!forceNew&&store.get('nh_test_done')==='1'&&ans.length>=QUESTIONS.length){renderResult();return;}
+  if(forceNew){store.set('nh_test','[]');store.set('nh_test_done','0');tq=0;}
+  else{tq=0;while(tq<QUESTIONS.length&&ans[tq]!==undefined&&ans[tq]!==null)tq++;if(tq>=QUESTIONS.length)tq=QUESTIONS.length-1;}
+  showQuestion();
+}
+function showQuestion(){
+  const v=$('#v-test'),Q=QUESTIONS[tq],ans=getAns(),A=AREAS[Q.a];
+  v.innerHTML='<div class="topnav"><button class="btn grey small" id="tb">← Zur Übersicht</button></div>'+
+  '<div class="box qcard"><div class="prog"><i style="width:'+(tq/QUESTIONS.length*100)+'%"></i></div>'+
+  '<span class="qarea">'+A.icon+' '+A.name+' · Frage '+(tq+1)+' von '+QUESTIONS.length+'</span><h2>'+esc(Q.q)+'</h2>'+
+  '<div class="qopts">'+Q.o.map((o,i)=>'<button type="button" class="qopt'+(ans[tq]===i?' sel':'')+'" data-i="'+i+'"><span class="e">'+o[0]+'</span><span>'+esc(o[1])+'</span></button>').join('')+'</div>'+
+  (tq>0?'<div class="topnav" style="margin-top:14px"><button class="btn grey small" id="tprev">← Vorherige Frage</button></div>':'')+'</div>';
+  $('#tb').onclick=()=>show('v-home');
+  const pv=$('#tprev');if(pv)pv.onclick=()=>{tq--;showQuestion();};
+  v.querySelectorAll('.qopt').forEach(b=>b.onclick=()=>{
+    const a=getAns();a[tq]=+b.dataset.i;store.set('nh_test',JSON.stringify(a));
+    v.querySelectorAll('.qopt').forEach(x=>x.classList.toggle('sel',x===b));
+    setTimeout(()=>{if(tq<QUESTIONS.length-1){tq++;showQuestion();}else{store.set('nh_test_done','1');renderResult();}},260);
+  });
+  show('v-test');
+}
+function computeResult(ans){
+  const sums={},cnt={};
+  QUESTIONS.forEach((Q,i)=>{const m=Q.o[ans[i]!==undefined?ans[i]:1];const f=m?m[2]:1;sums[Q.a]=(sums[Q.a]||0)+f;cnt[Q.a]=(cnt[Q.a]||0)+1;});
+  const areas={};let total=0;
+  ORDER.forEach(k=>{areas[k]=AREAS[k].base*(sums[k]/cnt[k]);total+=areas[k];});
+  return {areas,total};
+}
+function renderResult(){
+  const v=$('#v-test'),r=computeResult(getAns()),tot=r.total;
+  let e='';const n=Math.ceil(tot);
+  for(let i=0;i<n;i++){const f=i<Math.floor(tot)?1:(tot-Math.floor(tot));e+='<div style="animation-delay:'+(i*0.25)+'s">'+earth(Math.min(1,f))+'</div>';}
+  const verdict=tot<2.2?'Das ist deutlich weniger als der Durchschnitt in Deutschland.':(tot<3.4?'Das liegt ungefähr im Durchschnitt in Deutschland.':'Das ist mehr als der Durchschnitt in Deutschland.');
+  const top=ORDER.slice().sort((a,b)=>r.areas[b]-r.areas[a])[0];
+  const bars=ORDER.map(k=>'<div class="bar'+(k===top?' top':'')+'" style="--c:'+AREAS[k].color+'"><span class="nm">'+AREAS[k].icon+' '+AREAS[k].name+'</span><div class="tr"><i data-w="'+Math.min(100,r.areas[k]/1.4*100).toFixed(0)+'"></i></div><b>'+de1(r.areas[k])+'</b></div>').join('');
+  v.innerHTML='<div class="topnav"><button class="btn grey small" id="tb">← Zur Übersicht</button></div>'+
+  '<div class="box"><h2 style="text-align:center">Dein Ergebnis</h2><div class="earths">'+e+'</div>'+
+  '<div class="bignum">'+de1(tot)+' Erden</div>'+
+  '<p style="text-align:center;margin:4px 0 0">Würden alle Menschen so leben wie du, bräuchten wir etwa <b>'+de1(tot)+' Erden</b>. '+verdict+'</p>'+
+  '<p style="text-align:center;margin:4px 0 12px" class="small">Zum Vergleich: Würden alle so leben wie der Durchschnitt in Deutschland, bräuchten wir etwa 3 Erden. Nachhaltig wäre 1 Erde.</p>'+
+  '<h3 style="margin:10px 0 0">Woher kommt dein Wert?</h3><div class="bars">'+bars+'</div>'+
+  '<p>Bei dir steckt der größte Teil im Bereich <b>'+AREAS[top].name+'</b>. Genau diese vier Bereiche untersucht ihr gleich in der Gruppe.</p>'+
+  '<div class="hint">Das ist eine grobe Schätzung und kein genauer Messwert. Auch wer sehr sparsam lebt, kommt in Deutschland selten auf nur 1 Erde, denn Straßen, Schulen, Krankenhäuser und die Stromversorgung nutzen alle gemeinsam. Ein Teil des Fußabdrucks hängt also nicht nur von dir ab, sondern auch davon, wie eine Gesellschaft Dinge organisiert.</div></div>'+
+  erditip('Schreibe dir <b>deine Zahl</b> und den <b>größten Bereich</b> auf. Das brauchst du später.')+'<div class="box"><h3 style="margin-top:0">Kurz nachdenken (nur für dich)</h3><p>Was überrascht dich an deinem Ergebnis? Was würdest du als Erstes ändern, und was auf keinen Fall?</p><textarea class="ans" id="treflect" aria-label="Deine Gedanken zum Ergebnis"></textarea></div>'+
+  '<div class="topnav"><button class="btn grey" id="tredo">Test wiederholen</button><button class="btn sun" id="tnext">Weiter: Was heißt „nachhaltig“? →</button></div>';
+  bindField($('#treflect'),'nh_ans_test');
+  $('#tb').onclick=()=>show('v-home');
+  $('#tredo').onclick=()=>renderTest(true);
+  $('#tnext').onclick=()=>renderBegriff();
+  show('v-test');
+  setTimeout(()=>v.querySelectorAll('.tr i').forEach(i=>i.style.width=i.dataset.w+'%'),80);
+}
+
+/* ===== Schritt 2: Was heißt nachhaltig? ===== */
+function treeSVG(){return '<svg viewBox="0 0 40 60" aria-hidden="true"><rect x="17" y="40" width="7" height="16" fill="#8a5a33" stroke="#24352b" stroke-width="2.5"/><path d="M20 4 L34 26 H6Z M20 18 L37 42 H3Z" fill="#3fa34d" stroke="#24352b" stroke-width="2.5" stroke-linejoin="round"/></svg>';}
+function buildForest(host){
+  const CAP=24;let trees=10,year=0,busy=false;
+  host.innerHTML='<div class="forest"><div class="fgrid" id="fg"></div></div>'+
+  '<div class="fctrl"><label for="cut"><b>Bäume, die pro Jahr gefällt werden:</b> <span id="cutv">1</span></label><input id="cut" type="range" min="0" max="6" value="1">'+
+  '<button type="button" class="btn small" id="fgo">10 Jahre vergehen</button><button type="button" class="btn small grey" id="frs">Neu starten</button></div><p class="fstat" id="fst" role="status" aria-live="polite"></p>';
+  const g=host.querySelector('#fg');
+  for(let i=0;i<CAP;i++){const c=document.createElement('div');c.className='cell';c.innerHTML=treeSVG();g.appendChild(c);}
+  const cells=[...g.children];
+  function draw(){cells.forEach((c,i)=>c.classList.toggle('on',i<trees));host.querySelector('#fst').textContent='Jahr '+year+': '+trees+' Bäume'+(year===0?' (Start)':'');}
+  host.querySelector('#cut').oninput=e=>{host.querySelector('#cutv').textContent=e.target.value;};
+  host.querySelector('#frs').onclick=()=>{if(busy)return;trees=10;year=0;draw();};
+  host.querySelector('#fgo').onclick=()=>{
+    if(busy)return;busy=true;const cut=+host.querySelector('#cut').value;let k=0;
+    const t=setInterval(()=>{
+      year++;trees=Math.max(0,trees-cut);if(trees>0)trees=Math.min(CAP,trees+3);draw();
+      if(++k>=10){clearInterval(t);busy=false;}
+    },420);
+  };
+  draw();
+}
+function buildCloze(host,items){
+  let saved={};try{saved=JSON.parse(store.get('nh_merk')||'{}')||{};}catch(e){}
+  items.forEach((it,idx)=>{
+    const row=document.createElement('div');row.className='cl';
+    const s=document.createElement('p');s.className='cls';
+    const gap=document.createElement('span');gap.className='gap';
+    s.append(it.pre+' ',gap,' '+it.post);
+    const chips=document.createElement('div');chips.className='chips';
+    const msg=document.createElement('div');msg.className='res';
+    function done(w){gap.textContent=w;gap.classList.add('ok');chips.style.display='none';msg.textContent='';}
+    gap.textContent='     ';
+    shuffle(it.opts).forEach(w=>{const c=document.createElement('button');c.type='button';c.className='chip';c.textContent=w;
+      c.onclick=()=>{if(w===it.opts[0]){saved[idx]=w;store.set('nh_merk',JSON.stringify(saved));done(w);}
+        else{c.classList.add('bad');msg.textContent='Das passt hier nicht. Lies den Text noch einmal.';setTimeout(()=>c.classList.remove('bad'),700);}};
+      chips.appendChild(c);});
+    row.append(s,chips,msg);host.appendChild(row);
+    if(saved[idx])done(saved[idx]);
+  });
+}
+function renderBegriff(){
+  const v=$('#v-begriff'),yr=new Date().getFullYear();
+  v.style.setProperty('--c','var(--c-essen)');
+  v.innerHTML='<div class="topnav"><button class="btn grey small" id="bb1">← Zur Übersicht</button></div>'+
+  '<div class="topic-head"><div class="ico">🌳</div><div><h2>Was heißt eigentlich „nachhaltig“?</h2><p>Ein Wort, das überall vorkommt. Hier findest du heraus, was dahintersteckt.</p></div></div>'+
+  '<div class="sec"><h3>1 · Ein Wald als Rechenaufgabe</h3>'+
+  '<p>Das Wort kommt aus der Forstwirtschaft. Im Jahr 1713 sah Hans Carl von Carlowitz, dass das Holz knapp wurde, weil zu viele Bäume gefällt wurden. Er forderte: <mark>Man soll nur so viel Holz schlagen, wie wieder nachwachsen kann.</mark></p>'+
+  '<p>Probiere es aus: Der Wald hat 10 Bäume. Stelle ein, wie viele Bäume pro Jahr gefällt werden, und lasse 10 Jahre vergehen. Wie schnell der Wald nachwächst, findest du durch Ausprobieren heraus.</p>'+
+  erditip('Schreibe dir auf, was <mark>gelb markiert</mark> ist: das brauchst du gleich für deinen Merkzettel.')+'<div id="forestbox"></div>'+
+  '<div class="task"><b class="n">1</b>Wie viele Bäume dürfen pro Jahr höchstens gefällt werden, damit der Wald nicht kleiner wird?<textarea class="ans" id="a_wald" placeholder="Es dürfen höchstens … Bäume pro Jahr gefällt werden, weil …" aria-label="Antwort zu Aufgabe 1"></textarea></div></div>'+
+  '<div class="sec"><h3>2 · Vom Wald zur ganzen Welt</h3>'+
+  '<p>Heute meint das Wort viel mehr als Holz. 1987 schrieben die Vereinten Nationen: Eine Entwicklung ist nachhaltig, wenn sie die Bedürfnisse der Menschen heute erfüllt, <mark>ohne dass spätere Generationen schlechter leben können.</mark></p>'+
+  '<p>Dabei gelten <mark>drei Seiten</mark>, die zusammenpassen müssen:</p>'+
+  '<div class="dims"><div class="dim"><div class="e">🌿</div><b>Umwelt</b><br>Natur und Rohstoffe schonen</div><div class="dim"><div class="e">💶</div><b>Wirtschaft</b><br>Arbeit und Geld, die bezahlbar bleiben</div><div class="dim"><div class="e">🤝</div><b>Soziales</b><br>Gerechtigkeit zwischen Menschen und Ländern</div></div>'+
+  erditip('Notiere dir auch die <mark>drei Seiten</mark> der Nachhaltigkeit: Umwelt, Wirtschaft, Soziales.')+'<div class="task"><b class="n">2</b><span id="sortq">Nachhaltig oder nicht? Ordne zu.</span></div></div>'+
+  '<div class="sec"><h3>3 · Dein Merkzettel</h3><p style="margin-top:0">Tippe auf das passende Wort. So hast du die wichtigsten Dinge notiert.</p><div id="merk"></div></div>'+
+  '<div class="sec"><h3>4 · Eure Definition</h3>'+
+  '<div class="task"><b class="n">3</b>Erkläre in ein bis zwei Sätzen, was „nachhaltig“ bedeutet. Dein Merkzettel hilft dir. Dieser Satz steht später auf eurem Plakat.<textarea class="ans" id="a_def" placeholder="Nachhaltig bedeutet, dass …" aria-label="Eure Definition von nachhaltig"></textarea></div></div>'+
+  '<div class="sec time"><h3>5 · Und was hat das mit dir zu tun?</h3>'+
+  '<p>Vieles, was heute gebaut wird, hält lange: Ein Haus steht oft 80 Jahre, ein Kraftwerk 40 Jahre.</p>'+
+  '<p><label for="age"><b>Ich bin jetzt</b></label> <input id="age" type="number" min="8" max="20" value="12" inputmode="numeric"> <b>Jahre alt.</b></p>'+
+  '<table><thead><tr><th>Jahr</th><th>Du bist dann</th></tr></thead><tbody id="agetab"></tbody></table>'+
+  '<p style="margin-top:12px">Das ist kein Grund zur Angst, aber ein guter Grund mitzureden: Ihr werdet in diesen Jahren leben und entscheiden.</p>'+
+  '<div class="task"><b class="n">4</b>Warum betrifft Nachhaltigkeit deine Generation stärker als die deiner Großeltern?<textarea class="ans" id="a_gen" placeholder="Das betrifft uns stärker, weil …" aria-label="Antwort zu Aufgabe 4"></textarea></div></div>'+
+  '<div class="topnav"><button class="btn grey" id="bb2">← Zur Übersicht</button><button class="btn sun" id="bnext">Weiter zu den vier Themen →</button></div>';
+  buildForest($('#forestbox'));
+  buildSort({title:'',cats:['nachhaltig','nicht nachhaltig'],items:[
+    ['Ein Fischer fängt jedes Jahr nur so viele Fische, wie im Meer nachwachsen.',0],
+    ['Eine große Fangflotte fischt ein Gebiet leer und zieht dann weiter.',1],
+    ['Ein kaputtes Fahrrad wird repariert, statt es wegzuwerfen.',0],
+    ['Für billiges Tierfutter wird Regenwald abgeholzt.',1],
+    ['Ein Dorf deckt seinen Strom aus Sonne und Wind und spart zusätzlich Energie.',0],
+    ['Kleidung wird so billig hergestellt, dass die Näherinnen kaum davon leben können.',1]]},$('#sortq').parentNode);
+  buildCloze($('#merk'),[
+    {pre:'Man darf nur so viele Bäume fällen, wie wieder',post:'können.',opts:['nachwachsen','bezahlt werden','abgebrannt werden']},
+    {pre:'Nachhaltig leben heißt: Auch spätere',post:'sollen noch gut leben können.',opts:['Generationen','Hersteller','Nachbarn']},
+    {pre:'Nachhaltigkeit hat drei Seiten: Umwelt, Soziales und',post:'.',opts:['Wirtschaft','Mode','Wetter']}]);
+  bindField($('#a_wald'),'nh_ans_begriff_wald');
+  bindField($('#a_def'),'nh_ans_begriff_def',updateSteps);
+  bindField($('#a_gen'),'nh_ans_begriff_gen');
+  const rows=()=>{const a=Math.max(6,Math.min(25,parseInt($('#age').value,10)||12));
+    $('#agetab').innerHTML=[yr+9,yr+24,yr+49,yr+74].map(y=>'<tr><td>'+y+'</td><td><b>'+(a+y-yr)+' Jahre</b></td></tr>').join('');};
+  $('#age').addEventListener('input',rows);rows();
+  v.querySelectorAll('#bb1,#bb2').forEach(b=>b.onclick=()=>{show('v-home');});
+  $('#bnext').onclick=()=>{show('v-home');setTimeout(()=>{const s=document.getElementById('scene');if(s)s.scrollIntoView({behavior:'smooth',block:'start'});},60);};
+  show('v-begriff');
+}
+
+/* ===== Themen mit Passwort ===== */
+function openTopic(key){
+  const T=TOPICS[key],v=$('#v-topic');
+  v.style.setProperty('--c','var('+T.color+')');
+  if(!unlocked().includes(key)){renderGate(key);return;}
+  renderTopic(key);
+}
+function renderGate(key){
+  const T=TOPICS[key],v=$('#v-topic');
+  v.innerHTML='<div class="topnav"><button class="btn grey" id="g0">← Zurück zum Bild</button></div>'+
+  '<div class="gate" id="gate"><div class="seal">'+T.icon+'</div><h2>'+T.title+'</h2><p>Dieses Thema ist <b>gesperrt</b>. Gib das Passwort ein, das du von deiner Lehrkraft bekommen hast.</p>'+
+  '<input id="pw" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Passwort" aria-label="Passwort"><div class="err" id="perr"></div>'+
+  '<button type="button" class="btn sun" id="pbtn">Freischalten</button></div>';
+  $('#g0').onclick=()=>show('v-home');
+  const go=()=>{const val=$('#pw').value;if(hashStr(val)===HASHES[key]){unlock(key);renderTopic(key);}else{$('#perr').textContent='Das Passwort stimmt leider nicht.';const g=$('#gate');g.classList.remove('shake');void g.offsetWidth;g.classList.add('shake');}};
+  $('#pbtn').onclick=go;$('#pw').addEventListener('keydown',e=>{if(e.key==='Enter')go();});
+  show('v-topic');setTimeout(()=>$('#pw').focus(),50);
+}
+function renderTopic(key){
+  const T=TOPICS[key],v=$('#v-topic');
+  v.style.setProperty('--c','var('+T.color+')');
+  v.innerHTML='<div class="topnav"><button class="btn grey" id="b1">← Zurück zum Bild</button></div>'+
+  '<div class="topic-head"><div class="ico">'+T.icon+'</div><div><h2>'+T.title+'</h2><p>'+T.lead+'</p></div></div>'+
+  '<div class="sec" id="stxt"><h3>Lies den Text</h3>'+T.text+'</div>'+
+  '<div class="sec"><h3>Deine Aufgaben</h3><p class="hint" style="margin-top:0">Die Satzanfänge in den Feldern helfen dir. Alles, was du hier schreibst, steht später auf dem Plakat. Die erste Aufgabe kommt mit Zahlen auf das Plakat, wenn du sie richtig gelöst hast.</p><div id="tasks"></div></div>'+
+  '<div class="sec"><p style="margin:0"><b>Fertig?</b> Berichtet euch gegenseitig, was ihr herausgefunden habt, und öffnet dann das gemeinsame Plakat.</p></div>'+
+  '<div class="topnav"><button class="btn grey" id="b2">← Zurück zum Bild</button></div>';
+  const host=v.querySelector('#tasks');
+  T.tasks.forEach((tk,i)=>{
+    const d=document.createElement('div');d.className='task';
+    const title=tk.q||(tk.sort&&tk.sort.title)||(tk.order&&tk.order.title);
+    d.innerHTML='<b class="n">'+(i+1)+'</b><span class="tq">'+title+'</span>';
+    if(tk.q){const ta=document.createElement('textarea');ta.className='ans';ta.placeholder=tk.ph||'';ta.setAttribute('aria-label','Antwort zu Aufgabe '+(i+1));d.appendChild(ta);bindField(ta,'nh_ans_'+key+'_'+i);}
+    else{const df=Object.assign({},tk.sort||tk.order,{title:'',onSolved(){store.set('nh_solved_'+key+'_'+i,'1');}});
+      if(tk.sort)buildSort(df,d);else buildOrder(df,d);
+      if(store.get('nh_solved_'+key+'_'+i)==='1'){const n=document.createElement('p');n.className='small';n.textContent='✔ Schon gelöst. Das Ergebnis steht auf dem Plakat.';d.appendChild(n);}}
+    host.appendChild(d);
+  });
+  v.querySelectorAll('#b1,#b2').forEach(b=>b.onclick=()=>{show('v-home');});
+  show('v-topic');
+}
+
+/* ===== Plakat ===== */
+function qList(k){const r=[];TOPICS[k].tasks.forEach((tk,i)=>{if(tk.q)r.push({i,label:tk.label});});return r;}
+function fillRes(k,i,el){
+  const tk=TOPICS[k].tasks[i],d=tk.sort||tk.order;el.innerHTML='';
+  if(store.get('nh_solved_'+k+'_'+i)==='1'){
+    el.className='pq pres';
+    if(tk.order){el.innerHTML='<div class="pl">'+esc(d.label)+'</div><ol>'+d.items.map((t,j)=>'<li>'+esc(t)+' <b>'+esc(d.vals[j])+'</b></li>').join('')+'</ol>';}
+    else{el.innerHTML='<div class="pl">'+esc(d.label)+'</div>'+d.cats.map((c,ci)=>'<div class="pcat"><b>'+esc(c)+':</b> '+d.items.filter(it=>it[1]===ci).map(it=>esc(it[2]||it[0])).join(', ')+'</div>').join('');}
+    return;
+  }
+  el.className='pq pres todo';
+  const lab=document.createElement('div');lab.className='pl';lab.innerHTML=esc(d.label)+'<br><span class="small">Löst die Aufgabe, dann erscheint das Ergebnis hier. Die Hinweise holt ihr euch aus dem Bericht des Gruppenmitglieds.</span>';
+  const w=document.createElement('div');el.append(lab,w);
+  const df=Object.assign({},d,{title:'',onSolved(){store.set('nh_solved_'+k+'_'+i,'1');setTimeout(()=>{fillRes(k,i,el);},900);}});
+  if(tk.sort)buildSort(df,w);else buildOrder(df,w);
+}
+function renderPoster(){
+  const v=$('#v-final');const own=unlocked();
+  let cards='';
+  ORDER.forEach(k=>{const T=TOPICS[k];
+    cards+='<div class="pcard" style="--c:var('+T.color+')"><h3><span>'+T.icon+'</span>'+T.title+(own.includes(k)?' <span class="own">mein Thema</span>':'')+'</h3><div class="pb">';
+    TOPICS[k].tasks.forEach((tk,i)=>{if(tk.q)cards+='<div class="pq"><label for="pf_'+k+'_'+i+'">'+tk.label+'</label><textarea id="pf_'+k+'_'+i+'" placeholder="'+esc(tk.ph||'')+'"></textarea><div class="pc" id="pc_'+k+'_'+i+'"></div></div>';else cards+='<div id="pr_'+k+'_'+i+'"></div>';});
+    cards+='</div></div>';});
+  v.innerHTML='<div class="topnav noprint"><button class="btn grey" id="f1">← Zurück zum Bild</button><button class="btn sun" id="fpdf">📄 Als PDF speichern</button><button class="btn grey" id="fprint">🖨️ Drucken</button></div>'+
+  '<div class="topnav noprint" style="margin-top:-4px"><button class="btn grey small" id="fsave">💾 Zwischenstand sichern (Datei)</button><button class="btn grey small" id="fload">📂 Zwischenstand laden</button><input type="file" id="ffile" accept=".json,application/json" hidden></div>'+
+  '<p class="noprint" id="fstate" role="status" aria-live="polite" style="margin:0 0 10px;min-height:1.2em;font-weight:700"></p>'+
+  '<p class="noprint" style="margin:0 0 12px">Eure eigenen Antworten und Ergebnisse stehen schon auf dem Plakat. Bei den anderen drei Themen lösen die Berichte eurer Gruppe die Aufgabe: Das Ergebnis mit den Zahlen erscheint, sobald es richtig ist. Die Sätze tragt ihr kurz ein. Fasst auch die Definition und die beiden Kästen unten zusammen. Mit „Als PDF speichern“ bekommt ihr das Plakat als Datei auf einer A4-Seite.</p>'+
+  '<div id="poster"><div class="p-head"><h2 class="p-title">Nachhaltigkeit</h2><p class="p-sub">Unser Plakat zum ökologischen Fußabdruck</p></div>'+
+  '<div class="p-names"><label for="pn">Gruppe:</label><input id="pn" placeholder="Namen eintragen"><div class="pc" id="pc_pn" style="font-weight:700"></div></div>'+
+  '<div class="pbox"><label for="pf_def">🌳 Nachhaltig bedeutet für uns:</label><textarea id="pf_def" placeholder="Nachhaltig bedeutet, dass …"></textarea><div class="pc" id="pc_def"></div></div>'+
+  '<div class="pgrid">'+cards+'</div>'+
+  '<div class="pbox"><div class="pcols">'+
+  '<div><label for="pf_gen">⏳ Warum es vor allem unsere Generation betrifft:</label><textarea id="pf_gen" placeholder="Es betrifft vor allem uns, weil …"></textarea><div class="pc" id="pc_gen"></div></div>'+
+  '<div><label for="pf_plan">🌍 Das nehmen wir uns vor:</label><textarea id="pf_plan" placeholder="Wir nehmen uns vor, …"></textarea><div class="pc" id="pc_plan"></div></div></div></div></div>'+
+  '<div class="topnav noprint" style="margin-top:14px"><button class="btn grey" id="f2">← Zurück zum Bild</button></div>';
+  ORDER.forEach(k=>TOPICS[k].tasks.forEach((tk,i)=>{if(!tk.q)fillRes(k,i,v.querySelector('#pr_'+k+'_'+i));}));
+  const fields=[];
+  ORDER.forEach(k=>qList(k).forEach(q=>fields.push({id:k+'_'+q.i,own:own.includes(k),src:'nh_ans_'+k+'_'+q.i})));
+  fields.push({id:'def',own:true,src:'nh_ans_begriff_def'},{id:'gen',own:true,src:'nh_ans_begriff_gen'},{id:'plan'},{id:'pn',input:true});
+  fields.forEach(f=>{
+    const t=v.querySelector(f.input?'#pn':'#pf_'+f.id),pc=v.querySelector('#pc_'+f.id);
+    const key='nh_poster_'+f.id;let val=store.get(key);
+    if(f.own){const src=store.get(f.src)||'';if(val===null||val==='')val=src;if(val)store.set(key,val);}
+    if(val!==null)t.value=val;
+    const sync=()=>{pc.textContent=t.value;};
+    t.addEventListener('input',()=>{store.set(key,t.value);sync();if(t.tagName==='TEXTAREA')autosize(t);});
+    sync();
+  });
+  v.querySelectorAll('#f1,#f2').forEach(b=>b.onclick=()=>show('v-home'));
+  v.querySelector('#fsave').onclick=saveState;
+  v.querySelector('#fload').onclick=()=>v.querySelector('#ffile').click();
+  v.querySelector('#ffile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)loadState(f);};
+  v.querySelector('#fpdf').onclick=savePdf;v.querySelector('#fprint').onclick=()=>window.print();
+  show('v-final');
+  v.querySelectorAll('textarea').forEach(t=>autosize(t));
+}
+
+/* ===== Intro ===== */
+let li=0,typing=null;
+function typeLine(){
+  const el=$('#stext');el.textContent='';const line=LINES[li];let i=0;clearInterval(typing);
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=line;return;}
+  typing=setInterval(()=>{el.textContent=line.slice(0,++i);if(i>=line.length)clearInterval(typing);},22);
+}
+$('#snext').onclick=()=>{
+  const el=$('#stext');
+  if(el.textContent.length<LINES[li].length){clearInterval(typing);el.textContent=LINES[li];return;}
+  li++;if(li>=LINES.length){renderTest();return;}
+  if(li===LINES.length-1)$('#snext').textContent='Test starten ▶';
+  typeLine();
+};
+$('#skip').onclick=()=>{clearInterval(typing);show('v-home');};
+
+/* ===== Start ===== */
+document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openTopic(b.dataset.open)));
+function driveCar(){
+  const car=document.getElementById('car'),hot=document.querySelector('.hot.tr'),sc=document.getElementById('scene');if(!car||!hot)return;
+  const X0=-200,X1=1080,DUR=17000,Y=495,S=.85,still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let p=still?.42:0,last=null,hold=false;
+  const set=()=>{const x=X0+(X1-X0)*p;car.setAttribute('transform','translate('+x.toFixed(1)+' '+Y+') scale('+S+')');
+    hot.style.left=((x+80*S)/10).toFixed(2)+'%';hot.style.top=((Y-64*S)/5.4).toFixed(2)+'%';hot.style.visibility=(x+80*S<-20||x+80*S>1020)?'hidden':'visible';};
+  hot.addEventListener('pointerenter',()=>hold=true);hot.addEventListener('pointerleave',()=>hold=false);
+  hot.addEventListener('focus',()=>hold=true);hot.addEventListener('blur',()=>hold=false);
+  hot.addEventListener('touchstart',()=>hold=true,{passive:true});
+  set();if(still)return;
+  function f(ts){if(last===null)last=ts;const dt=Math.min(100,ts-last);last=ts;
+    if(!hold&&!document.hidden&&sc.offsetParent!==null){p+=dt/DUR;if(p>1)p-=1;}
+    set();requestAnimationFrame(f);}
+  requestAnimationFrame(f);
+}
+driveCar();
+$('#st1').addEventListener('click',()=>renderTest());
+$('#st2').addEventListener('click',renderBegriff);
+$('#open-final').addEventListener('click',renderPoster);
+$('#reset').addEventListener('click',()=>{if(confirm('Alle gespeicherten Antworten und Freischaltungen auf diesem Gerät löschen?')){store.clearAll();refreshLocks();}});
+if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelectorAll('svg').forEach(s=>{try{s.pauseAnimations();}catch(e){}});}
+typeLine();refreshLocks();
+
+</script>
+</body>
+</html>
