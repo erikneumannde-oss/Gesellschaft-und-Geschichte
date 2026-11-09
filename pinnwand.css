@@ -192,6 +192,16 @@ body { min-height: 100vh; display: flex; flex-direction: column; justify-content
 .notes.viele .note:nth-child(n) { margin-top: 0; }
 .note b { hyphens: auto; }
 
+/* Drei Reihen Zettel: kompakter, damit die unterste Reihe noch auf dem Kork hängt */
+@media (min-aspect-ratio: 1/1) {
+  body[data-stufe] .notes.viele { gap: 1.3em 1.5em; padding-top: .6em; }
+  body[data-stufe] .notes.viele .note { min-height: 0; padding: 1.35em .9em .75em; }
+  body[data-stufe] .notes.viele .note b { font-size: 1.02em; }
+  body[data-stufe] .notes.viele .note small { margin-top: .35em; font-size: .74em; line-height: 1.25; }
+  body[data-stufe] .notes.viele .note .ico { font-size: 1.3em; margin-bottom: .1em; }
+  body[data-stufe] .notes.viele .note::after { margin-top: .35em; padding: .1em .6em; }
+}
+
 @media (max-aspect-ratio: 1/1) {
   .topbar { position: static; order: -1; flex-wrap: wrap; margin: 0 14px; }
   .notes.viele { gap: 28px 18px; }
