@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Textmarkierer – Texte markieren und auswerten</title>
 <style>
+  @font-face{font-family:"Delius";src:url("./fonts/delius-latin-400-normal.woff2") format("woff2");font-display:swap}
+  @font-face{font-family:"Patrick Hand";src:url("./fonts/patrick-hand-latin-400-normal.woff2") format("woff2");font-display:swap}
   :root{
     --bg:#f3f0e8; --paper:#fffdf8; --ink:#1f2733; --muted:#5b6678; --line:#ddd6c6;
     --brand:#1f5fbf; --brand-d:#174a96; --brand-l:#e6effb;
@@ -90,8 +92,10 @@
   .hintbar{font-size:14px;color:var(--muted);margin:0 2px 0;padding:6px 4px 0;width:100%}
   .paper{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 28px rgba(60,50,20,.12),0 2px 0 #e9e2cf;overflow:hidden}
   .ptool{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-bottom:1px solid var(--line);background:#faf7ef;font-size:14px;color:var(--muted);gap:8px;flex-wrap:wrap}
-  .doc{position:relative;padding:22px 28px 36px 56px;background-image:linear-gradient(90deg,transparent 40px,#f1b3b3 40px,#f1b3b3 42px,transparent 42px,transparent 45px,#f1b3b3 45px,#f1b3b3 46px,transparent 46px);font-family:Georgia,"Times New Roman",serif;font-size:var(--fs);line-height:1.85;white-space:pre-wrap;outline:none;min-height:60vh;-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+  .doc{--tf:"Delius",ui-rounded,system-ui,sans-serif;position:relative;padding:22px 28px 36px 56px;background-image:linear-gradient(90deg,transparent 40px,#f1b3b3 40px,#f1b3b3 42px,transparent 42px,transparent 45px,#f1b3b3 45px,#f1b3b3 46px,transparent 46px);font-family:var(--tf);font-size:var(--fs);line-height:1.85;white-space:pre-wrap;outline:none;min-height:60vh;-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
   @media(max-width:620px){.doc{padding:16px 14px 28px 38px;background-image:linear-gradient(90deg,transparent 26px,#f1b3b3 26px,#f1b3b3 28px,transparent 28px)}}
+  .doc[data-f="hand"]{--tf:"Patrick Hand","Bradley Hand",cursive;font-size:calc(var(--fs)*1.12)}
+  .doc[data-f="buch"]{--tf:Georgia,"Times New Roman",serif}
   .tk{border-radius:0;-webkit-box-decoration-break:clone;box-decoration-break:clone}
   .tk.m{background:var(--mc);cursor:pointer}
   .tk.bd::before{content:attr(data-bd);font:800 11px system-ui,sans-serif;vertical-align:super;color:#fff;background:var(--md);border-radius:6px;padding:0 4px;margin-right:2px}
@@ -273,7 +277,7 @@
     <div class="paper">
       <div class="ptool">
         <span id="penHint">Tipp: Markiere eine Stelle im Text. Dann wählst du, wozu sie gehört.</span>
-        <span>Schrift: <button class="btn small" id="fsDown" aria-label="Schrift kleiner">A−</button> <button class="btn small" id="fsUp" aria-label="Schrift größer">A+</button></span>
+        <span>Schrift: <select id="ffSel" aria-label="Schriftart" style="font:inherit;font-size:14px;border:2px solid var(--brand);border-radius:10px;padding:5px 8px;background:#fff;color:var(--brand-d);font-weight:700"><option value="weich">Weich</option><option value="hand">Handschrift</option><option value="buch">Buch</option></select> <button class="btn small" id="fsDown" aria-label="Schrift kleiner">A−</button> <button class="btn small" id="fsUp" aria-label="Schrift größer">A+</button></span>
       </div>
       <article class="doc" id="doc" tabindex="0" aria-label="Text zum Markieren"></article>
     </div>
@@ -814,6 +818,7 @@
   /* ---------- Schrift ---------- */
   let fs=19;
   const setFs=v=>{fs=clamp(v,14,32);document.documentElement.style.setProperty("--fs",fs+"px");};
+  $("ffSel").onchange=e=>{ $("doc").dataset.f=e.target.value; };
   $("fsUp").onclick=()=>setFs(fs+2); $("fsDown").onclick=()=>setFs(fs-2);
 
   /* ---------- Start: Dateien ---------- */
