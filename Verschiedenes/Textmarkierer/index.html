@@ -100,7 +100,8 @@
   .tk.m{background:var(--mc);cursor:pointer}
   .tk.bd::before{content:attr(data-bd);font:800 11px system-ui,sans-serif;vertical-align:super;color:#fff;background:var(--md);border-radius:6px;padding:0 4px;margin-right:2px}
   .tk.ehhit{box-shadow:inset 0 -4px 0 var(--ok)}
-  .tk.ehmiss{box-shadow:inset 0 -4px 0 var(--warn)}
+  .tk.ehpart{box-shadow:inset 0 -4px 0 var(--warn)}
+  .tk.ehmiss{box-shadow:inset 0 -4px 0 var(--bad)}
   .tk.flash{outline:3px solid var(--brand);outline-offset:1px}
 
   .side{position:sticky;top:67px;display:grid;gap:12px}
@@ -131,7 +132,7 @@
   .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-bottom:10px}
   .legend i{display:inline-block;width:22px;height:0;border-bottom:4px solid;vertical-align:middle;margin-right:5px}
   .res{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-top:8px}
-  .res.hit{border-left:6px solid var(--ok)} .res.miss{border-left:6px solid var(--warn)}
+  .res.found{border-left:6px solid var(--ok)} .res.part{border-left:6px solid var(--warn)} .res.miss{border-left:6px solid var(--bad)} .res.extra{border-left:6px solid #999}
   .res .t{font-weight:800;font-size:14px}
   .res .q{font-size:14px;color:var(--muted);margin-top:3px}
   .res .c{font-size:13px;margin-top:4px}
@@ -403,7 +404,7 @@
      {q:"Wie markiere ich eine Stelle?",a:`<b>Mit Maus:</b> Über den Text ziehen und loslassen.<br><b>Am iPad:</b> Ein Wort lange gedrückt halten, dann die blauen Griffe ziehen. Warte kurz, dann fragt dich der Text, <b>wozu die Stelle gehört</b>. Tippe die Kategorie an, fertig.`},
      {q:"Wie funktionieren die Stifte?",a:`Oben stehen die Kategorien als Stifte. Am Rechner: <b>Stift anklicken</b>, dann bekommt alles, was du markierst, sofort diese Kategorie. Nochmal anklicken schaltet ihn aus. Am iPad wählst du die Kategorie nach dem Markieren.`},
      {q:"Wie ändere oder lösche ich eine Markierung?",a:`<b>Tippe auf die farbige Stelle</b> im Text. Dort kannst du die Kategorie wechseln, eine Notiz schreiben oder löschen. Löschen geht auch mit dem × rechts in der Liste.`},
-     {q:"Wie viel soll ich markieren?",a:`Nur die wichtigsten Stellen, am besten genau die Satzteile, auf die es ankommt. Wer sehr viel markiert, bekommt in der Auswertung einen Abzug.`},
+     {q:"Wie viel soll ich markieren?",a:`Nur die wichtigsten Stellen, am besten genau die Satzteile, auf die es ankommt. Jede überflüssige Markierung und jede viel zu lange Markierung kostet Punkte.`},
      {q:"Wie speichere ich und gebe ab?",a:`Oben rechts auf <b>„Fürs Abgeben speichern“</b> tippen. Die Datei liegt dann auf deinem Gerät (am iPad meist in der Dateien-App unter „Downloads“). Gib sie so ab, wie es deine Lehrkraft gesagt hat.`},
      {q:"Gehen meine Markierungen verloren?",a:`Sie werden <b>nicht automatisch gesichert</b>. Wenn du die Seite schließt oder neu lädst, sind sie weg. Speichere deshalb zwischendurch mit „Fürs Abgeben speichern“.`},
      {q:"Die Schrift ist zu klein oder zu groß.",a:`Über dem Text findest du <b>A+</b> und <b>A−</b>.`},
@@ -496,7 +497,7 @@
   function applyHighlights(){
     const els=tokEls(); const marks=activeMarks();
     const showEH = state.practice_after_unlock.enabled && !!state.eh?.settings?.student_ui?.show_eh_highlights && state.tab==="eval";
-    const hitIds = new Set((state.last_eval?.hits||[]).map(h=>h.eh.id));
+    const stat = new Map((state.last_eval?.items||[]).map(i=>[i.eh.id,i.status]));
     const firstOf = new Map();
     marks.forEach(m=>{ const k=state.tokens.findIndex(t=>!t.ws && t.end>m.start); if(k>=0) firstOf.set(k,m); });
     for(let i=0;i<els.length;i++){
@@ -514,7 +515,7 @@
       }
       if(showEH){
         const ea=state.ehAnns.find(a=> tok.end>a.start && tok.start<a.end);
-        if(ea) el.classList.add(hitIds.has(ea.id)?"ehhit":"ehmiss");
+        if(ea){ const st=stat.get(ea.id); el.classList.add(st==="found"?"ehhit":st==="part"?"ehpart":"ehmiss"); }
       }
     }
   }
@@ -684,35 +685,44 @@
     el.classList.add("flash"); setTimeout(()=>el.classList.remove("flash"),1400);
   }
 
-  /* ---------- Auswertung (Berechnung wie bisher) ---------- */
-  function overlapRatio(a,b){
-    const inter=Math.max(0,Math.min(a.end,b.end)-Math.max(a.start,b.start));
-    return inter/Math.min(Math.max(1,a.end-a.start),Math.max(1,b.end-b.start));
+  /* ---------- Auswertung (einfach und nachvollziehbar) ----------
+     Jede erwartete Stelle: gefunden / teilweise / fehlt. Jede Markierung zaehlt nur fuer eine Stelle.
+     Punkte: gefunden + Kategorie passt = voll; gefunden + falsche Kategorie oder teilweise + passt = halb;
+     teilweise + falsche Kategorie oder fehlt = 0. Jede ueberfluessige Markierung gibt Abzug. */
+  const ovl=(a,b)=>Math.max(0,Math.min(a.end,b.end)-Math.max(a.start,b.start));
+  function scoringCfg(){
+    const sc=state.eh?.settings?.scoring||{};
+    const n=(v,d)=>Number.isFinite(Number(v))&&v!==""&&v!==null&&v!==undefined?Number(v):d;
+    return {foundCov:n(sc.found_coverage,.6),foundPrec:n(sc.found_precision,.5),partCov:n(sc.partial_coverage,.3),penalty:n(sc.penalty_per_extra,.5)};
   }
-  const norm=l=>(l||[]).map(x=>({start:Math.max(0,+x.start),end:Math.max(0,+x.end)})).filter(x=>Number.isFinite(x.start)&&Number.isFinite(x.end)&&x.end>x.start).sort((a,b)=>a.start-b.start);
-  function merge(l){const a=norm(l);if(!a.length)return[];const o=[{...a[0]}];for(let i=1;i<a.length;i++){const c=a[i],t=o[o.length-1];if(c.start<=t.end)t.end=Math.max(t.end,c.end);else o.push({...c});}return o;}
-  const len=m=>m.reduce((s,x)=>s+x.end-x.start,0);
-  function inter(a,b){let i=0,j=0,s=0;while(i<a.length&&j<b.length){const x=a[i],y=b[j];const st=Math.max(x.start,y.start),en=Math.min(x.end,y.end);if(en>st)s+=en-st;if(x.end<y.end)i++;else j++;}return s;}
   function evaluateNow(){
     if(!state.eh||!state.practice_after_unlock.enabled) return null;
-    const marks=state.practice_after_unlock.marks, anns=state.ehAnns, sc=state.eh.settings?.scoring||{};
-    const minO=Number(sc.min_overlap??0.30), allow=Number(sc.precision_allowance??0.65), catW=Number(sc.category_weight??0.30);
-    const hits=[],misses=[]; let hitPts=0,cc=0,ct=0,maxPts=0;
-    for(const e of anns){
-      const ep=(e.points!==""&&Number.isFinite(Number(e.points)))?Number(e.points):0; maxPts+=ep;
-      let best=null;
-      for(const s of marks){const r=overlapRatio(e,s); if(r>=minO&&(!best||r>best.ratio)) best={eh:e,stu:s,ratio:r};}
-      if(best){
-        const ok=!!(best.eh.category&&best.stu.category&&best.eh.category===best.stu.category);
-        hits.push({...best,cat_ok:ok}); hitPts+=ep; if(ep>0){ct+=ep; if(ok)cc+=ep;}
-      } else misses.push(e);
-    }
-    const catAcc=ct>0?cc/ct:1, catFactor=(1-catW)+catW*catAcc;
-    const eu=merge(anns), su=merge(marks), el_=len(eu), sl=len(su), il=inter(eu,su);
-    const precision=sl>0?il/sl:0, recall=el_>0?il/el_:0;
-    const pf=precision<=allow?0:(precision-allow)/(1-allow);
-    const precisionFactor=clamp(pf,0,1);
-    return {minOverlap:minO,allowance:allow,catW,hits,misses,hitPoints:hitPts,maxPoints:maxPts,catAccuracy:catAcc,catFactor,precision,recall,precisionFactor,extraLen:Math.max(0,sl-il),final:hitPts*precisionFactor*catFactor};
+    const cfg=scoringCfg(), marks=state.practice_after_unlock.marks, anns=state.ehAnns;
+    const pairs=[];
+    anns.forEach((e,ei)=>marks.forEach((m,mi)=>{
+      const o=ovl(e,m), le=e.end-e.start, lm=Math.max(1,m.end-m.start);
+      if(o>0 && o/le>=cfg.partCov) pairs.push({ei,mi,o,cov:o/le,prec:o/lm,q:o/Math.max(le,lm)});
+    }));
+    pairs.sort((x,y)=>y.q-x.q);
+    const usedE=new Set(), usedM=new Set(), match=new Map();
+    for(const p of pairs){ if(usedE.has(p.ei)||usedM.has(p.mi)) continue; usedE.add(p.ei); usedM.add(p.mi); match.set(p.ei,p); }
+    const items=[]; let pts=0, maxPts=0;
+    anns.forEach((e,ei)=>{
+      const full=(e.points!==""&&Number.isFinite(Number(e.points)))?Number(e.points):1; maxPts+=full;
+      const p=match.get(ei);
+      if(!p){ items.push({eh:e,status:"miss",stu:null,cat_ok:false,pts:0,full,note:"nicht markiert"}); return; }
+      const m=marks[p.mi]; const catOk=!!(e.category&&m.category===e.category);
+      const found=p.cov>=cfg.foundCov && p.prec>=cfg.foundPrec;
+      let note=""; if(!found){ note = p.cov<cfg.foundCov ? "zu wenig von der Stelle markiert" : "Markierung viel zu lang"; }
+      let f = found ? (catOk?1:.5) : (catOk?.5:0);
+      if(!catOk) note += (note?"; ":"")+"andere Kategorie erwartet";
+      const got=full*f; pts+=got;
+      items.push({eh:e,status:found?"found":"part",stu:m,cat_ok:catOk,pts:got,full,note});
+    });
+    const extras=marks.filter((m,mi)=>!usedM.has(mi));
+    const penalty=Math.min(pts,extras.length*cfg.penalty);
+    return {items,extras,pts,maxPts,penalty,final:Math.max(0,pts-penalty),cfg,
+      nFound:items.filter(i=>i.status==="found").length,nPart:items.filter(i=>i.status==="part").length,nMiss:items.filter(i=>i.status==="miss").length};
   }
   const r2=x=>String(Math.round(x*100)/100).replace(".",",");
   function evaluateAndRender(){
@@ -720,28 +730,26 @@
     const p=$("panelEval");
     if(!res){ p.innerHTML=""; return; }
     const showCat=!!state.eh?.settings?.student_ui?.show_eh_categories, showCom=!!state.eh?.settings?.student_ui?.show_eh_comments;
-    const total=state.ehAnns.length, found=res.hits.length, catOk=res.hits.filter(h=>h.cat_ok).length;
+    const total=res.items.length;
     let h=`<h2>So hast du es gemacht</h2><div class="sum">`;
-    h+=`<div class="sbox"><b>${found} von ${total}</b><span>erwarteten Stellen hast du gefunden</span></div>`;
-    if(found) h+=`<div class="sbox"><b>${catOk} von ${found}</b><span>davon mit der passenden Kategorie</span></div>`;
-    if(res.maxPoints>0) h+=`<div class="sbox"><b>${r2(res.final)} von ${r2(res.maxPoints)} Punkten</b><span>in diesem Übungsdurchgang</span></div>`;
+    h+=`<div class="sbox"><b>${res.nFound} von ${total}</b><span>Stellen sicher gefunden${res.nPart?`, ${res.nPart} teilweise`:""}${res.nMiss?`, ${res.nMiss} fehlen`:""}</span></div>`;
+    h+=`<div class="sbox"><b>${r2(res.final)} von ${r2(res.maxPts)} Punkten</b><span>${res.penalty>0?`${r2(res.pts)} Punkte für die Stellen, minus ${r2(res.penalty)} für ${res.extras.length} überflüssige Markierung${res.extras.length===1?"":"en"}`:"keine überflüssigen Markierungen"}</span></div>`;
     h+=`</div>`;
+    if(state.eh?.settings?.student_ui?.show_eh_highlights) h+=`<div class="legend"><span><i style="border-color:var(--ok)"></i>gefunden</span><span><i style="border-color:var(--warn)"></i>teilweise</span><span><i style="border-color:var(--bad)"></i>fehlt</span></div>`;
+    h+=`<h3 class="sub">Erwartete Stellen</h3>`;
+    res.items.forEach(x=>{
+      const lab=x.status==="found"?"✓ Gefunden":x.status==="part"?"◐ Teilweise":"✗ Fehlt";
+      h+=`<div class="res ${x.status}"><div class="t">${lab} · ${r2(x.pts)} von ${r2(x.full)} P${showCat&&x.eh.category?` · ${esc(x.eh.category)}`:""}</div><div class="q">${esc(x.eh.quote||state.text.slice(x.eh.start,x.eh.end))}</div>${x.note?`<div class="c">${esc(x.note)}${x.status!=="miss"&&!x.cat_ok&&showCat?` (du: ${esc(x.stu.category)})`:""}</div>`:""}${showCom&&x.eh.comment?`<div class="c">${esc(x.eh.comment)}</div>`:""}</div>`;
+    });
+    if(res.extras.length){
+      h+=`<h3 class="sub">Überflüssige Markierungen (${res.extras.length})</h3>`;
+      res.extras.forEach(m=>{ h+=`<div class="res extra"><div class="t">Nicht erwartet · −${r2(res.cfg.penalty)} P</div><div class="q">${esc(m.quote||state.text.slice(m.start,m.end))}</div></div>`; });
+    }
     if(total>0 && state.tab==='eval' && !evaluateAndRender._said){ evaluateAndRender._said=true; setTimeout(()=>{ evaluateAndRender._said=false; },1500);
-      if(found===total){ say('Alle Stellen gefunden. Klasse gemacht!','cheer',6000); if(!state.confettiDone){state.confettiDone=true;confetti();} }
-      else if(found>=total/2) say(`Schon ${found} von ${total} gefunden. Schau dir an, was noch fehlt.`,'happy',6000);
+      if(res.nFound===total && !res.extras.length){ say('Alle Stellen genau getroffen. Klasse gemacht!','cheer',6000); if(!state.confettiDone){state.confettiDone=true;confetti();} }
+      else if(res.nMiss===0 && res.nPart===0) say('Alle Stellen gefunden. Einige Markierungen waren überflüssig.','happy',6000);
+      else if(res.nFound+res.nPart>=total/2) say(`Du bist schon gut dabei. Schau dir an, was noch nicht ganz passt.`,'happy',6000);
       else say('Da ist noch Luft nach oben. Schau, was fehlt, und versuch es nochmal.','wink',6500); }
-    if(res.precisionFactor<1) h+=`<div class="tip">Du hast viel zusätzlich markiert. Das gibt Abzug. Markiere lieber nur das Wichtigste.</div>`;
-    if(state.eh?.settings?.student_ui?.show_eh_highlights) h+=`<div class="legend"><span><i style="border-color:var(--ok)"></i>gefunden</span><span><i style="border-color:var(--warn)"></i>fehlt noch</span></div>`;
-    h+=`<h3 class="sub">Noch nicht gefunden (${res.misses.length})</h3>`;
-    if(!res.misses.length) h+=`<p style="color:var(--ok);font-weight:700">Du hast alle erwarteten Stellen gefunden.</p>`;
-    res.misses.forEach(m=>{
-      h+=`<div class="res miss"><div class="t">${showCat&&m.category?esc(m.category):"Fehlt"}${(m.points!==""&&m.points!=null)?` · ${esc(m.points)} P`:""}</div><div class="q">${esc(m.quote||state.text.slice(m.start,m.end))}</div>${showCom&&m.comment?`<div class="c">${esc(m.comment)}</div>`:""}</div>`;
-    });
-    h+=`<h3 class="sub">Gefunden (${res.hits.length})</h3>`;
-    if(!res.hits.length) h+=`<p style="color:var(--muted)">Noch keine Treffer.</p>`;
-    res.hits.forEach(x=>{
-      h+=`<div class="res hit"><div class="t">${x.cat_ok?"✓ Kategorie passt":"✗ Kategorie passt nicht"}${(x.eh.points!==""&&x.eh.points!=null)?` · ${esc(x.eh.points)} P`:""}</div><div class="q">${esc(x.eh.quote||state.text.slice(x.eh.start,x.eh.end))}</div>${showCat?`<div class="c">Erwartet: <b>${esc(x.eh.category||"–")}</b> · Du: <b>${esc(x.stu.category||"–")}</b></div>`:""}${showCom&&x.eh.comment?`<div class="c">${esc(x.eh.comment)}</div>`:""}</div>`;
-    });
     h+=`<p style="margin-top:12px;font-size:13px;color:var(--muted)">Du kannst weiter üben. Für deine Lehrkraft zählt der Stand, den du vor der Auswertung hattest.</p>`;
     p.innerHTML=h;
     applyHighlights();
