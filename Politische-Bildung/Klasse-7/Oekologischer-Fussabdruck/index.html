@@ -33,7 +33,11 @@ button,input,textarea{font-family:inherit;font-size:inherit}
 .small{font-size:.85rem}
 .footer-note{font-size:.85rem;color:#3d5446;text-align:center;margin:20px 0 6px}
 .impressum-link{display:block;text-align:center;margin:8px 0 28px;font-size:.85rem;color:#3d5446}
-.reset{background:none;border:none;color:#3d5446;cursor:pointer;font-size:.8rem;text-decoration:underline}
+.wipe{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:12px 16px;margin:14px 0 26px;text-align:center;box-shadow:3px 3px 0 var(--ink)}
+.wipe p{margin:0 0 8px;font-size:.95rem}
+.wipe .wrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.wipe .wok{margin:8px 0 0;font-weight:700;color:#2f8040}
+.btn.danger{background:#d64545;color:#fff}
 
 /* ---------- Intro ---------- */
 #v-intro{min-height:100vh;display:none;align-items:center;justify-content:center;padding:20px}
@@ -411,7 +415,8 @@ textarea::placeholder{color:#6b756e}
   <button class="stepcard final" id="open-final" type="button"><span class="ico">📜</span><span><h3>4 · Gemeinsames Plakat</h3><span class="d">Erst öffnen, wenn alle in der Gruppe ihr Thema fertig haben.</span></span></button>
   <p class="footer-note">Grundlagen: Daten der Organisation Global Footprint Network zum Erdüberlastungstag (Deutschland 2026: 10. Mai, das entspricht etwa 3 Erden), Brundtland-Bericht der Vereinten Nationen (1987) und Hans Carl von Carlowitz (1713).<br>
   Der Test ist eine grobe Schätzung. Alle Grafiken in diesem Modul sind selbst gezeichnet.<br>
-  <button class="reset" id="reset">Gespeicherte Eingaben auf diesem Gerät löschen</button></p>
+</p>
+  <div class="wipe noprint" id="wipe-home"></div>
 </div>
 
 <div class="view" id="v-topic"></div>
@@ -909,7 +914,8 @@ function renderPoster(){
   '<div class="pbox"><div class="pcols">'+
   '<div><label for="pf_gen">⏳ Warum es vor allem unsere Generation betrifft:</label><textarea id="pf_gen" placeholder="Es betrifft vor allem uns, weil …"></textarea><div class="pc" id="pc_gen"></div></div>'+
   '<div><label for="pf_plan">🌍 Das nehmen wir uns vor:</label><textarea id="pf_plan" placeholder="Wir nehmen uns vor, …"></textarea><div class="pc" id="pc_plan"></div></div></div></div></div>'+
-  '<div class="topnav noprint" style="margin-top:14px"><button class="btn grey" id="f2">← Zurück zum Bild</button></div>';
+  '<div class="topnav noprint" style="margin-top:14px"><button class="btn grey" id="f2">← Zurück zum Bild</button></div><div class="wipe noprint" id="wipe-poster"></div>';
+  wipePanel(v.querySelector('#wipe-poster'));
   ORDER.forEach(k=>TOPICS[k].tasks.forEach((tk,i)=>{if(!tk.q)fillRes(k,i,v.querySelector('#pr_'+k+'_'+i));}));
   const fields=[];
   ORDER.forEach(k=>qList(k).forEach(q=>fields.push({id:k+'_'+q.i,own:own.includes(k),src:'nh_ans_'+k+'_'+q.i})));
@@ -968,7 +974,21 @@ driveCar();
 $('#st1').addEventListener('click',()=>renderTest());
 $('#st2').addEventListener('click',renderBegriff);
 $('#open-final').addEventListener('click',renderPoster);
-$('#reset').addEventListener('click',()=>{if(confirm('Alle gespeicherten Antworten und Freischaltungen auf diesem Gerät löschen?')){store.clearAll();refreshLocks();}});
+/* ===== Daten löschen (ohne Browser-Dialog, funktioniert auch auf Schul-PCs) ===== */
+function wipeData(){store.clearAll();refreshLocks();document.querySelectorAll('textarea.ans,#pf_def,#pf_gen,#pf_plan,#pn,#treflect').forEach(t=>{t.value='';});}
+function wipePanel(host,after){
+  function idle(msg){
+    host.innerHTML='<p>Dieses Modul speichert deine Antworten und freigeschalteten Themen im Browser auf diesem Gerät. Auf einem Schulrechner solltest du sie am Ende löschen.</p><div class="wrow"><button type="button" class="btn grey" id="w1">🗑️ Meine Daten auf diesem Gerät löschen</button></div>'+(msg?'<p class="wok" role="status">'+msg+'</p>':'');
+    host.querySelector('#w1').onclick=ask;
+  }
+  function ask(){
+    host.innerHTML='<p><b>Wirklich alles löschen?</b> Antworten, Testergebnis, Plakat-Eingaben und freigeschaltete Themen sind danach weg. Das lässt sich nicht rückgängig machen.</p><div class="wrow"><button type="button" class="btn danger" id="w2">Ja, alles löschen</button><button type="button" class="btn grey" id="w3">Abbrechen</button></div>';
+    host.querySelector('#w2').onclick=()=>{wipeData();if(after)after();idle('✔ Alle gespeicherten Daten auf diesem Gerät sind gelöscht.');};
+    host.querySelector('#w3').onclick=()=>idle('');
+  }
+  idle('');
+}
+wipePanel($('#wipe-home'));
 typeLine();refreshLocks();
 
 </script>
