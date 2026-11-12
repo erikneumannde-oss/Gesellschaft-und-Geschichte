@@ -69,7 +69,6 @@ h1.title{text-align:center;color:var(--ink);margin:10px 0 2px;font-size:2.3rem;t
 .hot:focus-visible{outline:3px solid var(--ink);outline-offset:6px;border-radius:12px}
 .hot::before{content:"";position:absolute;top:0;left:50%;width:64px;height:64px;margin-left:-32px;border-radius:50%;border:3px solid var(--c);animation:puls 2.2s ease-out infinite;pointer-events:none}
 @keyframes puls{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.7);opacity:0}}
-@media (prefers-reduced-motion:reduce){.hot::before,.erdi svg{animation:none}}
 .stepcard.final{margin:18px 0}
 
 /* ---------- Test ---------- */
@@ -240,13 +239,11 @@ textarea.ans:focus{outline:4px solid var(--sun)}
 textarea::placeholder{color:#6b756e}
 @media (max-width:640px){.hot.tr .lab{display:none}}
 
-mark{background:#ffe066;padding:1px 4px;border-radius:4px;color:inherit}
 .erditip{display:flex;gap:12px;align-items:center;margin:14px 0;animation:tipin .5s ease}
 .erditip .ev{flex:0 0 64px}.erditip .ev svg{width:64px;height:64px;display:block}
 .erditip .eb{position:relative;background:#fff;border:3px solid var(--ink);border-radius:16px;padding:10px 14px;box-shadow:3px 3px 0 var(--ink);font-weight:600}
 .erditip .eb::before{content:"";position:absolute;left:-11px;top:50%;margin-top:-8px;border:8px solid transparent;border-right-color:var(--ink);border-left:0}
 @keyframes tipin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){.erditip{animation:none}}
 @media print{.erditip{display:none}}
 
 .fgrid .cell{transform:scale(0);transform-origin:50% 100%;transition:transform .35s ease}
@@ -294,7 +291,7 @@ mark{background:#ffe066;padding:1px 4px;border-radius:4px;color:inherit}
   <p class="sub">Ökologischer Fußabdruck · Wie leben wir so, dass es für alle reicht?</p>
   <div class="steps">
     <button class="stepcard" id="st1" type="button"><span class="ico">🌍</span><span><h3>1 · Fußabdruck-Test</h3><span class="d">Wie viele Erden brauchst du?</span></span><span class="tick" id="tick1"></span></button>
-    <button class="stepcard" id="st2" type="button"><span class="ico">🌳</span><span><h3>2 · Was heißt „nachhaltig“?</h3><span class="d">Wald, Definition und Zeitreise</span></span><span class="tick" id="tick2"></span></button>
+    <button class="stepcard" id="st2" type="button"><span class="ico">🌳</span><span><h3>2 · Was heißt „nachhaltig“?</h3><span class="d">Wald, Merkzettel und Zeitreise</span></span><span class="tick" id="tick2"></span></button>
   </div>
   <div class="box" style="margin-bottom:12px">
     <h2>3 · Die vier Themen</h2>
@@ -472,10 +469,10 @@ const QUESTIONS = [
 
 const TOPICS = {
  energie:{title:'Energie', icon:'💨', color:'--c-energie', lead:'Woher kommt der Strom, wenn du dein Handy auflädst?',
-  text:`<ul><li><mark><b>Fossil:</b> Kohle, Erdöl und Erdgas.</mark> Sie sind vor Millionen Jahren entstanden und irgendwann aufgebraucht. Beim Verbrennen entsteht CO₂.</li>
-  <li><mark><b>Erneuerbar:</b> Sonne, Wind, Wasser und Biomasse (zum Beispiel Biogas aus Pflanzenresten).</mark> Sie werden nicht aufgebraucht. In Deutschland liefern sie schon mehr als die Hälfte des Stroms.</li></ul>
-  <p><b>Aber:</b> Nachts scheint keine Sonne und der Wind weht nicht immer. <mark>Windräder verändern die Landschaft und können Vögeln und Fledermäusen schaden.</mark> Sie machen Lärm und werfen Schatten, deshalb wollen Anwohner sie oft nicht direkt neben ihrem Haus. Solaranlagen brauchen viel Platz.</p>
-  <p><b>Energie sparen</b> hilft immer: <mark>Licht ausmachen, Geräte nicht im Standby lassen, kürzer duschen, die Heizung etwas herunterdrehen.</mark></p>`,
+  text:`<ul><li><b>Fossil:</b> Kohle, Erdöl und Erdgas. Sie sind vor Millionen Jahren entstanden und irgendwann aufgebraucht. Beim Verbrennen entsteht CO₂.</li>
+  <li><b>Erneuerbar:</b> Sonne, Wind, Wasser und Biomasse (zum Beispiel Biogas aus Pflanzenresten). Sie werden nicht aufgebraucht. In Deutschland liefern sie schon mehr als die Hälfte des Stroms.</li></ul>
+  <p><b>Aber:</b> Nachts scheint keine Sonne und der Wind weht nicht immer. Windräder verändern die Landschaft und können Vögeln und Fledermäusen schaden. Sie machen Lärm und werfen Schatten, deshalb wollen Anwohner sie oft nicht direkt neben ihrem Haus. Solaranlagen brauchen viel Platz.</p>
+  <p><b>Energie sparen</b> hilft immer: Licht ausmachen, Geräte nicht im Standby lassen, kürzer duschen, die Heizung etwas herunterdrehen.</p>`,
   tasks:[
    {sort:{title:'Ordne zu: erneuerbar oder fossil?', label:'Erneuerbar oder fossil?', cats:['erneuerbar','fossil'],
      items:[['Sonne',0,'Sonne'],['Steinkohle',1,'Steinkohle'],['Wind',0,'Wind'],['Erdgas',1,'Erdgas'],['Wasserkraft',0,'Wasserkraft'],['Erdöl',1,'Erdöl'],['Biogas aus Pflanzenresten',0,'Biogas']]}},
@@ -483,14 +480,14 @@ const TOPICS = {
    {q:'Wie kannst du Energie sparen? Nenne zwei Beispiele.', ph:'Ich kann Energie sparen, indem ich …', label:'So sparen wir Energie'}
   ]},
  bauen:{title:'Wohnen & Bauen', icon:'🏠', color:'--c-bauen', lead:'Was steckt alles in einem Haus?',
-  text:`<p>Für ein Haus braucht man <b>Rohstoffe</b>: Sand, Kies, Stein, Holz, Stahl. <mark>Zement für Beton verbraucht besonders viel Energie.</mark> Etwa 7 bis 8 Prozent des weltweiten CO₂ kommen daher.</p>
-  <p>Häuser brauchen <b>Fläche</b>. <mark>In Deutschland werden jeden Tag etwa 50 Hektar neu bebaut</mark>, das sind rund 70 Fußballfelder. Der Boden wird versiegelt, Regen kann nicht mehr versickern.</p>
+  text:`<p>Für ein Haus braucht man <b>Rohstoffe</b>: Sand, Kies, Stein, Holz, Stahl. Zement für Beton verbraucht besonders viel Energie. Etwa 7 bis 8 Prozent des weltweiten CO₂ kommen daher.</p>
+  <p>Häuser brauchen <b>Fläche</b>. In Deutschland werden jeden Tag etwa 50 Hektar neu bebaut, das sind rund 70 Fußballfelder. Der Boden wird versiegelt, Regen kann nicht mehr versickern.</p>
   <p>Und im Winter brauchen Häuser <b>Energie</b> zum Heizen.</p>
   <h4>Was hilft?</h4>
-  <ul><li><mark><b>Energie sparen:</b> Wände dämmen, Wärmepumpe statt Ölheizung.</mark></li>
-  <li><mark><b>Rohstoffe sparen:</b> alte Häuser umbauen statt abreißen, Material wiederverwenden.</mark> Ein Neubau braucht neuen Beton, Stahl und Holz, bei einem Umbau steht das meiste schon.</li>
-  <li><mark><b>Fläche sparen:</b> mehrere Stockwerke, Baulücken in der Stadt füllen.</mark></li></ul>
-  <p><b>Aber:</b> <mark>Wohnungen sind in Städten knapp und teuer.</mark> Umbauen und Dämmen kostet Geld, und Handwerker sind oft ausgebucht. Ein Neubau auf freier Fläche geht manchmal schneller und ist billiger.</p>`,
+  <ul><li><b>Energie sparen:</b> Wände dämmen, Wärmepumpe statt Ölheizung.</li>
+  <li><b>Rohstoffe sparen:</b> alte Häuser umbauen statt abreißen, Material wiederverwenden. Ein Neubau braucht neuen Beton, Stahl und Holz, bei einem Umbau steht das meiste schon.</li>
+  <li><b>Fläche sparen:</b> mehrere Stockwerke, Baulücken in der Stadt füllen.</li></ul>
+  <p><b>Aber:</b> Wohnungen sind in Städten knapp und teuer. Umbauen und Dämmen kostet Geld, und Handwerker sind oft ausgebucht. Ein Neubau auf freier Fläche geht manchmal schneller und ist billiger.</p>`,
   tasks:[
    {sort:{title:'Ordne zu: Was wird gespart?', label:'Was wird gespart?', cats:['Energie','Rohstoffe','Fläche'],
      items:[['Hauswände mit Dämmplatten verkleiden',0,'Wände dämmen'],['Ein altes Gebäude zu Wohnungen umbauen',1,'Altbau umbauen'],['Ein Hochhaus statt vieler Einzelhäuser bauen',2,'Hochhaus statt Einzelhäuser'],['Mit einer Wärmepumpe heizen',0,'Wärmepumpe'],['Alte Dachziegel noch einmal verwenden',1,'Ziegel wiederverwenden'],['Leere Grundstücke in der Stadt bebauen, statt neue Felder',2,'Baulücken füllen']]}},
@@ -498,11 +495,11 @@ const TOPICS = {
    {q:'Warum ist nachhaltiges Bauen manchmal schwierig?', ph:'Es ist schwierig, weil …', label:'Warum ist das manchmal schwierig?'}
   ]},
  essen:{title:'Ernährung', icon:'🐄', color:'--c-essen', lead:'Was auf deinem Teller liegt, hat eine lange Reise hinter sich.',
-  text:`<p>Für unser Essen braucht man <b>Fläche</b>, Wasser und Energie. <mark>Weltweit wird fast die Hälfte der nutzbaren Landfläche für Landwirtschaft gebraucht. Das meiste davon für Tiere: für Weiden und für ihr Futter.</mark></p>
-  <p>Tiere fressen erst viele Pflanzen, bevor wir Fleisch bekommen. Dabei geht viel verloren. <mark>Deshalb braucht Fleisch mehr Fläche als Pflanzen.</mark> Rinder stoßen außerdem Methan aus, ein Treibhausgas.</p>
+  text:`<p>Für unser Essen braucht man <b>Fläche</b>, Wasser und Energie. Weltweit wird fast die Hälfte der nutzbaren Landfläche für Landwirtschaft gebraucht. Das meiste davon für Tiere: für Weiden und für ihr Futter.</p>
+  <p>Tiere fressen erst viele Pflanzen, bevor wir Fleisch bekommen. Dabei geht viel verloren. Deshalb braucht Fleisch mehr Fläche als Pflanzen. Rinder stoßen außerdem Methan aus, ein Treibhausgas.</p>
   <table class="dtab"><caption>So viel Fläche braucht man ungefähr für 1 Kilogramm:</caption><tbody>
   <tr><td>Käse</td><td>ca. 90 m²</td></tr><tr><td>Kartoffeln</td><td>ca. 1 m²</td></tr><tr><td>Rindfleisch</td><td>ca. 330 m²</td></tr><tr><td>Hähnchenfleisch</td><td>ca. 12 m²</td></tr></tbody></table>
-  <p><b>Verschwendung:</b> <mark>Etwa ein Drittel aller Lebensmittel wird weltweit weggeworfen.</mark> Dagegen hilft: <mark>nur kaufen, was man braucht, Reste essen, einen Einkaufszettel schreiben.</mark> „Mindestens haltbar bis“ heißt nicht „danach giftig“.</p>
+  <p><b>Verschwendung:</b> Etwa ein Drittel aller Lebensmittel wird weltweit weggeworfen. Dagegen hilft: nur kaufen, was man braucht, Reste essen, einen Einkaufszettel schreiben. „Mindestens haltbar bis“ heißt nicht „danach giftig“.</p>
   <p><b>Aber:</b> Auf Weiden wächst Gras, wo kein Acker möglich wäre. „Regional“ ist nicht automatisch besser: Tomaten aus dem beheizten Gewächshaus im Winter brauchen viel Energie.</p>`,
   tasks:[
    {order:{title:'Bringe in die richtige Reihenfolge: Wer braucht die wenigste Fläche für 1 kg? Fange mit der kleinsten an.', label:'Fläche für 1 kg (wenig bis viel)', items:['Kartoffeln','Hähnchenfleisch','Käse','Rindfleisch'], vals:['ca. 1 m²','ca. 12 m²','ca. 90 m²','ca. 330 m²']}},
@@ -510,14 +507,14 @@ const TOPICS = {
    {q:'Wie kann man weniger Essen wegwerfen? Nenne eine Idee.', ph:'Man kann weniger wegwerfen, indem …', label:'Das hilft gegen Verschwendung'}
   ]},
  transport:{title:'Transport', icon:'🚗', color:'--c-transport', lead:'Zur Schule, in den Urlaub, die Ware in den Laden: Wege gehören zum Leben.',
-  text:`<p><mark>Verkehr verursacht in Deutschland etwa ein Fünftel des CO₂.</mark> Es ist in den letzten Jahrzehnten kaum weniger geworden: mehr und größere Autos, mehr Lieferverkehr, mehr Flüge.</p>
+  text:`<p>Verkehr verursacht in Deutschland etwa ein Fünftel des CO₂. Es ist in den letzten Jahrzehnten kaum weniger geworden: mehr und größere Autos, mehr Lieferverkehr, mehr Flüge.</p>
   <table class="dtab"><caption>So viel CO₂ entsteht ungefähr pro Person und Kilometer (Quelle: Umweltbundesamt, gerundet):</caption><tbody>
   <tr><td>Auto (Benzin, eine Person)</td><td>ca. 160 g</td></tr><tr><td>Fahrrad</td><td>ca. 0 g</td></tr><tr><td>Inlandsflug</td><td>ca. 300 g</td></tr><tr><td>Fernzug</td><td>ca. 30 g</td></tr></tbody></table>
   <p>Elektroautos stoßen beim Fahren kein CO₂ aus. Ihre Herstellung braucht aber viele Rohstoffe und Strom. Über ihre ganze Lebensdauer sind sie meist trotzdem besser als Benzin- und Dieselautos.</p>
-  <p><b>Warum fahren trotzdem so viele Auto?</b> <mark>Das Auto ist bequem: Es fährt sofort los, bis vor die Haustür und man kann viel mitnehmen.</mark> Auf dem Land fährt der Bus nur selten, dort ist ein Auto oft nötig. Fahrkarten können teuer sein, und viele Radwege fühlen sich unsicher an.</p>
+  <p><b>Warum fahren trotzdem so viele Auto?</b> Das Auto ist bequem: Es fährt sofort los, bis vor die Haustür und man kann viel mitnehmen. Auf dem Land fährt der Bus nur selten, dort ist ein Auto oft nötig. Fahrkarten können teuer sein, und viele Radwege fühlen sich unsicher an.</p>
   <h4>Ideen, die Städte und Länder ausprobieren</h4>
-  <ul><li><mark>Bus und Bahn häufiger fahren lassen</mark> und mit einer Monatskarte billiger machen (zum Beispiel das Deutschlandticket).</li>
-  <li><mark>Sichere, breite Radwege</mark> bauen.</li>
+  <ul><li>Bus und Bahn häufiger fahren lassen und mit einer Monatskarte billiger machen (zum Beispiel das Deutschlandticket).</li>
+  <li>Sichere, breite Radwege bauen.</li>
   <li>Parken in der Innenstadt teurer machen, damit weniger Autos hineinfahren.</li>
   <li>Fahrgemeinschaften: Mehrere Personen teilen sich ein Auto.</li></ul>`,
   tasks:[
@@ -668,7 +665,7 @@ const de1=n=>n.toFixed(1).replace('.',',');
 function updateSteps(){
   const t=document.getElementById('tick1'),b=document.getElementById('tick2');
   if(t)t.textContent=store.get('nh_test_done')==='1'?'✅':'';
-  if(b)b.textContent=(store.get('nh_ans_begriff_def')||'').trim()?'✅':'';
+  if(b)b.textContent=(store.get('nh_ans_begriff_gen')||'').trim()?'✅':'';
 }
 let earthId=0;
 const LAND='<path d="M18 74 C26 46 56 30 86 36 C96 40 94 50 82 54 C74 58 76 66 66 72 C58 78 54 90 46 90 C38 86 34 78 26 82 C18 82 16 78 18 74Z"/><path d="M50 118 C62 108 80 114 84 130 C86 146 72 162 64 176 C56 178 52 168 54 156 C46 142 40 128 50 118Z"/><path d="M116 40 C130 32 150 36 156 48 C150 58 134 56 126 60 C116 58 110 48 116 40Z"/><path d="M118 98 C134 86 158 94 160 112 C162 130 148 152 136 164 C126 168 122 154 122 142 C114 128 106 112 118 98Z"/><path d="M152 58 C166 54 180 64 182 78 C172 88 160 82 152 72Z"/>';
@@ -796,24 +793,23 @@ function renderBegriff(){
   v.innerHTML='<div class="topnav"><button class="btn grey small" id="bb1">← Zur Übersicht</button></div>'+
   '<div class="topic-head"><div class="ico">🌳</div><div><h2>Was heißt eigentlich „nachhaltig“?</h2><p>Ein Wort, das überall vorkommt. Hier findest du heraus, was dahintersteckt.</p></div></div>'+
   '<div class="sec"><h3>1 · Ein Wald als Rechenaufgabe</h3>'+
-  '<p>Das Wort kommt aus der Forstwirtschaft. Im Jahr 1713 sah Hans Carl von Carlowitz, dass das Holz knapp wurde, weil zu viele Bäume gefällt wurden. Er forderte: <mark>Man soll nur so viel Holz schlagen, wie wieder nachwachsen kann.</mark></p>'+
+  '<p>Das Wort kommt aus der Forstwirtschaft. Im Jahr 1713 sah Hans Carl von Carlowitz, dass das Holz knapp wurde, weil zu viele Bäume gefällt wurden. Er forderte: Man soll nur so viel Holz schlagen, wie wieder nachwachsen kann.</p>'+
   '<p>Probiere es aus: Der Wald hat 10 Bäume. Stelle ein, wie viele Bäume pro Jahr gefällt werden, und lasse 10 Jahre vergehen. Wie schnell der Wald nachwächst, findest du durch Ausprobieren heraus.</p>'+
-  erditip('Schreibe dir auf, was <mark>gelb markiert</mark> ist: das brauchst du gleich für deinen Merkzettel.')+'<div id="forestbox"></div>'+
+  '<div id="forestbox"></div>'+
   '<div class="task"><b class="n">1</b>Wie viele Bäume dürfen pro Jahr höchstens gefällt werden, damit der Wald nicht kleiner wird?<textarea class="ans" id="a_wald" placeholder="Es dürfen höchstens … Bäume pro Jahr gefällt werden, weil …" aria-label="Antwort zu Aufgabe 1"></textarea></div></div>'+
   '<div class="sec"><h3>2 · Vom Wald zur ganzen Welt</h3>'+
-  '<p>Heute meint das Wort viel mehr als Holz. 1987 schrieben die Vereinten Nationen: Eine Entwicklung ist nachhaltig, wenn sie die Bedürfnisse der Menschen heute erfüllt, <mark>ohne dass spätere Generationen schlechter leben können.</mark></p>'+
-  '<p>Dabei gelten <mark>drei Seiten</mark>, die zusammenpassen müssen:</p>'+
+  '<p>Heute meint das Wort viel mehr als Holz. 1987 schrieben die Vereinten Nationen: Eine Entwicklung ist nachhaltig, wenn sie die Bedürfnisse der Menschen heute erfüllt, ohne dass spätere Generationen schlechter leben können.</p>'+
+  '<p>Dabei gelten drei Seiten, die zusammenpassen müssen:</p>'+
   '<div class="dims"><div class="dim"><div class="e">🌿</div><b>Umwelt</b><br>Natur und Rohstoffe schonen</div><div class="dim"><div class="e">💶</div><b>Wirtschaft</b><br>Arbeit und Geld, die bezahlbar bleiben</div><div class="dim"><div class="e">🤝</div><b>Soziales</b><br>Gerechtigkeit zwischen Menschen und Ländern</div></div>'+
-  erditip('Notiere dir auch die <mark>drei Seiten</mark> der Nachhaltigkeit: Umwelt, Wirtschaft, Soziales.')+'<div class="task"><b class="n">2</b><span id="sortq">Nachhaltig oder nicht? Ordne zu.</span></div></div>'+
-  '<div class="sec"><h3>3 · Dein Merkzettel</h3><p style="margin-top:0">Tippe auf das passende Wort. So hast du die wichtigsten Dinge notiert.</p><div id="merk"></div></div>'+
-  '<div class="sec"><h3>4 · Eure Definition</h3>'+
-  '<div class="task"><b class="n">3</b>Erkläre in ein bis zwei Sätzen, was „nachhaltig“ bedeutet. Dein Merkzettel hilft dir. Dieser Satz steht später auf eurem Plakat.<textarea class="ans" id="a_def" placeholder="Nachhaltig bedeutet, dass …" aria-label="Eure Definition von nachhaltig"></textarea></div></div>'+
-  '<div class="sec time"><h3>5 · Und was hat das mit dir zu tun?</h3>'+
+  '<div class="task"><b class="n">2</b><span id="sortq">Nachhaltig oder nicht? Ordne zu.</span></div></div>'+
+  '<div class="sec"><h3>3 · Dein Merkzettel</h3><p style="margin-top:0">Tippe auf das passende Wort. So entsteht dein Merkzettel.</p><div id="merk"></div>'+
+  erditip('Wenn dein Merkzettel vollständig ist, <b>schreibe ihn bitte ab</b>: als Erklärung des Begriffs „Nachhaltigkeit“ in dein <b>Glossar</b>.')+'</div>'+
+  '<div class="sec time"><h3>4 · Und was hat das mit dir zu tun?</h3>'+
   '<p>Vieles, was heute gebaut wird, hält lange: Ein Haus steht oft 80 Jahre, ein Kraftwerk 40 Jahre.</p>'+
   '<p><label for="age"><b>Ich bin jetzt</b></label> <input id="age" type="number" min="8" max="20" value="12" inputmode="numeric"> <b>Jahre alt.</b></p>'+
   '<table><thead><tr><th>Jahr</th><th>Du bist dann</th></tr></thead><tbody id="agetab"></tbody></table>'+
   '<p style="margin-top:12px">Das ist kein Grund zur Angst, aber ein guter Grund mitzureden: Ihr werdet in diesen Jahren leben und entscheiden.</p>'+
-  '<div class="task"><b class="n">4</b>Warum betrifft Nachhaltigkeit deine Generation stärker als die deiner Großeltern?<textarea class="ans" id="a_gen" placeholder="Das betrifft uns stärker, weil …" aria-label="Antwort zu Aufgabe 4"></textarea></div></div>'+
+  '<div class="task"><b class="n">3</b>Warum betrifft Nachhaltigkeit deine Generation stärker als die deiner Großeltern?<textarea class="ans" id="a_gen" placeholder="Das betrifft uns stärker, weil …" aria-label="Antwort zu Aufgabe 3"></textarea></div></div>'+
   '<div class="topnav"><button class="btn grey" id="bb2">← Zur Übersicht</button><button class="btn sun" id="bnext">Weiter zu den vier Themen →</button></div>';
   buildForest($('#forestbox'));
   buildSort({title:'',cats:['nachhaltig','nicht nachhaltig'],items:[
@@ -828,8 +824,7 @@ function renderBegriff(){
     {pre:'Nachhaltig leben heißt: Auch spätere',post:'sollen noch gut leben können.',opts:['Generationen','Hersteller','Nachbarn']},
     {pre:'Nachhaltigkeit hat drei Seiten: Umwelt, Soziales und',post:'.',opts:['Wirtschaft','Mode','Wetter']}]);
   bindField($('#a_wald'),'nh_ans_begriff_wald');
-  bindField($('#a_def'),'nh_ans_begriff_def',updateSteps);
-  bindField($('#a_gen'),'nh_ans_begriff_gen');
+  bindField($('#a_gen'),'nh_ans_begriff_gen',updateSteps);
   const rows=()=>{const a=Math.max(6,Math.min(25,parseInt($('#age').value,10)||12));
     $('#agetab').innerHTML=[yr+9,yr+24,yr+49,yr+74].map(y=>'<tr><td>'+y+'</td><td><b>'+(a+y-yr)+' Jahre</b></td></tr>').join('');};
   $('#age').addEventListener('input',rows);rows();
@@ -918,7 +913,7 @@ function renderPoster(){
   ORDER.forEach(k=>TOPICS[k].tasks.forEach((tk,i)=>{if(!tk.q)fillRes(k,i,v.querySelector('#pr_'+k+'_'+i));}));
   const fields=[];
   ORDER.forEach(k=>qList(k).forEach(q=>fields.push({id:k+'_'+q.i,own:own.includes(k),src:'nh_ans_'+k+'_'+q.i})));
-  fields.push({id:'def',own:true,src:'nh_ans_begriff_def'},{id:'gen',own:true,src:'nh_ans_begriff_gen'},{id:'plan'},{id:'pn',input:true});
+  fields.push({id:'def'},{id:'gen',own:true,src:'nh_ans_begriff_gen'},{id:'plan'},{id:'pn',input:true});
   fields.forEach(f=>{
     const t=v.querySelector(f.input?'#pn':'#pf_'+f.id),pc=v.querySelector('#pc_'+f.id);
     const key='nh_poster_'+f.id;let val=store.get(key);
@@ -941,7 +936,6 @@ function renderPoster(){
 let li=0,typing=null;
 function typeLine(){
   const el=$('#stext');el.textContent='';const line=LINES[li];let i=0;clearInterval(typing);
-  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=line;return;}
   typing=setInterval(()=>{el.textContent=line.slice(0,++i);if(i>=line.length)clearInterval(typing);},22);
 }
 $('#snext').onclick=()=>{
@@ -957,7 +951,7 @@ $('#skip').onclick=()=>{clearInterval(typing);show('v-home');};
 document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openTopic(b.dataset.open)));
 function driveCar(){
   const car=document.getElementById('car'),hot=document.querySelector('.hot.tr'),sc=document.getElementById('scene');if(!car||!hot)return;
-  const X0=-200,X1=1080,DUR=17000,Y=495,S=.85,still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const X0=-200,X1=1080,DUR=17000,Y=495,S=.85,still=false; /* Das Auto fährt immer: Schul-PCs melden oft „weniger Bewegung“, dann stünde es still und die Aufgabe daran wäre nicht erreichbar */
   let p=still?.42:0,last=null,hold=false;
   const set=()=>{const x=X0+(X1-X0)*p;car.setAttribute('transform','translate('+x.toFixed(1)+' '+Y+') scale('+S+')');
     hot.style.left=((x+80*S)/10).toFixed(2)+'%';hot.style.top=((Y-64*S)/5.4).toFixed(2)+'%';hot.style.visibility=(x+80*S<-20||x+80*S>1020)?'hidden':'visible';};
@@ -975,7 +969,6 @@ $('#st1').addEventListener('click',()=>renderTest());
 $('#st2').addEventListener('click',renderBegriff);
 $('#open-final').addEventListener('click',renderPoster);
 $('#reset').addEventListener('click',()=>{if(confirm('Alle gespeicherten Antworten und Freischaltungen auf diesem Gerät löschen?')){store.clearAll();refreshLocks();}});
-if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelectorAll('svg').forEach(s=>{try{s.pauseAnimations();}catch(e){}});}
 typeLine();refreshLocks();
 
 </script>
