@@ -88,8 +88,7 @@
     'Was-ist-Politik': {
       topic: 'politik',
       text: 'Hier bist du in Spandau unterwegs und erlebst in drei Modulen, was Politik im Alltag bedeutet. Du sammelst Beweise und findest heraus, welche Ebene zuständig ist.',
-      tip: 'Sprich mit den Figuren und lies die Hinweise im Dialog ganz. Wenn du nicht weiter weißt, überlege: Wer ist für diese Frage zuständig, der Bezirk, das Land oder der Staat?',
-      bottom: 170
+      tip: 'Sprich mit den Figuren und lies die Hinweise im Dialog ganz. Wenn du nicht weiter weißt, überlege: Wer ist für diese Frage zuständig, der Bezirk, das Land oder der Staat?'
     }
   };
 
