@@ -212,15 +212,15 @@
       }
     }
   };
-  var SIZE = { w: 84, h: 90, wm: 66, hm: 71 };
+  var SIZE = { w: 110, h: 118, wm: 84, hm: 90 };
 
   var CSS = '' +
   '#dc-root{position:fixed;left:0;top:0;width:0;height:0;z-index:9000;pointer-events:none;font-family:"Segoe UI",system-ui,-apple-system,sans-serif}' +
-  '.dc{position:fixed;left:0;top:0;width:var(--dw,84px);height:var(--dh,90px);pointer-events:auto;cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;perspective:420px;transition:left 1.8s cubic-bezier(.45,0,.25,1),top 1.8s cubic-bezier(.45,0,.25,1),opacity .3s}' +
+  '.dc{position:fixed;left:0;top:0;width:var(--dw,110px);height:var(--dh,118px);pointer-events:auto;cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;perspective:420px;transition:left 1.8s cubic-bezier(.45,0,.25,1),top 1.8s cubic-bezier(.45,0,.25,1),opacity .3s}' +
   '.dc-r{transition-duration:2.1s;transition-delay:.12s}' +
   '#dc-root.dragging .dc{transition:left .05s linear,top .05s linear}#dc-root.dragging .dc-r{transition:left .35s ease-out,top .35s ease-out}#dc-root.dragging .dc{cursor:grabbing}' +
   '#dc-root.nomove .dc{transition:none}' +
-  '.dc-shadow{position:absolute;left:50%;bottom:-2px;width:calc(var(--dw,84px) * .8);height:11px;margin-left:calc(var(--dw,84px) * -.4);border-radius:50%;background:rgba(0,0,0,.3);filter:blur(3px);transition:transform .3s,opacity .3s}' +
+  '.dc-shadow{position:absolute;left:50%;bottom:-2px;width:calc(var(--dw,110px) * .8);height:11px;margin-left:calc(var(--dw,110px) * -.4);border-radius:50%;background:rgba(0,0,0,.3);filter:blur(3px);transition:transform .3s,opacity .3s}' +
   '.dc-body{position:absolute;left:0;top:0;width:100%;height:100%;transform-style:preserve-3d;transform:rotateY(var(--ry,0deg)) rotateZ(var(--rz,0deg));transform-origin:50% 90%;animation:dc-bob 3.2s ease-in-out infinite;filter:drop-shadow(0 6px 5px rgba(0,0,0,.3))}' +
   '.dc-r .dc-body{animation-delay:-1.4s}' +
   '.dc.walk .dc-body{animation:dc-hop .42s ease-in-out infinite}.dc.walk .dc-shadow{transform:scale(.8);opacity:.7}' +
@@ -262,7 +262,7 @@
   '#dc-bubble .kb-punch{display:block;margin-top:6px;font-weight:700}' +
   '#dc-back{position:fixed;left:10px;pointer-events:auto;display:none;border:0;border-radius:999px;background:rgba(30,41,59,.92);color:#e2e8f0;font:600 12px "Segoe UI",system-ui,sans-serif;padding:7px 12px;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.35)}' +
   '@media (max-width:520px){#dc-back .kb-hol{display:none}}' +
-  '@media (max-width:700px){.dc{width:var(--dwm,66px);height:var(--dhm,71px)}.dc-shadow{width:calc(var(--dwm,66px) * .8);margin-left:calc(var(--dwm,66px) * -.4)}}' +
+  '@media (max-width:700px){.dc{width:var(--dwm,84px);height:var(--dhm,90px)}.dc-shadow{width:calc(var(--dwm,84px) * .8);margin-left:calc(var(--dwm,84px) * -.4)}}' +
   '@media print{#dc-root{display:none!important}}';
 
   // ------------------------------------------------------------------ Stimmung

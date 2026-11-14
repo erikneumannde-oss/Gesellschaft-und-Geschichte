@@ -317,6 +317,7 @@
 <div class="back" id="dlgBack" hidden><div class="dlg" id="dlg"></div></div>
 <div class="toast" id="toast" hidden></div>
 
+<script src="../../maskottchen/solo.js"></script>
 <script>
 (() => {
   const $ = id => document.getElementById(id);
@@ -363,6 +364,7 @@
   let markoTimer=null, talkTimer=null;
   function markoColor(){ return state.pen?catColor(state.pen):"#ffd54a"; }
   function say(text,mood,ms){
+    if(window.Solo&&Solo.ready){ Solo.say(text,{cheer:"excited",think:"thinking",wink:"wink"}[mood]||"happy",ms); return; }
     const box=$("marko"); box.hidden=false;
     $("mFace").innerHTML=markoSVG(markoColor(),mood||"happy");
     const b=$("mBub"); b.textContent=text; b.classList.remove("off");
@@ -436,6 +438,14 @@
     $("mFace").innerHTML=markoSVG(markoColor(),"cheer");
   }
   function closeHelp(){ $("mHelp").hidden=true; $("mFace").innerHTML=markoSVG(markoColor(),"happy"); }
+  /* Marko lebt: frei beweglich, mit Stimmungen. Tippen öffnet die Hilfe. */
+  (function(){ function go(){ if(!window.Solo) return;
+    const idle={text:"Ich helfe dir beim Markieren.",tip:"Tippe mich an, dann findest du Antworten auf die häufigsten Fragen: wie du markierst, Stifte wechselst, Markierungen änderst oder speicherst."};
+    Solo.init({skin:"marko",id:"marko",offsetBottom:16,color:markoColor,help:()=>idle,
+      onTap:()=>{ if($("mHelp").hidden){ Solo.close(); openHelp(); } else closeHelp(); },
+      comments:["Markiere nur das Wichtigste. Weniger ist oft mehr.","Frag dich bei jeder Stelle: Wozu gehört sie, These, Argument oder Beleg?","Lies erst den Absatz ganz, dann markiere.","Zu lange Markierungen kosten Punkte, besser genau die Satzteile, auf die es ankommt.","Zwischendurch speichern nicht vergessen, sonst sind deine Markierungen weg."]});
+    $("marko").hidden=true; }
+    if(window.Solo) go(); else window.addEventListener("load",go); })();
   $("mFace").onclick=()=>{ if($("mHelp").hidden) openHelp(); else closeHelp(); };
   $("mFace").onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();$("mFace").click();} };
   document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("mHelp").hidden) closeHelp(); });
@@ -655,7 +665,7 @@
     box.querySelectorAll(".pen").forEach(b=>b.onclick=()=>{
       state.pen = state.pen===b.dataset.cat ? null : b.dataset.cat;
       renderPens(); updatePenHint();
-      if($('marko') && !$('marko').hidden){ $('mFace').innerHTML=markoSVG(markoColor(),'happy'); }
+      if($('marko') && !$('marko').hidden){ $('mFace').innerHTML=markoSVG(markoColor(),'happy'); } if(window.Solo&&Solo.ready) Solo.refresh();
       if(state.pen) say(`Stift „${state.pen}“ ist an.`,'wink',2600); else say('Stift aus. Jetzt wählst du die Kategorie nach dem Markieren.','happy',3000);
     });
   }
