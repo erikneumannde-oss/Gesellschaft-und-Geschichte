@@ -1009,14 +1009,20 @@ function initErdi(){
   ]});
   setTimeout(()=>{Solo.say(help.text,'interested',9000)},1800);
   let clicks=0;document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('#so-root'))return;if(++clicks%40===0)Solo.react('love','Du bist richtig fleißig. Das läuft gut!');},true);
-  let lastR=0,nb=0;
+  let lastR=0,nb=0,pend=new Set(),tm=null;
+  const rnd=a=>a[Math.floor(Math.random()*a.length)];
+  const TIPS={merk:['Lies den Satz um die Lücke herum noch einmal. Welches Wort passt dort zu dem, was du über Wald und Welt gelesen hast?','Jedes Wort passt nur an eine Stelle. Fang mit der Lücke an, bei der du dir sicher bist.'],
+    gen:['Lest den Text zum Thema noch einmal und ändert die roten Felder.','Fang mit der Aussage an, bei der du dir sicher bist. Dann bleiben weniger übrig.','Achte auf Wörter wie „alle“, „immer“ und „nur“. Sie machen eine Aussage oft falsch.']};
+  function flush(){tm=null;let ok=0,bad=0,merk=false;
+    pend.forEach(t=>{if(!t.isConnected)return;if(t.classList.contains('bad'))bad++;else if(t.classList.contains('ok'))ok++;if(t.closest('#merk'))merk=true;});pend.clear();
+    if(!ok&&!bad)return;const now=Date.now();if(now-lastR<2500)return;lastR=now;
+    if(!bad){nb=0;Solo.tell(ok>1?'Alle '+ok+' stimmen. Stark gemacht!':rnd(['Richtig! Das hast du super gelöst. 🎉','Stimmt, richtig gemacht!','Genau so ist es! Stark.','Volltreffer! Weiter so.']),'excited');return;}
+    const tl=merk?TIPS.merk:TIPS.gen,head=ok?ok+' von '+(ok+bad)+' stimmen schon. Du bist nah dran!':rnd(['Das stimmt noch nicht ganz. Kein Problem, versuch es noch einmal.','Nicht ganz, aber das kriegst du hin.','Hm, so noch nicht. Fehler gehören zum Lernen dazu.']);
+    Solo.tell(head+' '+tl[nb%tl.length],'oops',9000);nb++;}
   new MutationObserver(ms=>{
     for(const m of ms){const t=m.target;if(!t.classList||t.closest('#so-root'))continue;
-      const ok=t.classList.contains('ok'),bad=t.classList.contains('bad');if(!ok&&!bad)continue;
-      const now=Date.now();if(now-lastR<6000)return;lastR=now;
-      if(ok){nb=0;Solo.react('excited',Math.random()<.5?['Stimmt, richtig!','Sehr gut!','Genau so!'][Math.floor(Math.random()*3)]:'');}
-      else{nb++;Solo.react('oops',nb%2?'':'Nicht ganz. Schau noch einmal genau hin, du schaffst das.');}
-      return;}
+      if(t.classList.contains('ok')||t.classList.contains('bad'))pend.add(t);}
+    if(pend.size&&!tm)tm=setTimeout(flush,350);
   }).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
 }
 </script>

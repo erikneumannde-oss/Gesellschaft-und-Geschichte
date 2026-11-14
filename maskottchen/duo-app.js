@@ -112,29 +112,53 @@
 
   // Erkennung von Rückmeldungen in den Modulen (vorsichtig, nur bekannte Stellen)
   var CHECKS = {
-    'Absolutismus': '.feedback, #drag-result, #quiz-result, #final-result',
-    'Aufklärung': '#cloze-feedback',
-    'Paulskirchenparlament': '#feedback',
-    'Euro': '.fb',
-    'Karikaturanalyse': '.fb',
-    'Kinderrechte': '#feedback-title',
-    'Smartphone-Lieferkette': '#quizResult',
-    'Was-ist-Globalisierung': '#gap-feedback, #eval-success-msg'
+    'Absolutismus': [
+      { sel: '#quiz-result', tips: ['Erinnere dich an Modul 1: Die Legislative legt Regeln fest, die Exekutive setzt sie um, die Judikative urteilt. Wende das bei jeder Handlung des Königs an.', 'Frag dich bei jeder Handlung: Wird hier etwas neu festgelegt, etwas umgesetzt oder über Recht und Unrecht entschieden?', 'Lies die Handlung langsam. Das Verb in dem Satz verrät dir oft, um welche Staatsgewalt es geht.'] },
+      { sel: '#drag-result', tips: ['Lies in Modul 3 nach, was die Gruppen am Hof und im Land tatsächlich getan haben. Nicht jede Rolle übt eine Staatsgewalt aus.', 'Manche Karten gehören in kein Feld der drei Gewalten. Auch das kann eine richtige Entscheidung sein.', 'Fang mit den Karten an, bei denen du dir sicher bist. Dann bleiben weniger übrig.'] },
+      { sel: '#final-result', tips: ['Die Antworten stehen in Modul 3. Lies den Text gezielt zu der Frage, die rot markiert ist.', 'Achte auf den Unterschied zwischen dem, was der König beanspruchte, und dem, was er wirklich durchsetzen konnte.', 'Lies die Antwortmöglichkeiten einzeln und streiche zuerst aus, was sicher nicht passt.'] },
+      { sel: '.feedback', tips: ['Lies den Abschnitt im Modul noch einmal in Ruhe. Die Begriffe sind bewusst ähnlich, achte auf kleine Unterschiede.'] }
+    ],
+    'Aufklärung': [
+      { sel: '#cloze-feedback', tips: ['Denk an die Stationen, an denen Kant dir etwas erklärt hat. Die Begriffe für den Lückentext sind dir dort begegnet.', 'Lies den Satz vor und nach der Lücke. Passt das Wort vom Sinn und von der Grammatik her?', 'Fang mit den Lücken an, bei denen du dir sicher bist. Die anderen werden dadurch leichter.'] }
+    ],
+    'Paulskirchenparlament': [
+      { sel: '#feedback', tips: ['Lies Aktenlage und Zeitdokument noch einmal. Wer spricht hier, und was möchte er erreichen?', 'Frag dich: Wer würde diese Forderung aufstellen, und warum passt sie zu seinen Interessen?', 'Achte auf Schlüsselwörter im Zitat. Sie zeigen oft, welche Seite spricht.'] }
+    ],
+    'Euro': [
+      { sel: '.fb', tips: ['Lies den Text über der Aufgabe noch einmal und suche die Schlüsselwörter. Sie stehen oft fast wörtlich in der richtigen Antwort.', 'Denk an deine Rolle in Novarien: Was will sie, und was befürchtet sie? Das hilft beim Abwägen.', 'Bei den Zuordnungen kannst du so oft probieren, wie du willst. Rot markierte Karten zeigen dir, wo du noch einmal hinschauen solltest.', 'Frag dich bei jeder Aussage: Gilt sie für alle Länder der Währungsunion oder nur für bestimmte?'] }
+    ],
+    'Karikaturanalyse': [
+      { sel: '.fb', tips: ['Beschreibe zuerst nur, was du siehst. Das Deuten kommt erst danach.', 'Karikaturen übertreiben bewusst. Was ist auffallend groß, klein oder seltsam gezeichnet?', 'Die formalen Angaben stehen in der Quellenangabe: Titel, Thema, Jahr, Zeichner und Ort.', 'Frag dich: Was will der Zeichner kritisieren, und worauf möchte er hinweisen?'] }
+    ],
+    'Kinderrechte': [
+      { sel: '#feedback-title', tips: ['Es geht nur darum, ob das Handeln gesetzlich erlaubt ist, nicht darum, ob du es fair findest.', 'Eltern und Lehrkräfte haben einen Erziehungs- und Schutzauftrag. Aber auch dort gibt es Grenzen.', 'Überlege: Geht es um Schutz, um Förderung oder um Beteiligung? Die Rückmeldung nach deiner Entscheidung erklärt dir den Grund.'] }
+    ],
+    'Smartphone-Lieferkette': [
+      { sel: '#result', tips: ['Tippe ein Kärtchen an, dann leuchten die passenden Länder auf der Karte. Das hilft dir bei der Reihenfolge.', 'Überlege rückwärts: Was muss schon fertig sein, bevor der nächste Schritt möglich ist?', 'Beginne mit dem Schritt, bei dem du dir am sichersten bist, und baue von dort vorwärts und rückwärts auf.'] },
+      { sel: '#quizResult', tips: ['Schau dir die Karte noch einmal an: Welche Länder leuchten bei diesem Schritt auf?', 'Lies die Frage in Ruhe und streiche zuerst aus, was sicher nicht passt.'] }
+    ],
+    'Was-ist-Globalisierung': [
+      { sel: '#gap-feedback, #eval-success-msg', tips: ['Schau auf das Etikett: Wo wurde der Gegenstand hergestellt, und woher kommen die Rohstoffe?', 'Rot markierte Begriffe darfst du neu einsortieren. Denk dabei an Waren, Ideen, Geld und Menschen.', 'Überlege bei Lebensmitteln: Wächst das bei uns, und gibt es das das ganze Jahr?'] }
+    ],
+    'Was-ist-Politik': [
+      { sel: '#fbmsg .fb', tips: ['Lies die Frage noch einmal ganz und danach jede Antwort einzeln.', 'Denk an das, was dir die Figuren in Spandau erklärt haben. Die Hinweise aus den Dialogen helfen dir hier.', 'Streiche zuerst aus, was sicher nicht passt. Dann bleibt weniger übrig.'] },
+      { sel: '#m3msg .fb', tips: ['Tippe zuerst einen Begriff an und danach die Lücke. Prüfe, ob der Satz mit dem Begriff Sinn ergibt.', 'Jeder Begriff passt nur an eine Stelle. Beginne mit der Lücke, bei der du dir sicher bist.'] }
+    ]
   };
   var GOOD = /^\s*(✓|✔|richtig|korrekt|perfekt|hervorragend|super|alles richtig|prima|sehr gut|glückwunsch|depesche historisch korrekt)/i;
   var BAD = /^\s*(✗|✘|✖|×|falsch|leider|nicht ganz|noch nicht|einige|prüfe|überprüfe|\d+\s+von\s+\d+)/i;
   var GOOD_CLS = /(^|[\s_-])(ok|correct|richtig|right|success|good)($|[\s_-])/i, BAD_CLS = /(^|[\s_-])(bad|wrong|falsch|incorrect|error|fail)($|[\s_-])/i;
   function verdict(n) {
     var c = (n.className && n.className.baseVal !== undefined ? n.className.baseVal : n.className) || '', t = (n.textContent || '').trim();
-    if (!t || t.length > 400) return '';
+    if (!t || t.length > 400 || /^\s*Bitte /.test(t)) return '';
     if (BAD_CLS.test(c) || BAD.test(t)) { if (/^\s*\d+\s+von\s+\d+/i.test(t)) { var m = t.match(/(\d+)\s+von\s+(\d+)/); if (m && m[1] === m[2]) return 'good'; } return 'bad'; }
     if (GOOD_CLS.test(c) || GOOD.test(t)) return 'good';
     return '';
   }
 
   var PRAISE = ['Das läuft richtig gut bei dir!', 'Du bist richtig fleißig. Weiter so!', 'Schon so viel geschafft. Stark!', 'Dranbleiben lohnt sich, du machst das prima.'];
-  var GOODS = ['Stimmt, richtig gemacht! 🎉', 'Sehr gut!', 'Genau so!', 'Das passt. Stark!', 'Prima, das sitzt.'];
-  var BADS = ['Nicht ganz, aber das kriegst du hin. Lies noch einmal in Ruhe.', 'Das war noch nicht ganz richtig. Probier es noch einmal.', 'Kein Problem, Fehler gehören dazu. Schau noch einmal hin.'];
+  var GOODS = ['Richtig! Das hast du super gelöst. 🎉', 'Stimmt, richtig gemacht!', 'Genau so ist es! Stark.', 'Volltreffer! Weiter so.', 'Das passt. Sehr gut!'];
+  var BADS = ['Das stimmt noch nicht ganz. Kein Problem, versuch es noch einmal.', 'Nicht ganz, aber das kriegst du hin.', 'Hm, so noch nicht. Fehler gehören zum Lernen dazu.', 'Fast! Schau noch einmal in Ruhe hin.'];
   function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
 
   function run() {
@@ -178,25 +202,36 @@
       }, 500); }).observe(document.body, { subtree: true, childList: true, characterData: true });
     }
 
-    // Rückmeldungen erkennen
-    var sel = CHECKS[folder];
-    if (sel && window.MutationObserver) {
-      var last = window.WeakMap ? new WeakMap() : null, lastReact = 0, nBad = 0;
-      var timer = null;
+    // Rückmeldungen prüfen: sagen, ob es richtig oder falsch ist, und bei Fehlern einen Tipp zum Modul geben
+    var entries = CHECKS[folder];
+    if (entries && window.MutationObserver) {
+      var all = entries.map(function (e) { return e.sel; }).join(','), serious = app && app.tone === 'serious';
+      var last = window.WeakMap ? new WeakMap() : null, lastSay = 0, fails = {}, timer = null;
+      var entryOf = function (n) { for (var k = 0; k < entries.length; k++) if (n.matches && n.matches(entries[k].sel)) return k; return -1; };
       function scan() {
-        var nodes = document.querySelectorAll(sel);
+        var nodes = document.querySelectorAll(all), ok = 0, bad = 0, badK = -1, okKs = [];
         for (var i = 0; i < nodes.length; i++) {
           var n = nodes[i]; if (n.offsetParent === null && getComputedStyle(n).position !== 'fixed') continue;
           var v = verdict(n), sig = v + '|' + (n.textContent || '').trim().slice(0, 80);
           if (!v || (last && last.get(n) === sig)) continue;
           if (last) last.set(n, sig);
-          var now = Date.now(); if (now - lastReact < 6000) continue; lastReact = now;
-          if (app && app.tone === 'serious') { Duo.react('interested', '', 'T'); continue; }
-          if (v === 'good') { nBad = 0; Duo.react('excited', Math.random() < .5 ? rnd(GOODS) : '', 'T'); }
-          else { nBad++; Duo.react('oops', nBad % 2 ? '' : rnd(BADS), 'T'); }
+          var k = entryOf(n);
+          if (v === 'good') { ok++; okKs.push(k); } else { bad++; if (badK < 0) badK = k; }
         }
+        if (!ok && !bad) return;
+        var now = Date.now(); if (now - lastSay < 2500) return; lastSay = now;
+        if (!bad) {
+          okKs.forEach(function (k) { fails[k] = 0; });
+          var t = ok > 1 ? 'Alle ' + ok + ' Aufgaben stimmen. Stark gemacht!' : rnd(GOODS);
+          if (serious) t = t.replace(/ ?🎉/, '');
+          Duo.talk([{ w: 'T', t: t, m: serious ? 'interested' : 'excited' }]); return;
+        }
+        var n2 = (fails[badK] = (fails[badK] || 0) + 1), tl = badK >= 0 && entries[badK].tips, head = ok ? ok + ' von ' + (ok + bad) + ' stimmen schon. Du bist nah dran!' : rnd(BADS);
+        var lines = [{ w: 'T', t: head, m: serious ? 'interested' : 'oops' }];
+        if (tl && tl.length) lines.push({ w: 'R', t: tl[(n2 - 1) % tl.length], m: 'thinking' });
+        Duo.talk(lines, { stay: 9000 });
       }
-      new MutationObserver(function () { clearTimeout(timer); timer = setTimeout(scan, 250); }).observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['class'] });
+      new MutationObserver(function () { clearTimeout(timer); timer = setTimeout(scan, 300); }).observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['class'] });
     }
   }
   function start() { if (window.Duo) return run(); var s = document.createElement('script'); s.src = base + 'duo.js'; s.onload = run; document.head.appendChild(s); }

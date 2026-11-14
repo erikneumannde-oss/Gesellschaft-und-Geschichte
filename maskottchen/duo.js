@@ -411,6 +411,8 @@
     var k = t.getAttribute('data-k'), o = curAsk, m = document.getElementById('kb-mute');
     if (m && m.checked && o && o.id) { st.mute[o.id] = 1; save(); }
     if (k === 'tip' && o) showTip(o);
+    else if (k === 'wy') wellAnswer(true);
+    else if (k === 'wn') wellAnswer(false);
     else if (k === 'off') API.hide();
     else if (k === 'quiet') { st.quiet = !st.quiet; save(); closeBubble(); moodBoth('happy', 1500); }
     else if (k === 'hello') { st.met = true; save(); closeBubble(); moodBoth('excited', 1800); }
@@ -419,11 +421,31 @@
 
   // ------------------------------------------------------------------ Persönlichkeit
   var bag = [], lastText = '';
-  function refillBag() { bag = ['nice', 'joke', 'motiv', 'comment', 'help', 'fact', 'joke', 'motiv', 'comment', 'fact', 'nice', 'comment', 'fact']; for (var i = bag.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = bag[i]; bag[i] = bag[j]; bag[j] = t; } }
+  function refillBag() { bag = ['nice', 'joke', 'motiv', 'comment', 'help', 'fact', 'joke', 'motiv', 'comment', 'fact', 'nice', 'comment', 'well', 'fact']; for (var i = bag.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = bag[i]; bag[i] = bag[j]; bag[j] = t; } }
   function pick(arr) { var t, n = 0; do { t = rnd(arr); n++; } while (t === lastText && n < 5 && arr.length > 1); lastText = typeof t === 'string' ? t : JSON.stringify(t[0]); return t; }
+
+  // ------------------------------------------------------------------ Nachfragen, wie es geht
+  var WELL_Q = ['Wie geht es dir gerade? Alles gut bei dir?', 'Kurze Frage zwischendurch: Geht es dir gut?', 'Na, wie läuft dein Tag bisher?', 'Hey, wie fühlst du dich gerade?', 'Wir wollten nur kurz fragen, ob bei dir alles in Ordnung ist.'];
+  var WELL_YES = ['Das freut uns! Dann geht es gleich mit Schwung weiter.', 'Schön zu hören! Gute Laune hilft beim Lernen.', 'Super! Dann machen wir einfach so weiter.', 'Das hören wir gern. Du machst das gut!'];
+  var WELL_NO1 = ['Oh, das tut uns leid.', 'Ach, schade ...', 'Oje, das klingt nicht gut.'];
+  var WELL_NO2 = ['Das ist okay. Nicht jeder Tag läuft gut, und du musst jetzt nicht alles perfekt machen.', 'Lass dir Zeit. Du darfst in deinem Tempo arbeiten, wir sind einfach da.', 'Manchmal helfen ein Schluck Wasser und ein paar tiefe Atemzüge. Probier es kurz aus.', 'Schlechte Tage gehen vorbei. Und kleine Schritte zählen auch.', 'Wenn dich etwas bedrückt, red mit jemandem, dem du vertraust. Das können deine Familie, Freunde oder eine Lehrkraft sein.', 'Du bist nicht allein damit. Und es ist stark, dass du trotzdem hier lernst.'];
+  function wellOk() { var t = +sget('tr-well') || 0; return Date.now() - t > 12 * 60000 && Date.now() - (+sget('tr-t0') || Date.now()) > 20000; }
+  function showWell() {
+    sset('tr-well', String(Date.now())); var w = rnd(order); chatSeq++; clearTimeout(chatT); mood(w, 'interested', 4000);
+    openBubble(X + who(w) + '<p class="kb-text">' + esc(rnd(WELL_Q)) + '</p>' +
+      '<button class="kb-opt" data-k="wy"><span class="kb-dot"></span>Ja, danke</button>' +
+      '<button class="kb-opt" data-k="wn"><span class="kb-dot"></span>Nicht so gut</button>' +
+      '<div class="kb-links">' + quietLink() + '</div>', 40000, w);
+  }
+  function wellAnswer(good) {
+    closeBubble();
+    if (good) { chat([{ w: rnd(order), t: rnd(WELL_YES), m: 'love' }]); return; }
+    var a = rnd(order); chat([{ w: a, t: rnd(WELL_NO1), m: 'sad' }, { w: other(a), t: rnd(WELL_NO2), m: 'love' }], { stay: 12000 });
+  }
   function remark() {
     if (!bag.length) refillBag();
     var kind = bag.pop();
+    if (kind === 'well') { if (wellOk()) { showWell(); return; } kind = 'nice'; }
     if (cfg.tone === 'serious') { var hp = cfg.idleHelp ? cfg.idleHelp() : (cfg.tapHelp ? cfg.tapHelp() : null); if (kind === 'help' && hp) { showAsk({ id: '', text: hp.text, tip: hp.tip }, 'R'); return; } if (cfg.comments && cfg.comments.length) { chat([{ w: Math.random() < .5 ? 'T' : 'R', t: pick(cfg.comments), m: 'interested' }]); } return; }
     if (kind === 'help') {
       var o = cfg.idleHelp ? cfg.idleHelp() : (cfg.tapHelp ? cfg.tapHelp() : null);
@@ -437,7 +459,7 @@
     else { var c = cfg.comments && cfg.comments.length ? cfg.comments.concat(GENERIC) : GENERIC; chat([{ w: Math.random() < .5 ? 'T' : 'R', t: pick(c), m: 'interested' }]); }
   }
   function activity() {
-    lastAct = Date.now(); nextRemark = 40 + Math.random() * 25; yawned = false;
+    lastAct = Date.now(); nextRemark = 28 + Math.random() * 20; yawned = false;
     var c = CH.T.mood;
     if (c === 'sleep' || c === 'bored' || c === 'yawn' || CH.R.mood === 'sleep') {
       var slept = wasSleeping; wasSleeping = false; order.forEach(function (w) { clearTimeout(CH[w].moodT); CH[w].moodT = null; }); base = 'happy';
@@ -451,9 +473,9 @@
     else if (idle >= 120 && base === 'happy') { base = 'bored'; setBase('bored'); }
     if (idle >= 150 && !yawned && base === 'bored' && !bubbleOpen) { yawned = true; mood('T', 'yawn', 3200); setTimeout(function () { if (base === 'bored') mood('R', 'yawn', 3000); }, 700); }
     if (idle >= nextRemark && !bubbleOpen && !introActive && !st.quiet && base !== 'sleep' && talkOk()) {
-      if (cfg.tone === 'serious') { if (base !== 'bored') remark(); nextRemark = idle + 110 + Math.random() * 80; }
+      if (cfg.tone === 'serious') { if (base !== 'bored') remark(); nextRemark = idle + 75 + Math.random() * 55; }
       else if (base === 'bored') { chat(rnd(BORED)); nextRemark = idle + 70 + Math.random() * 50; }
-      else { remark(); nextRemark = idle + 55 + Math.random() * 45; }
+      else { remark(); nextRemark = idle + 32 + Math.random() * 28; }
     }
   }
   function talkOk() { return !cfg.canTalk || cfg.canTalk(); }
@@ -565,7 +587,7 @@
       else { place(a.x, vh() + 120, false); setTimeout(function () { place(a.x, a.y, true); }, 400); }
       scheduleMicro(); breakCheck(); setInterval(breakCheck, 30000);
       applyOff(); wander(); requestAnimationFrame(loop); setInterval(tick, 1000);
-      nextRemark = 40 + Math.random() * 25;
+      nextRemark = 25 + Math.random() * 20;
       if (cfg.intro && !st.met && !st.off) setTimeout(showIntro, 1800);
     },
     ask: function (o) {
@@ -590,6 +612,8 @@
     react: function (m, text, w) { if (!el.root || st.off) return; if (text && !bubbleOpen && !introActive && !st.quiet) chat([{ w: w || 'T', t: text, m: m }]); else mood(w || 'T', m, 2600); lastAct = Date.now(); },
     tell: function (text, m, w) { if (!el.root || st.off || introActive) return false; lastAct = Date.now(); if (st.quiet) { mood(w || 'T', m || 'happy', 2600); return false; } curAsk = null; chat([{ w: w || 'T', t: text, m: m || 'happy' }]); return true; },
     chat: chat,
+    talk: function (lines, opts) { if (!el.root || st.off || introActive) return false; lastAct = Date.now(); if (st.quiet) { mood(lines[0].w || 'T', lines[0].m || 'happy', 2600); return false; } curAsk = null; chat(lines, opts); return true; },
+    well: function () { if (el.root && !st.off && !bubbleOpen && !introActive && !st.quiet) showWell(); },
     tone: function (t) { cfg.tone = t || ''; order.forEach(function (w) { if (CH[w] && !CH[w].moodT) setFace(CH[w], base); }); },
     roll: function (t, back) { if (CH.R) rollTo(CH.R, t == null ? 0 : t, back); },   // Rolli zusammenrollen (0) oder aufrollen (1)
     place: function (fx, fy) { if (!el.root) return; place(fx * vw(), fy * vh(), true); savePos(); },
