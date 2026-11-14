@@ -21,7 +21,7 @@
       tip: 'Lies jeden Text einmal in Ruhe, bevor du die Aufgaben machst. Wenn eine Antwort nicht stimmt, lies die Stelle noch einmal genau. Die Antworten sind bewusst ähnlich formuliert.'
     },
     'Armut-im-Absolutismus': {
-      topic: 'armut',
+      topic: 'armut', tone: 'serious',
       text: 'In diesem Spiel erlebst du das Leben einer Familie im Paris des Jahres 1695 und musst über sechs Jahre hinweg Entscheidungen treffen.',
       tip: 'Achte auf deine Anzeigen für Geld, Gesundheit und Beobachtung. Jede Entscheidung wirkt sich aus. Es gibt kein „perfektes“ Leben, sondern nur Abwägen.',
       bottom: 90
@@ -32,7 +32,7 @@
       tip: 'Nimm dir Zeit für die Texte unterwegs. Im Lückentext brauchst du genau die Begriffe, die dir vorher begegnet sind.'
     },
     'Friedrich-der-Grosse': {
-      topic: 'friedrich',
+      topic: 'friedrich', tone: 'serious',
       text: 'Hier arbeitet ihr in der Gruppe zu Friedrich dem Großen. Jedes Kapitel hat ein Passwort, und am Ende entsteht ein Plakat.',
       tip: 'Das Passwort für ein Kapitel bekommt ihr von eurer Lehrkraft oder erarbeitet es euch im Kapitel davor. Verteilt die Aufgaben in der Gruppe und schaut am Ende gemeinsam auf das Plakat.'
     },
@@ -70,7 +70,7 @@
       tip: 'Überlege: Geht es um Schutz, um Förderung oder um Beteiligung? Die Rückmeldung nach deiner Entscheidung erklärt dir, warum.'
     },
     'Klimawandel': {
-      topic: 'klima',
+      topic: 'klima', tone: 'serious',
       text: 'In dieser Animation reist du mit Lily Braun durch die Folgen des Klimawandels und stellst am CO₂-Regler selbst ein, wie sich die Erde verändert.',
       tip: 'Probiere den Regler in Ruhe aus und schau, was sich bei jeder Stufe verändert. Die Texte von Lily solltest du in deinem Tempo lesen.',
       bottom: 170
@@ -142,7 +142,7 @@
     var app = APPS[folder] || null;
     var help = app ? { text: app.text, tip: app.tip } : null;
     var comments = app && TOPIC[app.topic] ? TOPIC[app.topic] : [];
-    Duo.init({ id: 'app-' + folder, offsetBottom: app && app.bottom ? app.bottom : 56, comments: comments, tapHelp: help ? function () { return help; } : null, idleHelp: help ? function () { return help; } : null });
+    Duo.init({ id: 'app-' + folder, offsetBottom: app && app.bottom ? app.bottom : 56, comments: comments, tone: app && app.tone ? app.tone : '', tapHelp: help ? function () { return help; } : null, idleHelp: help ? function () { return help; } : null });
 
     // erster Hinweis pro Sitzung
     var key = 'tr-expl-' + rel, seen = false;
@@ -159,8 +159,25 @@
     var clicks = 0, nextPraise = 40;
     document.addEventListener('click', function (e) {
       if (!e.target.closest || e.target.closest('#dc-root')) return;
+      if (app && app.tone === 'serious') return;
       if (++clicks >= nextPraise) { nextPraise += 40; Duo.react('love', rnd(PRAISE), 'T'); }
     }, true);
+
+    // Armutsspiel: bei Verlusten still und ernst bleiben
+    if (folder === 'Armut-im-Absolutismus' && window.MutationObserver) {
+      var lastLoss = 0, seenTxt = '';
+      var evt = [
+        [/Ein Kind ist verloren|Mann ist gestorben|eines ist gestorben|Baby stirbt|Kind.{0,20}gestorben/i, 'Das ist ein schwerer Verlust. Nimm dir einen Moment, bevor du weitermachst.'],
+        [/zusammengebrochen|Deine Kräfte sind am Ende|bricht dein Körper/i, 'Das war zu viel für deine Figur. Lies in Ruhe, was passiert ist.'],
+        [/Ende:/i, 'Das Spiel ist zu Ende. Schau dir die Auswertung in Ruhe an.']
+      ];
+      var t2 = null;
+      new MutationObserver(function () { clearTimeout(t2); t2 = setTimeout(function () {
+        var n = document.getElementById('scenario-text'); if (!n) return; var txt = n.textContent || '';
+        if (txt === seenTxt) return; seenTxt = txt;
+        for (var i = 0; i < evt.length; i++) if (evt[i][0].test(txt)) { var now = Date.now(); if (now - lastLoss < 8000) return; lastLoss = now; Duo.mood('sad', 8000); setTimeout(function (m) { return function () { Duo.tell(m, 'sad', 'R'); }; }(evt[i][1]), 1200); return; }
+      }, 500); }).observe(document.body, { subtree: true, childList: true, characterData: true });
+    }
 
     // Rückmeldungen erkennen
     var sel = CHECKS[folder];
@@ -175,6 +192,7 @@
           if (!v || (last && last.get(n) === sig)) continue;
           if (last) last.set(n, sig);
           var now = Date.now(); if (now - lastReact < 6000) continue; lastReact = now;
+          if (app && app.tone === 'serious') { Duo.react('interested', '', 'T'); continue; }
           if (v === 'good') { nBad = 0; Duo.react('excited', Math.random() < .5 ? rnd(GOODS) : '', 'T'); }
           else { nBad++; Duo.react('oops', nBad % 2 ? '' : rnd(BADS), 'T'); }
         }

@@ -15,7 +15,7 @@
 (function () {
   'use strict';
   var KEY = 'tinto-rolli-v1';
-  var cfg = { id: 'seite', offsetBottom: 56, comments: [], tapHelp: null, intro: true, canTalk: null, idleHelp: null, introExtra: '' };
+  var cfg = { id: 'seite', offsetBottom: 56, comments: [], tapHelp: null, intro: true, canTalk: null, idleHelp: null, introExtra: '', tone: '' };
   var st = { off: false, mute: {}, met: false, quiet: false };
   var el = {}, CH = {}, order = ['T', 'R'];
   var pos = { x: 0, y: 0 }, side = 1;                       // pos = Position von Tinto (Anführer), side = auf welcher Seite Rolli steht
@@ -103,6 +103,8 @@
   // Koordinaten um den Gesichtsmittelpunkt (51,80); Arme kommen getrennt je nach Figur
   var MOODS = {
     happy: { pose: 'down', eyes: eyesOpen(), mouth: '<path d="M43 83 q8 9 16 0"/>' },
+    calm: { pose: 'down', eyes: eyesOpen(), mouth: '<path d="M45 85 q6 2 12 0"/>' },
+    sad: { pose: 'down', eyes: '<g class="dc-lid">' + dot(41, 76, 4.4) + dot(61, 76, 4.4) + '</g>', brows: '<path d="M34 67 q6 2 13 -3"/><path d="M55 64 q7 4 13 3"/>', mouth: '<path d="M44 89 q7 -6 14 0"/>' },
     excited: {
       pose: 'up', eyes: '<path d="M35 76 q6 -10 12 0"/><path d="M55 76 q6 -10 12 0"/>', mouth: '<path d="M42 81 q9 16 18 0 z" fill="' + PINK + '"/>',
       extra: '<g fill="#ffd35a" stroke="none"><polygon points="8,40 10,45 15,45 11,48 13,53 8,50 3,53 5,48 1,45 6,45"/><polygon points="94,34 96,39 101,39 97,42 99,47 94,44 89,47 91,42 87,39 92,39"/></g>'
@@ -268,7 +270,9 @@
   // ------------------------------------------------------------------ Stimmung
   var ROLL_BY_MOOD = { sleep: 0, dizzy: .3, oops: .55 };
   function rollTo(c, t, back) { if (!c.roll) return; c.roll.target = t; if (back) setTimeout(function () { if (c.roll) c.roll.target = ROLL_BY_MOOD[c.mood] != null ? ROLL_BY_MOOD[c.mood] : 1; }, back); }
+  var SOFT = { happy: 'calm', excited: 'interested', giggle: 'calm', love: 'calm', wink: 'calm', hum: 'thinking', surprised: 'interested', oops: 'sad' };
   function setFace(c, m) {
+    if (cfg.tone === 'serious' && SOFT[m]) m = SOFT[m];
     if (c.roll) c.roll.target = ROLL_BY_MOOD[m] != null ? ROLL_BY_MOOD[m] : 1;
     c.mood = m; c.node.setAttribute('data-mood', m);
     c.faceG.innerHTML = faceSVG(c, m);
@@ -420,6 +424,7 @@
   function remark() {
     if (!bag.length) refillBag();
     var kind = bag.pop();
+    if (cfg.tone === 'serious') { var hp = cfg.idleHelp ? cfg.idleHelp() : (cfg.tapHelp ? cfg.tapHelp() : null); if (kind === 'help' && hp) { showAsk({ id: '', text: hp.text, tip: hp.tip }, 'R'); return; } if (cfg.comments && cfg.comments.length) { chat([{ w: Math.random() < .5 ? 'T' : 'R', t: pick(cfg.comments), m: 'interested' }]); } return; }
     if (kind === 'help') {
       var o = cfg.idleHelp ? cfg.idleHelp() : (cfg.tapHelp ? cfg.tapHelp() : null);
       if (o) { showAsk({ id: '', text: o.text, tip: o.tip }, 'R'); return; }
@@ -446,14 +451,15 @@
     else if (idle >= 120 && base === 'happy') { base = 'bored'; setBase('bored'); }
     if (idle >= 150 && !yawned && base === 'bored' && !bubbleOpen) { yawned = true; mood('T', 'yawn', 3200); setTimeout(function () { if (base === 'bored') mood('R', 'yawn', 3000); }, 700); }
     if (idle >= nextRemark && !bubbleOpen && !introActive && !st.quiet && base !== 'sleep' && talkOk()) {
-      if (base === 'bored') { chat(rnd(BORED)); nextRemark = idle + 70 + Math.random() * 50; }
+      if (cfg.tone === 'serious') { if (base !== 'bored') remark(); nextRemark = idle + 110 + Math.random() * 80; }
+      else if (base === 'bored') { chat(rnd(BORED)); nextRemark = idle + 70 + Math.random() * 50; }
       else { remark(); nextRemark = idle + 55 + Math.random() * 45; }
     }
   }
   function talkOk() { return !cfg.canTalk || cfg.canTalk(); }
   function micro() {
     if (!el.root || st.off || bubbleOpen || document.hidden || base === 'sleep') return;
-    var w = rnd(order), c = CH[w], a = rnd(['look', 'look', 'wink', 'hop', 'hum', 'look', 'peek', w === 'R' ? 'roll' : 'hop', w === 'R' ? 'roll' : 'look']);
+    var w = rnd(order), c = CH[w], a = cfg.tone === 'serious' ? rnd(['look', 'look', 'peek']) : rnd(['look', 'look', 'wink', 'hop', 'hum', 'look', 'peek', w === 'R' ? 'roll' : 'hop', w === 'R' ? 'roll' : 'look']);
     if (c.moodT) return;
     if (a === 'look') {
       var pts = [[-2.4, -0.6], [2.4, -1], [-1.6, 1.2], [0, 0]], i = 0;
@@ -532,7 +538,7 @@
         n.addEventListener('pointerup', function () {
           if (!d || d.w !== w) return; var m = d.moved; d = null; el.root.classList.remove('dragging'); if (m) { savePos(); return; }
           var now = Date.now(); taps.push({ t: now, w: w }); taps = taps.filter(function (x) { return now - x.t < 2500 && x.w === w; });
-          if (taps.length >= 4) { taps = []; mood(other(w), 'surprised', 2500); if (w === 'R') rollTo(CH.R, 0, 1400); chat([{ w: w, t: rnd(w === 'T' ? TICKLE : TICKLE_R), m: 'giggle' }]); return; }
+          if (taps.length >= 4) { taps = []; mood(other(w), 'surprised', 2500); if (w === 'R') rollTo(CH.R, 0, 1400); chat([{ w: w, t: cfg.tone === 'serious' ? 'Gerade ist mir nicht nach Kitzeln zumute.' : rnd(w === 'T' ? TICKLE : TICKLE_R), m: 'giggle' }]); return; }
           if (bubbleOpen) closeBubble(); else API.help(w);
         });
         n.addEventListener('pointercancel', function () { d = null; el.root.classList.remove('dragging'); });
@@ -584,6 +590,7 @@
     react: function (m, text, w) { if (!el.root || st.off) return; if (text && !bubbleOpen && !introActive && !st.quiet) chat([{ w: w || 'T', t: text, m: m }]); else mood(w || 'T', m, 2600); lastAct = Date.now(); },
     tell: function (text, m, w) { if (!el.root || st.off || introActive) return false; lastAct = Date.now(); if (st.quiet) { mood(w || 'T', m || 'happy', 2600); return false; } curAsk = null; chat([{ w: w || 'T', t: text, m: m || 'happy' }]); return true; },
     chat: chat,
+    tone: function (t) { cfg.tone = t || ''; order.forEach(function (w) { if (CH[w] && !CH[w].moodT) setFace(CH[w], base); }); },
     roll: function (t, back) { if (CH.R) rollTo(CH.R, t == null ? 0 : t, back); },   // Rolli zusammenrollen (0) oder aufrollen (1)
     place: function (fx, fy) { if (!el.root) return; place(fx * vw(), fy * vh(), true); savePos(); },
     mood: function (m, ms, w) { w ? mood(w, m, ms) : moodBoth(m, ms); },
