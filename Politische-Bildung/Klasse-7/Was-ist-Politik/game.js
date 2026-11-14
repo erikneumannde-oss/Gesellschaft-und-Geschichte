@@ -362,8 +362,12 @@
     }
     // Phase 6: richtiges Gebäude finden
     if (gameState.phase === 6) {
-      if (nearRect(player, BLD.land, 15)) {
-        pushFrom(DOORS.land.x, DOORS.land.y - 50, 34);
+      const nearLand = nearRect(player, BLD.land, 15);
+      if (!nearRect(player, BLD.land, 50)) gameState.landLock = false;
+      if (nearLand) {
+        if (gameState.landLock) return;
+        // Meldung nur einmal pro Besuch; Figur steht danach sicher vor dem Haus (auch wenn sie in der Ecke stand)
+        gameState.landLock = true; const f = cellXY(nearestFree(DOORS.land.x - 20, DOORS.land.y + 34)); player.x = f.x; player.y = f.y; player.trail = []; player.path = null;
         showDialog(ico('hall') + ' Falsche politische Ebene!', "Du betrittst das Abgeordnetenhaus oben rechts, aber man winkt ab: 'Wir machen Gesetze für ganz Berlin, aber um deinen lokalen Park in Spandau kümmert sich das Bezirksamt vor Ort! Suche die richtige Institution.'<br><div class='def-box'><strong>Definition POLITISCHE EBENEN:</strong> Politik ist in verschiedene Ebenen unterteilt (Kommune/Bezirk, Bundesland, Staat). Jede Ebene hat ganz bestimmte Aufgaben und Zuständigkeiten.</div>", 'Weiter', { icon: 'hall' });
       } else if (nearRect(player, BLD.rathaus, 15)) {
         gameState.phase = 7;
@@ -376,8 +380,9 @@
   // ------------------------------------------------------------------ Darstellung (Kamera, Zeichnen)
   const canvas = $('gameCanvas'), ctx = canvas.getContext('2d'), stage = $('stage');
   let dpr = 1, cw = 0, ch = 0, zoom = 1, bg = null, bgScale = 0, camX = W / 2, camY = H / 2;
+  function fitBody() { const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight; if (vh > 100) document.body.style.height = Math.round(vh) + 'px'; }  // iOS/Safari: 100vh ist im Querformat höher als der sichtbare Bereich
   function layout() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2); cw = stage.clientWidth; ch = stage.clientHeight; canvas.width = Math.round(cw * dpr); canvas.height = Math.round(ch * dpr);
+    fitBody(); dpr =Math.min(window.devicePixelRatio || 1, 2); cw = stage.clientWidth; ch = stage.clientHeight; canvas.width = Math.round(cw * dpr); canvas.height = Math.round(ch * dpr);
     const fit = Math.min(cw / W, ch / H), minZ = cw < 600 ? .95 : .8; zoom = fit >= minZ ? fit : minZ;
     if (H * zoom < ch * .9) zoom = Math.min(ch / H, zoom * 1.6);            // hohes Format (Handy/Tablet hochkant): Höhe ausfüllen, Kamera folgt seitlich
     else if (W * zoom < cw * .75) zoom = Math.min(cw / W, zoom * 1.35);     // sehr breites Fenster: Breite besser nutzen
@@ -385,7 +390,9 @@
     camSnap = true;
   }
   let camSnap = true;
-  window.addEventListener('resize', layout); window.addEventListener('orientationchange', () => setTimeout(layout, 200));
+  window.addEventListener('resize', layout); window.addEventListener('orientationchange', () => { setTimeout(layout, 200); setTimeout(layout, 700); });
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', layout);
+  window.addEventListener('load', () => { setTimeout(layout, 250); setTimeout(layout, 900); });
   if (window.ResizeObserver) new ResizeObserver(() => { if (stage.clientWidth !== cw || stage.clientHeight !== ch) layout(); }).observe(stage);
 
   function updateCamera(dt) {
