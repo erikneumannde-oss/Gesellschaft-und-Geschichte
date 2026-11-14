@@ -689,8 +689,8 @@ async function savePdf(){
   const btn=document.getElementById('fpdf');const old=btn.textContent;btn.disabled=true;btn.textContent='⏳ PDF wird erstellt …';
   let wrap;
   try{
-    if(!window.html2canvas)await loadScript('./lib/html2canvas.min.js');
-    if(!(window.jspdf&&window.jspdf.jsPDF))await loadScript('./lib/jspdf.umd.min.js');
+    if(!window.html2canvas)await loadScript('../../../lib/html2canvas.min.js');
+    if(!(window.jspdf&&window.jspdf.jsPDF))await loadScript('../../../lib/jspdf.umd.min.js');
     const orig=document.getElementById('poster');
     wrap=document.createElement('div');
     wrap.style.cssText='position:fixed;left:-20000px;top:0;width:297mm;height:210mm;background:#fff;overflow:hidden';
