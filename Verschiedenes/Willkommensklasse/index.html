@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Willkommen – Wörter, Zahlen, Chemie und Puzzle</title>
+<link rel="icon" type="image/png" href="../../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+<style>
+:root{--bg:#fff8ec;--ink:#22262e;--muted:#6a707c;--line:#e6dcc8;--ok:#2f9e44;--bad:#e03131;
+ --c-w:#e8590c;--c-m:#1c7ed6;--c-c:#2f9e44;--c-p:#9c36b5;--der:#1c7ed6;--die:#e03131;--das:#2f9e44}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.4;min-height:100vh;touch-action:manipulation;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+.top{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border-bottom:3px solid var(--line);position:sticky;top:0;z-index:5}
+.top h1{margin:0;font-size:1.15rem;flex:1;text-align:center}
+.pill{border:2px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:700;font-size:1rem;min-height:44px}
+.stars{font-weight:800;font-size:1.05rem;min-width:76px;text-align:right}
+main{max-width:980px;margin:0 auto;padding:16px 14px 40px}
+.hello{text-align:center;margin:6px 0 18px}
+.hello h2{margin:0;font-size:2rem}
+.hello p{margin:4px 0 0;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card{border:0;border-radius:20px;color:#fff;padding:18px 14px;text-align:center;min-height:150px;box-shadow:0 5px 0 rgba(0,0,0,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.card:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.card .ic{font-size:3rem;line-height:1}
+.card b{font-size:1.3rem}
+.card small{font-size:.9rem;opacity:.92}
+.card.w{background:var(--c-w)}.card.m{background:var(--c-m)}.card.c{background:var(--c-c)}.card.p{background:var(--c-p)}
+.mix{display:block;width:100%;margin-top:16px;border:0;border-radius:20px;padding:16px;font-size:1.25rem;font-weight:800;color:#fff;background:linear-gradient(90deg,#e8590c,#f59f00,#2f9e44,#1c7ed6,#9c36b5);box-shadow:0 5px 0 rgba(0,0,0,.2);min-height:64px}
+.sec{margin:16px 0 8px;font-weight:800;color:var(--muted);font-size:.95rem;text-transform:uppercase;letter-spacing:.04em}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:9px 14px;font-weight:600;min-height:44px}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.act{background:#fff;border:3px solid var(--ac,var(--line));border-radius:18px;padding:14px;text-align:left;display:flex;gap:12px;align-items:center;min-height:84px}
+.act .ic{font-size:2.4rem}
+.act b{display:block;font-size:1.1rem}
+.act small{color:var(--muted)}
+.runhead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.runhead .t{flex:1;font-weight:800}
+.runhead .t small{display:block;font-weight:500;color:var(--muted)}
+.box{background:#fff;border:3px solid var(--ac,var(--line));border-radius:22px;padding:18px 14px;min-height:320px}
+.how{color:var(--muted);text-align:center;margin:0 0 12px;font-size:.95rem}
+.bar{display:flex;gap:10px;justify-content:space-between;margin-top:14px}
+.bar button{flex:1;border:0;border-radius:16px;padding:14px;font-weight:800;font-size:1.05rem;min-height:56px}
+.skip{background:#e9ecef}
+.next{background:var(--ok);color:#fff;display:none}
+.done .next{display:block}.done .skip{display:none}
+.big{font-size:5.5rem;line-height:1.1;text-align:center}
+.en{text-align:center;color:var(--muted);font-size:1.15rem}
+.center{text-align:center}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+.opt{overflow-wrap:anywhere;hyphens:auto;border:3px solid var(--line);background:#fff;border-radius:16px;padding:12px;font-size:1.25rem;font-weight:700;min-height:66px}
+.opt.emo{font-size:3.2rem;line-height:1.1}
+.opt.ok{background:#d3f9d8;border-color:var(--ok)}
+.opt.bad{background:#ffe3e3;border-color:var(--bad);opacity:.7}
+.opt:disabled{cursor:default}
+.shake{animation:sh .35s}
+@keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.pop{animation:pp .5s}
+@keyframes pp{0%{transform:scale(.8)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+.art{font-weight:800;border-radius:8px;padding:0 7px;color:#fff}
+.art.der{background:var(--der)}.art.die{background:var(--die)}.art.das{background:var(--das)}
+.msg{min-height:1.6em;text-align:center;font-weight:700;margin-top:10px}
+.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}
+.flash{display:block;margin:0 auto;width:min(100%,420px);min-height:260px;border:4px dashed var(--c-w);background:#fffdf7;border-radius:24px;padding:20px}
+.flash .w{font-size:2.2rem;font-weight:800}
+.spk{border:2px solid var(--line);background:#fff;border-radius:999px;min-width:48px;min-height:48px;font-size:1.4rem}
+.slots{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:62px;padding:8px;border:3px dashed var(--line);border-radius:16px;margin:12px 0}
+.tile{border:3px solid var(--ac,var(--c-p));background:#fff;border-radius:12px;min-width:48px;min-height:52px;padding:6px 12px;font-size:1.35rem;font-weight:800}
+.tile.used{visibility:hidden}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.small-btns{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.small-btns button{border:2px solid var(--line);background:#fff;border-radius:12px;padding:10px 16px;font-weight:700;min-height:46px}
+.eq{font-size:2.6rem;font-weight:800;text-align:center;margin:6px 0}
+.eqw{text-align:center;color:var(--muted);font-size:1.05rem;margin-bottom:8px}
+.dots{text-align:center;font-size:1.6rem;margin-bottom:6px;word-break:break-all}
+.disp{font-size:2.4rem;font-weight:800;text-align:center;border:3px solid var(--ink);border-radius:14px;min-height:64px;max-width:240px;margin:8px auto;padding:6px}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:260px;margin:0 auto}
+.pad button{border:3px solid var(--line);background:#fff;border-radius:14px;font-size:1.6rem;font-weight:800;min-height:58px}
+.pad .go{background:var(--ok);color:#fff;border-color:var(--ok)}
+.story{font-size:1.2rem;text-align:center;margin:4px 0}
+.story small{display:block;color:var(--muted);font-size:1rem;margin-top:4px}
+.pyr{display:flex;flex-direction:column;align-items:center;gap:8px;margin:10px 0}
+.pyr .row{display:flex;gap:8px}
+.pyr input,.pyr .fix{width:74px;height:58px;text-align:center;font-size:1.5rem;font-weight:800;border:3px solid var(--line);border-radius:12px;background:#fff}
+.pyr .fix{display:flex;align-items:center;justify-content:center;background:#fff3bf;border-color:#f59f00}
+.pyr input.ok{background:#d3f9d8;border-color:var(--ok)}
+.pyr input.bad{background:#ffe3e3;border-color:var(--bad)}
+.seq{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;font-size:2rem;font-weight:800;margin:10px 0}
+.seq span{border:3px solid var(--line);border-radius:12px;padding:6px 12px;min-width:56px;text-align:center;background:#fff}
+.seq span.q{border-color:var(--c-m);color:var(--c-m)}
+.sym{font-size:4.2rem;font-weight:900;text-align:center;line-height:1.1}
+.atom{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;font-weight:800;font-size:1.05rem;color:#fff;border:2px solid rgba(0,0,0,.25);flex:none}
+.stepper{display:flex;align-items:center;gap:10px;justify-content:center;margin:8px 0}
+.stepper .n{font-size:1.7rem;font-weight:800;min-width:44px;text-align:center}
+.stepper button{width:52px;height:52px;border-radius:14px;border:3px solid var(--line);background:#fff;font-size:1.7rem;font-weight:800}
+.formula{font-size:2.6rem;font-weight:800;text-align:center;min-height:3.4rem}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:640px;margin:0 auto}
+.mc{overflow-wrap:anywhere;hyphens:auto;border:3px solid var(--c-p);background:var(--c-p);color:#fff;border-radius:14px;min-height:96px;font-size:2.2rem;display:flex;align-items:center;justify-content:center;padding:4px;text-align:center;font-weight:800;line-height:1.1}
+.mc.up{background:#fff;color:var(--ink);font-size:1.15rem}
+.mc.up.e{font-size:2.6rem}
+.mc.got{background:#d3f9d8;border-color:var(--ok);color:var(--ink);font-size:1.1rem}
+.mc.got.e{font-size:2.6rem}
+@media(max-width:520px){.mem{grid-template-columns:repeat(3,1fr)}}
+.sl{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:min(100%,330px);margin:10px auto}
+.sl button{aspect-ratio:1;border:0;border-radius:14px;font-size:2.4rem;font-weight:900;color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.sl button.empty{visibility:hidden}
+.ws{display:grid;gap:3px;width:min(100%,520px);margin:10px auto;user-select:none;-webkit-user-select:none}
+.ws button{aspect-ratio:1;border:2px solid var(--line);background:#fff;border-radius:8px;font-weight:800;font-size:1.15rem;padding:0}
+.ws button.st{background:#ffe066;border-color:#f59f00}
+.ws button.fd{background:#b2f2bb;border-color:var(--ok)}
+.wl{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.wl span{background:#f1f3f5;border-radius:12px;padding:6px 12px;font-weight:700}
+.wl span.fd{background:#d3f9d8;color:#1b6b2c}
+.sd{display:grid;grid-template-columns:repeat(4,1fr);width:min(100%,300px);margin:10px auto;border:4px solid var(--ink)}
+.sd button{aspect-ratio:1;border:1px solid #adb5bd;background:#fff;font-size:1.9rem;font-weight:800;padding:0}
+/* Sudoku-Linien per Skript */
+.sd button.g{background:#fff3bf}
+.sd button.sel{background:#a5d8ff}
+.sd button.bad{background:#ffc9c9}
+.foot{text-align:center;margin:10px 0 28px;font-size:.85rem}
+.foot a{color:var(--muted)}
+@media print{.top,.bar,.foot{display:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <button class="pill" id="homeBtn" aria-label="Start">🏠</button>
+  <h1>Willkommen · Welcome</h1>
+  <div class="stars" id="stars" aria-live="polite">⭐ 0</div>
+</header>
+<main id="app"></main>
+<div class="foot"><a href="../../impressum.html">Impressum &amp; Datenschutz</a></div>
+
+<script>
+/* ====== Helfer ====== */
+const $=(s,r=document)=>r.querySelector(s);
+function h(tag,props,...kids){const e=document.createElement(tag);for(const k in(props||{})){const v=props[k];if(k==='class')e.className=v;else if(k==='html')e.innerHTML=v;else if(k==='style')e.style.cssText=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else e.setAttribute(k,v);}for(const c of kids.flat()){if(c==null||c===false)continue;e.append(c.nodeType?c:document.createTextNode(String(c)));}return e;}
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const sample=(a,n)=>shuffle(a).slice(0,n);
+const SUB='₀₁₂₃₄₅₆₇₈₉';
+const sub=n=>n>1?String(n).split('').map(d=>SUB[+d]).join(''):'';
+function speak(t){try{if(!('speechSynthesis' in window))return;const u=new SpeechSynthesisUtterance(t);u.lang='de-DE';u.rate=.85;const v=(speechSynthesis.getVoices()||[]).find(v=>v.lang&&v.lang.toLowerCase().startsWith('de'));if(v)u.voice=v;speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+const canSpeak=()=>'speechSynthesis' in window;
+const spkBtn=t=>h('button',{class:'spk','aria-label':'Vorlesen · Listen',onclick:e=>{e.stopPropagation();speak(t);}},'🔊');
+
+/* ====== Vokabeln ====== */
+const VOC=[];
+function N(th,a,w,e,en){VOC.push({th,k:'n',a,w,e,en});}
+function V(th,k,w,e,en){VOC.push({th,k,w,e,en});}
+const TH_ORDER=['Schule','Essen & Trinken','Zuhause','Unterwegs','Kleidung','Farben','Hobbys','Labor','Mathe-Wörter'];
+const TH_ICON={'Schule':'🎒','Essen & Trinken':'🍎','Zuhause':'🏠','Unterwegs':'🚌','Kleidung':'👕','Farben':'🎨','Hobbys':'⚽','Labor':'🧪','Mathe-Wörter':'➕'};
+N('Schule','die','Schule','🏫','school');N('Schule','das','Buch','📚','book');N('Schule','der','Stift','🖊️','pen');N('Schule','der','Rucksack','🎒','backpack');
+N('Schule','die','Schere','✂️','scissors');N('Schule','das','Lineal','📏','ruler');N('Schule','die','Uhr','🕒','clock');N('Schule','der','Computer','💻','computer');
+N('Essen & Trinken','der','Apfel','🍎','apple');N('Essen & Trinken','das','Brot','🍞','bread');N('Essen & Trinken','das','Wasser','💧','water');N('Essen & Trinken','die','Milch','🥛','milk');
+N('Essen & Trinken','der','Käse','🧀','cheese');N('Essen & Trinken','die','Banane','🍌','banana');N('Essen & Trinken','die','Karotte','🥕','carrot');N('Essen & Trinken','das','Ei','🥚','egg');N('Essen & Trinken','der','Reis','🍚','rice');
+N('Zuhause','das','Haus','🏠','house');N('Zuhause','das','Bett','🛏️','bed');N('Zuhause','der','Stuhl','🪑','chair');N('Zuhause','die','Tür','🚪','door');
+N('Zuhause','der','Schlüssel','🔑','key');N('Zuhause','das','Sofa','🛋️','sofa');N('Zuhause','die','Dusche','🚿','shower');N('Zuhause','das','Handy','📱','mobile phone');
+N('Unterwegs','der','Bus','🚌','bus');N('Unterwegs','das','Fahrrad','🚲','bicycle');N('Unterwegs','der','Zug','🚆','train');N('Unterwegs','das','Auto','🚗','car');
+N('Unterwegs','das','Flugzeug','✈️','airplane');N('Unterwegs','das','Schiff','🚢','ship');N('Unterwegs','die','Ampel','🚦','traffic light');N('Unterwegs','der','Bahnhof','🚉','train station');
+N('Kleidung','das','T-Shirt','👕','T-shirt');N('Kleidung','die','Hose','👖','trousers');N('Kleidung','der','Schuh','👟','shoe');N('Kleidung','die','Mütze','🧢','cap');
+N('Kleidung','die','Jacke','🧥','jacket');N('Kleidung','die','Socke','🧦','sock');N('Kleidung','das','Kleid','👗','dress');N('Kleidung','der','Schal','🧣','scarf');
+V('Farben','w','rot','🟥','red');V('Farben','w','blau','🟦','blue');V('Farben','w','grün','🟩','green');V('Farben','w','gelb','🟨','yellow');
+V('Farben','w','schwarz','⬛','black');V('Farben','w','weiß','⬜','white');V('Farben','w','orange','🟧','orange');V('Farben','w','braun','🟫','brown');
+V('Hobbys','v','Fußball spielen','⚽','to play football');V('Hobbys','v','schwimmen','🏊','to swim');V('Hobbys','v','tanzen','💃','to dance');V('Hobbys','v','singen','🎤','to sing');
+V('Hobbys','v','malen','🎨','to paint');V('Hobbys','v','Musik hören','🎧','to listen to music');V('Hobbys','v','Videospiele spielen','🎮','to play video games');V('Hobbys','v','fotografieren','📷','to take photos');
+V('Hobbys','v','Gitarre spielen','🎸','to play the guitar');V('Hobbys','v','lesen','📖','to read');V('Hobbys','v','kochen','🍳','to cook');V('Hobbys','v','Rad fahren','🚴','to ride a bike');
+N('Labor','das','Reagenzglas','🧪','test tube');N('Labor','die','Schutzbrille','🥽','safety goggles');N('Labor','das','Experiment','⚗️','experiment');N('Labor','die','Waage','⚖️','scale');
+N('Labor','das','Thermometer','🌡️','thermometer');N('Labor','der','Brenner','🔥','burner');N('Labor','der','Handschuh','🧤','glove');
+V('Mathe-Wörter','w','plus','➕','plus');V('Mathe-Wörter','w','minus','➖','minus');V('Mathe-Wörter','w','mal','✖️','times');V('Mathe-Wörter','w','geteilt durch','➗','divided by');
+V('Mathe-Wörter','w','gleich','＝','equals');V('Mathe-Wörter','n','Zahl','🔢','number');V('Mathe-Wörter','n','Dreieck','🔺','triangle');V('Mathe-Wörter','n','Kreis','⭕','circle');
+VOC.forEach(v=>{if(v.k==='n'&&!v.a){v.a={Zahl:'die',Dreieck:'das',Kreis:'der'}[v.w];}});
+const state={level:1,theme:'alle',stars:0};
+function pool(theme,min=1){let p=theme==='alle'?VOC:VOC.filter(v=>v.th===theme);if(p.length<min)p=VOC;return p;}
+const full=v=>v.k==='n'?v.a+' '+v.w:v.w;
+function wordEl(v){return v.k==='n'?h('span',null,h('span',{class:'art '+v.a},v.a),' '+v.w):h('span',null,v.w);}
+function wordHTML(v){return v.k==='n'?'<span class="art '+v.a+'">'+v.a+'</span> '+v.w:v.w;}
+function distract(v,p,n){let o=p.filter(x=>x!==v);if(o.length<n)o=VOC.filter(x=>x!==v);return sample(o,n);}
+
+/* ====== Rahmen: Ansichten und Aufgabenablauf ====== */
+const app=$('#app');
+function updateStars(){$('#stars').textContent='⭐ '+state.stars;}
+function home(){
+  app.replaceChildren(
+    h('div',{class:'hello'},h('h2',null,'👋 Hallo! Welcome!'),h('p',null,'Tippe auf ein Feld. · Tap a box.')),
+    h('div',{class:'grid'},
+      areaCard('w','🗣️','Wörter','Words'),areaCard('m','🔢','Zahlen','Numbers'),areaCard('c','⚗️','Chemie','Chemistry'),areaCard('p','🧩','Puzzle','Puzzles')),
+    h('button',{class:'mix',onclick:()=>runner(Object.keys(TASKS),'Bunte Mischung','Colourful mix','#f59f00')},'🌈 Bunte Mischung · Mix of everything')
+  );
+}
+function areaCard(a,ic,de,en){return h('button',{class:'card '+a,onclick:()=>areaPage(a)},h('span',{class:'ic'},ic),h('b',null,de),h('small',null,en));}
+const AREA={w:{name:'Wörter',en:'Words',ic:'🗣️',col:'var(--c-w)',hex:'#e8590c'},m:{name:'Zahlen',en:'Numbers',ic:'🔢',col:'var(--c-m)',hex:'#1c7ed6'},c:{name:'Chemie',en:'Chemistry',ic:'⚗️',col:'var(--c-c)',hex:'#2f9e44'},p:{name:'Puzzle',en:'Puzzles',ic:'🧩',col:'var(--c-p)',hex:'#9c36b5'}};
+function chips(items,cur,set){return h('div',{class:'chips'},items.map(([v,l])=>h('button',{class:'chip'+(String(cur)===String(v)?' on':''),onclick:()=>{set(v);}},l)));}
+function areaPage(a){
+  const A=AREA[a];const ids=Object.keys(TASKS).filter(k=>TASKS[k].area===a);
+  const parts=[h('div',{class:'runhead'},h('button',{class:'pill',onclick:home},'←'),h('div',{class:'t'},A.ic+' '+A.name,h('small',null,A.en)))];
+  if(a==='w'){parts.push(h('div',{class:'sec'},'Thema · Topic'),chips([['alle','🌈 Alle · All'],...TH_ORDER.map(t=>[t,TH_ICON[t]+' '+t])],state.theme,v=>{state.theme=v;areaPage(a);}));}
+  else{parts.push(h('div',{class:'sec'},'Stufe · Level'),chips([[1,'🌱 leicht · easy'],[2,'🌿 mittel · medium'],[3,'🌳 schwer · hard']],state.level,v=>{state.level=+v;areaPage(a);}));}
+  parts.push(h('div',{class:'sec'},'Spiele · Games'),h('div',{class:'acts',style:'--ac:'+A.col},ids.map(id=>h('button',{class:'act',onclick:()=>runner([id],TASKS[id].title,TASKS[id].en,A.hex)},h('span',{class:'ic'},TASKS[id].icon),h('span',null,h('b',null,TASKS[id].title),h('small',null,TASKS[id].en))))));
+  parts.push(h('button',{class:'mix',style:'background:'+A.hex,onclick:()=>runner(ids,A.name,A.en,A.hex)},'🎲 Mischen · Shuffle'));
+  app.replaceChildren(...parts);
+}
+function runner(list,title,en,hex){
+  let last=null,ctx,done;
+  const t=h('div',{class:'t'}),box=h('div',{class:'box',style:'--ac:'+hex}),bar=h('div',{class:'bar'});
+  const skip=h('button',{class:'skip',onclick:next},'⏭ Überspringen · Skip'),nx=h('button',{class:'next',onclick:next},'Weiter · Next ▶');
+  bar.append(skip,nx);
+  const wrap=h('div',null,h('div',{class:'runhead'},h('button',{class:'pill',onclick:()=>{const a=list.length===1||list.every(i=>TASKS[i].area===TASKS[list[0]].area)?TASKS[list[0]].area:null;a?areaPage(a):home();}},'←'),t),box,bar);
+  app.replaceChildren(wrap);
+  function next(){
+    let id;do{id=pick(list);}while(list.length>1&&id===last);last=id;done=false;wrap.classList.remove('done');
+    const T=TASKS[id];t.replaceChildren(T.icon+' '+T.title,h('small',null,T.en));box.replaceChildren();
+    ctx={level:state.level,theme:state.theme,solved(){if(done)return;done=true;state.stars++;updateStars();wrap.classList.add('done');}};
+    try{T.run(box,ctx);}catch(e){console.error(e);box.replaceChildren(h('p',{class:'center'},'😕 Diese Aufgabe geht gerade nicht. Tippe auf „Überspringen“.'));}
+    window.scrollTo(0,0);
+  }
+  next();
+}
+$('#homeBtn').onclick=home;
+
+/* ====== Bausteine für Aufgaben ====== */
+function how(box,de,en){box.append(h('p',{class:'how'},de,h('br'),en));}
+function msg(box){const m=h('div',{class:'msg'});box.append(m);const f=(t,c)=>{m.className='msg '+(c||'');m.textContent=t||'';};f.el=m;return f;}
+/* Auswahl: options = Liste, ok = Index der richtigen, view(o) = Inhalt */
+function choice(box,options,ok,ctx,view,cls,onok){
+  const say=msg(box),wrap=h('div',{class:'opts'});box.insertBefore(wrap,box.lastChild);
+  options.forEach((o,i)=>{const b=h('button',{class:'opt '+(cls||'')},view(o));b.onclick=()=>{
+    if(i===ok){wrap.querySelectorAll('button').forEach(x=>x.disabled=true);b.classList.add('ok','pop');say('✔ Richtig! · Correct!','ok');if(onok)onok();ctx.solved();}
+    else{b.classList.add('bad','shake');b.disabled=true;say('Versuche es nochmal. · Try again.','bad');}};wrap.append(b);});
+}
+function memory(box,pairs,ctx){
+  how(box,'Finde die Paare.','Find the pairs.');
+  const cards=shuffle(pairs.flatMap(p=>[{k:p.k,c:p.a,e:p.ae},{k:p.k,c:p.b,e:p.be}]));
+  const g=h('div',{class:'mem'});box.append(g);let open=[],lock=false,left=pairs.length;
+  cards.forEach(cd=>{const b=h('button',{class:'mc'},'?');b.onclick=()=>{
+    if(lock||b.classList.contains('up')||b.classList.contains('got'))return;
+    b.className='mc up'+(cd.e?' e':'');b.innerHTML=cd.c;open.push([b,cd]);
+    if(open.length===2){const[[b1,c1],[b2,c2]]=open;
+      if(c1.k===c2.k){b1.className=b2.className='mc got'+(c1.e?' e':'');b1.classList.add('pop');b2.classList.add('pop');open=[];if(--left===0){msg(box)('🎉 Alle Paare gefunden! · All pairs found!','ok');ctx.solved();}}
+      else{lock=true;setTimeout(()=>{[b1,b2].forEach(x=>{x.className='mc';x.textContent='?';});open=[];lock=false;},1100);}}};g.append(b);});
+}
+/* Zahlenblock */
+function numpad(box,onSubmit){
+  let val='';const disp=h('div',{class:'disp'},' ');box.append(disp);
+  const upd=()=>{disp.textContent=val||' ';};
+  const mk=(t,f,c)=>h('button',{class:c||'',onclick:f},t);
+  const pad=h('div',{class:'pad'},...[1,2,3,4,5,6,7,8,9].map(n=>mk(n,()=>{if(val.length<5){val+=n;upd();}})),mk('⌫',()=>{val=val.slice(0,-1);upd();}),mk('0',()=>{if(val.length<5){val+='0';upd();}}),mk('✔',()=>{if(val){const r=onSubmit(+val);if(r===false){disp.classList.add('shake');setTimeout(()=>disp.classList.remove('shake'),400);val='';upd();}}},'go'));
+  box.append(pad);
+}
+
+/* ====== Aufgaben ====== */
+const TASKS={};
+const T=(id,area,icon,title,en,run)=>{TASKS[id]={area,icon,title,en,run};};
+
+/* --- Wörter --- */
+T('karte','w','🃏','Karteikarten','Flash cards',(box,ctx)=>{
+  const v=pick(pool(ctx.theme));how(box,'Tippe auf die Karte. Sie dreht sich um.','Tap the card. It flips.');
+  let back=false;const card=h('button',{class:'flash'});box.append(card);
+  const draw=()=>{card.replaceChildren();if(!back)card.append(h('div',{class:'big'},v.e),h('div',{class:'en'},v.en),h('small',{class:'en'},'↻'));
+    else{card.append(h('div',{class:'w'},wordEl(v)),h('div',{class:'en',style:'margin-top:8px'},v.en));card.append(h('div',{style:'margin-top:10px'},spkBtn(full(v))));}};
+  card.onclick=()=>{back=!back;draw();card.classList.add('pop');setTimeout(()=>card.classList.remove('pop'),500);if(back){ctx.solved();speak(full(v));}};draw();
+});
+T('bild','w','🖼️','Bild-Quiz','Picture quiz',(box,ctx)=>{
+  const p=pool(ctx.theme),v=pick(p),opts=shuffle([v,...distract(v,p,3)]),ok=opts.indexOf(v),mode=pick(['e2d','d2e','en2d']);
+  if(mode==='d2e'){how(box,'Welches Bild passt?','Which picture fits?');box.append(h('div',{class:'eq'},wordEl(v),' ',spkBtn(full(v))));choice(box,opts,ok,ctx,o=>o.e,'emo');}
+  else if(mode==='e2d'){how(box,'Wie heißt das auf Deutsch?','What is this called in German?');box.append(h('div',{class:'big'},v.e),h('div',{class:'en'},v.en));choice(box,opts,ok,ctx,o=>wordEl(o));}
+  else{how(box,'Wie sagt man das auf Deutsch?','How do you say this in German?');box.append(h('div',{class:'eq'},'„'+v.en+'“'));choice(box,opts,ok,ctx,o=>wordEl(o));}
+});
+T('hoeren','w','👂','Hören','Listening',(box,ctx)=>{
+  if(!canSpeak())return TASKS.bild.run(box,ctx);
+  const p=pool(ctx.theme),v=pick(p),opts=shuffle([v,...distract(v,p,3)]);
+  how(box,'Höre das Wort. Welches Bild passt?','Listen to the word. Which picture fits?');
+  box.append(h('div',{class:'center'},h('button',{class:'spk',style:'font-size:3rem;min-width:96px;min-height:96px',onclick:()=>speak(full(v)),'aria-label':'Vorlesen'},'🔊')));
+  setTimeout(()=>speak(full(v)),250);choice(box,opts,opts.indexOf(v),ctx,o=>o.e,'emo',()=>{});
+});
+T('artikel','w','🎯','der – die – das','Articles',(box,ctx)=>{
+  const pn=pool(ctx.theme).filter(x=>x.k==='n'),w=pick(pn.length?pn:VOC.filter(x=>x.k==='n'));
+  how(box,'Welcher Artikel ist richtig?','Which article is right?');
+  box.append(h('div',{class:'big'},w.e),h('div',{class:'eq',id:'aw'},'___ '+w.w),h('div',{class:'en'},w.en));
+  const say=msg(box),row=h('div',{class:'opts'});box.insertBefore(row,box.lastChild);
+  ['der','die','das'].forEach(a=>{const b=h('button',{class:'opt',style:'font-size:1.6rem'},h('span',{class:'art '+a},a));b.onclick=()=>{
+    if(a===w.a){row.querySelectorAll('button').forEach(x=>x.disabled=true);b.classList.add('ok','pop');$('#aw').replaceChildren(wordEl(w));say('✔ Richtig!','ok');speak(full(w));ctx.solved();}
+    else{b.classList.add('bad','shake');b.disabled=true;say('Nochmal! · Try again!','bad');}};row.append(b);});
+});
+T('buchstaben','w','🔤','Buchstaben-Puzzle','Letter puzzle',(box,ctx)=>{
+  const p=pool(ctx.theme).filter(x=>!/\s/.test(x.w)&&x.w.length>=3&&x.w.length<=12),v=pick(p.length?p:VOC.filter(x=>!/\s/.test(x.w)));
+  how(box,'Tippe die Buchstaben in der richtigen Reihenfolge.','Tap the letters in the right order.');
+  box.append(h('div',{class:'big'},v.e),h('div',{class:'en'},v.en+(v.k==='n'?'  ·  '+v.a+' …':'')));
+  const slots=h('div',{class:'slots'}),tiles=h('div',{class:'tiles'}),say=msg(box);box.insertBefore(slots,say.el);box.insertBefore(tiles,say.el);
+  const letters=shuffle(v.w.split('')),chosen=[];const tl=letters.map((l,i)=>{const b=h('button',{class:'tile'},l);b.onclick=()=>{chosen.push(i);b.classList.add('used');draw();check();};tiles.append(b);return b;});
+  const draw=()=>slots.replaceChildren(...chosen.map(i=>h('span',{class:'tile',style:'cursor:default'},letters[i])));
+  const reset=()=>{chosen.length=0;tl.forEach(b=>b.classList.remove('used'));draw();};
+  const check=()=>{if(chosen.length<letters.length)return;const s=chosen.map(i=>letters[i]).join('');
+    if(s===v.w){say('✔ '+full(v),'ok');slots.classList.add('pop');tiles.style.display='none';speak(full(v));ctx.solved();}else{say('Nicht ganz. Nochmal! · Not quite.','bad');slots.classList.add('shake');setTimeout(()=>{slots.classList.remove('shake');say('');reset();},800);}};
+  box.insertBefore(h('div',{class:'small-btns'},h('button',{onclick:()=>{if(chosen.length){const i=chosen.pop();tl[i].classList.remove('used');draw();}}},'⌫'),h('button',{onclick:reset},'🔄')),say.el);
+});
+const SENT=[['Ich heiße Anna.','My name is Anna.'],['Wie heißt du?','What is your name?'],['Ich gehe in die Schule.','I go to school.'],['Ich trinke gern Wasser.','I like drinking water.'],['Mein Bruder spielt Fußball.','My brother plays football.'],
+['Wir essen Brot und Käse.','We eat bread and cheese.'],['Der Bus kommt um acht Uhr.','The bus comes at eight o’clock.'],['Ich habe einen Hund.','I have a dog.'],['Ich höre gern Musik.','I like listening to music.'],
+['Meine Mutter kocht Reis.','My mother cooks rice.'],['Ich fahre mit dem Fahrrad.','I go by bike.'],['Wo ist die Toilette?','Where is the toilet?'],['Ich brauche Hilfe.','I need help.'],['Ich verstehe das nicht.','I do not understand that.'],['Kannst du das bitte wiederholen?','Can you repeat that, please?']];
+T('satz','w','🧱','Satz-Puzzle','Sentence puzzle',(box,ctx)=>{
+  const[s,en]=pick(SENT),words=s.split(' ');how(box,'Bringe die Wörter in die richtige Reihenfolge.','Put the words in the right order.');
+  box.append(h('div',{class:'story'},'„'+en+'“'));const slots=h('div',{class:'slots'}),tiles=h('div',{class:'tiles'}),say=msg(box);box.insertBefore(slots,say.el);box.insertBefore(tiles,say.el);
+  const order=shuffle(words.map((w,i)=>i));let tries=0;while(order.join()===words.map((w,i)=>i).join()&&tries++<5)order.sort(()=>Math.random()-.5);
+  const chosen=[];const tl=order.map(i=>{const b=h('button',{class:'tile'},words[i]);b.onclick=()=>{chosen.push(i);b.classList.add('used');draw();check();};tiles.append(b);return[i,b];});
+  const draw=()=>slots.replaceChildren(...chosen.map(i=>h('button',{class:'tile',onclick:()=>{const k=chosen.indexOf(i);chosen.splice(k,1);tl.find(x=>x[0]===i)[1].classList.remove('used');draw();}},words[i])));
+  const check=()=>{if(chosen.length<words.length)return;if(chosen.map(i=>words[i]).join(' ')===s){say('✔ '+s,'ok');tiles.style.display='none';speak(s);ctx.solved();}else{say('Fast! Tippe auf ein Wort, um es zu entfernen. · Almost! Tap a word to remove it.','bad');slots.classList.add('shake');setTimeout(()=>slots.classList.remove('shake'),400);}};
+});
+T('vmemory','w','🧠','Memory','Memory',(box,ctx)=>{
+  const p=pool(ctx.theme,6),ws=sample(p.length>=6?p:VOC,6);
+  memory(box,ws.map((v,i)=>({k:i,a:v.e,ae:1,b:wordHTML(v)})),ctx);
+});
+
+/* --- Zahlen --- */
+function zahlwort(n){
+  const E=['null','eins','zwei','drei','vier','fünf','sechs','sieben','acht','neun','zehn','elf','zwölf','dreizehn','vierzehn','fünfzehn','sechzehn','siebzehn','achtzehn','neunzehn'];
+  const Z=['','','zwanzig','dreißig','vierzig','fünfzig','sechzig','siebzig','achtzig','neunzig'];
+  if(n<20)return E[n];if(n<100){const t=Math.floor(n/10),e=n%10;return e?(e===1?'ein':E[e])+'und'+Z[t]:Z[t];}
+  if(n===100)return 'hundert';return String(n);
+}
+const OPW={'+':'plus','−':'minus','×':'mal','÷':'geteilt durch'};
+function genCalc(L){
+  let a,b,op,r=Math.random();
+  if(L===1){if(r<.5){a=rnd(1,15);b=rnd(1,20-a);op='+';}else{a=rnd(2,20);b=rnd(1,a);op='−';}}
+  else if(L===2){if(r<.3){a=rnd(11,60);b=rnd(11,99-a);op='+';}else if(r<.6){a=rnd(20,99);b=rnd(10,a-1);op='−';}else{a=pick([2,3,4,5,10]);b=rnd(2,10);op='×';}}
+  else{if(r<.25){a=rnd(100,500);b=rnd(50,400);op='+';}else if(r<.45){a=rnd(200,999);b=rnd(50,a-1);op='−';}else if(r<.75){a=rnd(3,12);b=rnd(3,12);op='×';}else{b=rnd(2,12);const q=rnd(2,12);a=b*q;op='÷';}}
+  const ans=op==='+'?a+b:op==='−'?a-b:op==='×'?a*b:a/b;return{a,b,op,ans};
+}
+T('rechnen','m','➕','Kopfrechnen','Mental maths',(box,ctx)=>{
+  const q=genCalc(ctx.level);how(box,'Rechne und tippe die Antwort.','Calculate and tap the answer.');
+  if(ctx.level===1&&q.op==='+'&&q.a<=10&&q.b<=10)box.append(h('div',{class:'dots'},'🍎'.repeat(q.a)+' ➕ '+'🍏'.repeat(q.b)));
+  box.append(h('div',{class:'eq'},`${q.a} ${q.op} ${q.b} = ?`));
+  if(q.a<=100&&q.b<=100)box.append(h('div',{class:'eqw'},`${zahlwort(q.a)} ${OPW[q.op]} ${zahlwort(q.b)} ist …`));
+  const say=msg(box);numpad(box,v=>{if(v===q.ans){say('✔ '+q.a+' '+q.op+' '+q.b+' = '+q.ans,'ok');ctx.solved();box.querySelector('.pad').style.display='none';}else{say('Nicht ganz. Nochmal! · Not quite.','bad');return false;}});
+});
+const PEOPLE=[['Mia','f'],['Ali','m'],['Olena','f'],['Omar','m'],['Lena','f'],['Yusuf','m'],['Sara','f'],['Lukas','m'],['Amina','f'],['Daniel','m']];
+const THINGS=[['🍎','Äpfel','apples'],['🍪','Kekse','cookies'],['⚽','Bälle','balls'],['📚','Bücher','books'],['🍌','Bananen','bananas'],['🖊️','Stifte','pens'],['🍬','Bonbons','sweets'],['🎈','Luftballons','balloons']];
+T('sach','m','📖','Textaufgabe','Word problem',(box,ctx)=>{
+  const[nm,g]=pick(PEOPLE),[em,de,en]=pick(THINGS),P=g==='f'?['Sie','She','sie','her']:['Er','He','er','him'];const L=ctx.level;
+  const kinds=L===1?['add','sub']:L===2?['add','sub','mul']:['mul','div','sub'];const k=pick(kinds);let t,te,ans;
+  if(k==='add'){const a=rnd(2,L===1?9:40),b=rnd(2,L===1?9:40);ans=a+b;t=`${nm} hat ${a} ${de}. ${P[0]} bekommt ${b} ${de} dazu. Wie viele ${de} hat ${P[2]} jetzt?`;te=`${nm} has ${a} ${en}. ${P[1]} gets ${b} more ${en}. How many ${en} does ${P[1].toLowerCase()} have now?`;}
+  else if(k==='sub'){const a=rnd(L===1?5:20,L===1?15:L===2?60:200),b=rnd(1,Math.min(a-1,L===1?9:50));ans=a-b;t=`${nm} hat ${a} ${de}. ${P[0]} verschenkt ${b} ${de}. Wie viele ${de} hat ${P[2]} jetzt?`;te=`${nm} has ${a} ${en}. ${P[1]} gives away ${b} ${en}. How many ${en} does ${P[1].toLowerCase()} have now?`;}
+  else if(k==='mul'){const a=rnd(2,L===2?6:10),b=rnd(2,L===2?6:10);ans=a*b;t=`In jeder Tüte sind ${a} ${de}. ${nm} hat ${b} Tüten. Wie viele ${de} sind das?`;te=`Each bag holds ${a} ${en}. ${nm} has ${b} bags. How many ${en} is that?`;}
+  else{const b=rnd(2,8),q=rnd(2,10);ans=b*q;t=`${nm} teilt ${ans} ${de} gerecht an ${b} Kinder. Wie viele ${de} bekommt jedes Kind?`;te=`${nm} shares ${ans} ${en} fairly between ${b} children. How many ${en} does each child get?`;ans=q;}
+  how(box,'Lies die Aufgabe und rechne.','Read the problem and calculate.');box.append(h('div',{class:'big',style:'font-size:3rem'},em),h('div',{class:'story'},t,h('small',null,te)),h('div',{class:'center'},spkBtn(t)));
+  const say=msg(box);numpad(box,v=>{if(v===ans){say('✔ '+ans,'ok');ctx.solved();box.querySelector('.pad').style.display='none';}else{say('Nicht ganz. Nochmal! · Not quite.','bad');return false;}});
+});
+T('zahlwort','m','🔠','Zahlen lesen','Number words',(box,ctx)=>{
+  const mx=ctx.level===1?20:ctx.level===2?60:100,n=rnd(ctx.level===1?3:13,mx);const wrong=new Set();
+  const cand=[n+1,n-1,n+10,n-10,n+2,n-2,+(String(n).split('').reverse().join('')),n+5,n-5].filter(x=>x>0&&x<=100&&x!==n);cand.forEach(x=>wrong.add(x));
+  const opts=shuffle([n,...sample([...wrong],3)]);const mode=Math.random()<.5;how(box,mode?'Welches Wort passt zur Zahl?':'Welche Zahl passt zum Wort?',mode?'Which word matches the number?':'Which number matches the word?');
+  if(mode){box.append(h('div',{class:'big'},String(n)));choice(box,opts,opts.indexOf(n),ctx,o=>zahlwort(o),'',()=>speak(zahlwort(n)));}
+  else{box.append(h('div',{class:'eq'},zahlwort(n),' ',spkBtn(zahlwort(n))));choice(box,opts,opts.indexOf(n),ctx,o=>String(o),'');}
+});
+T('pyramide','m','🔺','Zahlen-Pyramide','Number pyramid',(box,ctx)=>{
+  const M=ctx.level===1?9:ctx.level===2?20:50,a=rnd(1,M),b=rnd(1,M),c=rnd(1,M),ab=a+b,bc=b+c,top=ab+bc;
+  how(box,'Oben steht die Summe der zwei Zahlen darunter.','The number on top is the sum of the two numbers below.');
+  const ins=[];const inp=(v,cls)=>{const i=h('input',{type:'text',inputmode:'numeric',pattern:'[0-9]*','aria-label':'Feld'});i.dataset.v=v;ins.push(i);return i;};
+  const fix=v=>h('div',{class:'fix'},v);
+  box.append(h('div',{class:'pyr'},h('div',{class:'row'},inp(top)),h('div',{class:'row'},inp(ab),inp(bc)),h('div',{class:'row'},fix(a),fix(b),fix(c))));
+  const say=msg(box);box.insertBefore(h('div',{class:'small-btns'},h('button',{onclick:()=>{let all=true;ins.forEach(i=>{const okc=i.value.trim()===i.dataset.v;i.classList.toggle('ok',okc);i.classList.toggle('bad',!okc&&i.value.trim()!=='');if(!okc)all=false;});if(all){say('✔ Super!','ok');ctx.solved();}else say('Prüfe die roten Felder. · Check the red boxes.','bad');}},'✔ Prüfen · Check')),say.el);
+});
+T('folge','m','➡️','Zahlenfolge','Number pattern',(box,ctx)=>{
+  const L=ctx.level;let s=[],step;
+  if(L===1){const d=pick([1,2,3,5,10]),a=rnd(0,10);s=[0,1,2,3,4].map(i=>a+d*i);}
+  else if(L===2){if(Math.random()<.5){const a=rnd(1,5);s=[0,1,2,3,4].map(i=>a*Math.pow(2,i));}else{const d=pick([3,4,6,7]),a=rnd(40,60);s=[0,1,2,3,4].map(i=>a-d*i);}}
+  else{const t=pick(['sq','fib','alt']);if(t==='sq')s=[1,2,3,4,5].map(i=>i*i);else if(t==='fib')s=[1,1,2,3,5];else{const a=rnd(1,9);s=[a,a+2,a+7,a+9,a+14];}if(t==='fib')s.push(8);}
+  const ans=s.pop(),shown=s;const o=new Set([ans]);[1,2,-1,-2,5,-5,10].forEach(d=>{if(o.size<4&&ans+d>0)o.add(ans+d);});const opts=shuffle([...o]);
+  how(box,'Welche Zahl kommt als Nächstes?','Which number comes next?');box.append(h('div',{class:'seq'},...shown.map(x=>h('span',null,x)),h('span',{class:'q'},'?')));choice(box,opts,opts.indexOf(ans),ctx,o=>String(o));
+});
+
+/* --- Chemie --- */
+const EL=[['H','Wasserstoff','hydrogen'],['He','Helium','helium'],['C','Kohlenstoff','carbon'],['N','Stickstoff','nitrogen'],['O','Sauerstoff','oxygen'],['Na','Natrium','sodium'],['Mg','Magnesium','magnesium'],['Al','Aluminium','aluminium'],['S','Schwefel','sulfur'],['Cl','Chlor','chlorine'],['K','Kalium','potassium'],['Ca','Calcium','calcium'],['Fe','Eisen','iron'],['Cu','Kupfer','copper'],['Zn','Zink','zinc'],['Ag','Silber','silver'],['Au','Gold','gold'],['Pb','Blei','lead']];
+const EL_EASY=['H','C','N','O','Na','Cl','Fe','Au','Ag','S'];
+const COL={H:'#868e96',C:'#343a40',O:'#e03131',N:'#1c7ed6',Na:'#7048e8',Cl:'#2f9e44',Ca:'#5c940d',S:'#f08c00',Fe:'#a0522d'};
+const atom=s=>h('span',{class:'atom',style:'background:'+(COL[s]||'#495057')},s);
+const CP=[{f:'H₂O',de:'Wasser',en:'water',e:'💧',at:{H:2,O:1},L:1},{f:'O₂',de:'Sauerstoff',en:'oxygen',e:'🌬️',at:{O:2},L:1},{f:'CO₂',de:'Kohlenstoffdioxid',en:'carbon dioxide',e:'☁️',at:{C:1,O:2},L:1},
+{f:'NaCl',de:'Kochsalz',en:'table salt',e:'🧂',at:{Na:1,Cl:1},L:1},{f:'H₂',de:'Wasserstoff',en:'hydrogen',e:'🎈',at:{H:2},L:1},{f:'N₂',de:'Stickstoff',en:'nitrogen',e:'🫧',at:{N:2},L:1},
+{f:'CH₄',de:'Methan',en:'methane',e:'🔥',at:{C:1,H:4},L:2},{f:'NH₃',de:'Ammoniak',en:'ammonia',e:'🧴',at:{N:1,H:3},L:2},{f:'CaCO₃',de:'Kalk',en:'limestone',e:'🐚',at:{Ca:1,C:1,O:3},L:3},{f:'C₆H₁₂O₆',de:'Traubenzucker',en:'glucose',e:'🍬',at:{C:6,H:12,O:6},L:3}];
+const cpool=L=>CP.filter(c=>c.L<=L);
+const elpool=L=>L===1?EL.filter(e=>EL_EASY.includes(e[0])):EL;
+T('symbol','c','🔬','Elemente','Elements',(box,ctx)=>{
+  const p=elpool(ctx.level),e=pick(p),info=()=>box.append(h('div',{class:'en',style:'margin-top:8px'},e[0]+' = '+e[1]+' = '+e[2])),others=sample(p.filter(x=>x!==e),3),opts=shuffle([e,...others]),ok=opts.indexOf(e);
+  if(Math.random()<.5){how(box,'Wie heißt dieses Element?','What is this element called?');box.append(h('div',{class:'sym'},e[0]));choice(box,opts,ok,ctx,o=>o[1],'',info);}
+  else{how(box,'Wie schreibt man das Element?','What is the symbol of this element?');box.append(h('div',{class:'eq'},e[1]),h('div',{class:'en'},e[2]));choice(box,opts,ok,ctx,o=>o[0],'',info);}
+});
+T('formel','c','🧬','Formeln','Formulas',(box,ctx)=>{
+  const p=cpool(ctx.level),c=pick(p),info=()=>box.append(h('div',{class:'en',style:'margin-top:8px'},c.f+' = '+c.de+' = '+c.en)),others=sample(p.filter(x=>x!==c&&x.de!==c.de),3),opts=shuffle([c,...others]),ok=opts.indexOf(c);
+  if(Math.random()<.5){how(box,'Wie heißt dieser Stoff?','What is this substance called?');box.append(h('div',{class:'formula'},c.f));choice(box,opts,ok,ctx,o=>o.e+' '+o.de,'',info);}
+  else{how(box,'Welche Formel passt?','Which formula fits?');box.append(h('div',{class:'big',style:'font-size:3.4rem'},c.e),h('div',{class:'eq'},c.de),h('div',{class:'en'},c.en));choice(box,opts,ok,ctx,o=>o.f,'',info);}
+});
+const fstr=(at,order)=>order.filter(s=>at[s]).map(s=>s+sub(at[s])).join('');
+T('bauen','c','🧱','Moleküle bauen','Build molecules',(box,ctx)=>{
+  const c=pick(cpool(ctx.level)),syms=Object.keys(c.at),extra=sample(['H','O','C','N','Na','Cl'].filter(s=>!syms.includes(s)),ctx.level===1?1:2),order=[...syms,...extra];
+  how(box,'Baue den Stoff mit Atomen. Tippe + und −.','Build the substance with atoms. Tap + and −.');
+  box.append(h('div',{class:'big',style:'font-size:3.2rem'},c.e),h('div',{class:'eq'},c.de),h('div',{class:'en'},c.en));
+  const cnt={};order.forEach(s=>cnt[s]=0);const form=h('div',{class:'formula'},' '),say=msg(box);box.insertBefore(form,say.el);
+  const upd=()=>{form.textContent=fstr(cnt,order)||' ';};
+  order.forEach(s=>{const n=h('div',{class:'n'},'0');const row=h('div',{class:'stepper'},atom(s),h('button',{onclick:()=>{if(cnt[s]>0){cnt[s]--;n.textContent=cnt[s];upd();}}},'−'),n,h('button',{onclick:()=>{if(cnt[s]<15){cnt[s]++;n.textContent=cnt[s];upd();}}},'+'));box.insertBefore(row,say.el);});
+  box.insertBefore(h('div',{class:'small-btns'},h('button',{onclick:()=>{const okk=order.every(s=>cnt[s]===(c.at[s]||0));if(okk){say('✔ '+c.f+' = '+c.de,'ok');ctx.solved();}else{say('Noch nicht richtig. Zähle die Atome. · Not yet. Count the atoms.','bad');}}},'✔ Prüfen · Check')),say.el);
+});
+T('zaehlen','c','🔢','Atome zählen','Count atoms',(box,ctx)=>{
+  const c=pick(cpool(ctx.level).filter(x=>Object.keys(x.at).length>0)),syms=Object.keys(c.at),total=Math.random()<.4;
+  const ans=total?Object.values(c.at).reduce((a,b)=>a+b,0):c.at[pick(syms)],sy=total?null:syms.find(s=>c.at[s]===ans)||syms[0];
+  const target=total?ans:c.at[sy];const o=new Set([target]);[1,-1,2,-2,3].forEach(d=>{if(o.size<4&&target+d>0)o.add(target+d);});const opts=shuffle([...o]);
+  how(box,total?'Wie viele Atome sind es insgesamt?':'Wie viele Atome sind es?',total?'How many atoms are there in total?':'How many atoms are there?');
+  box.append(h('div',{class:'formula'},c.f),h('div',{class:'en'},c.de));if(!total)box.append(h('div',{class:'center',style:'margin-top:6px'},atom(sy),h('span',{style:'font-size:1.3rem;font-weight:800'},' = ?')));
+  choice(box,opts,opts.indexOf(target),ctx,o=>String(o));
+});
+T('cmemory','c','🧠','Formel-Memory','Formula memory',(box,ctx)=>{
+  const p=cpool(Math.max(ctx.level,2)),ps=sample(p,6);memory(box,ps.map((c,i)=>({k:i,a:c.f,b:c.e+'<br>'+c.de})),ctx);
+});
+
+/* --- Puzzle --- */
+T('schiebe','p','🔢','Schiebe-Puzzle','Sliding puzzle',(box,ctx)=>{
+  how(box,'Ordne die Zahlen von 1 bis 8. Tippe auf eine Kachel neben der Lücke.','Order the numbers 1 to 8. Tap a tile next to the gap.');
+  let g=[1,2,3,4,5,6,7,8,0],e=8,last=-1;const moves=ctx.level===1?14:ctx.level===2?40:90;
+  for(let i=0;i<moves;i++){const nb=[];const r=Math.floor(e/3),c=e%3;if(r>0)nb.push(e-3);if(r<2)nb.push(e+3);if(c>0)nb.push(e-1);if(c<2)nb.push(e+1);const f=nb.filter(x=>x!==last);const t=pick(f.length?f:nb);[g[e],g[t]]=[g[t],g[e]];last=e;e=t;}
+  if(g.join()==='1,2,3,4,5,6,7,8,0')g=[1,2,3,4,5,6,7,0,8];
+  const cols=['#e03131','#e8590c','#f08c00','#2f9e44','#1c7ed6','#7048e8','#c2255c','#0c8599'];let n=0;
+  const grid=h('div',{class:'sl'}),say=msg(box);box.insertBefore(grid,say.el);
+  const draw=()=>{grid.replaceChildren(...g.map((v,i)=>{const b=h('button',{class:v?'':'empty',style:v?'background:'+cols[v-1]:''},v||'');b.onclick=()=>{const r=Math.floor(i/3),c=i%3,z=g.indexOf(0),zr=Math.floor(z/3),zc=z%3;
+    if(Math.abs(r-zr)+Math.abs(c-zc)===1){[g[i],g[z]]=[g[z],g[i]];n++;draw();if(g.join()==='1,2,3,4,5,6,7,8,0'){say('🎉 Geschafft in '+n+' Zügen! · Done in '+n+' moves!','ok');ctx.solved();}}};return b;}));};draw();
+});
+T('wortsuche','p','🔍','Wörter suchen','Word search',(box,ctx)=>{
+  const L=ctx.level,size=L===1?8:L===2?9:10,cnt=L===1?4:L===2?5:6,dirs=[[0,1],[1,0]];if(L>=2)dirs.push([1,1]);if(L>=3)dirs.push([0,-1],[-1,0]);
+  const ok=x=>/^[A-Za-z]{3,8}$/.test(x.w);let p=pool(ctx.theme).filter(ok);if(p.length<cnt)p=VOC.filter(ok);
+  let ws=sample(p,cnt),grid,pl;
+  for(let t=0;t<60&&!grid;t++){ws=sample(p,cnt);const gr=Array(size*size).fill(''),pls=[];let good=true;
+    for(const v of ws){const w=v.w.toUpperCase();let placed=false;for(let k=0;k<200&&!placed;k++){const d=pick(dirs),r=rnd(0,size-1),c=rnd(0,size-1),er=r+d[0]*(w.length-1),ec=c+d[1]*(w.length-1);if(er<0||er>=size||ec<0||ec>=size)continue;
+      let fit=true;for(let i=0;i<w.length;i++){const q=gr[(r+d[0]*i)*size+c+d[1]*i];if(q&&q!==w[i]){fit=false;break;}}if(!fit)continue;
+      for(let i=0;i<w.length;i++)gr[(r+d[0]*i)*size+c+d[1]*i]=w[i];pls.push({v,w,r,c,d});placed=true;}if(!placed){good=false;break;}}
+    if(good){grid=gr;pl=pls;}}
+  if(!grid)return TASKS.bild.run(box,ctx);
+  const A='ABCDEFGHIJKLMNOPQRSTUVWXYZ';for(let i=0;i<grid.length;i++)if(!grid[i])grid[i]=A[rnd(0,25)];
+  how(box,'Finde die deutschen Wörter. Tippe auf den ersten und dann auf den letzten Buchstaben.','Find the German words. Tap the first and then the last letter.');
+  const list=h('div',{class:'wl'}),found=new Set(),fcells=new Set();const lis=pl.map(x=>{const s=h('span',null,x.v.e+' '+x.v.en);list.append(s);return s;});
+  const wsEl=h('div',{class:'ws',style:'grid-template-columns:repeat('+size+',1fr)'}),say=msg(box);box.insertBefore(list,say.el);box.insertBefore(wsEl,say.el);
+  let st=null;const btn=[];
+  grid.forEach((ch,i)=>{const b=h('button',null,ch);btn.push(b);wsEl.append(b);b.onclick=()=>{
+    if(st===null){st=i;b.classList.add('st');return;}
+    const r1=Math.floor(st/size),c1=st%size,r2=Math.floor(i/size),c2=i%size,dr=r2-r1,dc=c2-c1;btn[st].classList.remove('st');const s0=st;st=null;
+    if(!(dr===0||dc===0||Math.abs(dr)===Math.abs(dc))||(dr===0&&dc===0)){wsEl.classList.add('shake');setTimeout(()=>wsEl.classList.remove('shake'),350);return;}
+    const len=Math.max(Math.abs(dr),Math.abs(dc))+1,sr=Math.sign(dr),sc=Math.sign(dc),cells=[];let str='';for(let k=0;k<len;k++){const ix=(r1+sr*k)*size+c1+sc*k;cells.push(ix);str+=grid[ix];}
+    const rev=str.split('').reverse().join('');const idx=pl.findIndex((x,j)=>!found.has(j)&&(x.w===str||x.w===rev));
+    if(idx<0){wsEl.classList.add('shake');setTimeout(()=>wsEl.classList.remove('shake'),350);say('Das ist kein gesuchtes Wort. · Not one of the words.','bad');return;}
+    found.add(idx);cells.forEach(ix=>btn[ix].classList.add('fd'));lis[idx].className='fd';lis[idx].textContent=pl[idx].v.e+' '+full(pl[idx].v);say('✔ '+full(pl[idx].v),'ok');speak(full(pl[idx].v));
+    if(found.size===pl.length){say('🎉 Alle Wörter gefunden! · All words found!','ok');ctx.solved();}};});
+});
+function sdCount(g,lim){const i=g.indexOf(0);if(i<0)return 1;const r=Math.floor(i/4),c=i%4;let n=0;
+  for(let v=1;v<=4&&n<lim;v++){let bad=false;for(let k=0;k<4;k++){if(g[r*4+k]===v||g[k*4+c]===v){bad=true;break;}}
+    if(!bad){const br=r-r%2,bc=c-c%2;for(let a=0;a<2&&!bad;a++)for(let b=0;b<2;b++)if(g[(br+a)*4+bc+b]===v){bad=true;break;}}
+    if(!bad){g[i]=v;n+=sdCount(g,lim-n);g[i]=0;}}return n;}
+function sdMake(keep){
+  const base=[[1,2,3,4],[3,4,1,2],[2,1,4,3],[4,3,2,1]],dm=shuffle([1,2,3,4]);let g=base.map(r=>r.map(v=>dm[v-1]));
+  const mk=()=>{const b=shuffle([0,1]),x=shuffle([0,1]),y=shuffle([0,1]);return[b[0]*2+x[0],b[0]*2+x[1],b[1]*2+y[0],b[1]*2+y[1]];};
+  const ro=mk(),co=mk();g=ro.map(i=>co.map(j=>g[i][j]));const sol=g.flat(),pz=sol.slice();let gv=16;
+  for(const i of shuffle([...Array(16).keys()])){if(gv<=keep)break;const t=pz[i];pz[i]=0;if(sdCount(pz.slice(),2)!==1)pz[i]=t;else gv--;}
+  return{sol,pz};
+}
+T('sudoku','p','🔳','Sudoku 4×4','Sudoku 4×4',(box,ctx)=>{
+  how(box,'In jeder Zeile, Spalte und jedem dicken Kasten steht jede Zahl 1 bis 4 genau einmal.','Every row, column and thick box has each number 1 to 4 exactly once.');
+  const{sol,pz}=sdMake(ctx.level===1?10:ctx.level===2?8:6),cur=pz.slice();let sel=-1;
+  const grid=h('div',{class:'sd'}),say=msg(box);box.insertBefore(grid,say.el);
+  const cells=pz.map((v,i)=>{const b=h('button',{class:v?'g':'',style:((i%4===1)?'border-right:4px solid #22262e;':'')+((Math.floor(i/4)===1)?'border-bottom:4px solid #22262e;':'')},v||'');b.onclick=()=>{if(pz[i])return;sel=i;paint();};grid.append(b);return b;});
+  const paint=()=>{cells.forEach((b,i)=>{b.textContent=cur[i]||'';b.classList.toggle('sel',i===sel);b.classList.remove('bad');});};
+  const set=v=>{if(sel<0)return;cur[sel]=v;paint();if(cur.every(x=>x)){if(cur.every((x,i)=>x===sol[i])){say('🎉 Richtig gelöst! · Solved!','ok');sel=-1;paint();ctx.solved();}else{cur.forEach((x,i)=>{if(!pz[i]&&x!==sol[i])cells[i].classList.add('bad');});say('Rot ist falsch. Tippe auf ein rotes Feld. · Red is wrong. Tap a red box.','bad');}}else say('');};
+  box.insertBefore(h('div',{class:'small-btns'},...[1,2,3,4].map(n=>h('button',{style:'font-size:1.5rem;min-width:56px;min-height:56px',onclick:()=>set(n)},n)),h('button',{style:'min-height:56px',onclick:()=>set(0)},'⌫')),say.el);
+});
+T('pmemory','p','🧠','Bilder-Memory','Picture memory',(box,ctx)=>{
+  const ws=sample(VOC,ctx.level===1?4:ctx.level===2?6:8);memory(box,ws.map((v,i)=>({k:i,a:v.e,ae:1,b:wordHTML(v)})),ctx);
+});
+T('psatz','p','🧱','Satz-Puzzle','Sentence puzzle',(box,ctx)=>TASKS.satz.run(box,ctx));
+
+/* ====== Start ====== */
+home();
+</script>
+</body>
+</html>
