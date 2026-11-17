@@ -153,8 +153,8 @@ const spkBtn=t=>h('button',{class:'spk','aria-label':'Vorlesen · Listen',onclic
 const VOC=[];
 function N(th,a,w,e,en){VOC.push({th,k:'n',a,w,e,en});}
 function V(th,k,w,e,en){VOC.push({th,k,w,e,en});}
-const TH_ORDER=['Schule','Essen & Trinken','Zuhause','Unterwegs','Kleidung','Farben','Hobbys','Labor','Mathe-Wörter'];
-const TH_ICON={'Schule':'🎒','Essen & Trinken':'🍎','Zuhause':'🏠','Unterwegs':'🚌','Kleidung':'👕','Farben':'🎨','Hobbys':'⚽','Labor':'🧪','Mathe-Wörter':'➕'};
+const TH_ORDER=['Schule','Essen & Trinken','Zuhause','Unterwegs','Kleidung','Farben','Hobbys','Menschen','Körper','Tiere','Wetter','Stadt','Labor','Mathe-Wörter'];
+const TH_ICON={'Schule':'🎒','Essen & Trinken':'🍎','Zuhause':'🏠','Unterwegs':'🚌','Kleidung':'👕','Farben':'🎨','Hobbys':'⚽','Labor':'🧪','Mathe-Wörter':'➕','Menschen':'👨‍👩‍👧','Körper':'🖐️','Tiere':'🐶','Wetter':'☀️','Stadt':'🏙️'};
 N('Schule','die','Schule','🏫','school');N('Schule','das','Buch','📚','book');N('Schule','der','Stift','🖊️','pen');N('Schule','der','Rucksack','🎒','backpack');
 N('Schule','die','Schere','✂️','scissors');N('Schule','das','Lineal','📏','ruler');N('Schule','die','Uhr','🕒','clock');N('Schule','der','Computer','💻','computer');
 N('Essen & Trinken','der','Apfel','🍎','apple');N('Essen & Trinken','das','Brot','🍞','bread');N('Essen & Trinken','das','Wasser','💧','water');N('Essen & Trinken','die','Milch','🥛','milk');
@@ -174,7 +174,25 @@ N('Labor','das','Reagenzglas','🧪','test tube');N('Labor','die','Schutzbrille'
 N('Labor','das','Thermometer','🌡️','thermometer');N('Labor','der','Brenner','🔥','burner');N('Labor','der','Handschuh','🧤','glove');
 V('Mathe-Wörter','w','plus','➕','plus');V('Mathe-Wörter','w','minus','➖','minus');V('Mathe-Wörter','w','mal','✖️','times');V('Mathe-Wörter','w','geteilt durch','➗','divided by');
 V('Mathe-Wörter','w','gleich','＝','equals');V('Mathe-Wörter','n','Zahl','🔢','number');V('Mathe-Wörter','n','Dreieck','🔺','triangle');V('Mathe-Wörter','n','Kreis','⭕','circle');
+
+N('Menschen','die','Frau','👩','woman');N('Menschen','der','Mann','👨','man');N('Menschen','der','Junge','👦','boy');N('Menschen','das','Mädchen','👧','girl');
+N('Menschen','das','Kind','🧒','child');N('Menschen','das','Baby','👶','baby');N('Menschen','die','Oma','👵','grandmother');N('Menschen','der','Opa','👴','grandfather');
+N('Körper','das','Auge','👁️','eye');N('Körper','das','Ohr','👂','ear');N('Körper','die','Nase','👃','nose');N('Körper','der','Mund','👄','mouth');
+N('Körper','die','Hand','✋','hand');N('Körper','der','Fuß','🦶','foot');N('Körper','das','Bein','🦵','leg');N('Körper','der','Zahn','🦷','tooth');N('Körper','der','Arm','💪','arm');
+N('Tiere','der','Hund','🐶','dog');N('Tiere','die','Katze','🐱','cat');N('Tiere','der','Vogel','🐦','bird');N('Tiere','der','Fisch','🐟','fish');N('Tiere','das','Pferd','🐴','horse');
+N('Tiere','die','Kuh','🐄','cow');N('Tiere','die','Maus','🐭','mouse');N('Tiere','der','Hase','🐰','rabbit');N('Tiere','das','Huhn','🐔','chicken');N('Tiere','das','Schwein','🐷','pig');
+N('Wetter','die','Sonne','☀️','sun');N('Wetter','der','Regen','🌧️','rain');N('Wetter','der','Schnee','❄️','snow');N('Wetter','der','Wind','💨','wind');
+N('Wetter','die','Wolke','☁️','cloud');N('Wetter','das','Gewitter','⛈️','thunderstorm');N('Wetter','der','Regenbogen','🌈','rainbow');
+N('Stadt','das','Krankenhaus','🏥','hospital');N('Stadt','das','Hochhaus','🏢','tall building');N('Stadt','die','Brücke','🌉','bridge');N('Stadt','der','Briefkasten','📮','letterbox');
+N('Stadt','der','Laden','🏪','shop');N('Stadt','der','Park','🏞️','park');N('Stadt','die','Feuerwehr','🚒','fire brigade');N('Stadt','die','Polizei','🚓','police');N('Stadt','der','Krankenwagen','🚑','ambulance');
 VOC.forEach(v=>{if(v.k==='n'&&!v.a){v.a={Zahl:'die',Dreieck:'das',Kreis:'der'}[v.w];}});
+const PL={Schule:'Schulen',Buch:'Bücher',Stift:'Stifte',Rucksack:'Rucksäcke',Schere:'Scheren',Lineal:'Lineale',Uhr:'Uhren',Computer:'Computer',Apfel:'Äpfel',Brot:'Brote',Banane:'Bananen',Karotte:'Karotten',Ei:'Eier',
+Haus:'Häuser',Bett:'Betten',Stuhl:'Stühle',Tür:'Türen',Schlüssel:'Schlüssel',Sofa:'Sofas',Dusche:'Duschen',Handy:'Handys',Bus:'Busse',Fahrrad:'Fahrräder',Zug:'Züge',Auto:'Autos',Flugzeug:'Flugzeuge',Schiff:'Schiffe',Ampel:'Ampeln',Bahnhof:'Bahnhöfe',
+'T-Shirt':'T-Shirts',Hose:'Hosen',Schuh:'Schuhe',Mütze:'Mützen',Jacke:'Jacken',Socke:'Socken',Kleid:'Kleider',Reagenzglas:'Reagenzgläser',Schutzbrille:'Schutzbrillen',Experiment:'Experimente',Waage:'Waagen',Thermometer:'Thermometer',Brenner:'Brenner',Handschuh:'Handschuhe',
+Zahl:'Zahlen',Dreieck:'Dreiecke',Kreis:'Kreise',Frau:'Frauen',Mann:'Männer',Junge:'Jungen',Mädchen:'Mädchen',Kind:'Kinder',Oma:'Omas',Opa:'Opas',Auge:'Augen',Ohr:'Ohren',Nase:'Nasen',Hand:'Hände',Fuß:'Füße',Bein:'Beine',Zahn:'Zähne',Arm:'Arme',
+Hund:'Hunde',Katze:'Katzen',Vogel:'Vögel',Fisch:'Fische',Pferd:'Pferde',Kuh:'Kühe',Maus:'Mäuse',Hase:'Hasen',Huhn:'Hühner',Schwein:'Schweine',Wolke:'Wolken',Gewitter:'Gewitter',Regenbogen:'Regenbogen',
+Krankenhaus:'Krankenhäuser',Hochhaus:'Hochhäuser',Brücke:'Brücken',Briefkasten:'Briefkästen',Laden:'Läden',Park:'Parks',Krankenwagen:'Krankenwagen'};
+VOC.forEach(v=>{if(v.k==='n'&&PL[v.w])v.pl=PL[v.w];});
 const state={level:1,theme:'alle',stars:0};
 function pool(theme,min=1){let p=theme==='alle'?VOC:VOC.filter(v=>v.th===theme);if(p.length<min)p=VOC;return p;}
 const full=v=>v.k==='n'?v.a+' '+v.w:v.w;
@@ -313,6 +331,93 @@ T('satz','w','🧱','Satz-Puzzle','Sentence puzzle',(box,ctx)=>{
 T('vmemory','w','🧠','Memory','Memory',(box,ctx)=>{
   const p=pool(ctx.theme,6),ws=sample(p.length>=6?p:VOC,6);
   memory(box,ws.map((v,i)=>({k:i,a:v.e,ae:1,b:wordHTML(v)})),ctx);
+});
+
+
+/* --- Wörter: weitere Aufgaben --- */
+function pluralWrong(w,pl){const um=w.replace(/[aouAOU]/,m=>({a:'ä',o:'ö',u:'ü',A:'Ä',O:'Ö',U:'Ü'}[m])),c=new Set(),ee=w.endsWith('e'),er=w.endsWith('er')||w.endsWith('el')||w.endsWith('en');
+  const base=ee?[w,w+'s',w.slice(0,-1)+'s',w.slice(0,-1)+'er',um,um+'n',w+'n']:er?[w,w+'n',w+'e',um,um+'e',um+'n',w+'er']:[w+'e',w+'en',w+'n',w+'s',w+'er',um+'e',um+'er',um,w];
+  base.forEach(x=>{if(x!==pl)c.add(x);});return sample([...c],3);}
+T('plural','w','👥','Einzahl – Mehrzahl','Singular – plural',(box,ctx)=>{
+  const p=pool(ctx.theme).filter(x=>x.pl),v=pick(p.length>=1?p:VOC.filter(x=>x.pl)),opts=shuffle([v.pl,...pluralWrong(v.w,v.pl)]);
+  how(box,'Wie heißt die Mehrzahl?','What is the plural?');
+  box.append(h('div',{class:'dots'},'1 '+v.e+'  →  ',wordEl(v)),h('div',{class:'dots'},'3 '+v.e.repeat(3)+'  →  ',h('span',{class:'art die'},'die'),' ___'));
+  choice(box,opts,opts.indexOf(v.pl),ctx,o=>o,'',()=>{speak('die '+v.pl);});
+});
+const CLOZE=[['Der ___ fährt auf Schienen.','Zug',['Bus','Auto','Schiff'],'The ___ runs on rails.'],['Im Winter trage ich eine warme ___ und einen Schal.','Mütze',['Banane','Dusche','Ampel'],'In winter I wear a warm ___ and a scarf.'],
+['Die ___ scheint am Tag.','Sonne',['Hose','Waage','Schere'],'The ___ shines during the day.'],['Ich schlafe im ___.','Bett',['Bus','Ei','Schal'],'I sleep in the ___.'],['Mit der ___ kann ich Papier schneiden.','Schere',['Milch','Ampel','Dusche'],'I can cut paper with the ___.'],
+['Ich öffne die Tür mit dem ___.','Schlüssel',['Apfel','Stift','Rucksack'],'I open the door with the ___.'],['Zum Frühstück esse ich ein ___.','Ei',['Handy','Auto','Kleid'],'For breakfast I eat an ___.'],['An der roten ___ bleiben die Autos stehen.','Ampel',['Dusche','Hose','Uhr'],'Cars stop at the red ___.'],
+['Mein Hund und meine ___ sind Haustiere.','Katze',['Banane','Tür','Waage'],'My dog and my ___ are pets.'],['Ich sehe mit den ___.','Augen',['Ohren','Händen','Füßen'],'I see with my ___.'],['Ich höre mit den ___.','Ohren',['Augen','Händen','Zähnen'],'I hear with my ___.'],
+['Im Labor trage ich eine ___.','Schutzbrille',['Banane','Dusche','Ampel'],'In the lab I wear ___.'],['Mit dem ___ messe ich die Temperatur.','Thermometer',['Lineal','Brenner','Buch'],'I measure the temperature with the ___.'],['Mit dem ___ messe ich die Länge.','Lineal',['Thermometer','Brenner','Buch'],'I measure the length with the ___.'],
+['Die Kuh gibt ___.','Milch',['Brot','Reis','Ei'],'The cow gives ___.'],['Ich wasche mich unter der ___.','Dusche',['Ampel','Schere','Tür'],'I wash myself under the ___.'],['Wir fahren mit dem ___ über das Meer.','Schiff',['Zug','Fahrrad','Bus'],'We travel over the sea by ___.'],
+['Der Pilot fliegt das ___.','Flugzeug',['Auto','Schiff','Haus'],'The pilot flies the ___.'],['Ich telefoniere mit meinem ___.','Handy',['Stuhl','Apfel','Schal'],'I make calls with my ___.'],['Ich lese ein ___.','Buch',['Schuh','Ei','Brot'],'I am reading a ___.'],
+['Bei Regen sieht man manchmal einen ___.','Regenbogen',['Schuh','Reis','Stift'],'When it rains you can sometimes see a ___.'],['Wenn jemand krank ist, kommt der ___.','Krankenwagen',['Apfel','Stuhl','Schal'],'When somebody is ill, the ___ comes.']];
+T('luecke','w','✏️','Lückensatz','Fill the gap',(box,ctx)=>{
+  const[s,ans,wr,en]=pick(CLOZE),opts=shuffle([ans,...wr]);how(box,'Welches Wort passt in die Lücke?','Which word fits the gap?');
+  box.append(h('div',{class:'story'},s,h('small',null,en)));const sd=box.querySelector('.story');
+  choice(box,opts,opts.indexOf(ans),ctx,o=>o,'',()=>{sd.firstChild.textContent=s.replace('___',ans);speak(s.replace('___',ans));});
+});
+const OPP=[['groß','klein','big','small'],['heiß','kalt','hot','cold'],['schnell','langsam','fast','slow'],['neu','alt','new','old'],['hell','dunkel','light','dark'],['schwer','leicht','heavy','light'],['laut','leise','loud','quiet'],['dick','dünn','thick','thin'],['lang','kurz','long','short'],['nass','trocken','wet','dry'],['gut','schlecht','good','bad'],['voll','leer','full','empty'],['teuer','billig','expensive','cheap'],['früh','spät','early','late'],['hoch','niedrig','high','low'],['schön','hässlich','beautiful','ugly'],['richtig','falsch','right','wrong'],['stark','schwach','strong','weak'],['arm','reich','poor','rich']];
+T('gegen','w','↔️','Gegenteile','Opposites',(box,ctx)=>{
+  const q=pick(OPP),rev=Math.random()<.5,w=rev?q[1]:q[0],ans=rev?q[0]:q[1],en=rev?q[3]:q[2];
+  const CONF=['gut','schlecht','richtig','falsch','schön','hässlich'],others=OPP.filter(x=>x!==q).flatMap(x=>[x[0],x[1]]).filter(x=>x!==w&&x!==ans&&!(CONF.includes(w)&&CONF.includes(x))),opts=shuffle([ans,...sample(others,3)]);
+  how(box,'Wie heißt das Gegenteil?','What is the opposite?');box.append(h('div',{class:'eq'},w,' ',spkBtn(w)),h('div',{class:'en'},en));
+  choice(box,opts,opts.indexOf(ans),ctx,o=>o,'',()=>{box.append(h('div',{class:'en',style:'margin-top:8px'},w+' ↔ '+ans));});
+});
+const SEQS=[['Wochentage','Days of the week',['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag']],['Monate','Months',['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']],
+['Jahreszeiten','Seasons',['Frühling','Sommer','Herbst','Winter']],['Tageszeiten','Times of day',['Morgen','Mittag','Nachmittag','Abend','Nacht']],['Zahlen','Numbers',['eins','zwei','drei','vier','fünf','sechs','sieben','acht','neun','zehn']]];
+T('folgen','w','📅','Reihenfolge','Put in order',(box,ctx)=>{
+  const[t,en,items]=pick(SEQS);how(box,'Tippe die Wörter in der richtigen Reihenfolge.','Tap the words in the right order.');box.append(h('div',{class:'story'},t,h('small',null,en)));
+  const slots=h('div',{class:'slots'}),tiles=h('div',{class:'tiles'}),say=msg(box);box.insertBefore(slots,say.el);box.insertBefore(tiles,say.el);
+  let order=shuffle(items);if(order.join()===items.join())order=items.slice().reverse();const chosen=[];
+  const tl=order.map(w=>{const b=h('button',{class:'tile'},w);b.onclick=()=>{chosen.push(w);b.classList.add('used');draw();check();};tiles.append(b);return[w,b];});
+  const draw=()=>slots.replaceChildren(...chosen.map(w=>h('button',{class:'tile',onclick:()=>{chosen.splice(chosen.indexOf(w),1);tl.find(x=>x[0]===w)[1].classList.remove('used');draw();}},w)));
+  const check=()=>{if(chosen.length<items.length)return;if(chosen.join()===items.join()){say('✔ '+items.join(' · '),'ok');tiles.style.display='none';ctx.solved();}else{say('Fast! Tippe auf ein Wort, um es zu entfernen. · Almost! Tap a word to remove it.','bad');slots.classList.add('shake');setTimeout(()=>slots.classList.remove('shake'),400);}};
+});
+const PRON=['ich','du','er/sie/es','wir','ihr'];
+const reg=st=>[st+'e',st+'st',st+'t',st+'en',st+'t',st+'en'];
+const VERBS=[['sein','to be',['bin','bist','ist','sind','seid','sind']],['haben','to have',['habe','hast','hat','haben','habt','haben']],['heißen','to be called',['heiße','heißt','heißt','heißen','heißt','heißen']],['spielen','to play',reg('spiel')],['kochen','to cook',reg('koch')],
+['lernen','to learn',reg('lern')],['wohnen','to live',reg('wohn')],['kommen','to come',reg('komm')],['machen','to do',reg('mach')],['trinken','to drink',reg('trink')],['singen','to sing',reg('sing')],['gehen','to go',reg('geh')],
+['lesen','to read',['lese','liest','liest','lesen','lest','lesen']],['essen','to eat',['esse','isst','isst','essen','esst','essen']],['fahren','to drive / ride',['fahre','fährst','fährt','fahren','fahrt','fahren']],['sprechen','to speak',['spreche','sprichst','spricht','sprechen','sprecht','sprechen']],['tanzen','to dance',['tanze','tanzt','tanzt','tanzen','tanzt','tanzen']]];
+T('verb','w','🏃','Verben','Verbs',(box,ctx)=>{
+  const[inf,en,f]=pick(VERBS),i=rnd(0,4),ans=f[i];let o=[...new Set(f)].filter(x=>x!==ans);if(o.length<3){const g=pick(VERBS.filter(x=>x[0]!==inf));o=o.concat(sample(g[2].filter(x=>!o.includes(x)&&x!==ans),3-o.length));}
+  const opts=shuffle([ans,...sample(o,3)]);how(box,'Welche Form passt?','Which form fits?');box.append(h('div',{class:'eq'},PRON[i]+' ___'),h('div',{class:'en'},inf+' = '+en));
+  choice(box,opts,opts.indexOf(ans),ctx,o=>o,'',()=>{speak(PRON[i].replace('/sie/es','')+' '+ans);box.append(h('div',{class:'en',style:'margin-top:8px'},PRON[i]+' '+ans));});
+});
+const PHR=[['Hallo','hello'],['Guten Morgen','good morning'],['Guten Tag','good day'],['Guten Abend','good evening'],['Gute Nacht','good night'],['Tschüss','bye'],['Danke','thank you'],['Bitte','please / you are welcome'],['Entschuldigung','sorry / excuse me'],['Ja','yes'],['Nein','no'],
+['Ich weiß nicht','I do not know'],['Wie geht es dir?','How are you?'],['Mir geht es gut','I am fine'],['Wie bitte?','Pardon?'],['Ich verstehe nicht','I do not understand'],['Kannst du mir helfen?','Can you help me?'],['Wie heißt du?','What is your name?'],['Wie alt bist du?','How old are you?'],
+['Woher kommst du?','Where are you from?'],['Wo wohnst du?','Where do you live?'],['Was ist das?','What is this?'],['Wie viel kostet das?','How much does that cost?'],['Ich habe Hunger','I am hungry'],['Ich habe Durst','I am thirsty'],['Wo ist die Toilette?','Where is the toilet?'],
+['Ich brauche Hilfe','I need help'],['Ich bin krank','I am ill'],['wer','who'],['was','what'],['wo','where'],['wann','when'],['warum','why'],['wie','how'],['woher','where from'],['wohin','where to']];
+T('phrasen','w','💬','Wichtige Wörter','Useful words',(box,ctx)=>{
+  const q=pick(PHR),opts=shuffle([q,...sample(PHR.filter(x=>x!==q),3)]),ok=opts.indexOf(q);
+  if(Math.random()<.5){how(box,'Wie sagt man das auf Deutsch?','How do you say this in German?');box.append(h('div',{class:'eq'},'„'+q[1]+'“'));choice(box,opts,ok,ctx,o=>o[0],'',()=>speak(q[0]));}
+  else{how(box,'Was bedeutet das?','What does this mean?');box.append(h('div',{class:'eq'},q[0],' ',spkBtn(q[0])));choice(box,opts,ok,ctx,o=>o[1],'',()=>{});}
+});
+const GROUPS=['Essen & Trinken','Kleidung','Tiere','Körper','Unterwegs','Farben','Hobbys','Menschen','Wetter'];
+T('passt','w','🚫','Was passt nicht?','Odd one out',(box,ctx)=>{
+  const gs=sample(GROUPS,2),a=sample(VOC.filter(x=>x.th===gs[0]),3),b=pick(VOC.filter(x=>x.th===gs[1])),opts=shuffle([...a,b]);
+  how(box,'Welches Wort passt nicht zu den anderen?','Which word does not belong with the others?');
+  choice(box,opts,opts.indexOf(b),ctx,o=>h('span',null,o.e+' ',wordEl(o)),'',()=>{box.append(h('div',{class:'en',style:'margin-top:8px'},gs[0]+' ≠ '+gs[1]));});
+});
+function misspell(w){const c=new Set(),L=w.split('');
+  for(let i=0;i<L.length-1;i++){if(L[i]!==L[i+1]){const t=L.slice();[t[i],t[i+1]]=[t[i+1],t[i]];c.add(t.join(''));}}
+  for(let i=1;i<L.length;i++){c.add(L.slice(0,i).join('')+L.slice(i+1).join(''));c.add(L.slice(0,i).join('')+L[i]+L.slice(i).join(''));}
+  c.delete(w);return sample([...c],3);}
+T('schreib','w','📝','Richtig schreiben','Spelling',(box,ctx)=>{
+  const p=pool(ctx.theme).filter(x=>!/\s/.test(x.w)&&x.w.length>=4),v=pick(p.length?p:VOC.filter(x=>!/\s/.test(x.w)&&x.w.length>=4)),opts=shuffle([v.w,...misspell(v.w)]);
+  how(box,'Welches Wort ist richtig geschrieben?','Which word is spelled correctly?');box.append(h('div',{class:'big'},v.e),h('div',{class:'en'},v.en));
+  choice(box,opts,opts.indexOf(v.w),ctx,o=>o,'',()=>speak(full(v)));
+});
+const COMP=[['Fuß','ball','Fußball','⚽','football'],['Hand','schuh','Handschuh','🧤','glove'],['Regen','bogen','Regenbogen','🌈','rainbow'],['Kranken','haus','Krankenhaus','🏥','hospital'],['Brief','kasten','Briefkasten','📮','letterbox'],
+['Sonnen','brille','Sonnenbrille','🕶️','sunglasses'],['Flug','zeug','Flugzeug','✈️','airplane'],['Fahr','rad','Fahrrad','🚲','bicycle'],['Hoch','haus','Hochhaus','🏢','tall building'],['Bahn','hof','Bahnhof','🚉','train station'],
+['Schutz','brille','Schutzbrille','🥽','safety goggles'],['Haus','tür','Haustür','🚪','front door'],['Schnee','mann','Schneemann','⛄','snowman'],['Tisch','tennis','Tischtennis','🏓','table tennis'],['Feuer','wehr','Feuerwehr','🚒','fire brigade']];
+T('zusammen','w','🧩','Wörter zusammensetzen','Build compound words',(box,ctx)=>{
+  const q=pick(COMP),extra=sample(COMP.filter(x=>x!==q).flatMap(x=>[x[0],x[1]]).filter(x=>x!==q[0]&&x!==q[1]),3),parts=shuffle([q[0],q[1],...extra]);
+  how(box,'Zwei Wörter ergeben ein neues Wort. Tippe die zwei passenden Teile nacheinander.','Two words make a new word. Tap the two matching parts one after the other.');
+  box.append(h('div',{class:'big'},q[3]),h('div',{class:'en'},q[4]));const slots=h('div',{class:'slots'}),tiles=h('div',{class:'tiles'}),say=msg(box);box.insertBefore(slots,say.el);box.insertBefore(tiles,say.el);
+  const chosen=[];const tl=parts.map(w=>{const b=h('button',{class:'tile'},w);b.onclick=()=>{if(chosen.length>=2)return;chosen.push(w);b.classList.add('used');draw();if(chosen.length===2)check();};tiles.append(b);return[w,b];});
+  const draw=()=>slots.replaceChildren(...chosen.map(w=>h('span',{class:'tile',style:'cursor:default'},w)));
+  const check=()=>{if(chosen[0]===q[0]&&chosen[1]===q[1]){say('✔ '+q[2],'ok');slots.classList.add('pop');tiles.style.display='none';speak(q[2]);ctx.solved();}else{say('Nicht ganz. Nochmal! · Not quite.','bad');slots.classList.add('shake');setTimeout(()=>{slots.classList.remove('shake');chosen.length=0;tl.forEach(x=>x[1].classList.remove('used'));draw();say('');},800);}};
 });
 
 /* --- Zahlen --- */
