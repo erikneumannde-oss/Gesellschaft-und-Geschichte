@@ -1,0 +1,969 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SKK-Training · Politische Bildung Klasse 7</title>
+<link rel="icon" type="image/png" href="../../../../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../../../../icons/apple-touch-icon.png">
+<style>
+:root{--board:#2f4b3f;--board2:#3a5a4c;--chalk:#f6f3e8;--frame:#8a5d3b;--paper:#fffdf6;--ink:#26303a;--muted:#667380;--line:#dcd5c0;--gold:#e0a63a;--gold-d:#b9801c;--ok:#2e8b57;--bad:#c0392b;--blue:#386fa4}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--ink);font-family:'Segoe UI',system-ui,-apple-system,Roboto,Tahoma,sans-serif;line-height:1.5;background-color:#f3efe0;
+ background-image:linear-gradient(rgba(70,120,170,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(70,120,170,.13) 1px,transparent 1px);background-size:24px 24px}
+.wrap{max-width:880px;margin:0 auto;padding:10px 12px 220px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 0 8px}
+.back{background:#7d8a86;color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:8px 14px;border-radius:8px}
+.stars{background:var(--paper);border:2px solid var(--gold);color:var(--gold-d);font-weight:800;border-radius:999px;padding:5px 13px;font-size:15px;box-shadow:0 2px 0 rgba(0,0,0,.08)}
+.tafel{background:radial-gradient(ellipse at 30% 20%,var(--board2),var(--board));color:var(--chalk);border:9px solid var(--frame);border-radius:10px;padding:16px 16px 14px;text-align:center;box-shadow:0 8px 20px rgba(60,40,20,.3),inset 0 0 40px rgba(0,0,0,.25);position:relative}
+.tafel h1{margin:0;font-size:clamp(21px,5.2vw,31px);line-height:1.2;letter-spacing:.3px;text-shadow:0 0 1px rgba(255,255,255,.4)}
+.tafel p{margin:6px 0 0;font-size:14.5px;opacity:.92}
+.tafel .kreide{position:absolute;left:14px;bottom:-9px;width:46px;height:9px;background:#f4efe0;border-radius:2px;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+nav#tabs{position:sticky;top:0;z-index:20;display:flex;gap:6px;overflow-x:auto;padding:10px 2px 8px;margin-top:8px;background:linear-gradient(#f3efe0 75%,rgba(243,239,224,0));-webkit-overflow-scrolling:touch}
+nav#tabs button{flex:none;border:2px solid var(--line);background:var(--paper);color:var(--ink);font:inherit;font-size:14px;font-weight:700;padding:8px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+nav#tabs button.on{background:var(--board);border-color:var(--board);color:var(--chalk)}
+nav#tabs button.fin::after{content:' ✓';color:var(--ok)} nav#tabs button.on.fin::after{color:#9be0b4}
+h2{font-size:clamp(20px,4.6vw,25px);margin:12px 0 4px}
+.sub{color:var(--muted);margin:0 0 8px;font-size:14.5px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 15px;margin:12px 0;box-shadow:0 3px 8px rgba(80,60,20,.08)}
+.merk{background:#fff8dc;border:1px solid #ecd98a;border-left:7px solid var(--gold)}
+.merk h3{margin:0 0 6px;font-size:17px} .merk ul{margin:0;padding-left:20px} .merk li{margin:6px 0}
+.hello{display:flex;gap:12px;align-items:flex-start;background:#eef6f0;border:1px solid #bcd8c6;border-left:7px solid var(--board)}
+.hello .em{font-size:34px;line-height:1}
+.hello p{margin:0 0 6px} .hello p:last-child{margin:0}
+.chap{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));margin:10px 0}
+.chap button{text-align:left;background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:13px;font:inherit;color:var(--ink);cursor:pointer;box-shadow:0 3px 8px rgba(80,60,20,.08)}
+.chap button:hover{border-color:var(--gold)} .chap b{display:block;font-size:16.5px;margin-bottom:2px}
+.chap .s{display:block;font-size:13.5px;color:var(--muted);margin-bottom:7px} .chap .ic{font-size:26px;float:right;margin-left:8px}
+.pbar{height:9px;background:#e8e2cf;border-radius:6px;overflow:hidden} .pbar i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.cnt{font-size:12.5px;color:var(--muted);margin-top:4px;display:block}
+.task .head{display:flex;gap:10px;align-items:flex-start}
+.task .nr{flex:none;background:var(--board);color:var(--chalk);font-weight:800;font-size:14px;border-radius:8px;padding:3px 10px;margin-top:1px}
+.task.done .nr{background:var(--ok)} .task.done{border-color:#b9dcc6}
+.task .q{font-weight:600} .task .body{margin-top:10px}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn{background:var(--board);color:var(--chalk);border:0;border-radius:9px;padding:11px 17px;font:inherit;font-size:15.5px;font-weight:700;cursor:pointer}
+.btn:hover{background:#264035} .btn:disabled{background:#b8b4a4;cursor:not-allowed}
+.btn.tip{background:var(--gold);color:#3c2a06} .btn.tip:hover{background:var(--gold-d);color:#fff}
+.btn.sec{background:#ece6d2;color:var(--ink);border:1px solid var(--line)} .btn.sec:hover{background:#e2dcc6}
+.fb{margin-top:10px;padding:10px 12px;border-radius:9px;font-size:15px;display:none}
+.fb.show{display:block} .fb.ok{background:#e8f5ed;border:1px solid #a9d9bb} .fb.no{background:#fdecea;border:1px solid #f0b8b2} .fb.neutral{background:#f3efe2;border:1px solid var(--line)}
+.fb b.nm{color:var(--board)}
+.loesung{display:none;margin-top:10px;background:#f2edfa;border-left:6px solid #8a5fb4;border-radius:9px;padding:10px 14px;font-size:15px}
+.loesung.show{display:block} .loesung p{margin:4px 0}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;background:#fff;border:2px solid #d8d2bd;border-radius:10px;padding:10px 12px;font:inherit;font-size:15.5px;color:var(--ink);cursor:pointer}
+.opt:hover{border-color:var(--gold)} .opt.sel{border-color:var(--blue);background:#eaf2fb} .opt.good{border-color:var(--ok);background:#e8f5ed} .opt.bad{border-color:var(--bad);background:#fdecea}
+.mrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;padding:9px 6px;border-bottom:1px solid var(--line)}
+.mrow:last-child{border-bottom:0} .mrow .t{flex:1 1 230px}
+.mrow.good{background:#eef8f1} .mrow.bad{background:#fdf1ef}
+.seg{display:inline-flex;flex-wrap:wrap;border:2px solid #cfc8b0;border-radius:9px;overflow:hidden}
+.seg button{border:0;background:#fff;font:inherit;font-size:14.5px;padding:8px 12px;cursor:pointer;color:var(--ink)}
+.seg button+button{border-left:2px solid #cfc8b0} .seg button.sel{background:var(--blue);color:#fff}
+.why{flex-basis:100%;font-size:14px;color:#3d4b57;margin:2px 0 0}
+select{font:inherit;font-size:16px;padding:7px 8px;border:2px solid #c9c2a8;border-radius:8px;background:#fff;color:var(--ink);max-width:100%}
+select.good{border-color:var(--ok);background:#e8f5ed} select.bad{border-color:var(--bad);background:#fdecea}
+.pair{display:grid;gap:6px;padding:9px 0;border-bottom:1px solid var(--line)} .pair:last-child{border-bottom:0} .pair b{font-size:15.5px}
+.pair select{width:100%} .pair.good{background:#eef8f1} .pair.bad{background:#fdf1ef}
+.cl{line-height:2.4}
+.cl select{margin:0 3px;max-width:58vw}
+.ordwrap h4{margin:8px 0 4px;font-size:13.5px;color:var(--muted)}
+.pool,.seq{display:grid;gap:6px} .seq{counter-reset:s;min-height:46px;border:2px dashed #cfc8b0;border-radius:10px;padding:6px}
+.ocard{text-align:left;background:#fff;border:2px solid #d8d2bd;border-radius:10px;padding:9px 12px;font:inherit;font-size:15px;color:var(--ink);cursor:pointer}
+.seq .ocard{border-color:var(--blue);background:#eaf2fb} .seq .ocard::before{counter-increment:s;content:counter(s) '. ';font-weight:800;color:var(--blue)}
+.seq .ocard.good{border-color:var(--ok);background:#e8f5ed} .seq .ocard.bad{border-color:var(--bad);background:#fdecea}
+textarea{width:100%;font:inherit;font-size:16px;padding:10px;border:2px solid #cfc8b0;border-radius:10px;resize:vertical;min-height:110px;background:#fff;color:var(--ink)}
+.count{font-size:12.5px;color:var(--muted);text-align:right;margin-top:2px}
+.fig{margin:6px 0 4px;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.fig svg{display:block;width:100%;height:auto}
+.fig figcaption{font-size:13px;color:var(--muted);padding:6px 10px;border-top:1px solid var(--line);background:#faf7ea}
+.spotbox{position:relative;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.spotbox svg{pointer-events:none}
+.ping{position:absolute;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;pointer-events:none;animation:ping .8s ease-out forwards}
+.ping.ok{border:4px solid var(--ok);background:rgba(46,139,87,.22)} .ping.no{border:4px solid var(--bad);background:rgba(192,57,43,.18)}
+@keyframes ping{from{transform:scale(.4);opacity:1}to{transform:scale(1.3);opacity:0}}
+.rect{position:absolute;border:3px solid var(--ok);background:rgba(46,139,87,.16);border-radius:8px;pointer-events:none}
+.spotq{font-weight:800;color:var(--board);margin:6px 0}
+.hint{color:var(--muted);font-size:13.5px;margin:6px 0 0}
+.badge{display:inline-block;background:var(--gold);color:#3c2a06;font-weight:800;border-radius:999px;padding:3px 12px;font-size:13.5px;margin-left:6px;vertical-align:middle}
+.pq{font-size:17px;font-weight:700;margin:4px 0 10px}
+.big{font-size:34px;font-weight:800;color:var(--board)}
+.res li{margin:6px 0}
+.foot{margin:26px 0 0;text-align:center}.impressum{color:#555;font-size:12.5px}
+.card{scroll-margin-top:72px}
+@media (max-width:480px){.card{padding:12px}.wrap{padding-left:8px;padding-right:8px}}
+@media (orientation:landscape) and (max-width:1000px){.wrap{padding-right:96px}}
+@media (prefers-reduced-motion:reduce){.ping{animation-duration:.01s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a class="back" href="../index.html">← Zur Pinnwand</a><span class="stars" id="stars" title="Sterne für richtige Antworten ohne Hilfe">⭐ 0</span></div>
+  <div class="tafel"><h1>SKK-Training · Politische Bildung</h1><p>Klasse 7 · Übungen zu allen Lerneinheiten, mit Herrn Neumann als Lernbegleiter</p><span class="kreide"></span></div>
+  <nav id="tabs" aria-label="Kapitel"></nav>
+  <main id="view"></main>
+  <p class="foot"><a class="impressum" href="../../../../impressum.html">Impressum &amp; Datenschutz</a></p>
+</div>
+<template id="bild-src"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" role="img" aria-label="Übungskarikatur">
+<defs>
+ <filter id="kInk" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter>
+ <linearGradient id="kSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7efdc"/><stop offset="1" stop-color="#fbf6ea"/></linearGradient>
+ <linearGradient id="kSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fbcc9"/><stop offset=".5" stop-color="#4f7f96"/><stop offset="1" stop-color="#2a4a5e"/></linearGradient>
+ <linearGradient id="kIce" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e9f4f7"/><stop offset=".55" stop-color="#d3e7ee"/><stop offset="1" stop-color="#a9cbd8"/></linearGradient>
+ <linearGradient id="kIceU" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe6ee" stop-opacity=".92"/><stop offset="1" stop-color="#9fc2d1" stop-opacity=".88"/></linearGradient>
+ <radialGradient id="kLamp" cx=".5" cy="0" r="1"><stop offset="0" stop-color="#ffe9a8" stop-opacity=".85"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="900" height="232" fill="url(#kSky)"/>
+<rect y="232" width="900" height="328" fill="url(#kSea)"/>
+<!-- Schraffur im Wasser -->
+<g stroke="#ffffff" stroke-opacity=".28" stroke-width="2" stroke-linecap="round">
+ <path d="M20 262h40M90 290h30M40 330h50M120 380h36M30 430h44M110 470h30M60 515h50M760 300h40M820 350h36M740 400h50M800 450h40M760 500h44M840 530h30M700 540h30"/>
+</g>
+<g filter="url(#kInk)" stroke="#1f1f1f" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+ <!-- Möwen -->
+ <path d="M80 70q10-9 20 0q10-9 20 0M140 100q7-6 14 0q7-6 14 0M610 60q8-7 16 0q8-7 16 0" fill="none" stroke-width="2.2"/>
+ <!-- Wellenlinie -->
+ <path d="M0 232q15-7 30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0M600 232q15-7 30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0" fill="none" stroke="#2c5a70" stroke-width="2.2"/>
+
+ <!-- ===== Eisberg unter Wasser (Querschnitt) ===== -->
+ <path d="M262 232 L214 268 L196 330 L224 378 L206 430 L246 486 L316 534 L452 552 L590 530 L668 476 L690 410 L672 352 L702 296 L662 252 L626 232 Z" fill="url(#kIceU)"/>
+ <path d="M226 282 L300 290 M640 270 L700 300 M210 400 L250 410 M670 420 L640 440" fill="none" stroke="#7fa7b8" stroke-width="2"/>
+
+ <!-- Stockwerk 1: Fabrik -->
+ <path d="M252 258 Q450 246 650 260 L654 334 Q450 344 248 334 Z" fill="#efe3c6"/>
+ <path d="M300 258 v14 M450 252 v14 M600 258 v14" stroke-width="2"/>
+ <path d="M288 272 h24 l-4 8 h-16 Z M438 266 h24 l-4 8 h-16 Z M588 272 h24 l-4 8 h-16 Z" fill="#f3c75a" stroke-width="2"/>
+ <ellipse cx="300" cy="300" rx="34" ry="18" fill="url(#kLamp)" stroke="none"/><ellipse cx="450" cy="294" rx="34" ry="18" fill="url(#kLamp)" stroke="none"/><ellipse cx="600" cy="300" rx="34" ry="18" fill="url(#kLamp)" stroke="none"/>
+ <!-- Arbeiterinnen gebeugt -->
+ <g fill="#8aa0b8">
+  <path d="M318 318 q-4-22 14-30 q14-4 18 12 l-6 22 Z"/><circle cx="352" cy="292" r="9" fill="#e5b892"/><path d="M344 285 q8-9 17 0" fill="#3b2f2a"/>
+  <path d="M418 318 q-4-22 14-30 q14-4 18 12 l-6 22 Z"/><circle cx="452" cy="292" r="9" fill="#d9a77a"/><path d="M444 285 q8-9 17 0" fill="#222"/>
+  <path d="M518 318 q-4-22 14-30 q14-4 18 12 l-6 22 Z"/><circle cx="552" cy="292" r="9" fill="#e5b892"/><path d="M544 285 q8-9 17 0" fill="#5a3a26"/>
+ </g>
+ <path d="M350 304 l12 10 M450 304 l12 10 M550 304 l12 10" fill="none" stroke-width="2.4"/>
+ <path d="M339 283 q-3 5 0 7 M439 283 q-3 5 0 7 M539 283 q-3 5 0 7" fill="#7ec8e3" stroke-width="1.4"/>
+ <!-- Fließband -->
+ <rect x="276" y="316" width="352" height="10" rx="5" fill="#6d7480"/>
+ <g fill="#ffffff" stroke-width="1.6"><circle cx="290" cy="321" r="3"/><circle cx="360" cy="321" r="3"/><circle cx="430" cy="321" r="3"/><circle cx="500" cy="321" r="3"/><circle cx="570" cy="321" r="3"/><circle cx="614" cy="321" r="3"/></g>
+ <g fill="#2b2f3a" stroke-width="1.6"><rect x="372" y="306" width="9" height="12" rx="2"/><rect x="392" y="306" width="9" height="12" rx="2"/><rect x="474" y="306" width="9" height="12" rx="2"/><rect x="494" y="306" width="9" height="12" rx="2"/><rect x="580" y="306" width="9" height="12" rx="2"/></g>
+ <!-- Uhr -->
+ <circle cx="626" cy="286" r="11" fill="#fff" stroke-width="2"/><path d="M626 279 v7 l5 3" fill="none" stroke-width="1.8"/>
+
+ <!-- Stockwerk 2: Mine -->
+ <path d="M236 350 Q300 340 360 352 Q450 340 540 350 Q620 342 672 356 L676 436 Q600 448 520 438 Q430 450 340 438 Q280 448 230 434 Z" fill="#5d4a3a"/>
+ <path d="M236 360 Q260 400 232 432 L262 436 Q282 398 262 356 Z" fill="#7b6450"/>
+ <!-- Stützbalken schief -->
+ <path d="M330 354 l6 84 M392 352 l-4 86 M326 358 l72 -6" fill="none" stroke="#c49a63" stroke-width="6"/>
+ <path d="M560 350 l-8 88 M618 352 l4 86 M556 356 l66 2" fill="none" stroke="#c49a63" stroke-width="6"/>
+ <!-- Erzbrocken -->
+ <g fill="#3e342c" stroke-width="2"><path d="M246 416 l14-10 l14 6 l2 14 l-24 4 Z"/><path d="M640 418 l12-8 l14 8 l-2 12 l-22 2 Z"/></g>
+ <g fill="#c7b38a" stroke="none"><circle cx="256" cy="414" r="2"/><circle cx="266" cy="420" r="2"/><circle cx="650" cy="418" r="2"/><circle cx="656" cy="424" r="2"/></g>
+ <!-- Bergmann mit Spitzhacke -->
+ <path d="M296 396 l-22 40 l60 0 Z" fill="url(#kLamp)" stroke="none" transform="rotate(-30 296 396)"/>
+ <path d="M300 430 v-18 q0-10 10-10 q10 0 10 10 v18" fill="#6f7b88"/>
+ <circle cx="310" cy="392" r="9" fill="#d9a77a"/><path d="M300 390 q10-16 20 0 Z" fill="#f2c230"/><circle cx="302" cy="390" r="2.5" fill="#fff6c0"/>
+ <path d="M302 410 l-20 -14 M276 388 q4 12 14 14" fill="none" stroke-width="3.2"/>
+ <path d="M302 430 v8 M318 430 v8" fill="none" stroke-width="3.2"/>
+ <!-- Bergmann mit schwerem Sack -->
+ <path d="M470 438 l6 -26 q2 -10 12 -8 q8 2 8 12 l-4 22" fill="#7d6b5a"/>
+ <circle cx="494" cy="392" r="9" fill="#c99267"/><path d="M484 390 q10-16 20 0 Z" fill="#f2c230"/>
+ <path d="M452 402 q-4 -22 18 -24 q22 -2 22 16 q-2 16 -22 16 q-16 0 -18 -8 Z" fill="#a88b62"/>
+ <path d="M462 386 l6 6 M470 382 l3 8" fill="none" stroke-width="1.6"/>
+ <path d="M478 438 v0 M488 438 l4 -2" fill="none" stroke-width="3"/>
+ <path d="M508 386 q4 -6 2 -10" fill="none" stroke="#7ec8e3" stroke-width="1.6"/>
+
+ <!-- Stockwerk 3: Elektroschrott -->
+ <path d="M318 456 Q450 444 586 458 L604 500 Q520 534 450 536 Q370 534 300 500 Z" fill="#cfc8b8"/>
+ <path d="M326 496 q30 -40 70 -30 q40 -22 70 4 q40 -26 76 6 q32 0 50 20 Q520 528 450 530 Q380 528 326 496 Z" fill="#8c8478"/>
+ <g stroke-width="2">
+  <g transform="rotate(-20 372 486)"><rect x="362" y="470" width="20" height="34" rx="4" fill="#2b2f3a"/><rect x="365" y="474" width="14" height="24" fill="#6b7b8a"/><path d="M367 477 l9 16 M376 477 l-6 18" fill="none" stroke="#e8eef2" stroke-width="1.2"/></g>
+  <g transform="rotate(25 470 480)"><rect x="460" y="464" width="20" height="34" rx="4" fill="#3a3f4c"/><rect x="463" y="468" width="14" height="24" fill="#7a8794"/></g>
+  <rect x="404" y="474" width="34" height="18" rx="3" fill="#2f6b3f" transform="rotate(8 420 482)"/>
+  <g transform="rotate(-8 530 488)"><rect x="516" y="476" width="20" height="32" rx="4" fill="#2b2f3a"/><rect x="519" y="480" width="14" height="22" fill="#6b7b8a"/></g>
+  <path d="M340 500 q20 -12 36 2 t40 -4 M486 498 q20 10 40 -6 t36 8" fill="none" stroke="#b5473a" stroke-width="2.6"/>
+  <path d="M430 500 q12 -14 24 0" fill="none" stroke="#d8a531" stroke-width="2.6"/>
+ </g>
+ <!-- Rauch vom Schrottfeuer -->
+ <path d="M350 468 q-12 -12 2 -22 q-8 -14 8 -20" fill="none" stroke="#5a5a5a" stroke-width="3" opacity=".7"/>
+ <path d="M338 480 q4 -10 10 -8 q6 -10 10 2 q4 8 -4 10 Z" fill="#e2672f" stroke-width="1.8"/><path d="M345 480 q3 -5 6 0" fill="#f6c343" stroke-width="1.2"/>
+ <!-- Person sortiert Schrott -->
+ <path d="M574 498 q-2 -18 12 -20 q12 0 12 14 l-2 10" fill="#a26b4c"/><circle cx="586" cy="470" r="8" fill="#c99267"/>
+ <path d="M576 488 l-14 8" fill="none" stroke-width="3"/>
+
+ <!-- ===== Eisbergspitze über Wasser ===== -->
+ <path d="M296 232 L346 188 L374 182 L392 160 L408 152 L488 152 L506 162 L536 196 L572 214 L606 232 Z" fill="url(#kIce)"/>
+ <path d="M408 152 L420 186 L452 200 L470 186 L488 152 M346 188 L392 210 M536 196 L520 220" fill="none" stroke="#8ab4c6" stroke-width="2"/>
+
+ <!-- Käufer (Karikatur: großer Kopf) -->
+ <path d="M434 152 l2 -30 M458 152 l-2 -30" fill="none" stroke-width="5"/>
+ <path d="M428 154 h12 M452 154 h12" stroke-width="5"/>
+ <path d="M424 124 q-4 -36 22 -40 q26 4 22 40 Z" fill="#e66f4f"/>
+ <path d="M436 92 q10 6 20 0" fill="none" stroke-width="2"/>
+ <!-- Einkaufstüte -->
+ <path d="M420 104 l-22 18" fill="none" stroke-width="4"/>
+ <path d="M384 120 h26 l-3 30 h-20 Z" fill="#f2e6c9"/><path d="M390 120 q7 -12 14 0" fill="none" stroke-width="2"/>
+ <!-- Arm hoch mit Smartphone -->
+ <path d="M466 98 q14 -14 22 -36" fill="none" stroke-width="5"/>
+ <circle cx="490" cy="58" r="6" fill="#f2c9a0"/>
+ <g transform="rotate(10 498 36)"><rect x="484" y="6" width="30" height="54" rx="6" fill="#2b2f3a"/><rect x="488" y="12" width="22" height="40" rx="2" fill="#9fd6f5"/><path d="M493 40 q6 6 12 0" fill="none" stroke-width="2"/><circle cx="495" cy="26" r="1.8" fill="#1f1f1f" stroke="none"/><circle cx="503" cy="26" r="1.8" fill="#1f1f1f" stroke="none"/></g>
+ <!-- Preisschild -->
+ <path d="M512 14 q16 -2 22 12" fill="none" stroke-width="1.8"/>
+ <path d="M528 22 L604 12 L612 50 L536 60 Z" fill="#fff3a8"/><circle cx="535" cy="28" r="3" fill="#fff" stroke-width="1.6"/>
+ <text x="572" y="44" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-weight="700" font-size="19" text-anchor="middle" fill="#c0392b" stroke="none" transform="rotate(-8 572 38)">nur 99 €</text>
+ <!-- Kopf groß -->
+ <circle cx="446" cy="62" r="27" fill="#f2c9a0"/>
+ <path d="M420 56 q2 -28 28 -30 q24 0 26 26 q-10 -10 -24 -10 q-18 0 -30 14 Z" fill="#4a3426"/>
+ <path d="M430 60 q5 -6 10 0 M452 60 q5 -6 10 0" fill="none" stroke-width="2.4"/>
+ <path d="M428 72 q18 22 38 0 Z" fill="#fff" stroke-width="2.4"/><path d="M432 74 h30" fill="none" stroke-width="1.4"/>
+ <circle cx="424" cy="70" r="5" fill="#f19c86" stroke="none" opacity=".7"/><circle cx="469" cy="70" r="5" fill="#f19c86" stroke="none" opacity=".7"/>
+ <path d="M474 40 l8 -6 M478 50 l10 -2" fill="none" stroke-width="2"/>
+ <!-- Sprechblase -->
+ <path d="M218 10 L346 10 Q364 10 364 26 L364 36 L416 62 L360 66 Q358 78 346 78 L218 78 Q200 78 200 62 L200 26 Q200 10 218 10 Z" fill="#ffffff"/>
+ <text x="282" y="54" font-family="'Comic Sans MS','Chalkboard SE','Marker Felt',sans-serif" font-weight="700" font-size="25" text-anchor="middle" fill="#1f1f1f" stroke="none">So günstig!</text>
+
+ <!-- ===== Containerschiff ===== -->
+ <path d="M690 226 L886 226 L864 254 L708 254 Z" fill="#a8483a"/>
+ <path d="M700 236 h176" fill="none" stroke="#f1e6d2" stroke-width="2"/>
+ <g stroke-width="2.2"><rect x="716" y="196" width="34" height="30" fill="#d99a3c"/><rect x="752" y="196" width="34" height="30" fill="#4a7f9d"/><rect x="788" y="196" width="34" height="30" fill="#6f9e6a"/><rect x="734" y="166" width="34" height="30" fill="#4a7f9d"/><rect x="770" y="166" width="34" height="30" fill="#d99a3c"/></g>
+ <rect x="830" y="180" width="32" height="46" fill="#efe9dc"/><rect x="836" y="188" width="20" height="9" fill="#9fd6f5" stroke-width="1.6"/><rect x="840" y="156" width="12" height="24" fill="#5c6470"/>
+ <!-- Rauchwolke -->
+ <g><circle cx="760" cy="96" r="24" fill="#8b8f96" stroke-width="5.2"/><circle cx="788" cy="78" r="28" fill="#8b8f96" stroke-width="5.2"/><circle cx="822" cy="86" r="24" fill="#8b8f96" stroke-width="5.2"/><circle cx="812" cy="114" r="22" fill="#8b8f96" stroke-width="5.2"/><circle cx="776" cy="118" r="20" fill="#8b8f96" stroke-width="5.2"/><circle cx="748" cy="116" r="14" fill="#8b8f96" stroke-width="5.2"/><circle cx="838" cy="132" r="12" fill="#8b8f96" stroke-width="5.2"/><circle cx="845" cy="148" r="7" fill="#8b8f96" stroke-width="5.2"/></g><g stroke="none"><circle cx="760" cy="96" r="24" fill="#8b8f96"/><circle cx="788" cy="78" r="28" fill="#8b8f96"/><circle cx="822" cy="86" r="24" fill="#8b8f96"/><circle cx="812" cy="114" r="22" fill="#8b8f96"/><circle cx="776" cy="118" r="20" fill="#8b8f96"/><circle cx="748" cy="116" r="14" fill="#8b8f96"/><circle cx="838" cy="132" r="12" fill="#8b8f96"/><circle cx="845" cy="148" r="7" fill="#8b8f96"/></g>
+ <text x="798" y="102" font-family="'Comic Sans MS','Chalkboard SE','Marker Felt',sans-serif" font-weight="700" font-size="20" text-anchor="middle" fill="#ffffff" stroke="none">CO₂</text>
+</g>
+</svg>
+</template>
+<script src="../../../../maskottchen/neumann/kolbi.js?v=20261122"></script>
+<script src="../../../../maskottchen/neumann/skin-neumann.js?v=20261122"></script>
+<script src="../../../../maskottchen/neumann/neumann-begleiter.js?v=20261122"></script>
+<script src="../../../../maskottchen/neumann/glossare/politik7.js?v=20261122"></script>
+<script>
+/* Inhalte des SKK-Trainings Politik Klasse 7. Quelle: die Lerneinheiten in Klasse 7 (ohne Kinderrechte). */
+var CH = [
+/* ============================================================ 1 */
+{ id: 'pol', ico: '🗳️', title: 'Was ist Politik?', sub: 'Konflikt, Gesellschaft, Macht, Öffentlichkeit, Ebenen',
+  merk: [
+    '<b>Konflikt:</b> Unterschiedliche Interessen, Meinungen oder Ziele prallen aufeinander und scheinen unvereinbar.',
+    '<b>Gesellschaft:</b> Eine Gruppe von Menschen, die gemeinsame Merkmale, Interessen und Regeln teilen.',
+    '<b>Macht:</b> Die Fähigkeit, den eigenen Willen auch gegen den Widerstand anderer durchzusetzen.',
+    '<b>Privat und öffentlich:</b> Das Private betrifft das persönliche, geschützte Umfeld. Das Öffentliche betrifft Themen, die für alle sichtbar sind und die Gesellschaft als Ganzes angehen.',
+    '<b>Öffentlichkeit:</b> Der Raum, in dem Themen für alle sichtbar und diskutierbar werden.',
+    '<b>Ebenen:</b> Kommune/Bezirk, Bundesland, Staat (Bund). Jede Ebene hat eigene Zuständigkeiten. Ein Park im Kiez ist Sache des Bezirksamts, nicht des Abgeordnetenhauses.'
+  ],
+  tasks: [
+    { id: 'pol1', type: 'match', q: 'Der Begriffs-Check: Welche Erklärung gehört zu welchem Begriff?',
+      rows: [
+        ['Konflikt', 'Unterschiedliche Interessen oder Ziele prallen aufeinander und scheinen unvereinbar.'],
+        ['Gesellschaft', 'Eine Gruppe von Menschen, die gemeinsame Merkmale, Interessen und Regeln teilt.'],
+        ['Macht', 'Die Fähigkeit, den eigenen Willen auch gegen den Widerstand anderer durchzusetzen.'],
+        ['Öffentlichkeit', 'Der Raum, in dem Themen für alle sichtbar werden und diskutiert werden können.']
+      ],
+      extra: ['Das persönliche, geschützte Umfeld, zum Beispiel die Familie und die eigene Wohnung.'],
+      tips: ['Lies jede Erklärung ganz. Oft verrät schon ein Wort, welcher Begriff gemeint ist.', 'Eine Erklärung bleibt übrig. Sie gehört zu keinem der vier Begriffe, sondern zum Gegenteil von „öffentlich“.'] },
+    { id: 'pol2', type: 'mc', q: 'Im Spandau-Beispiel meckert ihr am Küchentisch über den Skatepark. Warum reicht das nicht aus, um etwas zu verändern?',
+      o: ['Das Problem bleibt privat und wird nicht öffentlich.', 'Eltern dürfen bei Fragen zu einem Park nicht mitreden.', 'Am Küchentisch kann man keine Beweise für Lärm sammeln.', 'Politische Anliegen dürfen grundsätzlich nur Erwachsene vorbringen.'],
+      why: 'Das Private betrifft das persönliche Umfeld. Erst wenn ihr mit Beweisen nach draußen geht, wird das Problem öffentlich und für alle sichtbar.',
+      tips: ['Denke an den Unterschied zwischen „privat“ und „öffentlich“.', 'Wer weiß am Küchentisch von eurem Problem? Und wer müsste davon erfahren?'] },
+    { id: 'pol3', type: 'sort', q: 'Ebenen-Sortierer: Auf welcher Ebene wird entschieden?',
+      cats: ['Bezirk', 'Land', 'Bund'],
+      items: [
+        ['Ein Skatepark im Kiez soll renoviert werden.', 0],
+        ['Das Berliner Schulgesetz wird geändert.', 1],
+        ['Ein Gesetz soll in ganz Deutschland gelten.', 2],
+        ['Eine Grünfläche im Kiez bekommt neue Bänke.', 0],
+        ['Das Abgeordnetenhaus beschließt den Landeshaushalt.', 1],
+        ['Der Bundestag beschließt ein neues Gesetz.', 2]
+      ],
+      why: 'Das Bezirksamt kümmert sich um Dinge vor Ort. Das Abgeordnetenhaus entscheidet für das Land Berlin. Der Bundestag beschließt Gesetze für ganz Deutschland.',
+      tips: ['Wie groß ist das Gebiet, für das die Entscheidung gilt? Ein Kiez, ein Bundesland oder das ganze Land?', 'Der Park im Spandau-Beispiel war Sache des Bezirksamts. Orientiere dich daran.'] },
+    { id: 'pol4', type: 'gap', q: 'Lückentext: Setze die Begriffe richtig ein.',
+      parts: ['Politik regelt das Zusammenleben in einer ', { a: 'Gesellschaft' }, ', wenn Interessen aufeinanderprallen. Um solche Konflikte zu lösen, machen Bürger ihre Anliegen in der ', { a: 'Öffentlichkeit' }, ' sichtbar. Durch den Zusammenschluss vieler erlangen sie die nötige ', { a: 'Macht' }, ', um etwas zu verändern.'],
+      bank: ['Konflikt'],
+      tips: ['Lies den ganzen Satz, bevor du einen Begriff wählst.', 'Ein Begriff bleibt übrig. Er passt in keine der drei Lücken.'] },
+    { id: 'pol5', type: 'free', q: 'Herr Neumann prüft: Ihr sammelt im Spandau-Beispiel Unterschriften von Mitschülern, Sportlern und Anwohnern. <b>Erkläre in zwei bis drei Sätzen, warum das hilft, etwas zu verändern.</b>',
+      min: 70, need: 2,
+      groups: [
+        { label: 'dass viele Menschen zusammen mehr erreichen', rx: /(zusammen|gemeinsam|viele|gruppe|mehrheit|verbünd|zusammenschluss|unterstütz)/i },
+        { label: 'den Begriff Macht oder das Durchsetzen', rx: /(macht|durchsetz|verändern|einfluss|druck)/i },
+        { label: 'die richtige Stelle (zum Beispiel das Bezirksamt)', rx: /(bezirksamt|zuständig|rathaus|behörde|amt)/i }
+      ],
+      sample: 'Mit vielen Unterschriften zeigt ihr, dass nicht nur eine Person, sondern eine große Gruppe das Anliegen unterstützt. Dadurch habt ihr mehr Macht, euren Willen durchzusetzen, und das zuständige Bezirksamt muss das Anliegen ernst nehmen.',
+      tips: ['Frage dich: Was ist stärker, eine einzelne Stimme oder viele Stimmen?', 'Verwende den Begriff „Macht“ und sage, wer für den Park zuständig ist.'] }
+  ] },
+/* ============================================================ 2 */
+{ id: 'dim', ico: '🧩', title: 'Dimensionen der Politik', sub: 'Inhalt, Form und Prozess am Beispiel Handyverbot',
+  merk: [
+    '<b>Inhalt:</b> Um welches Sachproblem geht es? Welche Argumente sprechen dafür, welche dagegen? Welche Folgen hätte die Entscheidung?',
+    '<b>Form:</b> Wer hat die Befugnis (Kompetenz) zu entscheiden? Nach welchen Regeln wird entschieden (zum Beispiel Mehrheitsrecht)? Welche Gesetze oder Verträge spielen eine Rolle?',
+    '<b>Prozess:</b> Wer ist betroffen? Welche Interessen und Meinungen gibt es? Wie äußern die Gruppen sich öffentlich? Gibt es Verhandlungen und einen Kompromiss?'
+  ],
+  tasks: [
+    { id: 'dim1', type: 'sort', q: 'Fragen-Sortierer: Eure Schule diskutiert ein Handyverbot. Zu welcher Dimension gehört jede Frage?',
+      cats: ['Inhalt', 'Form', 'Prozess'],
+      items: [
+        ['Welche Argumente sprechen für das Verbot?', 0],
+        ['Wer darf an der Schule über die Handyregel entscheiden?', 1],
+        ['Wie äußern Schüler ihre Meinung dazu in der Öffentlichkeit?', 2],
+        ['Nach welchen Regeln wird abgestimmt, zum Beispiel nach dem Mehrheitsrecht?', 1],
+        ['Welche Folgen hätte das Verbot für den Schulalltag?', 0],
+        ['Gibt es Verhandlungen und am Ende einen Kompromiss?', 2]
+      ],
+      why: 'Inhalt: Sachproblem, Argumente, Folgen. Form: Befugnis, Regeln, Gesetze. Prozess: Interessen, Meinungen, Verhandlung, Kompromiss.',
+      tips: ['Frage dich bei jeder Aussage: Geht es um die Sache selbst, um Zuständigkeit und Regeln, oder um Gruppen und ihre Interessen?', 'Schlüsselwörter helfen: „Argumente“ und „Folgen“ stehen beim Inhalt, „Befugnis“ und „Regeln“ bei der Form, „Interessen“ und „Kompromiss“ beim Prozess.'] },
+    { id: 'dim2', type: 'match', q: 'Leitfragen-Check: Welche Leitfrage gehört zu welcher Dimension?',
+      rows: [
+        ['Inhalt', 'Um welches Sachproblem geht es und welche Folgen hätte eine Entscheidung?'],
+        ['Form', 'Wer ist zuständig und nach welchen Regeln wird entschieden?'],
+        ['Prozess', 'Welche Gruppen vertreten welche Interessen und wie einigen sie sich?']
+      ],
+      extra: ['In welchem Jahr wurde das entsprechende Gesetz verabschiedet?'],
+      tips: ['Lies in der Merkbox nach, welche Fragen zu welcher Dimension gehören.', 'Die Frage nach der Jahreszahl gehört zu keiner der drei Dimensionen.'] },
+    { id: 'dim3', type: 'tf', q: 'Wahr oder falsch? Entscheide bei jeder Aussage.',
+      items: [
+        ['Die Dimension Form fragt nach Zuständigkeit und Regeln.', true, 'Richtig: Wer darf entscheiden und nach welchen Regeln, das ist die Form.'],
+        ['Die Dimension Inhalt fragt, welche Gruppen sich öffentlich äußern.', false, 'Das gehört zum Prozess. Der Inhalt fragt nach dem Sachproblem, den Argumenten und den Folgen.'],
+        ['Zum Prozess gehören Interessen, Meinungsäußerung und Verhandlung.', true, 'Richtig: Im Prozess geht es darum, wer was will und wie man sich einigt.'],
+        ['Gesetze und Verträge gehören zur Dimension Inhalt.', false, 'Gesetze und Verträge gehören zur Form, denn sie legen Regeln und Zuständigkeiten fest.']
+      ],
+      tips: ['Gehe die Aussagen einzeln durch. Prüfe immer, welche Dimension wirklich gemeint ist.', 'Bei zwei Aussagen sind zwei Dimensionen vertauscht.'] },
+    { id: 'dim4', type: 'mc', q: 'Eine Schülergruppe sammelt Unterschriften gegen das Handyverbot und spricht mit der Schulleitung. Welche Dimension steht hier im Mittelpunkt?',
+      o: ['Der Prozess', 'Die Form', 'Der Inhalt', 'Die Ebene'],
+      why: 'Die Gruppe vertritt ihre Interessen öffentlich und verhandelt. Das ist der Prozess.',
+      tips: ['Wer handelt hier, und was tut diese Gruppe?', 'Es geht um Interessen, Meinungsäußerung und Verhandlung.'] },
+    { id: 'dim5', type: 'free', q: 'Herr Neumann prüft: <b>Formuliere zum Handyverbot je eine Frage zum Inhalt, zur Form und zum Prozess.</b> Schreibe sie untereinander oder hintereinander auf.',
+      min: 80, need: 3,
+      groups: [
+        { label: 'eine Frage zum Inhalt (Argumente, Folgen, Sachproblem)', rx: /(argument|folge|problem|auslöser|dafür|dagegen|vorteil|nachteil)/i },
+        { label: 'eine Frage zur Form (Befugnis, Regeln, Gesetz, Mehrheit)', rx: /(befugnis|kompetenz|zuständig|entscheid|regel|gesetz|mehrheit|abstimm)/i },
+        { label: 'eine Frage zum Prozess (Interessen, Meinungen, Verhandlung, Kompromiss)', rx: /(interesse|meinung|verhandl|kompromiss|betroffen|öffentlich|gruppe)/i }
+      ],
+      sample: 'Inhalt: Welche Argumente sprechen für und gegen ein Handyverbot? Form: Wer darf an der Schule entscheiden und nach welchen Regeln wird abgestimmt? Prozess: Welche Gruppen haben welche Interessen und gibt es am Ende einen Kompromiss?',
+      tips: ['Beginne mit einem Fragewort: Welche, Wer, Wie.', 'Nimm die Fragen aus der Merkbox und übertrage sie auf das Handyverbot.'] }
+  ] },
+/* ============================================================ 3 */
+{ id: 'glo', ico: '🌍', title: 'Was ist Globalisierung?', sub: 'Vernetzung, Dimensionen, Chancen und Risiken',
+  merk: [
+    '<b>Globalisierung</b> bezeichnet die zunehmende weltweite Vernetzung von Staaten und Gesellschaften über nationale Grenzen hinweg.',
+    '<b>Dimensionen:</b> Wirtschaft und Technologie (Transport von Waren, Lieferketten), Kultur (Filme, Serien, Musik), Kommunikation (Internet, Social Media), Umwelt (Konsum, Rohstoffabbau) und Politik (Verträge und Bündnisse wie die EU).',
+    '<b>Inland und Ausland:</b> Vieles, was wir täglich nutzen, wird nicht in Deutschland hergestellt.',
+    '<b>Chancen und Risiken:</b> Globalisierung bringt Vorteile, zum Beispiel Austausch und Auswahl. Sie bringt aber auch Gefahren, zum Beispiel für die Umwelt und durch Abhängigkeiten.'
+  ],
+  tasks: [
+    { id: 'glo1', type: 'sort', q: 'Woher kommt es? Was kommt überwiegend aus Deutschland (Inland), was aus dem Ausland?',
+      cats: ['Inland', 'Ausland'],
+      items: [['Kartoffeln', 0], ['Bananen', 1], ['Rindfleisch', 0], ['Kaffee', 1], ['Frische Milch', 0], ['Smartphones', 1], ['T-Shirts', 1]],
+      why: 'Kartoffeln, Rindfleisch und frische Milch kommen überwiegend aus Deutschland. Bananen, Kaffee, Smartphones und T-Shirts werden vor allem im Ausland hergestellt.',
+      tips: ['Was wächst bei uns im Klima gut, was nicht?', 'Elektronik und Kleidung werden meist weltweit produziert.'] },
+    { id: 'glo2', type: 'gap', q: 'Lückentext: Vervollständige die Definition der Globalisierung.',
+      parts: ['Globalisierung bezeichnet die zunehmende weltweite Vernetzung von Staaten und Gesellschaften über nationale ', { a: 'Grenzen' }, ' hinweg. Der weltweite ', { a: 'Transport' }, ' von Waren und globale Lieferketten prägen die Dimension Wirtschaft. Filme, Serien und Musik verbreiten sich um die Welt und verändern unsere ', { a: 'Kultur' }, '. Durch das ', { a: 'Internet' }, ' und Social Media entsteht eine grenzenlose ', { a: 'Kommunikation' }, '.'],
+      bank: ['Politik', 'Umwelt'],
+      tips: ['Lies jeden Satz einzeln. Jede Lücke gehört zu einer Dimension der Globalisierung.', 'Zwei Begriffe bleiben übrig, weil sie zu anderen Dimensionen gehören.'] },
+    { id: 'glo3', type: 'sort', q: 'Chancen oder Risiken? Sortiere die Folgen der Globalisierung.',
+      cats: ['Chance', 'Risiko'],
+      items: [
+        ['Produkte aus aller Welt sind günstig und vielfältig zu haben.', 0],
+        ['Eine Störung der Lieferkette lässt Bauteile fehlen.', 1],
+        ['Menschen tauschen sich in Sekunden weltweit aus.', 0],
+        ['Der weltweite Transport erzeugt viele Treibhausgase.', 1],
+        ['Kulturen lernen voneinander und mischen sich.', 0],
+        ['Der Rohstoffabbau belastet Umwelt und Menschen.', 1]
+      ],
+      why: 'Austausch, Auswahl und günstige Preise sind Chancen. Abhängigkeit von Lieferketten, Treibhausgase und Rohstoffabbau sind Risiken.',
+      tips: ['Frage dich: Ist das ein Vorteil für Menschen, oder ein Nachteil und eine Gefahr?', 'Denke an die Smartphone-Lieferkette. Was kann dort schiefgehen?'] },
+    { id: 'glo4', type: 'mc', q: 'Staaten bilden Verträge und Bündnisse wie die EU, um Krisen gemeinsam zu lösen. Zu welcher Dimension der Globalisierung gehört das?',
+      o: ['Politik', 'Kultur', 'Umwelt', 'Kommunikation'],
+      why: 'Verträge und Bündnisse zwischen Staaten sind die Dimension Politik.',
+      tips: ['Wer schließt Verträge ab? Das sind Staaten.', 'Überlege, welches Wort in der Merkbox zu Staaten und Bündnissen passt.'] },
+    { id: 'glo5', type: 'free', q: 'Herr Neumann prüft: <b>Nenne in ganzen Sätzen mindestens eine Chance und ein Risiko der Globalisierung und begründe sie.</b>',
+      min: 90, need: 2,
+      groups: [
+        { label: 'eine Chance (zum Beispiel günstige Preise, Austausch, Auswahl)', rx: /(chance|vorteil|günstig|auswahl|austausch|kommunikation|wohlstand|arbeitsplätze|kultur)/i },
+        { label: 'ein Risiko (zum Beispiel Umwelt, Abhängigkeit, schlechte Löhne)', rx: /(risiko|gefahr|nachteil|umwelt|abhängig|lohn|treibhaus|co2|co₂|klima|rohstoff|lieferkette|ausbeut)/i }
+      ],
+      sample: 'Eine Chance ist, dass Waren aus der ganzen Welt günstig zu haben sind, weil viele Länder arbeitsteilig produzieren. Ein Risiko ist die Umwelt, denn der weltweite Transport und der Rohstoffabbau verursachen viele Treibhausgase.',
+      tips: ['Beginne mit „Eine Chance ist …“ und mit „Ein Risiko ist …“.', 'Begründe mit „weil“ oder „denn“. Dann ist es mehr als nur ein Stichwort.'] }
+  ] },
+/* ============================================================ 4 */
+{ id: 'sma', ico: '📱', title: 'Smartphone-Lieferkette', sub: 'Rohstoffe, Produktion, Transport und Risiken',
+  merk: [
+    '<b>Lieferkette:</b> Der Weg vom Rohstoff bis zum Verkauf. Ein Smartphone besteht aus Teilen aus vielen Ländern.',
+    '<b>Rohstoffe:</b> Coltan (daraus wird Tantal gewonnen, für kleine Bauteile auf der Platine, abgebaut unter anderem im Osten der Demokratischen Republik Kongo) und Lithium (für Batterien).',
+    '<b>Abbau:</b> Viele Minen liegen abgelegen. Sicherheitsausrüstung fehlt oft. Manche Arbeiter erhalten nur geringe Löhne.',
+    '<b>Transport:</b> Lkw, Containerschiffe und Flugzeuge. Der weltweite Transport verursacht Treibhausgase. Lufttransport besonders viele pro Kilogramm Fracht.',
+    '<b>Just-in-time:</b> Teile kommen genau dann an, wenn sie gebraucht werden. Das spart Lagerkosten, macht das System aber anfällig für Hafenstreiks, extremes Wetter und Konflikte.'
+  ],
+  tasks: [
+    { id: 'sma1', type: 'order', q: 'Die Lieferkette in Ordnung bringen: Tippe die Stationen in der richtigen Reihenfolge an. Du beginnst bei den Rohstoffen.',
+      items: ['Rohstoffe wie Coltan und Lithium werden abgebaut.', 'Die Rohstoffe werden gereinigt und aufbereitet.', 'Chips, Displays und andere Bauteile werden hergestellt.', 'Alle Teile werden zusammengebaut und geprüft (Endmontage).', 'Das fertige Smartphone wird in Märkten verkauft.'],
+      why: 'Abbau, Aufbereitung, Herstellung der Bauteile, Endmontage, Verkauf.',
+      tips: ['Überlege: Was muss zuerst passieren, damit der nächste Schritt überhaupt möglich ist?', 'Ohne Bauteile kann nichts zusammengebaut werden. Ohne Endmontage kann nichts verkauft werden.'] },
+    { id: 'sma2', type: 'mc', q: 'Wo wird das Erz Coltan unter anderem abgebaut?',
+      o: ['Im Osten der Demokratischen Republik Kongo', 'In den Alpen in Österreich und der Schweiz', 'In Norddeutschland an der Küste der Nordsee', 'Auf Island in der Nähe aktiver Vulkane'],
+      why: 'Coltan wird unter anderem im Osten der Demokratischen Republik Kongo abgebaut. Viele Minen liegen dort abgelegen und schwer erreichbar.',
+      tips: ['Das Land liegt in Afrika.', 'Der Name des Landes enthält das Wort „Demokratische Republik“.'] },
+    { id: 'sma3', type: 'mc', q: 'Wofür wird das Metall Tantal, das aus Coltan gewonnen wird, im Smartphone gebraucht?',
+      o: ['Für sehr kleine Bauteile, die den Stromfluss auf der Platine steuern', 'Für das Glas, das den Bildschirm vor Kratzern und Stößen schützt', 'Für das Gehäuse, das das Gerät besonders stabil und leicht macht', 'Für die Batterie, die das Gerät über viele Stunden mit Energie versorgt'],
+      why: 'Tantal steckt in sehr kleinen Bauteilen auf der Platine, die den Stromfluss stabilisieren. Für die Batterie wird Lithium gebraucht.',
+      tips: ['Es geht um etwas Kleines auf der Platine, nicht um etwas Sichtbares außen am Gerät.', 'Die Batterie braucht einen anderen Rohstoff, nämlich Lithium.'] },
+    { id: 'sma4', type: 'tf', q: 'Wahr oder falsch? Risiken in der Lieferkette.',
+      items: [
+        ['Lufttransporte verursachen pro Kilogramm Fracht besonders viele Emissionen.', true, 'Richtig: Flugzeuge stoßen pro Kilogramm Fracht besonders viele Treibhausgase aus.'],
+        ['Beim Just-in-time-Prinzip lagern die Firmen riesige Vorräte an Bauteilen.', false, 'Falsch: Just-in-time heißt, dass Bauteile genau dann eintreffen, wenn sie gebraucht werden. Das spart Lagerkosten.'],
+        ['Ein Hafenstreik kann dazu führen, dass Bauteile fehlen.', true, 'Richtig: Weil nur wenig Vorrat da ist, fehlen schnell Teile, wenn die Lieferung ausbleibt.'],
+        ['Lithium wird für die Platinen-Bauteile gebraucht.', false, 'Falsch: Lithium braucht man für die Batterien. Die Bauteile auf der Platine enthalten Tantal.'],
+        ['Containerschiffe stoßen überhaupt keine Treibhausgase aus.', false, 'Falsch: Große Containerschiffe stoßen Emissionen aus, auch wenn sie effizienter sind als Flugzeuge.']
+      ],
+      tips: ['Achte auf Wörter wie „alle“, „immer“ und „überhaupt keine“. Sie machen Aussagen oft falsch.', 'Zwei Aussagen sind richtig, drei sind falsch.'] },
+    { id: 'sma5', type: 'free', q: 'Herr Neumann prüft: <b>Erkläre, warum die Lieferkette eines Smartphones anfällig für Störungen ist.</b>',
+      min: 90, need: 2,
+      groups: [
+        { label: 'das Just-in-time-Prinzip (kaum Lager, Teile kommen genau rechtzeitig)', rx: /(just|rechtzeitig|lager|vorrat|genau dann)/i },
+        { label: 'mögliche Störungen (Hafenstreik, Wetter, Konflikte)', rx: /(streik|wetter|konflikt|krieg|störung|ausfall|unwetter|fehlen)/i },
+        { label: 'die vielen Länder und weiten Wege', rx: /(weltweit|viele länder|weit|international|spezialis|verschieden)/i }
+      ],
+      sample: 'Die Teile eines Smartphones kommen aus vielen Ländern und legen weite Wege zurück. Dank des Just-in-time-Prinzips gibt es kaum Lager, deshalb fehlen sofort Bauteile, wenn es zu einem Hafenstreik oder zu extremem Wetter kommt.',
+      tips: ['Denke an das Prinzip, bei dem Bauteile genau dann ankommen, wenn man sie braucht.', 'Nenne eine konkrete Störung und sage, was dann passiert.'] }
+  ] },
+/* ============================================================ 5 */
+{ id: 'kli', ico: '🌡️', title: 'Klimawandel', sub: 'Treibhauseffekt, Ursachen und Folgen',
+  merk: [
+    '<b>Natürlicher Treibhauseffekt:</b> Die Sonne erwärmt die Erde. Treibhausgase wie CO₂ fangen einen Teil der Wärmestrahlung ab und werfen sie zurück. So liegt die Durchschnittstemperatur bei 15 °C. Ohne Treibhausgase wären es etwa −18 °C.',
+    '<b>Menschengemachter Klimawandel:</b> Seit der Industrialisierung (18./19. Jahrhundert) steigt der CO₂-Anteil durch fossile Energien (Kohle, Öl, Gas), Fabriken und Abholzung. Die „Glasdach-Schicht“ wird zu dick. Bis 2100 könnte die Temperatur um 4 °C steigen.',
+    '<b>Folgen:</b> Eis schmilzt (zum Beispiel in der Arktis), der Meeresspiegel steigt, Extremwetter nimmt zu, der Golfstrom gerät aus dem Gleichgewicht, Korallen sterben, Hitze und Dürre bedrohen Menschen und Natur.'
+  ],
+  tasks: [
+    { id: 'kli1', type: 'order', q: 'So funktioniert der natürliche Treibhauseffekt: Bringe die Schritte in die richtige Reihenfolge.',
+      items: ['Die Sonne sendet Lichtstrahlen zur Erde.', 'Der Erdboden erwärmt sich und gibt Wärmestrahlung ab.', 'Treibhausgase fangen einen Teil der Wärmestrahlung ab.', 'Ein Teil der Wärme wird zur Erde zurückgeworfen.'],
+      why: 'Licht kommt an, der Boden strahlt Wärme ab, Treibhausgase halten einen Teil davon fest und werfen ihn zurück.',
+      tips: ['Beginne mit der Quelle der Energie.', 'Die Treibhausgase wirken erst, wenn schon Wärmestrahlung von der Erde aufsteigt.'] },
+    { id: 'kli2', type: 'mc', q: 'Wie kalt wäre es auf der Erde im weltweiten Durchschnitt ohne natürlichen Treibhauseffekt?',
+      o: ['Etwa −18 °C', 'Etwa −5 °C', 'Etwa 0 °C', 'Etwa +7 °C'],
+      why: 'Ohne Treibhausgase würde die Durchschnittstemperatur auf etwa −18 °C sinken. Mit dem natürlichen Treibhauseffekt liegt sie bei etwa 15 °C.',
+      tips: ['Es wäre viel kälter als heute. Heute sind es im Durchschnitt 15 °C.', 'Der Wert liegt deutlich unter dem Gefrierpunkt.'] },
+    { id: 'kli3', type: 'sort', q: 'Natürlich oder verstärkend? Sortiere nach Ursache.',
+      cats: ['Natürlicher Treibhauseffekt', 'Verstärkt den Klimawandel'],
+      items: [
+        ['Abgase aus Fabriken', 1],
+        ['Treibhausgase werfen Wärmestrahlung zur Erde zurück.', 0],
+        ['Abholzung von Wäldern', 1],
+        ['Ein Teil der Wärmestrahlung entweicht ins Weltall.', 0],
+        ['Verbrennen von Kohle, Öl und Gas', 1],
+        ['Die Sonne erwärmt den Erdboden.', 0]
+      ],
+      why: 'Der natürliche Treibhauseffekt gehört zum Klima der Erde. Fabriken, Abholzung und fossile Energien erhöhen den CO₂-Anteil zusätzlich.',
+      tips: ['Was passiert auch ohne den Menschen? Und was kommt durch Menschen dazu?', 'Wälder nehmen CO₂ auf. Fehlen sie, bleibt mehr CO₂ in der Luft.'] },
+    { id: 'kli4', type: 'match', q: 'Folgen-Karte: Welche Folge gehört zu welcher Region oder welchem Thema?',
+      rows: [
+        ['Arktis', 'Das Eis schmilzt, und Eisbären verlieren ihren Lebensraum.'],
+        ['Ozeanien', 'Korallen sterben, und flache Inseln drohen im Meer zu versinken.'],
+        ['Europa', 'Im Norden drohen Überschwemmungen, im Süden Dürren und Waldbrände.'],
+        ['Golfstrom', 'Die warme Meeresströmung gerät aus dem Gleichgewicht und verändert das Klima in Europa.']
+      ],
+      extra: ['Stürme und Hitzewellen nehmen zu, dicht besiedelte Küstenregionen sind bedroht.'],
+      tips: ['Arbeite mit dem Ausschlussverfahren: Welche Zuordnung ist dir sicher?', 'Die fünfte Folge gehört zu Nordamerika, das hier nicht gefragt ist.'] },
+    { id: 'kli5', type: 'gap', q: 'Lückentext: Wie der Mensch den Klimawandel verstärkt.',
+      parts: ['Durch das Verbrennen fossiler Energien wie Kohle, ', { a: 'Öl' }, ' und Gas steigt der ', { a: 'CO₂' }, '-Anteil in der Atmosphäre. Dadurch kann die globale Temperatur bis 2100 um ', { a: '4 °C' }, ' steigen. Das schmelzende Eis lässt den ', { a: 'Meeresspiegel' }, ' steigen.'],
+      bank: ['Sauerstoff', '15 °C', 'Luftdruck'],
+      tips: ['Fossile Energien sind Kohle, Gas und …?', 'Die Temperatur steigt um einen kleineren Wert als 15 °C. Der Wert 15 °C ist die heutige Durchschnittstemperatur.'] },
+    { id: 'kli6', type: 'free', q: 'Herr Neumann prüft: <b>Erkläre den Unterschied zwischen dem natürlichen Treibhauseffekt und dem menschengemachten Klimawandel.</b>',
+      min: 100, need: 2,
+      groups: [
+        { label: 'dass der natürliche Treibhauseffekt notwendig ist (15 °C, Leben möglich)', rx: /(natürlich|notwendig|nötig|lebens|ideal|15|überleb|ohne.*kalt|−18|-18)/i },
+        { label: 'dass der Mensch zusätzliche Treibhausgase ausstößt (fossile Energie, Fabriken, Abholzung)', rx: /(mensch|fossil|kohle|fabrik|industrie|abholz|zusätzlich|mehr (co|treibhaus)|verstärk|zu dick)/i }
+      ],
+      sample: 'Der natürliche Treibhauseffekt ist notwendig, denn er hebt die Durchschnittstemperatur auf 15 °C, ohne ihn wäre Leben kaum möglich. Der menschengemachte Klimawandel entsteht, weil wir durch fossile Energien, Fabriken und Abholzung zusätzliche Treibhausgase ausstoßen und die Schicht zu dick wird.',
+      tips: ['Teile deine Antwort in zwei Teile: erst „natürlich“, dann „menschengemacht“.', 'Nenne bei „menschengemacht“ mindestens eine Ursache.'] }
+  ] },
+/* ============================================================ 6 */
+{ id: 'fuss', ico: '🌱', title: 'Fußabdruck und Nachhaltigkeit', sub: 'Erdüberlastungstag, Carlowitz, drei Seiten der Nachhaltigkeit',
+  merk: [
+    '<b>Ökologischer Fußabdruck:</b> Er misst, wie viel Fläche man für sein Leben braucht. Würden alle Menschen so leben wie wir in Deutschland, bräuchte man etwa 3 Erden. Der Erdüberlastungstag lag für Deutschland 2026 am 10. Mai.',
+    '<b>Nachhaltigkeit:</b> Die Idee kommt aus der Forstwirtschaft. Hans Carl von Carlowitz forderte 1713, nur so viel Holz zu schlagen, wie nachwachsen kann.',
+    '<b>Brundtland-Bericht (1987):</b> Eine Entwicklung ist nachhaltig, wenn sie die Bedürfnisse der Menschen heute erfüllt, ohne dass spätere Generationen schlechter leben können.',
+    '<b>Drei Seiten:</b> Umwelt, Soziales und Wirtschaft müssen zusammenpassen.',
+    '<b>Vier Themen:</b> Wohnen und Bauen, Ernährung, Energie, Transport.'
+  ],
+  tasks: [
+    { id: 'fuss1', type: 'mc', q: 'Wer forderte im Jahr 1713, nur so viel Holz zu schlagen, wie wieder nachwachsen kann?',
+      o: ['Hans Carl von Carlowitz', 'Gro Harlem Brundtland', 'Alexander von Humboldt', 'Johann Wolfgang von Goethe'],
+      why: 'Hans Carl von Carlowitz sah 1713, dass das Holz knapp wurde. Daher kommt das Wort „nachhaltig“. Der Brundtland-Bericht stammt von 1987.',
+      tips: ['Es ist eine Person aus der Forstwirtschaft, nicht aus der Politik der Vereinten Nationen.', 'Der Bericht der Vereinten Nationen aus dem Jahr 1987 trägt einen anderen Namen.'] },
+    { id: 'fuss2', type: 'gap', q: 'Lückentext: Dein Merkzettel zur Nachhaltigkeit.',
+      parts: ['Nachhaltig heißt: Die Bedürfnisse der Menschen werden ', { a: 'heute' }, ' erfüllt, ohne dass ', { a: 'spätere' }, ' Generationen schlechter leben. Nachhaltigkeit hat drei Seiten: Umwelt, Soziales und ', { a: 'Wirtschaft' }, '.'],
+      bank: ['Politik', 'frühere'],
+      tips: ['Es geht um die Zeit: Wer lebt jetzt, und wer lebt später?', 'Die dritte Seite hat mit Geld, Arbeit und Unternehmen zu tun.'] },
+    { id: 'fuss3', type: 'sort', q: 'Nachhaltig oder nicht nachhaltig? Sortiere die Beispiele.',
+      cats: ['nachhaltig', 'nicht nachhaltig'],
+      items: [
+        ['Ein Fischer fängt nur so viele Fische, wie im Meer nachwachsen.', 0],
+        ['Eine große Fangflotte fischt ein Gebiet leer und zieht weiter.', 1],
+        ['Ein kaputtes Fahrrad wird repariert, statt es wegzuwerfen.', 0],
+        ['Kleidung ist so billig, dass Näherinnen kaum davon leben können.', 1],
+        ['Ein altes Haus wird umgebaut, statt ein neues zu bauen.', 0]
+      ],
+      why: 'Nachhaltig ist, was Umwelt und Menschen langfristig nicht überfordert. Leerfischen und Hungerlöhne gehen auf Kosten anderer und der Zukunft.',
+      tips: ['Frage dich: Gibt es das auch in zehn Jahren noch genauso, wenn man es immer so macht?', 'Denke auch an die soziale Seite: Wie geht es den Menschen, die etwas herstellen?'] },
+    { id: 'fuss4', type: 'mc', q: 'Der Erdüberlastungstag Deutschlands lag 2026 am 10. Mai. Was bedeutet das?',
+      o: ['Ab diesem Tag verbrauchen wir mehr, als die Erde nachliefert', 'Ab diesem Tag ist in Deutschland der gesamte Jahresstrom verbraucht', 'Ab diesem Tag darf in Deutschland kein Holz mehr geschlagen werden', 'Ab diesem Tag werden in Deutschland keine Treibhausgase mehr erzeugt'],
+      why: 'Ab dem Erdüberlastungstag leben wir „auf Pump“: Wir verbrauchen mehr Ressourcen, als die Erde in einem Jahr nachliefern kann.',
+      tips: ['Es geht um die Frage, wie viel Natur wir in einem Jahr verbrauchen und wie viel nachwächst.', 'Der Tag liegt früh im Jahr. Was sagt das über unseren Verbrauch?'] },
+    { id: 'fuss5', type: 'tf', q: 'Wahr oder falsch? Fußabdruck-Wissen.',
+      items: [
+        ['Der ökologische Fußabdruck misst, wie viel Fläche man für sein Leben braucht.', true, 'Richtig: Dazu zählen zum Beispiel Ernährung, Wohnen, Energie und Transport.'],
+        ['Würden alle so leben wie wir in Deutschland, bräuchte man etwa eine Erde.', false, 'Falsch: Es wären etwa drei Erden.'],
+        ['Nachhaltigkeit hat nur eine Seite, nämlich die Umwelt.', false, 'Falsch: Umwelt, Soziales und Wirtschaft müssen zusammenpassen.'],
+        ['Ein Teil des Fußabdrucks hängt davon ab, wie eine Gesellschaft Dinge organisiert.', true, 'Richtig: Straßen, Schulen und die Stromversorgung nutzen alle gemeinsam.']
+      ],
+      tips: ['Achte auf Zahlen und auf Wörter wie „nur“.', 'Zwei Aussagen sind richtig, zwei falsch.'] },
+    { id: 'fuss6', type: 'free', q: 'Herr Neumann prüft: <b>Warum betrifft Nachhaltigkeit deine Generation stärker als die deiner Großeltern?</b> Nenne ein Argument.',
+      min: 60, need: 1,
+      groups: [
+        { label: 'ein Argument mit Zukunft und Zeit (ihr erlebt die Folgen noch lange)', rx: /(zukunft|später|noch lange|jahrzehnt|länger|erleb|jung|folgen|lebenszeit|noch viele jahre)/i }
+      ],
+      sample: 'Meine Generation wird die Folgen noch viele Jahrzehnte erleben. Vieles, was heute gebaut wird, hält lange, zum Beispiel ein Haus 80 Jahre oder ein Kraftwerk 40 Jahre. Heutige Entscheidungen bestimmen also, wie wir später leben.',
+      tips: ['Wer lebt länger in der Zukunft, du oder deine Großeltern?', 'Denke an Dinge, die heute gebaut werden und lange halten.'] }
+  ] },
+/* ============================================================ 7 */
+{ id: 'kar', ico: '🔍', title: 'Karikaturanalyse', sub: 'Übungskarikatur „So günstig!“',
+  merk: [
+    '<b>Karikatur:</b> Eine Zeichnung, die etwas bewusst übertreibt, um Kritik zu üben oder zum Nachdenken anzuregen.',
+    '<b>Einleitung:</b> Titel, Thema, Datum, Zeichner, Veröffentlichungsort.',
+    '<b>Hauptteil:</b> Bildbeschreibung (Was sehe ich? Sachlich, ohne Wertung) und Deutung (Was bedeuten die Bildelemente? Stilmittel: Übertreibung, Ironie, Symbole).',
+    '<b>Schluss:</b> Hauptaussage (Was will der Zeichner sagen?) und Beurteilung (Wie überzeugend ist die Karikatur? Eigene Meinung begründen).'
+  ],
+  tasks: [
+    { id: 'kar1', type: 'order', q: 'Der Aufbau: Bringe die Teile einer Karikaturanalyse in die richtige Reihenfolge.',
+      items: ['Einleitung: Titel, Thema, Datum, Zeichner, Ort', 'Bildbeschreibung: Was ist zu sehen?', 'Deutung: Was bedeuten die Bildelemente?', 'Hauptaussage: Was will der Zeichner sagen?', 'Beurteilung: Wie überzeugend ist die Karikatur?'],
+      why: 'Einleitung, Bildbeschreibung, Deutung (zusammen der Hauptteil), dann der Schluss mit Hauptaussage und Beurteilung.',
+      tips: ['Es gibt drei große Teile: Einleitung, Hauptteil, Schluss.', 'Man beschreibt erst, was man sieht, und deutet danach, was es bedeutet.'] },
+    { id: 'kar2', type: 'gap', q: 'Die Einleitung: Lies die Angaben unter dem Bild und vervollständige die Einleitung.', bild: true,
+      parts: ['Die Karikatur mit dem Titel ', { a: '„So günstig!“' }, ' wurde im Jahr ', { a: '2026' }, ' von ', { a: 'N. N.' }, ' gezeichnet und in einer ', { a: 'Tageszeitung' }, ' veröffentlicht. Sie behandelt das Thema ', { a: 'Smartphone-Produktion' }, '.'],
+      bank: ['„Preisschild“', '2004', 'Schulbuch', 'Wetterbericht'],
+      tips: ['Die Angaben stehen unter dem Bild.', 'Das Thema erkennst du an den Bildelementen: Smartphone, Fabrik, Mine und Elektroschrott.'] },
+    { id: 'kar3', type: 'spots', q: 'Die Bildbeschreibung: Finde die Bildteile! Tippe in der Karikatur genau auf das, was gefragt wird.', bild: true,
+      spots: [
+        ['den Käufer auf der Eisbergspitze', [42, 4, 55, 29]],
+        ['die Sprechblase', [22, 1, 41, 15]],
+        ['das Smartphone mit dem Preisschild', [53, 0, 70, 13]],
+        ['die Bergleute im Stollen', [26, 61, 76, 80]],
+        ['die Fabrikhalle mit dem Fließband', [27, 44, 73, 61]],
+        ['den Elektroschrott', [33, 79, 67, 96]],
+        ['das Containerschiff', [76, 8, 99, 46]]
+      ],
+      tips: ['Das Bild hat einen Teil über Wasser und einen Teil unter Wasser.', 'Tippe auf die Mitte des Bildteils, nicht an den Rand.'] },
+    { id: 'kar4', type: 'match', q: 'Die Deutung: Wofür steht welches Bildelement?', bild: true,
+      rows: [
+        ['Die Spitze des Eisbergs über Wasser', 'Das, was Käufer sehen: das Gerät und den günstigen Preis.'],
+        ['Der große Teil des Eisbergs unter Wasser', 'Das, was verborgen bleibt: Rohstoffabbau, Fabrikarbeit und Müll.'],
+        ['Das Containerschiff mit der CO₂-Wolke', 'Die weiten Transportwege und die Treibhausgase, die dabei entstehen.'],
+        ['Der Elektroschrott ganz unten im Eisberg', 'Das Ende der Lieferkette: Geräte, die weggeworfen werden.']
+      ],
+      extra: ['Die große Freude über neue Technik, die nichts kostet.'],
+      tips: ['Ein Eisberg zeigt nur einen kleinen Teil seiner Größe. Wofür könnte das stehen?', 'Die letzte Erklärung passt zu keinem Bildelement.'] },
+    { id: 'kar5', type: 'sort', q: 'Die Stilmittel: Welches Stilmittel zeigt sich hier?', bild: true,
+      cats: ['Symbol', 'Ironie', 'Übertreibung'],
+      items: [
+        ['Der Eisberg steht für ein Problem, von dem man nur einen kleinen Teil sieht.', 0],
+        ['Der Käufer ruft „So günstig!“, obwohl unter Wasser große Folgen verborgen sind.', 1],
+        ['Der Eisberg ist riesig und reicht fast bis zum Meeresgrund.', 2],
+        ['Die Wolke mit „CO₂“ steht für die Treibhausgase des Schiffs.', 0]
+      ],
+      why: 'Ein Symbol steht für etwas anderes. Bei Ironie wird das Gegenteil dessen gezeigt, was man meint. Bei der Übertreibung wird etwas größer gezeichnet, als es ist.',
+      tips: ['Ironie: Die Figur freut sich, aber das Bild zeigt das Gegenteil von Freude.', 'Übertreibung: Etwas ist größer oder schlimmer dargestellt, als es in Wirklichkeit ist.'] },
+    { id: 'kar6', type: 'mc', q: 'Der Schluss: Was ist die Hauptaussage dieser Karikatur?', bild: true,
+      o: ['Der Preis zeigt nur einen kleinen Teil der Kosten, der Rest bleibt verborgen.', 'Smartphones sind inzwischen so billig, dass sich wirklich jeder Mensch eines leisten kann.', 'Durch den Klimawandel schmelzen die Eisberge, auf denen Menschen auf der Erde leben.', 'Containerschiffe sollten verboten werden, weil sie auf den Weltmeeren viel zu viel CO₂ ausstoßen.'],
+      why: 'Die Karikatur sagt: Der günstige Preis täuscht. Die Folgen für Menschen und Umwelt liegen unter der Oberfläche.',
+      tips: ['Was bedeutet das Bild vom Eisberg, wenn man alles zusammennimmt?', 'Eine Hauptaussage fasst das ganze Bild zusammen, nicht nur ein einzelnes Detail.'] },
+    { id: 'kar7', type: 'free', q: 'Herr Neumann prüft: <b>Schreibe den Schluss deiner Analyse: Nenne die Hauptaussage und beurteile die Karikatur mit einer begründeten Meinung.</b> Schreibe zwei bis drei Sätze.', bild: true,
+      min: 110, need: 2,
+      groups: [
+        { label: 'die Hauptaussage (der Preis zeigt nur einen Teil, versteckte Folgen)', rx: /(preis|günstig|nur einen teil|spitze|eisberg|versteckt|verborgen|unsichtbar|folgen|kosten)/i },
+        { label: 'deine Meinung mit Begründung (zum Beispiel „meiner Meinung nach … weil“)', rx: /(meiner meinung|ich finde|ich denke|überzeugend|nach meiner|finde ich|halte ich|weil|denn|deshalb)/i }
+      ],
+      sample: 'Die Hauptaussage der Karikatur ist, dass der günstige Preis eines Smartphones nur einen kleinen Teil der Wahrheit zeigt und die Folgen für Menschen und Umwelt verborgen bleiben. Ich finde die Karikatur überzeugend, weil das Bild vom Eisberg sofort deutlich macht, dass man vieles nicht sieht.',
+      tips: ['Beginne mit „Die Hauptaussage der Karikatur ist …“.', 'Für die Beurteilung hilft: „Ich finde die Karikatur überzeugend/nicht überzeugend, weil …“.'] }
+  ] }
+];
+
+/* ============================================================ Probe-Fragen (zusätzlich zu den Multiple-Choice-Aufgaben der Kapitel) */
+var PROBE = [
+  { ch: 'pol', q: 'Was versteht man in der Politik unter „Macht“?', o: ['Den eigenen Willen auch gegen Widerstand durchzusetzen', 'Das Recht einer Behörde, in einem Bezirk zu entscheiden', 'Die Gesamtheit aller Regeln, an die sich alle halten müssen', 'Die Fähigkeit, möglichst viele von der eigenen Meinung zu überzeugen'], why: 'Macht ist die Fähigkeit, den eigenen Willen auch gegen den Widerstand anderer durchzusetzen.' },
+  { ch: 'pol', q: 'Warum war das Abgeordnetenhaus im Spandau-Beispiel die falsche Adresse für den Park?', o: ['Es entscheidet auf Landesebene, ein Park ist Sache des Bezirksamts', 'Es nimmt grundsätzlich keine Unterschriften von Bürgern entgegen', 'Es ist nur für Bundesgesetze zuständig, nicht für Entscheidungen im Land', 'Der Park gehörte einem Unternehmen, in das der Staat nicht eingreifen darf'], why: 'Jede Ebene hat eigene Zuständigkeiten. Für einen Park vor Ort ist das Bezirksamt zuständig.' },
+  { ch: 'pol', q: 'Was ist eine „Gesellschaft“?', o: ['Menschen mit gemeinsamen Merkmalen, Interessen und Regeln', 'Alle Personen, die in einem Staat bei Wahlen abstimmen dürfen', 'Alle Gesetze und Regeln, die in einem Staat für alle gelten', 'Ein Verein, dem man nur durch eine Unterschrift beitreten kann'], why: 'Eine Gesellschaft ist eine Gruppe von Menschen, die gemeinsame Merkmale, Interessen und Regeln teilen.' },
+  { ch: 'dim', q: 'Eine Klasse fragt: „Wer darf über die Hausordnung entscheiden und nach welchen Regeln?“ Welche Dimension ist gemeint?', o: ['Die Form', 'Der Inhalt', 'Der Prozess', 'Die Ebene'], why: 'Zuständigkeit und Regeln gehören zur Dimension Form.' },
+  { ch: 'dim', q: 'Welche Frage gehört zur Dimension „Inhalt“?', o: ['Welche Folgen hätte die Entscheidung?', 'Wer hat die Befugnis zu entscheiden?', 'Gibt es am Ende einen Kompromiss?', 'Wie äußern die Gruppen öffentlich ihre Meinung?'], why: 'Beim Inhalt geht es um das Sachproblem, die Argumente und die Folgen.' },
+  { ch: 'glo', q: 'Was bezeichnet der Begriff „Globalisierung“?', o: ['Die weltweite Vernetzung von Staaten und Gesellschaften', 'Die Abschaffung aller Grenzen zwischen allen Ländern der Erde', 'Den Handel zwischen Städten innerhalb eines einzelnen Landes', 'Die Verbreitung einer einzigen Sprache auf der ganzen Welt'], why: 'Globalisierung ist die zunehmende weltweite Vernetzung von Staaten und Gesellschaften über Grenzen hinweg.' },
+  { ch: 'glo', q: 'Filme, Serien und Musik verbreiten sich weltweit. Zu welcher Dimension der Globalisierung gehört das?', o: ['Kultur', 'Politik', 'Umwelt', 'Wirtschaft'], why: 'Die weltweite Verbreitung von Filmen, Serien und Musik gehört zur Dimension Kultur.' },
+  { ch: 'sma', q: 'Welcher Rohstoff wird vor allem für die Batterien von Smartphones gebraucht?', o: ['Lithium', 'Tantal', 'Coltan', 'Kupfer'], why: 'Lithium ist wichtig für die Batterien. Tantal wird aus Coltan gewonnen und steckt in Bauteilen auf der Platine.' },
+  { ch: 'sma', q: 'Was bedeutet das „Just-in-time“-Prinzip?', o: ['Bauteile werden genau dann geliefert, wenn man sie braucht', 'Alle Bauteile werden vorab in großen Lagern gesammelt', 'Das Smartphone wird erst nach der Bestellung vollständig erfunden', 'Rohstoffe werden nur im Sommer abgebaut und eingelagert'], why: 'Just-in-time spart Lagerkosten, macht die Lieferkette aber anfällig, zum Beispiel bei Hafenstreiks.' },
+  { ch: 'kli', q: 'Welche Aufgabe haben Treibhausgase im natürlichen Treibhauseffekt?', o: ['Sie halten einen Teil der Wärmestrahlung zurück und werfen sie zur Erde', 'Sie lassen alle Wärmestrahlung ungehindert in das Weltall entweichen', 'Sie halten das Sonnenlicht vollständig von der Erde fern, sodass es dunkel bleibt', 'Sie kühlen die Erdoberfläche und sorgen so für stabile Temperaturen auf der Erde'], why: 'Treibhausgase wirken wie das Glasdach eines Treibhauses und halten einen Teil der Wärme zurück.' },
+  { ch: 'kli', q: 'Warum trägt die Abholzung von Wäldern zum Klimawandel bei?', o: ['Wälder nehmen CO₂ auf, ohne sie bleibt mehr CO₂ in der Atmosphäre', 'Wälder geben viel CO₂ ab, ohne sie sinkt der CO₂-Anteil dauerhaft', 'Wälder reflektieren die Wärmestrahlung der Erde sehr stark nach oben', 'Wälder verbrauchen große Mengen Wasser, das dann im Meer fehlt'], why: 'Wälder sind ein natürlicher CO₂-Speicher. Fehlen sie, bleibt mehr CO₂ in der Atmosphäre.' },
+  { ch: 'fuss', q: 'Auf welchen drei Seiten beruht Nachhaltigkeit?', o: ['Umwelt, Soziales und Wirtschaft', 'Umwelt, Politik und Technologie', 'Wirtschaft, Kultur und Verkehr', 'Soziales, Energie und Handel'], why: 'Nachhaltigkeit hat drei Seiten: Umwelt, Soziales und Wirtschaft. Sie müssen zusammenpassen.' },
+  { ch: 'fuss', q: 'Was sagt der Brundtland-Bericht von 1987 über nachhaltige Entwicklung?', o: ['Sie erfüllt die Bedürfnisse heute, ohne spätere Generationen zu benachteiligen', 'Sie verbietet jedes Wirtschaftswachstum, damit die Natur auf Dauer geschont wird', 'Sie fordert, dass alle Menschen weltweit exakt gleich viele Ressourcen verbrauchen', 'Sie gilt nur für Wälder und die Holzwirtschaft in den Ländern Europas'], why: 'Nachhaltig ist, was die Bedürfnisse der Menschen heute erfüllt, ohne dass spätere Generationen schlechter leben.' },
+  { ch: 'kar', q: 'Was gehört in die Einleitung einer Karikaturanalyse?', o: ['Titel, Thema, Datum, Zeichner und Ort', 'Die Deutung der Symbole und Stilmittel im Bild', 'Die eigene Meinung zur Karikatur mit Begründung', 'Eine genaue Beschreibung aller Bildelemente'], why: 'Die Einleitung nennt die formalen Angaben. Beschreibung und Deutung stehen im Hauptteil, Meinung im Schluss.' },
+  { ch: 'kar', q: 'Was ist bei der Bildbeschreibung wichtig?', o: ['Sachlich zu sagen, was zu sehen ist, ohne zu werten', 'Zu erklären, wofür die einzelnen Symbole stehen', 'Zu beurteilen, wie überzeugend die Karikatur ist', 'Die Absicht des Zeichners möglichst genau zu erraten'], why: 'Die Bildbeschreibung ist sachlich und ohne Wertung. Die Bedeutung erklärt man erst in der Deutung.' }
+];
+var PROBE_TF = [
+  { ch: 'pol', s: 'Das Private betrifft Themen, die für alle Bürger sichtbar sind.', v: false, why: 'Das Öffentliche betrifft Themen für alle. Das Private betrifft das persönliche, geschützte Umfeld.' },
+  { ch: 'pol', s: 'Für einen Park im Kiez ist in der Regel das Bezirksamt zuständig.', v: true, why: 'Dinge vor Ort gehören zur Ebene des Bezirks.' },
+  { ch: 'dim', s: 'Zur Dimension Form gehört die Frage nach der Zuständigkeit.', v: true, why: 'Wer entscheiden darf und nach welchen Regeln, ist die Form.' },
+  { ch: 'dim', s: 'Verhandlungen und Kompromisse gehören zur Dimension Inhalt.', v: false, why: 'Sie gehören zum Prozess.' },
+  { ch: 'glo', s: 'Bündnisse wie die EU gehören zur Dimension Politik der Globalisierung.', v: true, why: 'Verträge und Bündnisse zwischen Staaten sind die Dimension Politik.' },
+  { ch: 'glo', s: 'Bananen werden überwiegend in Deutschland angebaut.', v: false, why: 'Bananen wachsen in warmen Ländern und kommen überwiegend aus dem Ausland.' },
+  { ch: 'sma', s: 'Aus Coltan wird das Metall Tantal gewonnen.', v: true, why: 'Tantal steckt in kleinen Bauteilen auf der Platine.' },
+  { ch: 'sma', s: 'Der Transport per Flugzeug verursacht besonders wenige Emissionen.', v: false, why: 'Lufttransporte verursachen pro Kilogramm Fracht besonders hohe Emissionen.' },
+  { ch: 'kli', s: 'Ohne natürlichen Treibhauseffekt läge die Durchschnittstemperatur bei etwa −18 °C.', v: true, why: 'Der natürliche Treibhauseffekt ist notwendig für Leben auf der Erde.' },
+  { ch: 'kli', s: 'Der natürliche Treibhauseffekt ist allein schuld am Klimawandel.', v: false, why: 'Der natürliche Treibhauseffekt ist notwendig. Der Klimawandel entsteht durch zusätzliche Treibhausgase des Menschen.' },
+  { ch: 'fuss', s: 'Das Wort „nachhaltig“ kommt ursprünglich aus der Forstwirtschaft.', v: true, why: 'Carlowitz forderte 1713, nur so viel Holz zu schlagen, wie nachwachsen kann.' },
+  { ch: 'fuss', s: 'Würden alle so leben wie wir in Deutschland, bräuchte man etwa eine Erde.', v: false, why: 'Es wären etwa drei Erden.' },
+  { ch: 'kar', s: 'Ironie heißt: Man zeigt das Gegenteil von dem, was man meint.', v: true, why: 'Ironie ist ein typisches Stilmittel in Karikaturen.' },
+  { ch: 'kar', s: 'Die eigene Meinung gehört in die Bildbeschreibung.', v: false, why: 'Die Bildbeschreibung ist sachlich. Die Beurteilung steht im Schluss.' }
+];
+
+/* ================= Hilfsfunktionen ================= */
+'use strict';
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function mk(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
+function B() { return window.Begleiter && window.Kolbi ? window.Begleiter : null; }
+function nsay(html, mood, ms) { try { if (window.Kolbi && Kolbi.open) Kolbi.open('<button class="kb-x" aria-label="Schließen" data-k="close">×</button>' + html, ms || 0, mood || 'happy'); } catch (e) {} }
+
+/* ================= Zustand (nur im Arbeitsspeicher) ================= */
+var S = { tab: 'start', done: {}, stars: 0, tries: {} };
+var CHI = {}; CH.forEach(function (c) { CHI[c.id] = c; });
+var TASKS = {}; CH.forEach(function (c) { c.tasks.forEach(function (t) { t.ch = c.id; TASKS[t.id] = t; }); });
+
+function chapterDone(c) { return c.tasks.every(function (t) { return S.done[t.id]; }); }
+function chapterCount(c) { return c.tasks.filter(function (t) { return S.done[t.id]; }).length; }
+function updateStars() { $('stars').textContent = '⭐ ' + S.stars; }
+
+/* ================= Navigation ================= */
+function tabs() {
+  var n = $('tabs'); n.innerHTML = '';
+  function add(id, label) { var b = mk('button', (S.tab === id ? 'on ' : '') + ((CHI[id] && chapterDone(CHI[id])) ? 'fin' : ''), label); b.onclick = function () { go(id); }; n.appendChild(b); }
+  add('start', '🏠 Start');
+  CH.forEach(function (c, i) { add(c.id, c.ico + ' ' + (i + 1)); });
+  add('probe', '📝 SKK-Probe');
+}
+function go(id) {
+  S.tab = id; tabs(); render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+  var b = B(); if (!b) return;
+  if (CHI[id]) { b.setAufgabe(CHI[id].title + ': Arbeite die Aufgaben nacheinander durch und prüfe jede mit „Prüfen“.', [], 'kap-' + id, 'Lies zuerst den gelben Merkkasten, dann beginne mit Aufgabe 1.'); }
+  else if (id === 'probe') b.setAufgabe('SKK-Probe: Zwölf Fragen aus allen Kapiteln. Lies jede Frage in Ruhe und wähle eine Antwort.', [], 'probe', 'Du kannst nicht zurückgehen. Antworte so, wie du es in der SKK tun würdest.');
+  else b.setAufgabe('Wähle ein Kapitel. Jedes hat einen Merkkasten und Aufgaben. Am Ende kannst du dich in der SKK-Probe testen.', [], 'start', 'Beginne mit Kapitel 1 oder mit dem Thema, bei dem du dich unsicher fühlst.');
+}
+function render() {
+  var v = $('view'); v.innerHTML = '';
+  if (S.tab === 'start') return renderStart(v);
+  if (S.tab === 'probe') return renderProbe(v);
+  renderChapter(v, CHI[S.tab]);
+}
+
+/* ================= Startseite ================= */
+function renderStart(v) {
+  var h = mk('div', 'card hello', '<div class="em">👓</div><div><p><b>Hallo, ich bin Herr Neumann.</b> Ich helfe dir bei der Vorbereitung auf die SKK.</p>' +
+    '<p>So geht es: Wähle ein Kapitel, lies den gelben Merkkasten und löse die Aufgaben. Mit „Prüfen“ sage ich dir, ob es stimmt. Wenn du nicht weiterkommst, tippe auf „Tipp“ oder auf mich. Markiere ein Wort, dann erkläre ich es dir.</p>' +
+    '<p>Am Ende wartet die SKK-Probe mit Fragen aus allen Kapiteln.</p></div>');
+  v.appendChild(h);
+  v.appendChild(mk('h2', null, 'Wähle ein Kapitel'));
+  var g = mk('div', 'chap');
+  CH.forEach(function (c, i) {
+    var n = chapterCount(c), t = c.tasks.length, b = mk('button', null,
+      '<span class="ic">' + c.ico + '</span><b>' + (i + 1) + ' · ' + esc(c.title) + (n === t ? '<span class="badge">geschafft</span>' : '') + '</b><span class="s">' + esc(c.sub) + '</span>' +
+      '<div class="pbar"><i style="width:' + Math.round(100 * n / t) + '%"></i></div><span class="cnt">' + n + ' von ' + t + ' Aufgaben</span>');
+    b.onclick = function () { go(c.id); }; g.appendChild(b);
+  });
+  var p = mk('button', null, '<span class="ic">📝</span><b>SKK-Probe</b><span class="s">Zwölf gemischte Fragen aus allen Kapiteln. Erst üben, dann testen.</span><span class="cnt">Neue Fragen bei jeder Runde</span>');
+  p.onclick = function () { go('probe'); }; g.appendChild(p);
+  v.appendChild(g);
+}
+
+/* ================= Kapitel ================= */
+var BILD = '';   // Inline-SVG der Karikatur (wird beim Start gesetzt)
+function figure(withSpots) {
+  return '<figure class="fig"><div class="spotbox" id="spotbox">' + BILD + '</div><figcaption>„So günstig!“ · Übungskarikatur für dieses Modul · Zeichner: N. N. · Tageszeitung (alle Angaben erfunden) · 2026</figcaption></figure>';
+}
+function renderChapter(v, c) {
+  v.appendChild(mk('h2', null, c.ico + ' ' + esc(c.title) + (chapterDone(c) ? '<span class="badge">geschafft</span>' : '')));
+  v.appendChild(mk('p', 'sub', esc(c.sub)));
+  v.appendChild(mk('div', 'card merk', '<h3>📌 Das solltest du wissen</h3><ul>' + c.merk.map(function (m) { return '<li>' + m + '</li>'; }).join('') + '</ul>'));
+  c.tasks.forEach(function (t, i) { v.appendChild(taskCard(t, i + 1)); });
+  var nx = CH[CH.indexOf(c) + 1], row = mk('div', 'row');
+  var b = mk('button', 'btn', nx ? 'Weiter zu Kapitel ' + (CH.indexOf(nx) + 1) + ' →' : 'Weiter zur SKK-Probe →'); b.onclick = function () { go(nx ? nx.id : 'probe'); };
+  row.appendChild(b); v.appendChild(row);
+}
+
+function setFb(card, kind, html) { var f = card.querySelector('.fb'); f.className = 'fb show ' + kind; f.innerHTML = html; }
+function nm(t) { return '<b class="nm">Herr Neumann:</b> ' + t; }
+function outcome(t, card, ok, msg, extra) {
+  var b = B(); S.tries[t.id] = (S.tries[t.id] || 0) + (ok ? 0 : 1);
+  if (ok) {
+    if (!S.done[t.id]) { var first = !S.tries[t.id] && !card.dataset.help; S.done[t.id] = first ? 'first' : 'help'; if (first) { S.stars++; updateStars(); } }
+    card.classList.add('done'); if (b) b.richtig(t.id);
+    setFb(card, 'ok', nm('✓ ' + msg)); tabs();
+    var c = CHI[t.ch]; if (c && chapterDone(c) && !card.dataset.said) { card.dataset.said = 1; setTimeout(function () { nsay('<p class="kb-text"><b>Kapitel geschafft!</b> ' + esc(c.title) + ' sitzt. Weiter so, oder wiederhole noch eine Aufgabe, bei der du unsicher warst.</p>', 'proud', 6500); }, 900); }
+  } else {
+    if (b) b.falsch(t.id);
+    setFb(card, 'no', nm(msg));
+  }
+  if (!ok && S.tries[t.id] >= 2) { var s = card.querySelector('.showsol'); if (s) s.style.display = ''; }
+  if (extra) extra();
+}
+
+function taskCard(t, nr) {
+  var card = mk('div', 'card task' + (S.done[t.id] ? ' done' : ''));
+  card.id = 'task-' + t.id;
+  card.innerHTML = '<div class="head"><span class="nr">' + nr + '</span><div class="q">' + t.q + '</div></div>' + (t.bild && t.type !== 'spots' ? figure() : '') +
+    '<div class="body"></div><div class="row"><button class="btn chk">Prüfen</button><button class="btn tip">💡 Tipp</button><button class="btn sec showsol" style="display:none">Lösung zeigen</button></div>' +
+    '<div class="fb" role="status"></div><div class="loesung"></div>';
+  var body = card.querySelector('.body'), W = W_TYPES[t.type](t, card, body);
+  var chk = card.querySelector('.chk');
+  if (W.auto) chk.style.display = 'none';
+  chk.onclick = function () { var r = W.check(); if (!r) return; if (r.skip) { setFb(card, 'neutral', nm(r.msg)); return; } outcome(t, card, r.ok, r.msg); };
+  card.querySelector('.tip').onclick = function () { tipFor(t, card); };
+  card.querySelector('.showsol').onclick = function () { card.dataset.help = 1; var l = card.querySelector('.loesung'); l.innerHTML = W.solution(); l.classList.add('show'); if (W.reveal) W.reveal(); };
+  card.addEventListener('pointerdown', function () { var b = B(); if (b) b.setAufgabe(plain(t.q), t.tips || [], t.id, ''); });
+  return card;
+}
+function plain(h) { var d = document.createElement('div'); d.innerHTML = h; return (d.textContent || '').replace(/\s+/g, ' ').trim(); }
+function tipFor(t, card) {
+  var b = B(); card.dataset.help = 1;
+  if (b) { b.setAufgabe(plain(t.q), t.tips || [], t.id, ''); b.tippNext(); }
+  else { var i = (card.dataset.tipi |= 0); setFb(card, 'neutral', nm('Tipp: ' + esc((t.tips || [])[Math.min(i, (t.tips || []).length - 1)] || 'Lies die Aufgabe noch einmal.'))); card.dataset.tipi = i + 1; }
+}
+
+/* ================= Aufgabentypen ================= */
+var W_TYPES = {};
+
+/* --- Multiple Choice --- */
+W_TYPES.mc = function (t, card, body) {
+  var opts = shuffle(t.o.map(function (x, i) { return { x: x, ok: i === 0 }; })), sel = null, box = mk('div', 'opts');
+  opts.forEach(function (o) {
+    var b = mk('button', 'opt', esc(o.x)); o.el = b;
+    b.onclick = function () { if (b.classList.contains('bad') || card.classList.contains('done')) return; opts.forEach(function (p) { p.el.classList.remove('sel'); }); b.classList.add('sel'); sel = o; };
+    box.appendChild(b);
+  });
+  body.appendChild(box);
+  return {
+    check: function () {
+      if (card.classList.contains('done')) return null;
+      if (!sel) return { ok: false, skip: true, msg: 'Wähle zuerst eine Antwort aus.' };
+      if (sel.ok) { sel.el.classList.remove('sel'); sel.el.classList.add('good'); return { ok: true, msg: t.why }; }
+      sel.el.classList.remove('sel'); sel.el.classList.add('bad'); sel = null;
+      return { ok: false, msg: 'Das stimmt nicht. Die rot markierte Antwort fällt weg. Lies die Frage noch einmal.' };
+    },
+    solution: function () { return '<p><b>Richtige Antwort:</b> ' + esc(t.o[0]) + '</p><p>' + esc(t.why) + '</p>'; },
+    reveal: function () { opts.forEach(function (o) { if (o.ok) o.el.classList.add('good'); }); }
+  };
+};
+
+/* --- Zeilen mit Auswahlknöpfen (Sortieren, Wahr/Falsch) --- */
+function rowsWidget(t, card, body, cats, items) {
+  var rows = shuffle(items.map(function (it) { return { text: it[0], c: it[1], why: it[2] || null, v: null }; }));
+  rows.forEach(function (r) {
+    var el = mk('div', 'mrow'), tx = mk('div', 't', esc(r.text)), seg = mk('div', 'seg');
+    cats.forEach(function (name, ci) { var b = mk('button', null, esc(name)); b.onclick = function () { if (card.classList.contains('done')) return; r.v = ci; [].forEach.call(seg.children, function (x, k) { x.classList.toggle('sel', k === ci); }); el.className = 'mrow'; }; seg.appendChild(b); });
+    el.appendChild(tx); el.appendChild(seg); r.el = el; body.appendChild(el);
+  });
+  function explain(r) { if (r.why && !r.el.querySelector('.why')) r.el.appendChild(mk('div', 'why', '→ ' + esc(r.why))); }
+  return {
+    check: function () {
+      if (card.classList.contains('done')) return null;
+      if (rows.some(function (r) { return r.v == null; })) return { ok: false, skip: true, msg: 'Du hast noch nicht alles zugeordnet. Beantworte jede Zeile.' };
+      var bad = 0; rows.forEach(function (r) { var ok = r.v === r.c; r.el.className = 'mrow ' + (ok ? 'good' : 'bad'); if (!ok) bad++; });
+      if (!bad) { rows.forEach(explain); return { ok: true, msg: t.why || 'Alle Zeilen stimmen.' }; }
+      return { ok: false, msg: bad === 1 ? 'Eine Zeile stimmt noch nicht (rot markiert). Überlege noch einmal.' : bad + ' Zeilen stimmen noch nicht (rot markiert). Überlege noch einmal.' };
+    },
+    solution: function () { return rows.map(function (r) { return '<p><b>' + esc(r.text) + '</b><br>→ ' + esc(cats[r.c]) + (r.why ? ' · ' + esc(r.why) : '') + '</p>'; }).join(''); },
+    reveal: function () { rows.forEach(function (r) { r.el.className = 'mrow good'; [].forEach.call(r.el.querySelectorAll('.seg button'), function (x, k) { x.classList.toggle('sel', k === r.c); }); }); }
+  };
+}
+W_TYPES.sort = function (t, card, body) { return rowsWidget(t, card, body, t.cats, t.items); };
+W_TYPES.tf = function (t, card, body) { return rowsWidget(t, card, body, ['Stimmt', 'Stimmt nicht'], t.items.map(function (it) { return [it[0], it[1] ? 0 : 1, it[2]]; })); };
+
+/* --- Zuordnen per Auswahlfeld --- */
+W_TYPES.match = function (t, card, body) {
+  var defs = shuffle(t.rows.map(function (r) { return r[1]; }).concat(t.extra || [])), sels = [];
+  t.rows.forEach(function (r) {
+    var p = mk('div', 'pair', '<b>' + esc(r[0]) + '</b>'), s = mk('select');
+    s.innerHTML = '<option value="">– Erklärung wählen –</option>' + defs.map(function (d) { return '<option value="' + esc(d).replace(/"/g, '&quot;') + '">' + esc(d) + '</option>'; }).join('');
+    s.onchange = function () { p.className = 'pair'; };
+    p.appendChild(s); body.appendChild(p); sels.push({ s: s, p: p, a: r[1] });
+  });
+  return {
+    check: function () {
+      if (card.classList.contains('done')) return null;
+      if (sels.some(function (x) { return !x.s.value; })) return { ok: false, skip: true, msg: 'Wähle für jeden Begriff eine Erklärung aus.' };
+      var bad = 0; sels.forEach(function (x) { var ok = x.s.value === x.a; x.p.className = 'pair ' + (ok ? 'good' : 'bad'); if (!ok) bad++; });
+      var used = {}; sels.forEach(function (x) { used[x.s.value] = (used[x.s.value] || 0) + 1; });
+      if (!bad) return { ok: true, msg: 'Alle Zuordnungen stimmen.' };
+      var dup = Object.keys(used).some(function (k) { return used[k] > 1; });
+      return { ok: false, msg: (bad === 1 ? 'Eine Zuordnung stimmt nicht (rot).' : bad + ' Zuordnungen stimmen nicht (rot).') + (dup ? ' Jede Erklärung passt nur zu einem Begriff.' : '') + ' Lies die Erklärungen noch einmal genau.' };
+    },
+    solution: function () { return t.rows.map(function (r) { return '<p><b>' + esc(r[0]) + ':</b> ' + esc(r[1]) + '</p>'; }).join(''); },
+    reveal: function () { sels.forEach(function (x) { x.s.value = x.a; x.p.className = 'pair good'; }); }
+  };
+};
+
+/* --- Lückentext --- */
+W_TYPES.gap = function (t, card, body) {
+  var answers = [], bank = []; t.parts.forEach(function (p) { if (typeof p !== 'string') answers.push(p.a); });
+  bank = shuffle(answers.concat(t.bank || []).filter(function (x, i, a) { return a.indexOf(x) === i; }));
+  var wrap = mk('div', 'cl'), sels = [];
+  t.parts.forEach(function (p) {
+    if (typeof p === 'string') { wrap.appendChild(document.createTextNode(p)); return; }
+    var s = mk('select'); s.innerHTML = '<option value="">…</option>' + bank.map(function (d) { return '<option>' + esc(d) + '</option>'; }).join('');
+    s.onchange = function () { s.className = ''; }; wrap.appendChild(s); sels.push({ s: s, a: p.a });
+  });
+  body.appendChild(wrap);
+  if (t.bild) body.appendChild(mk('p', 'hint', 'Die Angaben findest du unter der Karikatur und im Bild.'));
+  return {
+    check: function () {
+      if (card.classList.contains('done')) return null;
+      if (sels.some(function (x) { return !x.s.value; })) return { ok: false, skip: true, msg: 'Fülle zuerst alle Lücken aus.' };
+      var bad = 0; sels.forEach(function (x) { var ok = x.s.value === x.a; x.s.className = ok ? 'good' : 'bad'; if (!ok) bad++; });
+      return bad ? { ok: false, msg: (bad === 1 ? 'Eine Lücke ist noch falsch (rot).' : bad + ' Lücken sind noch falsch (rot).') + ' Lies den Satz noch einmal im Ganzen.' } : { ok: true, msg: 'Alle Lücken stimmen.' };
+    },
+    solution: function () { return '<p>' + t.parts.map(function (p) { return typeof p === 'string' ? esc(p) : '<b>' + esc(p.a) + '</b>'; }).join('') + '</p>'; },
+    reveal: function () { sels.forEach(function (x) { x.s.value = x.a; x.s.className = 'good'; }); }
+  };
+};
+
+/* --- Reihenfolge --- */
+W_TYPES.order = function (t, card, body) {
+  var items = t.items.map(function (x, i) { return { x: x, i: i }; }), pool = mk('div', 'pool'), seq = mk('div', 'seq'), picked = [];
+  var wrap = mk('div', 'ordwrap'); wrap.appendChild(mk('h4', null, 'Zur Auswahl (antippen):')); wrap.appendChild(pool); wrap.appendChild(mk('h4', null, 'Deine Reihenfolge (zum Entfernen antippen):')); wrap.appendChild(seq); body.appendChild(wrap);
+  var order = shuffle(items);
+  function draw() {
+    pool.innerHTML = ''; seq.innerHTML = '';
+    order.filter(function (o) { return picked.indexOf(o) < 0; }).forEach(function (o) { var b = mk('button', 'ocard', esc(o.x)); b.onclick = function () { if (card.classList.contains('done')) return; picked.push(o); draw(); }; pool.appendChild(b); });
+    picked.forEach(function (o) { var b = mk('button', 'ocard', esc(o.x)); o.el = b; b.onclick = function () { if (card.classList.contains('done')) return; picked.splice(picked.indexOf(o), 1); draw(); }; seq.appendChild(b); });
+  }
+  draw();
+  return {
+    check: function () {
+      if (card.classList.contains('done')) return null;
+      if (picked.length < items.length) return { ok: false, skip: true, msg: 'Es fehlen noch Schritte in deiner Reihenfolge.' };
+      var bad = 0; picked.forEach(function (o, k) { var ok = o.i === k; o.el.classList.add(ok ? 'good' : 'bad'); if (!ok) bad++; });
+      return bad ? { ok: false, msg: 'Die rot markierten Schritte stehen noch an der falschen Stelle. Tippe sie an, um sie zu entfernen, und setze sie neu.' } : { ok: true, msg: t.why };
+    },
+    solution: function () { return '<ol>' + t.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>'; },
+    reveal: function () { picked = items.slice(); draw(); picked.forEach(function (o) { o.el.classList.add('good'); }); }
+  };
+};
+
+/* --- Freitext: Herr Neumann prüft anhand von Stichwort-Gruppen --- */
+W_TYPES.free = function (t, card, body) {
+  var ta = mk('textarea'); ta.placeholder = 'Schreibe hier in ganzen Sätzen …'; ta.setAttribute('aria-label', 'Deine Antwort');
+  var cnt = mk('div', 'count', '0 Zeichen'); ta.oninput = function () { cnt.textContent = ta.value.trim().length + ' Zeichen (mindestens ' + t.min + ')'; };
+  body.appendChild(ta); body.appendChild(cnt);
+  body.appendChild(mk('p', 'hint', 'Herr Neumann prüft, ob die wichtigen Punkte vorkommen. Er achtet auf deine Wörter, nicht auf die Rechtschreibung.'));
+  return {
+    check: function () {
+      if (card.classList.contains('done')) return null;
+      var x = ta.value.trim(), words = x.split(/\s+/).filter(Boolean), uniq = {}; words.forEach(function (w) { uniq[w.toLowerCase()] = 1; });
+      if (!x) return { ok: false, skip: true, msg: 'Du hast noch nichts geschrieben. Versuch es, ein falscher Anfang ist besser als gar keiner.' };
+      if (x.length < t.min || words.length < 8) return { ok: false, skip: true, msg: 'Das ist mir noch zu knapp. Schreibe in ganzen Sätzen und erkläre etwas mehr (mindestens ' + t.min + ' Zeichen, du hast ' + x.length + ').' };
+      if (Object.keys(uniq).length < words.length * 0.55) return { ok: false, msg: 'Das sieht nach Wiederholungen aus. Schreibe bitte eine ernsthafte Antwort in eigenen Worten.' };
+      var hit = t.groups.filter(function (g) { return g.rx.test(x); }), miss = t.groups.filter(function (g) { return !g.rx.test(x); });
+      if (hit.length >= t.need) {
+        var more = miss.length ? ' Noch stärker wäre die Antwort mit: ' + miss.map(function (g) { return esc(g.label); }).join('; ') + '.' : '';
+        return { ok: true, msg: 'Das ist inhaltlich gut. Du hast die wichtigen Punkte genannt.' + more + ' Vergleiche mit der Musterlösung.', sample: true };
+      }
+      return { ok: false, msg: (t.need < t.groups.length ? 'Da fehlt noch etwas. Nenne mindestens ' + t.need + ' dieser Punkte: ' : 'Da fehlt noch etwas. Ich vermisse: ') + miss.map(function (g) { return esc(g.label); }).join('; ') + '. Ergänze das und prüfe noch einmal.' };
+    },
+    solution: function () { return '<p><b>Musterlösung:</b> ' + esc(t.sample) + '</p>'; },
+    after: function () { var l = card.querySelector('.loesung'); l.innerHTML = '<p><b>Zum Vergleichen, Musterlösung:</b> ' + esc(t.sample) + '</p>'; l.classList.add('show'); }
+  };
+};
+
+/* --- Bildaufgabe: Bildteile finden --- */
+W_TYPES.spots = function (t, card, body) {
+  body.innerHTML = figure(); var box = body.querySelector('.spotbox'), queue = shuffle(t.spots), idx = 0, errs = 0, ended = false;
+  var prompt = mk('div', 'spotq'); body.insertBefore(prompt, body.firstChild);
+  function ask() { prompt.textContent = idx < queue.length ? 'Tippe auf: ' + queue[idx][0] + ' (' + (idx + 1) + ' von ' + queue.length + ')' : 'Alle Bildteile gefunden.'; }
+  ask();
+  function ping(x, y, ok) { var p = mk('div', 'ping ' + (ok ? 'ok' : 'no')); p.style.left = x + 'px'; p.style.top = y + 'px'; box.appendChild(p); setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, 900); }
+  box.addEventListener('click', function (e) {
+    if (ended || idx >= queue.length) return;
+    var r = box.getBoundingClientRect(), px = e.clientX - r.left, py = e.clientY - r.top, x = px / r.width * 100, y = py / r.height * 100, s = queue[idx][1];
+    var inside = x >= s[0] && x <= s[2] && y >= s[1] && y <= s[3];
+    ping(px, py, inside);
+    if (inside) {
+      var rc = mk('div', 'rect'); rc.style.cssText = 'left:' + s[0] + '%;top:' + s[1] + '%;width:' + (s[2] - s[0]) + '%;height:' + (s[3] - s[1]) + '%'; box.appendChild(rc);
+      idx++; ask();
+      if (idx >= queue.length) { ended = true; outcome(t, card, true, errs ? 'Alle Bildteile gefunden. Du hast ' + errs + ' Mal danebengetippt, schau beim nächsten Mal genauer hin.' : 'Alle Bildteile beim ersten Versuch gefunden. Genau so beschreibt man ein Bild: gründlich.'); }
+      else { var b = B(); if (b) b.richtig(t.id + '-' + idx); }
+    } else {
+      errs++; S.tries[t.id] = errs; var b2 = B(); if (b2) b2.falsch(t.id);
+      setFb(card, 'no', nm('Dort ist nicht das, was ich meine. Suche: <b>' + esc(queue[idx][0]) + '</b>.')); if (errs >= 3) card.querySelector('.showsol').style.display = '';
+    }
+  });
+  return {
+    auto: true, check: function () { return null; },
+    solution: function () { return '<p>Die gesuchten Bildteile sind jetzt grün umrandet.</p>'; },
+    reveal: function () { ended = true; queue.forEach(function (q) { var s = q[1], rc = mk('div', 'rect'); rc.style.cssText = 'left:' + s[0] + '%;top:' + s[1] + '%;width:' + (s[2] - s[0]) + '%;height:' + (s[3] - s[1]) + '%'; box.appendChild(rc); }); if (!S.done[t.id]) { S.done[t.id] = 'help'; card.classList.add('done'); tabs(); } }
+  };
+};
+(function () { var f = W_TYPES.free; W_TYPES.free = function (t, card, body) { var w = f(t, card, body), c = w.check; w.check = function () { var r = c(); if (r && r.ok) setTimeout(w.after, 0); return r; }; return w; }; })();
+
+/* ================= SKK-Probe ================= */
+var P = null;
+function buildProbe() {
+  var mc = PROBE.map(function (p) { return { kind: 'mc', ch: p.ch, q: p.q, o: p.o, why: p.why }; });
+  CH.forEach(function (c) { c.tasks.forEach(function (t) { if (t.type === 'mc') mc.push({ kind: 'mc', ch: c.id, q: plain(t.q), o: t.o, why: t.why }); }); });
+  var tf = PROBE_TF.map(function (p) { return { kind: 'tf', ch: p.ch, q: p.s, v: p.v, why: p.why }; });
+  function pick(pool, n) { var by = {}; shuffle(pool).forEach(function (q) { (by[q.ch] = by[q.ch] || []).push(q); }); var out = [], ids = shuffle(Object.keys(by)); while (out.length < n && ids.length) { ids.forEach(function (k) { if (out.length < n && by[k].length) out.push(by[k].shift()); }); ids = ids.filter(function (k) { return by[k].length; }); } return out; }
+  var qs = shuffle(pick(mc, 8).concat(pick(tf, 4)));
+  P = { qs: qs, i: 0, ok: 0, wrong: {}, answered: false };
+}
+function renderProbe(v) {
+  if (!P) buildProbe();
+  v.appendChild(mk('h2', null, '📝 SKK-Probe'));
+  v.appendChild(mk('p', 'sub', 'Zwölf gemischte Fragen aus allen Kapiteln. Lies in Ruhe. Zurückgehen ist wie in der SKK nicht möglich.'));
+  if (P.i >= P.qs.length) return renderProbeEnd(v);
+  var q = P.qs[P.i], card = mk('div', 'card task'), done = false;
+  card.innerHTML = '<div class="pq">Frage ' + (P.i + 1) + ' von ' + P.qs.length + '</div><div class="q">' + (q.kind === 'tf' ? 'Wahr oder falsch? <br><i>' + esc(q.q) + '</i>' : esc(q.q)) + '</div><div class="body"></div><div class="fb" role="status"></div><div class="row"></div>';
+  var body = card.querySelector('.body'), row = card.querySelector('.row'), opts = q.kind === 'tf' ? [{ x: 'Stimmt', ok: q.v }, { x: 'Stimmt nicht', ok: !q.v }] : shuffle(q.o.map(function (x, i) { return { x: x, ok: i === 0 }; })), box = mk('div', 'opts');
+  opts.forEach(function (o) {
+    var b = mk('button', 'opt', esc(o.x));
+    b.onclick = function () {
+      if (done) return; done = true; var b2 = B();
+      opts.forEach(function (p) { p.el.disabled = true; if (p.ok) p.el.classList.add('good'); });
+      if (o.ok) { P.ok++; b.classList.add('good'); setFb(card, 'ok', nm('✓ ' + esc(q.why))); if (b2) b2.richtig('probe' + P.i); }
+      else { b.classList.remove('good'); b.classList.add('bad'); P.wrong[q.ch] = (P.wrong[q.ch] || 0) + 1; setFb(card, 'no', nm('Nicht ganz. ' + esc(q.why))); if (b2) b2.falsch('probe' + P.i); }
+      var n = mk('button', 'btn', P.i + 1 < P.qs.length ? 'Nächste Frage →' : 'Ergebnis ansehen →'); n.onclick = function () { P.i++; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }; row.appendChild(n);
+    };
+    o.el = b; box.appendChild(b);
+  });
+  body.appendChild(box); v.appendChild(card);
+}
+function renderProbeEnd(v) {
+  var n = P.qs.length, ok = P.ok, wrong = Object.keys(P.wrong).sort(function (a, b) { return P.wrong[b] - P.wrong[a]; });
+  var msg = ok >= 11 ? 'Sehr stark. Du bist gut vorbereitet. Lies vor der SKK noch einmal die Merkkästen durch.' : ok >= 8 ? 'Das ist solide. Mit etwas Wiederholung sitzt es.' : ok >= 5 ? 'Da ist noch Luft nach oben. Das ist in Ordnung, dafür übst du ja.' : 'Das war noch nicht so gut. Keine Sorge: Arbeite die Kapitel mit den Merkkästen noch einmal durch und versuche es dann erneut.';
+  var c = mk('div', 'card', '<div class="big">' + ok + ' von ' + n + ' richtig</div><p class="hello" style="background:none;border:0;padding:0"><b class="nm" style="color:var(--board)">Herr Neumann:</b>&nbsp;' + msg + '</p>');
+  if (wrong.length) {
+    c.appendChild(mk('p', null, '<b>Hier lohnt sich eine Wiederholung:</b>')); var ul = mk('ul', 'res');
+    wrong.forEach(function (id) { var li = mk('li', null, esc(CHI[id].title) + ' (' + P.wrong[id] + (P.wrong[id] === 1 ? ' Fehler' : ' Fehler') + ') '), b = mk('button', 'btn sec', 'Zum Kapitel'); b.style.padding = '5px 12px'; b.style.fontSize = '14px'; b.onclick = function () { go(id); }; li.appendChild(b); ul.appendChild(li); });
+    c.appendChild(ul);
+  } else c.appendChild(mk('p', null, 'Kein einziger Fehler. Du kannst dich jetzt guten Gewissens auf die SKK verlassen.'));
+  var row = mk('div', 'row'), r = mk('button', 'btn', 'Neue Runde mit anderen Fragen'); r.onclick = function () { P = null; render(); window.scrollTo({ top: 0 }); }; row.appendChild(r); c.appendChild(row);
+  v.appendChild(c);
+  if (B() && !P.said) { P.said = 1; setTimeout(function () { nsay('<p class="kb-text"><b>' + ok + ' von ' + n + ' richtig.</b> ' + esc(msg) + '</p>', ok >= 8 ? 'proud' : 'caring', 0); }, 600); }
+}
+
+/* ================= Start ================= */
+function startAll() {
+  BILD = document.getElementById('bild-src').innerHTML;
+  tabs(); render(); updateStars();
+  if (window.Begleiter && window.Kolbi) {
+    Begleiter.init({ mode: 'lernen', offsetBottom: 56, aufgabe: 'Wähle ein Kapitel. Jedes hat einen Merkkasten und Aufgaben. Am Ende kannst du dich in der SKK-Probe testen.', hilfe: 'Beginne mit Kapitel 1 oder mit dem Thema, bei dem du dich unsicher fühlst.', tipps: [] });
+  }
+}
+document.addEventListener('DOMContentLoaded', startAll);
+
+</script>
+</body>
+</html>
