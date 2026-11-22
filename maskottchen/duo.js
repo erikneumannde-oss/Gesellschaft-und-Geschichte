@@ -397,6 +397,7 @@
     openBubble(X + who(w) + '<p class="kb-text">' + esc(o.text) + '<br><br><b>Brauchst du Hilfe?</b></p>' +
       '<button class="kb-opt" data-k="tip"><span class="kb-dot"></span>Tipp anzeigen</button>' +
       (window.Woerter && Woerter.count() ? '<button class="kb-opt" data-k="wort"><span class="kb-dot"></span>Wort erklären</button>' : '') +
+      (cfg.extraOpts && !o.id ? cfg.extraOpts.map(function (x, i) { return '<button class="kb-opt" data-k="x-' + i + '"><span class="kb-dot" style="background:#f59e0b"></span>' + esc(x.label) + '</button>'; }).join('') : '') +
       '<button class="kb-opt" data-k="no"><span class="kb-dot"></span>Ohne Hilfe weitermachen</button>' +
       (o.id ? '<label class="kb-mute"><input type="checkbox" id="kb-mute"> Diesen Tipp nicht mehr anzeigen</label>' : '') +
       '<div class="kb-links">' + quietLink() + '<button class="kb-link" data-k="off">Ausblenden</button></div>', 40000, w);
@@ -421,6 +422,7 @@
     var k = t.getAttribute('data-k'), o = curAsk, m = document.getElementById('kb-mute');
     if (m && m.checked && o && o.id) { st.mute[o.id] = 1; save(); }
     if (k !== 'wort' && window.Woerter) Woerter.stop();
+    if (k.indexOf('x-') === 0) { var xo = cfg.extraOpts && cfg.extraOpts[+k.slice(2)]; closeBubble(); if (xo && xo.fn) setTimeout(xo.fn, 250); return; }
     if (k === 'tip' && o) showTip(o);
     else if (k === 'wort' && window.Woerter) wortModus(speaker);
     else if (k === 'wy') wellAnswer(true);

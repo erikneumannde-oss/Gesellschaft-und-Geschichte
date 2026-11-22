@@ -3,13 +3,8 @@
   Wird von maskottchen/duo-auto.js geladen; in Klasse 7 und 8 bleiben Tinto und Rolli zuständig.
 
   Wer hilft wo:
-    Startseite, Geschichte, Politische Bildung, Verschiedenes   Herr Neumann und Lily gemeinsam
-    Klasse 9 (Geschichte und Politik)                          Lily (locker, wie Tinto und Rolli)
-    Klasse 9-10                                               Herr Neumann und Lily
-    Klasse 10 (Geschichte und Politik)                         Herr Neumann
-    Oberstufe Geschichte Q1, Q3, Q4                            Herr Neumann
-    Oberstufe Geschichte (Übersicht) und Q2                    Herr Neumann und Lily
-    Oberstufe Politik (Übersicht und Q1–Q4)                    Lily
+    Alle Übersichtsseiten (Startseite, Bereichs-, Klassen- und Semesterseiten)   Herr Neumann und Lily gemeinsam
+    In den Modulen: Klasse 7/8 Tinto und Rolli, Klasse 9 Lily, Klasse 10 Herr Neumann, Oberstufe Geschichte Herr Neumann (Q2 mit Lily), Oberstufe Politik Lily
 
   Beim allerersten Besuch der Startseite stellen sich Herr Neumann und Lily vor. Danach kommen Tinto und Rolli, Erdi und Marko
   kurz vorbei, stellen sich vor und verabschieden sich wieder. Die Vorstellung lässt sich auf jeder Seite über das Menü wiederholen.
@@ -20,7 +15,7 @@
   'use strict';
   var me = document.currentScript;
   if (!me || !me.src) return;
-  var V = '20261122c';
+  var V = '20261122e';
   var base = me.src.replace(/team-auto\.js.*$/, '');                       // …/maskottchen/neumann/
   var mBase = base.replace(/neumann\/$/, '');                               // …/maskottchen/
   var root = mBase.replace(/maskottchen\/$/, '');                           // Wurzel der Seite
@@ -30,13 +25,7 @@
   var SEEN = 'gg-team-vorstellung';
 
   // ------------------------------------------------------------------ Wer ist auf dieser Seite?
-  function cast() {
-    if (/^(Geschichte|Politische-Bildung)\/Klasse-9\//.test(rel)) return 'L-solo';
-    if (/^(Geschichte|Politische-Bildung)\/Klasse-10\//.test(rel)) return 'N';
-    if (/^Geschichte\/Oberstufe\/Q[134]\//.test(rel)) return 'N';
-    if (/^Politische-Bildung\/Oberstufe\//.test(rel)) return 'L';
-    return 'NL';
-  }
+  function cast() { return 'NL'; }              // auf allen Übersichtsseiten: Herr Neumann und Lily gemeinsam
   var CAST = cast();
 
   // ------------------------------------------------------------------ Texte für die Pinnwand
@@ -171,23 +160,27 @@
   var AVATAR = 'Übrigens: In zwei Modulen der 7. Klasse, „Was ist Globalisierung?“ und „Klimawandel“, triffst du mich auch. Dort bin ich aber eine Figur in der Geschichte und nicht deine Helferin. Helfen tun dir dort Tinto und Rolli.';
   function start() {
     run++; var mine = run;
-    load([LIB.duo, LIB.solo], function () {
+    load([LIB.duo, LIB.solo, LIB.neumann, LIB.lily], function () {
       if (mine !== run) return;
       var steps = [];
       if (N) steps.push(function (nx) { step(N, { m: 'excited', h: '<b>Hallo, ich bin Herr Neumann!</b> Ich bin Historiker und Chemiker und unterrichte euch in Geschichte und Politik. Hier begleite ich dich durch die Lernmodule. Und ich bin nicht allein. Darf ich vorstellen?', btn: L ? 'Wer ist das?' : 'Gern!' }, nx); });
       else steps.push(function (nx) { guest('N', nx); });
       if (L) steps.push(function (nx) { step(L, { m: 'proud', h: '<b>Guten Tag! Ich bin Lily.</b> Eine kleine Ausgabe von Lily Braun, nach der eure Schule heißt. Vor über hundert Jahren habe ich dafür gestritten, dass Frauen mitreden dürfen. Heute helfe ich dir, gute Argumente zu finden und dir deine eigene Meinung zu bilden.<br><br>' + AVATAR, btn: 'Wer sind Tinto und Rolli?' }, nx); });
+      else if (CAST === 'L-solo') steps.push(function (nx) { if (window.Kolbi && Kolbi.open) Kolbi.open('<p class="kb-text"><b>Guten Tag! Ich bin Lily.</b> Eine kleine Ausgabe von Lily Braun, nach der eure Schule heißt. ' + AVATAR.replace(/<[^>]+>/g, '') + '</p>', 9000, 'proud'); setTimeout(nx, 11000); });
       else steps.push(function (nx) { guest('L', nx); });
       steps.push(function (nx) { step(N || L, { m: 'happy', h: N ? 'Das zeigen sie dir am besten selbst. Zwei weitere Freunde kommen gleich mit. Sie laufen kurz vorbei.' : 'Das zeigen sie dir am besten selbst. Zwei weitere Freunde kommen gleich mit. Sie laufen kurz vorbei.', btn: 'Gern!' }, nx); });
-      steps.push(function (nx) { guest('TR', nx); });
+      if (!window.__teamIntroOnly) steps.push(function (nx) { guest('TR', nx); });
       steps.push(function (nx) { guest('E', nx); });
       steps.push(function (nx) { guest('M', nx); });
-      steps.push(function (nx) { step(L || N, { m: 'interested', h: ROLES, btn: 'Alles klar!' }, nx); });
-      steps.push(function (nx) { step(N || L, { m: 'excited', h: 'Wenn du Hilfe brauchst, tippe einen von uns an. Dann erklären wir dir, was es auf der Seite gibt. Viel Spaß beim Entdecken!', btn: 'Los geht’s!' }, function () { mark(); nx(); }); });
+      if (CAST === 'L-solo') steps.push(function (nx) { if (window.Kolbi && Kolbi.open) Kolbi.open('<p class="kb-text">' + ROLES + '<br><br>Viel Spaß beim Entdecken!</p>', 14000, 'happy'); mark(); nx(); });
+      else if (window.__teamIntroOnly) steps.push(function (nx) { if (window.Duo && Duo.say) Duo.say(ROLES.replace(/<br>/g, ' ').replace(/<[^>]+>/g, '') + ' Viel Spaß beim Entdecken!', 'happy', 'T'); nx(); });
+      else steps.push(function (nx) { step(L || N, { m: 'interested', h: ROLES, btn: 'Alles klar!' }, nx); });
+      if (!window.__teamIntroOnly && CAST !== 'L-solo') steps.push(function (nx) { step(N || L, { m: 'excited', h: 'Wenn du Hilfe brauchst, tippe einen von uns an. Dann erklären wir dir, was es auf der Seite gibt. Viel Spaß beim Entdecken!', btn: 'Los geht’s!' }, function () { mark(); nx(); }); });
       chain(steps);
     });
   }
   window.TeamIntro = { start: start };
+  if (window.__teamIntroOnly) return;      // nur die Vorstellung bereitstellen (Seiten, auf denen Tinto und Rolli helfen)
 
   // ------------------------------------------------------------------ Start auf der Seite
   function run0() {
@@ -198,7 +191,7 @@
 
     if (CAST === 'L-solo') {                    // Klasse 9: Lily locker, wie Tinto und Rolli
       var stl = document.createElement('style'); stl.textContent = '#kolbi-char{scale:1.2;transform-origin:50% 100%}'; document.head.appendChild(stl);
-      window.Kolbi.init({ id: 'lily-site', skin: window.KolbiSkins.lily, color: '#7a5c8e', offsetBottom: 56, tapHelp: function () { return { text: explain(), tip: tip() }; }, comments: COMMENTS.lily.concat(title ? ['Du bist gerade bei „' + title + '“. Such dir einen Zettel aus!'] : []) });
+      window.Kolbi.init({ id: 'lily-site', skin: window.KolbiSkins.lily, color: '#7a5c8e', offsetBottom: 56, extraOpts: [{ label: 'Unser Team vorstellen', fn: start }], tapHelp: function () { return { text: explain(), tip: tip() }; }, comments: COMMENTS.lily.concat(title ? ['Du bist gerade bei „' + title + '“. Such dir einen Zettel aus!'] : []) });
       if (!seenS) { var tries = 0; setTimeout(function go() { if (window.Kolbi.say(explain(), 'interested')) markS(); else if (++tries < 5) setTimeout(go, 6000); }, 2600); }
       return;
     }

@@ -255,7 +255,7 @@
   }
   if (/(^|\/)(Klasse-10|Oberstufe)\//.test(rel + '/')) {
     var nb = base + 'neumann/', list = ['kolbi.js', 'skin-neumann.js', 'neumann-begleiter.js'];
-    var go = function () { words(function () { (function nx(i) { if (i >= list.length) return runNeumann(); var s = document.createElement('script'); s.src = nb + list[i] + '?v=20261122c'; s.onload = s.onerror = function () { nx(i + 1); }; document.head.appendChild(s); })(0); }); };
+    var go = function () { words(function () { (function nx(i) { if (i >= list.length) return runNeumann(); var s = document.createElement('script'); s.src = nb + list[i] + '?v=20261122e'; s.onload = s.onerror = function () { nx(i + 1); }; document.head.appendChild(s); })(0); }); };
     if (document.body) go(); else document.addEventListener('DOMContentLoaded', go);
     return;
   }
@@ -264,8 +264,8 @@
   function words(cb) {
     if (folder === 'Glorious-Revolution') return cb();
     var list = ['woerterbuch.js', 'glossare/allgemein.js', 'glossare/' + slug(folder) + '.js'];
-    (function nx(i) { if (i >= list.length) return cb(); var s = document.createElement('script'); s.src = base + list[i] + '?v=20261122c'; s.onload = s.onerror = function () { nx(i + 1); }; document.head.appendChild(s); })(0);
+    (function nx(i) { if (i >= list.length) return cb(); var s = document.createElement('script'); s.src = base + list[i] + '?v=20261122e'; s.onload = s.onerror = function () { nx(i + 1); }; document.head.appendChild(s); })(0);
   }
-  function start() { words(function () { if (window.Duo) return run(); var s = document.createElement('script'); s.src = base + 'duo.js?v=20261122c'; s.onload = run; document.head.appendChild(s); }); }
+  function start() { words(function () { if (window.Duo) return run(); var s = document.createElement('script'); s.src = base + 'duo.js?v=20261122e'; s.onload = run; document.head.appendChild(s); }); }
   if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);
 })();

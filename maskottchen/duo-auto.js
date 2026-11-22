@@ -14,12 +14,10 @@
   var rel = decodeURIComponent(location.href.replace(/[?#].*$/, '').slice(root.length)).replace(/index\.html$/, '');
   var isRoot = rel === '';
 
-  // Ab Klasse 9 und auf den Übersichtsseiten übernehmen Herr Neumann und Lily (siehe neumann/team-auto.js).
-  // Tinto und Rolli bleiben in Klasse 7 und 8.
-  if (!/^(Geschichte|Politische-Bildung)\/Klasse-(7|8|7-8)\//.test(rel.normalize ? rel.normalize('NFC') : rel)) {
-    var t = document.createElement('script'); t.src = base + 'neumann/team-auto.js?v=20261122c'; (document.head || document.documentElement).appendChild(t);
-    return;
-  }
+  // Auf allen Übersichtsseiten sind Herr Neumann und Lily die Assistenten (neumann/team-auto.js).
+  // Tinto und Rolli helfen nur in den Modulen von Klasse 7 und 8.
+  var t = document.createElement('script'); t.src = base + 'neumann/team-auto.js?v=20261122e'; (document.head || document.documentElement).appendChild(t);
+  return;
 
   function run() {
     var h1 = document.querySelector('.paper h1'), title = h1 ? h1.textContent.trim() : (document.title || '').trim();
@@ -44,7 +42,12 @@
       'Wenn an der Pinnwand noch nichts hängt: Hier kommt bald etwas dazu.',
       'Pinnwände sind wie Notizbücher, nur mit Reißzwecken.'
     ];
-    Duo.init({ id: 'site', offsetBottom: 56, tapHelp: function () { return help; }, comments: comments });
+    function team() {
+      window.__teamIntroOnly = true;
+      if (window.TeamIntro) return window.TeamIntro.start();
+      var t = document.createElement('script'); t.src = base + 'neumann/team-auto.js?v=20261122e'; t.onload = function () { if (window.TeamIntro) window.TeamIntro.start(); }; document.head.appendChild(t);
+    }
+    Duo.init({ id: 'site', offsetBottom: 56, tapHelp: function () { return help; }, comments: comments, extraOpts: [{ label: 'Unser Team vorstellen', fn: team }] });
 
     var key = 'tr-expl-' + rel, seen = false;
     try { seen = !!sessionStorage.getItem(key); } catch (e) {}
