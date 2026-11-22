@@ -72,6 +72,7 @@ select.good{border-color:var(--ok);background:#e8f5ed} select.bad{border-color:v
 .pool,.seq{display:grid;gap:6px} .seq{counter-reset:s;min-height:46px;border:2px dashed #cfc8b0;border-radius:10px;padding:6px}
 .ocard{text-align:left;background:#fff;border:2px solid #d8d2bd;border-radius:10px;padding:9px 12px;font:inherit;font-size:15px;color:var(--ink);cursor:pointer}
 .seq .ocard{border-color:var(--blue);background:#eaf2fb} .seq .ocard::before{counter-increment:s;content:counter(s) '. ';font-weight:800;color:var(--blue)}
+.seq.nonum .ocard::before{content:none}
 .seq .ocard.good{border-color:var(--ok);background:#e8f5ed} .seq .ocard.bad{border-color:var(--bad);background:#fdecea}
 textarea{width:100%;font:inherit;font-size:16px;padding:10px;border:2px solid #cfc8b0;border-radius:10px;resize:vertical;min-height:110px;background:#fff;color:var(--ink)}
 .count{font-size:12.5px;color:var(--muted);text-align:right;margin-top:2px}
@@ -95,7 +96,34 @@ textarea{width:100%;font:inherit;font-size:16px;padding:10px;border:2px solid #c
 @media (max-width:480px){.card{padding:12px}.wrap{padding-left:8px;padding-right:8px}}
 @media (orientation:landscape) and (max-width:1000px){.wrap{padding-right:96px}}
 @media (prefers-reduced-motion:reduce){.ping{animation-duration:.01s}}
-</style>
+
+.task .q2{font-size:14.5px;color:var(--muted);margin-top:1px}
+.stage{margin-top:10px}.go{background:var(--board)}
+.dots{display:flex;gap:6px;justify-content:center;margin:8px 0}.dots i{width:12px;height:12px;border-radius:50%;background:#ddd5bd}.dots i.on{background:var(--ok)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.chip{background:#fff;border:2px solid #cfc8b0;border-radius:999px;padding:8px 14px;font:inherit;font-size:15px;cursor:pointer;color:var(--ink)}.chip.sel{border-color:var(--blue);background:#eaf2fb}.chip.good{border-color:var(--ok);background:#e8f5ed}.chip.bad{border-color:var(--bad);background:#fdecea}.chip.used{opacity:.35}
+.werhead{font-size:14.5px;color:var(--muted)}
+.town{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.bld{background:#fff;border:2px solid #d8d2bd;border-radius:12px;padding:10px 4px;font:inherit;cursor:pointer;text-align:center;color:var(--ink)}.bld .e{display:block;font-size:34px}.bld b{font-size:13.5px}.bld:hover{border-color:var(--gold)}
+.letter{margin:10px auto;max-width:480px;background:#fffdf0;border:2px solid #e3d9b2;border-radius:6px;padding:12px 14px;font-style:italic;box-shadow:0 3px 6px rgba(0,0,0,.12);transition:transform .35s,opacity .35s}.letter.fly{transform:translateY(-60px) scale(.5);opacity:0}
+.pens{display:flex;gap:8px;flex-wrap:wrap}.pen{border:3px solid transparent;border-radius:10px;padding:8px 14px;font:inherit;font-weight:700;cursor:pointer;color:#222}.pen.p0{background:#ffe27a}.pen.p1{background:#9fd0ff}.pen.p2{background:#a8e6b4}.pen.sel{border-color:#222}
+.paper2{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;line-height:2}.paper2 p{margin:6px 0 0}.mk{cursor:pointer;border-radius:3px}.mk.c0{background:#ffe27a}.mk.c1{background:#9fd0ff}.mk.c2{background:#a8e6b4}.mk.wrongmk{text-decoration:underline wavy var(--bad)}
+.syls{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.syls.strip{min-height:46px;border:2px dashed #cfc8b0;border-radius:10px;padding:5px}.syl{background:#fff;border:2px solid #d8d2bd;border-radius:10px;padding:9px 14px;font:inherit;font-size:16px;cursor:pointer;color:var(--ink)}.syl.on{border-color:var(--blue);background:#eaf2fb}
+.scale{margin-top:6px}.beam{height:10px;background:#8a5d3b;border-radius:6px;margin:14px 8% 0;transition:transform .5s;transform-origin:50% 50%}.pans{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:-2px}.pan{background:#fdf6df;border:3px solid #e3c86e;border-radius:0 0 40px 40px;min-height:86px;padding:8px;font:inherit;cursor:pointer;color:var(--ink)}.pan .stack{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;margin-top:6px}.pan .w{font-style:normal;color:var(--board)}
+.hand{display:grid;gap:6px;margin-top:10px}.wcard{background:#fff;border:2px solid #d8d2bd;border-radius:10px;padding:9px 12px;font:inherit;font-size:15px;text-align:left;cursor:pointer;color:var(--ink)}.wcard.sel{border-color:var(--blue);background:#eaf2fb}
+.gap{border:0;border-bottom:3px solid var(--ink);background:transparent;font:inherit;font-size:16px;padding:0 6px;margin:0 3px;cursor:pointer;min-width:60px;color:var(--ink)}.gap.on{background:#eaf2fb}.gap.good{background:#e8f5ed}.gap.bad{background:#fdecea}
+.belt{overflow:hidden;background:repeating-linear-gradient(90deg,#4b5159 0 18px,#434950 18px 36px);border:4px solid #2e3338;border-radius:12px;padding:12px 0;height:92px;position:relative}.track{display:flex;gap:14px;width:max-content;animation:belt 28s linear infinite}.belt:hover .track{animation-play-state:paused}.bcard{flex:none;width:170px;height:62px;background:#fff6d7;border:2px solid #e3c86e;border-radius:10px;font:inherit;font-size:13.5px;cursor:pointer;color:var(--ink);padding:4px 8px}.bcard.gone{visibility:hidden}
+@keyframes belt{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.done-strip{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.sdone{background:#e8f5ed;border:2px solid var(--ok);border-radius:999px;padding:4px 12px;font-size:13.5px}
+.phonewrap{text-align:center}.phone{width:min(100%,260px);height:auto}.part{cursor:pointer}.part:hover rect{stroke:#e0a63a}
+.jit{display:grid;gap:10px}.strat{background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px}.strat span{display:block;font-size:14px;color:var(--muted);margin:2px 0 8px}.weeks{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:50px}.wk{border-radius:8px;padding:4px 8px;text-align:center;font-size:18px}.wk small{display:block;font-size:11px}.wk.ok{background:#e8f5ed}.wk.stop{background:#fdecea}.kost{font-size:14px;margin-top:6px}
+.sim{position:relative}.simsvg{width:100%;height:auto;background:#cfe8ff;border-radius:12px}.temp{position:absolute;right:10px;top:8px;background:rgba(255,255,255,.9);border-radius:10px;padding:2px 12px;font-size:30px;font-weight:800}.sl{margin-top:10px}.sl input{width:100%;height:32px}.scalebar{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted)}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.mcard{position:relative;height:104px;border:0;padding:0;background:transparent;cursor:pointer;perspective:600px;font:inherit}.mcard .back,.mcard .front{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;border-radius:10px;padding:5px;font-size:12.5px;backface-visibility:hidden;transition:transform .35s;color:var(--ink)}.mcard .back{background:var(--board);color:var(--chalk);font-size:28px;border:3px solid var(--frame)}.mcard .front{background:#fffbe8;border:3px solid #e3c86e;transform:rotateY(180deg)}.mcard.up .back,.mcard.ok .back{transform:rotateY(180deg)}.mcard.up .front,.mcard.ok .front{transform:none}.mcard.ok .front{border-color:var(--ok);background:#e8f5ed}
+.scene{background:#fffdf0;border:2px solid #e3d9b2;border-radius:12px;padding:12px;font-size:16px;margin-bottom:10px}.lamps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.lamp{background:#2f3a40;color:#f2f2f2;border:0;border-radius:12px;padding:10px 4px;font:inherit;cursor:pointer}.lamp .bulb{display:block;font-size:30px;filter:grayscale(1) brightness(.6)}.lamp.lit .bulb{filter:none}.lamp b{font-size:13.5px}
+.tl{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:14px}.tl .line{position:absolute;left:0;right:0;top:20px;height:6px;background:#8a5d3b;border-radius:3px}.slot{position:relative;z-index:1;background:#fff;border:3px solid #c9c2a8;border-radius:12px;padding:8px 4px;font:inherit;cursor:pointer;min-height:96px;color:var(--ink)}.slot b{display:block;font-size:20px}.slot .in{display:block;font-size:12.5px;margin-top:4px}.slot.ok{border-color:var(--ok);background:#e8f5ed}
+.meter{font-size:13.5px;color:var(--muted)}.bar{height:14px;background:#e8e2cf;border-radius:8px;overflow:hidden;margin:4px 0 10px}.bar i{display:block;height:100%;background:linear-gradient(90deg,#4caf70,#e0a63a);transition:width .4s}.two{display:grid;gap:8px}
+.form{display:grid;gap:8px;margin-top:8px}.frow{display:grid;grid-template-columns:1fr;gap:3px}.frow label{font-weight:600;font-size:14px}.frow select{width:100%}
+select.good{border-color:var(--ok);background:#e8f5ed}select.bad{border-color:var(--bad);background:#fdecea}
+.rect{position:absolute;border:3px solid var(--ok);background:rgba(46,139,87,.16);border-radius:8px;pointer-events:none}
+.zoom{position:fixed;inset:0;z-index:9999;background:rgba(20,28,24,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:10px}.zoom svg{width:100%;max-height:80vh;background:#fff;border-radius:10px}@media(orientation:portrait){.zoom svg{width:96vw}}</style>
 </head>
 <body>
 <div class="wrap">
@@ -536,21 +564,47 @@ var CH = [
       items: ['Einleitung: Titel, Thema, Datum, Zeichner, Ort', 'Bildbeschreibung: Was ist zu sehen?', 'Deutung: Was bedeuten die Bildelemente?', 'Hauptaussage: Was will der Zeichner sagen?', 'Beurteilung: Wie überzeugend ist die Karikatur?'],
       why: 'Einleitung, Bildbeschreibung, Deutung (zusammen der Hauptteil), dann der Schluss mit Hauptaussage und Beurteilung.',
       tips: ['Es gibt drei große Teile: Einleitung, Hauptteil, Schluss.', 'Man beschreibt erst, was man sieht, und deutet danach, was es bedeutet.'] },
-    { id: 'kar2', type: 'gap', q: 'Die Einleitung: Lies die Angaben unter dem Bild und vervollständige die Einleitung.', bild: true,
-      parts: ['Die Karikatur mit dem Titel ', { a: '„So günstig!“' }, ' wurde im Jahr ', { a: '2026' }, ' von ', { a: 'N. N.' }, ' gezeichnet und in einer ', { a: 'Tageszeitung' }, ' veröffentlicht. Sie behandelt das Thema ', { a: 'Smartphone-Produktion' }, '.'],
-      bank: ['„Preisschild“', '2004', 'Schulbuch', 'Wetterbericht'],
-      tips: ['Die Angaben stehen unter dem Bild.', 'Das Thema erkennst du an den Bildelementen: Smartphone, Fabrik, Mine und Elektroschrott.'] },
-    { id: 'kar3', type: 'spots', q: 'Die Bildbeschreibung: Finde die Bildteile! Tippe in der Karikatur genau auf das, was gefragt wird.', bild: true,
-      spots: [
-        ['den Käufer auf der Eisbergspitze', [42, 4, 55, 29]],
-        ['die Sprechblase', [22, 1, 41, 15]],
-        ['das Smartphone mit dem Preisschild', [53, 0, 70, 13]],
-        ['die Bergleute im Stollen', [26, 61, 76, 80]],
-        ['die Fabrikhalle mit dem Fließband', [27, 44, 73, 61]],
-        ['den Elektroschrott', [33, 79, 67, 96]],
-        ['das Containerschiff', [76, 8, 99, 46]]
+    { id: 'kar2', type: 'gap', q: 'Die Einleitung: Lies die Angaben unter dem Bild und vervollständige die Einleitung. Achtung: Der Text in der Sprechblase ist nicht der Titel.', bild: true,
+      parts: ['Die Karikatur mit dem Titel ', { a: '„Schnäppchenjagd“' }, ' wurde im Jahr ', { a: '2026' }, ' von ', { a: 'N. N.' }, ' gezeichnet und in einer ', { a: 'Tageszeitung' }, ' veröffentlicht. Sie behandelt das Thema ', { a: 'Smartphone-Produktion' }, '.'],
+      bank: ['„So günstig!“', '2004', 'Schulbuch', 'Wetterbericht'],
+      tips: ['Die formalen Angaben stehen unter dem Bild. Der Titel steht dort in Anführungszeichen.', 'Das Thema steht nirgends. Du erkennst es an den Bildelementen: Smartphone, Fabrik, Mine und Elektroschrott.'] },
+    { id: 'kar3', type: 'sort', q: 'Die Bildbeschreibung beginnt mit Sehen, nicht mit Deuten. Ist die Aussage eine sachliche Beschreibung, eine Deutung oder eine Wertung?', bild: true,
+      cats: ['Beschreibung', 'Deutung', 'Wertung'],
+      items: [
+        ['Auf der Spitze des Eisbergs steht ein lachender Mann und hält ein Smartphone hoch.', 0],
+        ['Der Eisberg steht dafür, dass man nur einen kleinen Teil des Problems sieht.', 1],
+        ['Ich finde, der Zeichner übertreibt hier viel zu stark.', 2],
+        ['Unter Wasser liegen im Eisberg drei Räume übereinander.', 0],
+        ['Die gebeugten Arbeiter stehen für harte Arbeitsbedingungen.', 1],
+        ['Die Karikatur ist sehr gelungen und wirkt überzeugend.', 2]
       ],
-      tips: ['Das Bild hat einen Teil über Wasser und einen Teil unter Wasser.', 'Tippe auf die Mitte des Bildteils, nicht an den Rand.'] },
+      why: 'Beschreibung: Was ist zu sehen? Sachlich, ohne Wertung. Deutung: Was bedeutet es? Wertung: Was ist meine Meinung dazu? Meinung und Deutung gehören nicht in die Bildbeschreibung.',
+      tips: ['Eine Beschreibung könntest du auch einem Blinden vorlesen. Er müsste nichts verstehen, nur sehen.', 'Wörter wie „steht für“ und „bedeutet“ verraten die Deutung. Wörter wie „ich finde“ verraten die Wertung.'] },
+    { id: 'kar3b', type: 'free', q: 'Herr Neumann prüft: <b>Beschreibe die Karikatur sachlich in vier bis sechs Sätzen.</b> Sage, was zu sehen ist: Personen, Orte, Gegenstände und Text. Deute noch nichts und bewerte nicht.', bild: true,
+      min: 200, need: 5,
+      groups: [
+        { label: 'die Person oben (Mann/Käufer auf der Eisbergspitze)', rx: /(mann|käufer|kunde|person|junge|figur)/i },
+        { label: 'das Smartphone mit dem Preisschild', rx: /(smartphone|handy|preisschild|99)/i },
+        { label: 'den Eisberg über und unter Wasser', rx: /(eisberg)/i },
+        { label: 'die Fabrik mit dem Fließband und den Arbeitern', rx: /(fabrik|fließband|arbeiter|halle)/i },
+        { label: 'die Mine mit den Bergleuten', rx: /(mine|bergleute|bergmann|bergmänner|stollen|spitzhacke)/i },
+        { label: 'den Elektroschrott unten', rx: /(schrott|müll|abfall|kaputte)/i },
+        { label: 'das Containerschiff mit der CO₂-Wolke', rx: /(schiff|container|co₂|co2|rauch|wolke)/i },
+        { label: 'den Text („So günstig!“)', rx: /(sprechblase|so günstig)/i }
+      ],
+      forbid: { rx: /(steht für|stehen für|symbol|bedeutet|soll zeigen|will zeigen|ich finde|meiner meinung|schlimm|gemein|übertreib|ironisch|kritisiert)/i, label: 'Du deutest oder bewertest schon. In die Bildbeschreibung gehört nur, was man sieht. Streiche Wörter wie „steht für“, „bedeutet“ oder „ich finde“.' },
+      sample: 'Auf der Spitze eines Eisbergs steht ein lachender Mann. Er hält ein Smartphone mit einem Preisschild von 99 € hoch, und in einer Sprechblase steht „So günstig!“. Der größere Teil des Eisbergs liegt unter Wasser. Dort sieht man eine Fabrikhalle mit einem Fließband und gebeugten Arbeitern, darunter eine Mine mit Bergleuten und ganz unten Elektroschrott. Rechts im Bild fährt ein Containerschiff, aus dem eine graue Wolke mit „CO₂“ aufsteigt.',
+      tips: ['Gehe das Bild von oben nach unten durch und beschreibe jeden Bereich.', 'Schreibe nur, was du siehst, zum Beispiel Personen, Orte, Gegenstände und Texte. Keine Bedeutung, keine Meinung.'] },
+    { id: 'kar3c', type: 'tf', q: 'Der Fehlerdetektiv: Schau genau auf das Bild. Welche Aussagen der Beschreibung stimmen, welche nicht?', bild: true,
+      items: [
+        ['Auf der Eisbergspitze stehen zwei Personen.', false, 'Auf der Spitze steht nur eine Person.'],
+        ['Das Preisschild nennt einen Preis von 99 €.', true, 'Richtig, auf dem Preisschild steht „nur 99 €“.'],
+        ['Unter Wasser liegen vier Räume übereinander.', false, 'Es sind drei: Fabrik, Mine und Schrott.'],
+        ['Das Containerschiff liegt auf der linken Seite des Bildes.', false, 'Das Containerschiff liegt rechts.'],
+        ['In der Fabrik arbeiten drei Personen am Fließband.', true, 'Richtig, es sind drei Arbeiter.'],
+        ['In der Sprechblase steht „So günstig!“.', true, 'Richtig, der Käufer ruft das.']
+      ],
+      tips: ['Zähle genau nach, zum Beispiel Personen und Räume.', 'Achte auf links und rechts im Bild.'] },
     { id: 'kar4', type: 'match', q: 'Die Deutung: Wofür steht welches Bildelement?', bild: true,
       rows: [
         ['Die Spitze des Eisbergs über Wasser', 'Das, was Käufer sehen: das Gerät und den günstigen Preis.'],
@@ -620,348 +674,609 @@ var PROBE_TF = [
   { ch: 'kar', s: 'Die eigene Meinung gehört in die Bildbeschreibung.', v: false, why: 'Die Bildbeschreibung ist sachlich. Die Beurteilung steht im Schluss.' }
 ];
 
-/* ================= Hilfsfunktionen ================= */
+/* ============================================================ Neue Aufgabentypen je Kapitel: Silbenpuzzle (build) und Fehler im Text (find) */
+var EXTRA = {
+  pol: { first: { id: 'pol0', type: 'build', q: 'Silbenpuzzle: Setze aus den Silben den gesuchten Begriff zusammen.',
+      words: [['Hier werden Themen für alle sichtbar und diskutierbar.', ['Öf', 'fent', 'lich', 'keit']], ['Unterschiedliche Interessen prallen aufeinander.', ['Kon', 'flikt']], ['Menschen mit gemeinsamen Merkmalen, Interessen und Regeln.', ['Ge', 'sell', 'schaft']], ['Alle Seiten geben etwas nach und einigen sich.', ['Kom', 'pro', 'miss']]],
+      tips: ['Lies zuerst die Erklärung, dann überlege, welcher Begriff gemeint ist.', 'Die Silben ergeben ein Wort aus der Merkbox.'] },
+    last: { id: 'pol4b', type: 'find', q: 'Der Fehlerdetektiv: In diesem Text zum Spandau-Beispiel stecken <b>zwei Fehler</b>. Tippe die falschen Sätze an.',
+      items: [['Die Skater wollen ungestört fahren, die Anwohner wollen Ruhe.', false, ''], ['Am Küchentisch zu meckern ist schon Politik, weil dort alle davon erfahren.', true, 'Am Küchentisch bleibt das Problem privat. Erst wenn es öffentlich gemacht wird, wird es politisch.'], ['Mit vielen Unterschriften hat die Gruppe mehr Macht, etwas zu verändern.', false, ''], ['Für den Park im Kiez ist das Abgeordnetenhaus zuständig.', true, 'Für einen Park vor Ort ist das Bezirksamt zuständig. Das Abgeordnetenhaus entscheidet auf Landesebene.'], ['Der Bauplan und die Lärmstudie werden online geteilt und machen das Problem öffentlich.', false, '']],
+      tips: ['Lies jeden Satz einzeln und frage dich: Stimmt das so?', 'Ein Fehler betrifft privat und öffentlich, der andere die Ebenen.'] } },
+  dim: { first: { id: 'dim0', type: 'build', q: 'Silbenpuzzle: Setze aus den Silben den gesuchten Begriff zusammen.',
+      words: [['Eine der drei Blickrichtungen auf Politik.', ['Di', 'men', 'si', 'on']], ['Hier geht es um Sachproblem, Argumente und Folgen.', ['In', 'halt']], ['Hier geht es um Interessen, Meinungen und Verhandlungen.', ['Pro', 'zess']], ['Wer zuständig ist, nennt man auch so.', ['Be', 'fug', 'nis']]],
+      tips: ['Denke an die drei Dimensionen: Inhalt, Form und Prozess.', 'Ein Begriff ist ein Wort für „Zuständigkeit“.'] },
+    last: { id: 'dim4b', type: 'find', q: 'Der Fehlerdetektiv: Im Text zum Handyverbot stecken <b>zwei Fehler</b>. Tippe die falschen Sätze an.',
+      items: [['Die Schulkonferenz stimmt nach festen Regeln ab. Das gehört zur Dimension Form.', false, ''], ['Die Frage, welche Folgen ein Verbot hätte, gehört zum Prozess.', true, 'Folgen und Argumente gehören zum Inhalt.'], ['Schüler äußern öffentlich ihre Meinung. Das gehört zum Prozess.', false, ''], ['Wer zuständig ist, gehört zur Dimension Inhalt.', true, 'Zuständigkeit und Regeln gehören zur Form.']],
+      tips: ['Prüfe bei jedem Satz, ob die Dimension zur Frage passt.', 'Die beiden Fehler vertauschen jeweils zwei Dimensionen.'] } },
+  glo: { first: { id: 'glo0', type: 'build', q: 'Silbenpuzzle: Setze aus den Silben den gesuchten Begriff zusammen.',
+      words: [['Weltweite Vernetzung von Staaten und Gesellschaften.', ['Glo', 'ba', 'li', 'sie', 'rung']], ['Filme, Serien und Musik gehören zu dieser Dimension.', ['Kul', 'tur']], ['Durch Internet und Social Media entsteht grenzenlose …', ['Kom', 'mu', 'ni', 'ka', 'ti', 'on']], ['Waren kaufen und verbrauchen nennt man …', ['Kon', 'sum']]],
+      tips: ['Die Erklärung gehört zu einem Wort aus der Merkbox.', 'Das erste Wort ist der Name des ganzen Kapitels.'] },
+    last: { id: 'glo4b', type: 'find', q: 'Der Fehlerdetektiv: Im Text zur Globalisierung stecken <b>zwei Fehler</b>. Tippe die falschen Sätze an.',
+      items: [['Globalisierung bedeutet, dass Länder weltweit immer enger vernetzt sind.', false, ''], ['Kartoffeln und Rindfleisch kommen überwiegend aus dem Ausland.', true, 'Kartoffeln und Rindfleisch kommen überwiegend aus Deutschland.'], ['Die EU ist ein Beispiel für die Dimension Politik.', false, ''], ['Das Streamen von Serien gehört zur Dimension Umwelt.', true, 'Serien und Filme gehören zur Dimension Kultur.']],
+      tips: ['Überlege bei jedem Satz: Stimmt das mit dem Merkkasten überein?', 'Ein Fehler betrifft Inland und Ausland, der andere die Dimensionen.'] } },
+  sma: { first: { id: 'sma0', type: 'build', q: 'Silbenpuzzle: Setze aus den Silben den gesuchten Begriff zusammen.',
+      words: [['Der ganze Weg vom Rohstoff bis zum Verkauf.', ['Lie', 'fer', 'ket', 'te']], ['Ein Erz, das unter anderem im Kongo abgebaut wird.', ['Col', 'tan']], ['Ein Metall, das für Batterien gebraucht wird.', ['Li', 'thi', 'um']], ['Stoffe wie CO₂, die Schiffe und Flugzeuge ausstoßen.', ['E', 'mis', 'si', 'o', 'nen']]],
+      tips: ['Alle Begriffe stehen im Merkkasten.', 'Das Metall für die Batterie ist nicht Tantal.'] },
+    last: { id: 'sma4b', type: 'find', q: 'Der Fehlerdetektiv: In diesem Text zur Lieferkette stecken <b>zwei Fehler</b>. Tippe die falschen Sätze an.',
+      items: [['Coltan wird unter anderem im Osten der Demokratischen Republik Kongo abgebaut.', false, ''], ['Aus dem Erz Coltan wird das Metall Lithium gewonnen.', true, 'Aus Coltan wird Tantal gewonnen. Lithium braucht man für die Batterien.'], ['Das Just-in-time-Prinzip spart Lagerkosten, macht das System aber anfällig.', false, ''], ['Lufttransporte verursachen besonders wenige Emissionen.', true, 'Lufttransporte verursachen pro Kilogramm Fracht besonders hohe Emissionen.']],
+      tips: ['Ein Fehler vertauscht zwei Metalle, der andere dreht eine Aussage um.', 'Prüfe die Sätze mit dem Merkkasten.'] } },
+  kli: { first: { id: 'kli0', type: 'build', q: 'Silbenpuzzle: Setze aus den Silben den gesuchten Begriff zusammen.',
+      words: [['Treibhausgase halten Wärme zurück wie ein Glasdach.', ['Treib', 'haus', 'ef', 'fekt']], ['Er steigt, wenn das Eis schmilzt.', ['Mee', 'res', 'spie', 'gel']], ['Wälder werden gefällt, und CO₂ bleibt in der Luft.', ['Ab', 'hol', 'zung']], ['Warme Meeresströmung im Nordatlantik.', ['Golf', 'strom']]],
+      tips: ['Die Begriffe stehen im Merkkasten.', 'Der erste Begriff beschreibt den Titel des Kapitels.'] },
+    last: { id: 'kli4b', type: 'find', q: 'Der Fehlerdetektiv: Im Text zum Klimawandel stecken <b>zwei Fehler</b>. Tippe die falschen Sätze an.',
+      items: [['Ohne natürlichen Treibhauseffekt läge die Durchschnittstemperatur bei etwa −18 °C.', false, ''], ['Treibhausgase lassen die gesamte Wärmestrahlung ungehindert ins Weltall entweichen.', true, 'Treibhausgase fangen einen Teil der Wärmestrahlung ab und werfen ihn zur Erde zurück.'], ['Wälder nehmen CO₂ auf und sind ein natürlicher Speicher.', false, ''], ['Durch die Industrialisierung ist der CO₂-Anteil in der Atmosphäre gesunken.', true, 'Durch Fabriken und fossile Energien ist der CO₂-Anteil stark gestiegen.']],
+      tips: ['Ein Fehler dreht die Wirkung der Treibhausgase um, der andere eine Entwicklung.', 'Lies den Merkkasten noch einmal.'] } },
+  fuss: { first: { id: 'fuss0', type: 'build', q: 'Silbenpuzzle: Setze aus den Silben den gesuchten Begriff zusammen.',
+      words: [['So leben, dass auch spätere Generationen genug haben.', ['Nach', 'hal', 'tig', 'keit']], ['Misst, wie viel Fläche man für sein Leben braucht.', ['Fuß', 'ab', 'druck']], ['Menschen, die ungefähr zur gleichen Zeit geboren sind.', ['Ge', 'ne', 'ra', 'ti', 'on']]],
+      tips: ['Der erste Begriff ist der Titel des Kapitels, nur als Namenwort.', 'Der zweite Begriff ist eine Spur, die man hinterlässt.'] },
+    last: { id: 'fuss4b', type: 'find', q: 'Der Fehlerdetektiv: Im Text zur Nachhaltigkeit stecken <b>zwei Fehler</b>. Tippe die falschen Sätze an.',
+      items: [['Hans Carl von Carlowitz forderte 1713, nur so viel Holz zu schlagen, wie nachwachsen kann.', false, ''], ['Der Brundtland-Bericht der Vereinten Nationen stammt aus dem Jahr 1713.', true, 'Der Brundtland-Bericht stammt von 1987. 1713 ist das Jahr von Carlowitz.'], ['Nachhaltigkeit hat drei Seiten: Umwelt, Soziales und Wirtschaft.', false, ''], ['Würden alle so leben wie wir in Deutschland, bräuchte man etwa zehn Erden.', true, 'Es wären etwa drei Erden.']],
+      tips: ['Beide Fehler betreffen Zahlen.', 'Vergleiche mit den Zahlen im Merkkasten.'] } },
+  kar: { first: { id: 'kar0', type: 'build', q: 'Silbenpuzzle: Setze aus den Silben den gesuchten Begriff zusammen.',
+      words: [['Eine Zeichnung, die bewusst übertreibt, um Kritik zu üben.', ['Ka', 'ri', 'ka', 'tur']], ['Ein Bild, das für etwas anderes steht.', ['Sym', 'bol']], ['Man zeigt das Gegenteil von dem, was man meint.', ['I', 'ro', 'nie']], ['Etwas wird größer oder schlimmer gezeichnet, als es ist.', ['Über', 'trei', 'bung']]],
+      tips: ['Die Begriffe stammen aus der Merkbox.', 'Die letzten drei Begriffe sind Stilmittel.'] },
+    last: null }
+};
+Object.keys(EXTRA).forEach(function (k) {
+  var c = CH.filter(function (x) { return x.id === k; })[0], e = EXTRA[k];
+  c.tasks.unshift(e.first);
+  if (e.last) { var fi = c.tasks.map(function (t) { return t.type; }).lastIndexOf('free'); c.tasks.splice(fi, 0, e.last); }
+});
+
 'use strict';
+/* ===== Kern: Zustand, Navigation, Spielkarten, Sprechblasen von Herrn Neumann ===== */
 function $(id) { return document.getElementById(id); }
 function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 function mk(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
 function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
-function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
+function plain(h) { var d = document.createElement('div'); d.innerHTML = h; return (d.textContent || '').replace(/\s+/g, ' ').trim(); }
 function B() { return window.Begleiter && window.Kolbi ? window.Begleiter : null; }
-function nsay(html, mood, ms) { try { if (window.Kolbi && Kolbi.open) Kolbi.open('<button class="kb-x" aria-label="Schließen" data-k="close">×</button>' + html, ms || 0, mood || 'happy'); } catch (e) {} }
 
-/* ================= Zustand (nur im Arbeitsspeicher) ================= */
-var S = { tab: 'start', done: {}, stars: 0, tries: {} };
+var S = { tab: 'start', done: {}, stars: 0 }, CUR = null, BILD = '', P = null;
 var CHI = {}; CH.forEach(function (c) { CHI[c.id] = c; });
-var TASKS = {}; CH.forEach(function (c) { c.tasks.forEach(function (t) { t.ch = c.id; TASKS[t.id] = t; }); });
-
+var TASKS = {}; function reindex() { TASKS = {}; CH.forEach(function (c) { c.tasks.forEach(function (t) { t.ch = c.id; TASKS[t.id] = t; }); }); } reindex();
 function chapterDone(c) { return c.tasks.every(function (t) { return S.done[t.id]; }); }
 function chapterCount(c) { return c.tasks.filter(function (t) { return S.done[t.id]; }).length; }
 function updateStars() { $('stars').textContent = '⭐ ' + S.stars; }
 
-/* ================= Navigation ================= */
+/* --- Sprechblase --- */
+function bubble(html, btns) { return '<button class="kb-x" aria-label="Schließen" data-k="close">×</button><p class="kb-text">' + html + '</p>' + (btns || []).map(function (b) { return '<button class="kb-opt" data-g="' + b[0] + '"><span class="kb-dot"></span>' + esc(b[1]) + '</button>'; }).join(''); }
+function say(html, mood, ms, btns) { try { if (window.Kolbi && Kolbi.open) Kolbi.open(bubble(html, btns), ms || 0, mood || 'happy'); } catch (e) {} }
+document.addEventListener('click', function (e) { var t = e.target.closest && e.target.closest('[data-g]'); if (!t || !CUR) return; e.stopPropagation(); CUR.onG(t.getAttribute('data-g')); }, true);
+
+/* --- Navigation --- */
 function tabs() {
   var n = $('tabs'); n.innerHTML = '';
   function add(id, label) { var b = mk('button', (S.tab === id ? 'on ' : '') + ((CHI[id] && chapterDone(CHI[id])) ? 'fin' : ''), label); b.onclick = function () { go(id); }; n.appendChild(b); }
-  add('start', '🏠 Start');
-  CH.forEach(function (c, i) { add(c.id, c.ico + ' ' + (i + 1)); });
-  add('probe', '📝 SKK-Probe');
+  add('start', '🏠 Start'); CH.forEach(function (c, i) { add(c.id, c.ico + ' ' + (i + 1)); }); add('probe', '🧠 Gemerkt?');
 }
 function go(id) {
-  S.tab = id; tabs(); render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+  S.tab = id; CUR = null; tabs(); render(); window.scrollTo({ top: 0, behavior: 'smooth' });
   var b = B(); if (!b) return;
-  if (CHI[id]) { b.setAufgabe(CHI[id].title + ': Arbeite die Aufgaben nacheinander durch und prüfe jede mit „Prüfen“.', [], 'kap-' + id, 'Lies zuerst den gelben Merkkasten, dann beginne mit Aufgabe 1.'); }
-  else if (id === 'probe') b.setAufgabe('SKK-Probe: Zwölf Fragen aus allen Kapiteln. Lies jede Frage in Ruhe und wähle eine Antwort.', [], 'probe', 'Du kannst nicht zurückgehen. Antworte so, wie du es in der SKK tun würdest.');
-  else b.setAufgabe('Wähle ein Kapitel. Jedes hat einen Merkkasten und Aufgaben. Am Ende kannst du dich in der SKK-Probe testen.', [], 'start', 'Beginne mit Kapitel 1 oder mit dem Thema, bei dem du dich unsicher fühlst.');
+  if (CHI[id]) b.setAufgabe(CHI[id].title + ': Spiele die Aufgaben nacheinander. Auf „Spiel starten“ erkläre ich dir die Regeln.', [], 'kap-' + id, 'Lies zuerst den gelben Merkkasten.');
+  else if (id === 'probe') b.setAufgabe('Was hast du dir gemerkt? Zwölf Fragen aus allen Kapiteln.', [], 'probe', 'Lies jede Frage in Ruhe.');
+  else b.setAufgabe('Wähle ein Kapitel. Jedes hat einen Merkkasten und Spiele.', [], 'start', 'Beginne mit Kapitel 1.');
 }
-function render() {
-  var v = $('view'); v.innerHTML = '';
-  if (S.tab === 'start') return renderStart(v);
-  if (S.tab === 'probe') return renderProbe(v);
-  renderChapter(v, CHI[S.tab]);
-}
+function render() { var v = $('view'); v.innerHTML = ''; if (S.tab === 'start') return renderStart(v); if (S.tab === 'probe') return renderProbe(v); renderChapter(v, CHI[S.tab]); }
 
-/* ================= Startseite ================= */
 function renderStart(v) {
-  var h = mk('div', 'card hello', '<div class="em">👓</div><div><p><b>Hallo, ich bin Herr Neumann.</b> Ich helfe dir bei der Vorbereitung auf die SKK.</p>' +
-    '<p>So geht es: Wähle ein Kapitel, lies den gelben Merkkasten und löse die Aufgaben. Mit „Prüfen“ sage ich dir, ob es stimmt. Wenn du nicht weiterkommst, tippe auf „Tipp“ oder auf mich. Markiere ein Wort, dann erkläre ich es dir.</p>' +
-    '<p>Am Ende wartet die SKK-Probe mit Fragen aus allen Kapiteln.</p></div>');
-  v.appendChild(h);
+  v.appendChild(mk('div', 'card hello', '<div class="em">👓</div><div><p><b>Hallo, ich bin Herr Neumann.</b> Ich helfe dir bei der Vorbereitung auf die SKK.</p><p>Jedes Kapitel hat einen Merkkasten und kleine Spiele. Auf „Spiel starten“ erkläre ich dir die Regeln, ich sage dir, ob es stimmt, und ich gebe dir Tipps. Markiere ein Wort, dann erkläre ich es dir.</p></div>'));
   v.appendChild(mk('h2', null, 'Wähle ein Kapitel'));
   var g = mk('div', 'chap');
   CH.forEach(function (c, i) {
-    var n = chapterCount(c), t = c.tasks.length, b = mk('button', null,
-      '<span class="ic">' + c.ico + '</span><b>' + (i + 1) + ' · ' + esc(c.title) + (n === t ? '<span class="badge">geschafft</span>' : '') + '</b><span class="s">' + esc(c.sub) + '</span>' +
-      '<div class="pbar"><i style="width:' + Math.round(100 * n / t) + '%"></i></div><span class="cnt">' + n + ' von ' + t + ' Aufgaben</span>');
+    var n = chapterCount(c), t = c.tasks.length, b = mk('button', null, '<span class="ic">' + c.ico + '</span><b>' + (i + 1) + ' · ' + esc(c.title) + (n === t ? '<span class="badge">geschafft</span>' : '') + '</b><span class="s">' + esc(c.sub) + '</span><div class="pbar"><i style="width:' + Math.round(100 * n / t) + '%"></i></div><span class="cnt">' + n + ' von ' + t + ' Spielen</span>');
     b.onclick = function () { go(c.id); }; g.appendChild(b);
   });
-  var p = mk('button', null, '<span class="ic">📝</span><b>SKK-Probe</b><span class="s">Zwölf gemischte Fragen aus allen Kapiteln. Erst üben, dann testen.</span><span class="cnt">Neue Fragen bei jeder Runde</span>');
-  p.onclick = function () { go('probe'); }; g.appendChild(p);
+  var p = mk('button', null, '<span class="ic">🧠</span><b>Was hast du dir gemerkt?</b><span class="s">Zwölf gemischte Fragen aus allen Kapiteln.</span><span class="cnt">Neue Fragen bei jeder Runde</span>'); p.onclick = function () { go('probe'); }; g.appendChild(p);
   v.appendChild(g);
-}
-
-/* ================= Kapitel ================= */
-var BILD = '';   // Inline-SVG der Karikatur (wird beim Start gesetzt)
-function figure(withSpots) {
-  return '<figure class="fig"><div class="spotbox" id="spotbox">' + BILD + '</div><figcaption>„So günstig!“ · Übungskarikatur für dieses Modul · Zeichner: N. N. · Tageszeitung (alle Angaben erfunden) · 2026</figcaption></figure>';
 }
 function renderChapter(v, c) {
   v.appendChild(mk('h2', null, c.ico + ' ' + esc(c.title) + (chapterDone(c) ? '<span class="badge">geschafft</span>' : '')));
   v.appendChild(mk('p', 'sub', esc(c.sub)));
   v.appendChild(mk('div', 'card merk', '<h3>📌 Das solltest du wissen</h3><ul>' + c.merk.map(function (m) { return '<li>' + m + '</li>'; }).join('') + '</ul>'));
+  if (c.id === 'kar') { var fc = mk('div', 'card', '<h3>🖼️ Die Übungskarikatur</h3><p class="sub" style="margin:0 0 6px">Tippe das Bild an, um es groß zu sehen.</p><figure class="fig" style="cursor:zoom-in"><div>' + BILD + '</div><figcaption>„Schnäppchenjagd“ · Übungskarikatur für dieses Modul · Zeichner: N. N. · Tageszeitung · 2026 (alle Angaben erfunden)</figcaption></figure>');
+    fc.querySelector('.fig div').onclick = function () { var o = mk('div', 'zoom', BILD + '<button class="btn">Schließen</button>'); o.onclick = function () { o.remove(); }; document.body.appendChild(o); }; v.appendChild(fc); }
   c.tasks.forEach(function (t, i) { v.appendChild(taskCard(t, i + 1)); });
-  var nx = CH[CH.indexOf(c) + 1], row = mk('div', 'row');
-  var b = mk('button', 'btn', nx ? 'Weiter zu Kapitel ' + (CH.indexOf(nx) + 1) + ' →' : 'Weiter zur SKK-Probe →'); b.onclick = function () { go(nx ? nx.id : 'probe'); };
-  row.appendChild(b); v.appendChild(row);
+  var nx = CH[CH.indexOf(c) + 1], row = mk('div', 'row'), b = mk('button', 'btn', nx ? 'Weiter zu Kapitel ' + (CH.indexOf(nx) + 1) + ' →' : 'Weiter zu „Was hast du dir gemerkt?“ →'); b.onclick = function () { go(nx ? nx.id : 'probe'); }; row.appendChild(b); v.appendChild(row);
 }
 
-function setFb(card, kind, html) { var f = card.querySelector('.fb'); f.className = 'fb show ' + kind; f.innerHTML = html; }
-function nm(t) { return '<b class="nm">Herr Neumann:</b> ' + t; }
-function outcome(t, card, ok, msg, extra) {
-  var b = B(); S.tries[t.id] = (S.tries[t.id] || 0) + (ok ? 0 : 1);
-  if (ok) {
-    if (!S.done[t.id]) { var first = !S.tries[t.id] && !card.dataset.help; S.done[t.id] = first ? 'first' : 'help'; if (first) { S.stars++; updateStars(); } }
-    card.classList.add('done'); if (b) b.richtig(t.id);
-    setFb(card, 'ok', nm('✓ ' + msg)); tabs();
-    var c = CHI[t.ch]; if (c && chapterDone(c) && !card.dataset.said) { card.dataset.said = 1; setTimeout(function () { nsay('<p class="kb-text"><b>Kapitel geschafft!</b> ' + esc(c.title) + ' sitzt. Weiter so, oder wiederhole noch eine Aufgabe, bei der du unsicher warst.</p>', 'proud', 6500); }, 900); }
-  } else {
-    if (b) b.falsch(t.id);
-    setFb(card, 'no', nm(msg));
-  }
-  if (!ok && S.tries[t.id] >= 2) { var s = card.querySelector('.showsol'); if (s) s.style.display = ''; }
-  if (extra) extra();
-}
-
+/* --- Spielkarte --- */
+var GAMES = {};
 function taskCard(t, nr) {
-  var card = mk('div', 'card task' + (S.done[t.id] ? ' done' : ''));
-  card.id = 'task-' + t.id;
-  card.innerHTML = '<div class="head"><span class="nr">' + nr + '</span><div class="q">' + t.q + '</div></div>' + (t.bild && t.type !== 'spots' ? figure() : '') +
-    '<div class="body"></div><div class="row"><button class="btn chk">Prüfen</button><button class="btn tip">💡 Tipp</button><button class="btn sec showsol" style="display:none">Lösung zeigen</button></div>' +
-    '<div class="fb" role="status"></div><div class="loesung"></div>';
-  var body = card.querySelector('.body'), W = W_TYPES[t.type](t, card, body);
-  var chk = card.querySelector('.chk');
-  if (W.auto) chk.style.display = 'none';
-  chk.onclick = function () { var r = W.check(); if (!r) return; if (r.skip) { setFb(card, 'neutral', nm(r.msg)); return; } outcome(t, card, r.ok, r.msg); };
-  card.querySelector('.tip').onclick = function () { tipFor(t, card); };
-  card.querySelector('.showsol').onclick = function () { card.dataset.help = 1; var l = card.querySelector('.loesung'); l.innerHTML = W.solution(); l.classList.add('show'); if (W.reveal) W.reveal(); };
-  card.addEventListener('pointerdown', function () { var b = B(); if (b) b.setAufgabe(plain(t.q), t.tips || [], t.id, ''); });
+  var card = mk('div', 'card task' + (S.done[t.id] ? ' done' : '')); card.id = 'task-' + t.id;
+  card.innerHTML = '<div class="head"><span class="nr">' + nr + '</span><div><div class="q">' + esc(t.title) + '</div><div class="q2">' + t.q + '</div></div></div><div class="stage"><button class="btn go">' + (S.done[t.id] ? '↻ Noch einmal spielen' : '▶ Spiel starten') + '</button></div><div class="row"><button class="btn tip tipb">💡 Tipp</button><button class="btn sec rulesb">❓ Regeln</button></div>';
+  var stage = card.querySelector('.stage'), c = makeCtx(t, card, stage);
+  card._c = c;
+  card.querySelector('.go').onclick = function () { stage.innerHTML = ''; c.start(); };
+  card.querySelector('.tipb').onclick = function () { CUR = c; c.tip(); };
+  card.querySelector('.rulesb').onclick = function () { CUR = c; c.rules(); };
   return card;
 }
-function plain(h) { var d = document.createElement('div'); d.innerHTML = h; return (d.textContent || '').replace(/\s+/g, ' ').trim(); }
-function tipFor(t, card) {
-  var b = B(); card.dataset.help = 1;
-  if (b) { b.setAufgabe(plain(t.q), t.tips || [], t.id, ''); b.tippNext(); }
-  else { var i = (card.dataset.tipi |= 0); setFb(card, 'neutral', nm('Tipp: ' + esc((t.tips || [])[Math.min(i, (t.tips || []).length - 1)] || 'Lies die Aufgabe noch einmal.'))); card.dataset.tipi = i + 1; }
+function makeCtx(t, card, stage) {
+  var c = { t: t, card: card, stage: stage, m: 0, helped: false, tipi: 0, started: false, finished: false, pend: null, sol: null, auto: null };
+  c.rules = function () { var b = B(); if (b) b.setAufgabe(plain(t.q), t.tips || [], t.id, ''); say('<b>So geht es:</b> ' + t.rules, 'interested', 0, c.went || !c.waitGo ? [] : [['go', 'Los geht’s']]); };
+  c.start = function () {
+    CUR = c; c.started = true; c.went = false; c.m = 0; c.helped = false; c.tipi = 0; c.finished = false;
+    var b = B(); if (b) b.setAufgabe(plain(t.q), t.tips || [], t.id, '');
+    var g = GAMES[t.game]; c.waitGo = !!g.waitGo; g.init(c, t.data || t);
+    if (c.waitGo) c.rules(); else say('<b>So geht es:</b> ' + t.rules, 'interested', 0);
+  };
+  c.good = function (msg, ms) { var b = B(); if (b) b.richtig(t.id); say('<b>Richtig.</b> ' + msg, 'happy', ms == null ? 7000 : ms); };
+  c.bad = function (msg) { c.m++; var btns = []; if (c.m >= 2 && t.tips && t.tips.length) btns.push(['tip', 'Tipp']); if (c.m >= 3 && c.sol) btns.push(['sol', 'Lösung zeigen']); say(msg, 'caring', 0, btns); var b = B(); if (b) b.falsch(t.id); };
+  c.win = function (msg) {
+    if (c.finished) return; c.finished = true; var first = c.m === 0 && !c.helped;
+    if (!S.done[t.id]) { S.done[t.id] = first ? 'first' : 'help'; if (first) { S.stars++; updateStars(); } }
+    card.classList.add('done'); tabs(); var b = B(); if (b) b.richtig(t.id);
+    var ch = CHI[t.ch], all = ch && chapterDone(ch);
+    say('<b>Geschafft!</b> ' + msg + (all ? '<br><br><b>Kapitel „' + esc(ch.title) + '“ ist komplett.</b> Du kannst es später noch einmal spielen.' : ''), 'proud', 0);
+  };
+  c.tip = function () {
+    var tp = t.tips || []; if (!tp.length) return say('Lies die Aufgabe noch einmal in Ruhe.', 'thinking', 0);
+    var i = Math.min(c.tipi, tp.length - 1); c.helped = true; c.tipi++;
+    say('<b>Tipp ' + (i + 1) + ' von ' + tp.length + '</b><br>' + esc(tp[i]), 'thinking', 0, i < tp.length - 1 ? [['tip', 'Noch ein Tipp']] : []);
+  };
+  c.onG = function (k) {
+    if (k === 'tip') c.tip(); else if (k === 'sol') { c.helped = true; say('<b>Lösung:</b> ' + (c.sol ? c.sol() : ''), 'interested', 0); }
+    else if (k === 'go') { if (c.went) return; c.went = true; var g = GAMES[t.game]; if (g.go) g.go(c); }
+    else if (k.indexOf('o:') === 0 && c.pend) { var p = c.pend, i = +k.slice(2); p.on(i); }
+  };
+  /* Frage in der Sprechblase: opts werden gemischt, a ist der Index der richtigen Antwort in opts */
+  c.ask = function (q, opts, a, why, onright, prefix) {
+    var o = shuffle(opts.map(function (x, i) { return { x: x, ok: i === a }; })), dead = {};
+    c.pend = { ci: o.map(function (z) { return z.ok; }).indexOf(true), on: function (i) {
+      if (dead[i]) return; if (o[i].ok) { c.pend = null; var bb = B(); if (bb) bb.richtig(t.id); onright('✓ ' + (why || 'Richtig.')); }
+      else { dead[i] = true; c.m++; show('Das stimmt nicht. ' + (c.m >= 2 && t.tips && t.tips.length ? '' : ''), true); var b = B(); if (b) b.falsch(t.id); }
+    } };
+    function show(pre, wrong) { say((pre ? '<b>' + pre + '</b><br><br>' : '') + q, wrong ? 'caring' : 'interested', 0, o.map(function (z, i) { return dead[i] ? null : ['o:' + i, z.x]; }).filter(Boolean).concat(wrong && c.m >= 2 && t.tips && t.tips.length ? [['tip', '💡 Tipp']] : [])); }
+    show(prefix || '', false);
+  };
+  return c;
 }
 
-/* ================= Aufgabentypen ================= */
-var W_TYPES = {};
+/* ===== Spiele 1: Postbote, Wer bin ich, Fehlerdetektiv, Textmarker, Silbenpuzzle ===== */
+GAMES.postbote = { init: function (c, d) {
+  var items = shuffle(d.items), i = 0, st = c.stage, n = d.houses.length;
+  st.innerHTML = '<div class="town">' + d.houses.map(function (h, k) { return '<button class="bld" data-b="' + k + '"><span class="e">' + h[0] + '</span><b>' + esc(h[1]) + '</b></button>'; }).join('') + '</div><div class="letter" id="ltr-' + c.t.id + '"></div><div class="dots"></div>';
+  var L = st.querySelector('.letter'), dots = st.querySelector('.dots');
+  function draw() { dots.innerHTML = items.map(function (_, k) { return '<i class="' + (k < i ? 'on' : '') + '"></i>'; }).join(''); if (i < items.length) { L.className = 'letter'; L.innerHTML = '✉️ ' + esc(items[i][0]); } }
+  draw(); c.sol = function () { return items.map(function (x) { return esc(x[0]) + ' → ' + esc(d.houses[x[1]][1]); }).join('<br>'); };
+  st.querySelectorAll('.bld').forEach(function (b) { b.onclick = function () {
+    if (i >= items.length || c.finished) return; var k = +b.dataset.b, it = items[i];
+    if (k === it[1]) { L.classList.add('fly'); i++; if (i >= items.length) { setTimeout(function () { L.innerHTML = '📬 Alle Briefe sind angekommen.'; L.className = 'letter'; }, 350); draw(); c.win(esc(it[2]) + ' Alle Briefe haben die richtige Adresse erreicht.'); } else { var pre = esc(it[2]); setTimeout(draw, 350); c.good(pre, 4500); } }
+    else c.bad(esc(d.wrong(it, d.houses[k][1])));
+  }; });
+  c.auto = function () { return new Promise(function (res) { (function step() { if (i >= items.length) return res(); st.querySelector('.bld[data-b="' + items[i][1] + '"]').click(); setTimeout(step, 420); })(); }); };
+} };
 
-/* --- Multiple Choice --- */
-W_TYPES.mc = function (t, card, body) {
-  var opts = shuffle(t.o.map(function (x, i) { return { x: x, ok: i === 0 }; })), sel = null, box = mk('div', 'opts');
-  opts.forEach(function (o) {
-    var b = mk('button', 'opt', esc(o.x)); o.el = b;
-    b.onclick = function () { if (b.classList.contains('bad') || card.classList.contains('done')) return; opts.forEach(function (p) { p.el.classList.remove('sel'); }); b.classList.add('sel'); sel = o; };
-    box.appendChild(b);
+GAMES.wer = { waitGo: true, init: function (c, d) {
+  var r = 0, k = 0, pts = 0, st = c.stage, solved = {};
+  st.innerHTML = '<div class="werhead">Runde <b id="wr-' + c.t.id + '">1</b> von ' + d.rounds.length + ' · Punkte: <b id="wp-' + c.t.id + '">0</b></div><div class="chips"></div><div class="row"><button class="btn sec hint">Nächster Hinweis</button></div>';
+  var chips = st.querySelector('.chips'), RW = st.querySelector('#wr-' + c.t.id), PW = st.querySelector('#wp-' + c.t.id);
+  d.terms.forEach(function (w) { var b = mk('button', 'chip', esc(w)); b.dataset.w = w; chips.appendChild(b); });
+  function clue() { var R = d.rounds[r]; if (k >= R.clues.length) { say('Mehr Hinweise habe ich nicht. Rate mit dem, was du hast.', 'interested', 0); return; } say('<b>Hinweis ' + (k + 1) + ' von ' + R.clues.length + '</b><br>' + esc(R.clues[k]), 'interested', 0); k++; }
+  function nextRound() { r++; k = 0; if (r >= d.rounds.length) return; RW.textContent = r + 1; setTimeout(clue, 0); }
+  st.querySelector('.hint').onclick = clue;
+  chips.addEventListener('click', function (e) {
+    var b = e.target.closest('.chip'); if (!b || b.disabled || c.finished) return; if (k === 0) return say('Hol dir zuerst einen Hinweis, dann rätst du.', 'interested', 0);
+    var R = d.rounds[r];
+    if (b.dataset.w === R.a) { var p = Math.max(1, 4 - k); pts += p; PW.textContent = pts; b.disabled = true; b.classList.add('good'); var m = '„' + R.a + '“ ist richtig. ' + R.why;
+      if (r + 1 >= d.rounds.length) c.win(m + ' Du hast ' + pts + ' Punkte gesammelt.'); else { say('<b>Richtig.</b> ' + esc(m.replace(/^„.*?“ ist richtig\. /, '')) + '<br><br>Nächste Runde: Ich habe einen neuen Begriff.', 'happy', 0); var bb = B(); if (bb) bb.richtig(c.t.id); nextRound(); } }
+    else { b.classList.add('bad'); setTimeout(function () { b.classList.remove('bad'); }, 600); c.bad('Nein, „' + esc(b.dataset.w) + '“ bin ich nicht. Hol dir noch einen Hinweis oder überlege weiter.'); }
   });
-  body.appendChild(box);
-  return {
-    check: function () {
-      if (card.classList.contains('done')) return null;
-      if (!sel) return { ok: false, skip: true, msg: 'Wähle zuerst eine Antwort aus.' };
-      if (sel.ok) { sel.el.classList.remove('sel'); sel.el.classList.add('good'); return { ok: true, msg: t.why }; }
-      sel.el.classList.remove('sel'); sel.el.classList.add('bad'); sel = null;
-      return { ok: false, msg: 'Das stimmt nicht. Die rot markierte Antwort fällt weg. Lies die Frage noch einmal.' };
-    },
-    solution: function () { return '<p><b>Richtige Antwort:</b> ' + esc(t.o[0]) + '</p><p>' + esc(t.why) + '</p>'; },
-    reveal: function () { opts.forEach(function (o) { if (o.ok) o.el.classList.add('good'); }); }
-  };
-};
+  c.sol = function () { return esc(d.rounds[r].a); }; c.first = function () { if (k === 0 && r === 0) clue(); };
+  c.auto = function () { return new Promise(function (res) { (function step() { if (c.finished) return res(); if (r < d.rounds.length) { if (k === 0) clue(); chips.querySelector('.chip[data-w="' + d.rounds[r].a + '"]').click(); } setTimeout(step, 400); })(); }); };
+}, go: function (c) { c.first(); } };
 
-/* --- Zeilen mit Auswahlknöpfen (Sortieren, Wahr/Falsch) --- */
-function rowsWidget(t, card, body, cats, items) {
-  var rows = shuffle(items.map(function (it) { return { text: it[0], c: it[1], why: it[2] || null, v: null }; }));
-  rows.forEach(function (r) {
-    var el = mk('div', 'mrow'), tx = mk('div', 't', esc(r.text)), seg = mk('div', 'seg');
-    cats.forEach(function (name, ci) { var b = mk('button', null, esc(name)); b.onclick = function () { if (card.classList.contains('done')) return; r.v = ci; [].forEach.call(seg.children, function (x, k) { x.classList.toggle('sel', k === ci); }); el.className = 'mrow'; }; seg.appendChild(b); });
-    el.appendChild(tx); el.appendChild(seg); r.el = el; body.appendChild(el);
-  });
-  function explain(r) { if (r.why && !r.el.querySelector('.why')) r.el.appendChild(mk('div', 'why', '→ ' + esc(r.why))); }
-  return {
-    check: function () {
-      if (card.classList.contains('done')) return null;
-      if (rows.some(function (r) { return r.v == null; })) return { ok: false, skip: true, msg: 'Du hast noch nicht alles zugeordnet. Beantworte jede Zeile.' };
-      var bad = 0; rows.forEach(function (r) { var ok = r.v === r.c; r.el.className = 'mrow ' + (ok ? 'good' : 'bad'); if (!ok) bad++; });
-      if (!bad) { rows.forEach(explain); return { ok: true, msg: t.why || 'Alle Zeilen stimmen.' }; }
-      return { ok: false, msg: bad === 1 ? 'Eine Zeile stimmt noch nicht (rot markiert). Überlege noch einmal.' : bad + ' Zeilen stimmen noch nicht (rot markiert). Überlege noch einmal.' };
-    },
-    solution: function () { return rows.map(function (r) { return '<p><b>' + esc(r.text) + '</b><br>→ ' + esc(cats[r.c]) + (r.why ? ' · ' + esc(r.why) : '') + '</p>'; }).join(''); },
-    reveal: function () { rows.forEach(function (r) { r.el.className = 'mrow good'; [].forEach.call(r.el.querySelectorAll('.seg button'), function (x, k) { x.classList.toggle('sel', k === r.c); }); }); }
+GAMES.find = { init: function (c, d) {
+  var rows = d.items.map(function (it) { return { x: it[0], bad: it[1], why: it[2], on: false }; }), box = mk('div', 'opts');
+  rows.forEach(function (r) { var b = mk('button', 'opt', esc(r.x)); r.el = b; b.onclick = function () { if (c.finished) return; r.on = !r.on; b.classList.toggle('sel', r.on); }; box.appendChild(b); });
+  c.stage.appendChild(box); var go = mk('button', 'btn', 'Meine Fehler melden'); c.stage.appendChild(mk('div', 'row')).appendChild(go);
+  var w = rows.filter(function (r) { return r.bad; }).length;
+  c.sol = function () { return rows.filter(function (r) { return r.bad; }).map(function (r) { return '„' + esc(r.x) + '“ → ' + esc(r.why); }).join('<br>'); };
+  go.onclick = function () {
+    if (c.finished) return; var n = rows.filter(function (r) { return r.on; }).length;
+    if (!n) return say('Du hast noch keinen Satz markiert. Lies genauer.', 'interested', 0);
+    var wrong = rows.filter(function (r) { return r.on !== r.bad; });
+    if (!wrong.length) { rows.forEach(function (r) { if (r.bad) r.el.classList.add('good'); r.el.classList.remove('sel'); }); c.win(rows.filter(function (r) { return r.bad; }).map(function (r) { return esc(r.why); }).join(' ')); }
+    else c.bad('Das passt noch nicht. Im Text stecken ' + w + ' Fehler, du hast ' + n + ' Sätze markiert. Prüfe jeden markierten Satz noch einmal und frage dich, ob er wirklich falsch ist.');
   };
-}
-W_TYPES.sort = function (t, card, body) { return rowsWidget(t, card, body, t.cats, t.items); };
-W_TYPES.tf = function (t, card, body) { return rowsWidget(t, card, body, ['Stimmt', 'Stimmt nicht'], t.items.map(function (it) { return [it[0], it[1] ? 0 : 1, it[2]]; })); };
+  c.auto = function () { rows.forEach(function (r) { if (r.bad) r.el.click(); }); go.click(); return Promise.resolve(); };
+} };
 
-/* --- Zuordnen per Auswahlfeld --- */
-W_TYPES.match = function (t, card, body) {
-  var defs = shuffle(t.rows.map(function (r) { return r[1]; }).concat(t.extra || [])), sels = [];
-  t.rows.forEach(function (r) {
-    var p = mk('div', 'pair', '<b>' + esc(r[0]) + '</b>'), s = mk('select');
-    s.innerHTML = '<option value="">– Erklärung wählen –</option>' + defs.map(function (d) { return '<option value="' + esc(d).replace(/"/g, '&quot;') + '">' + esc(d) + '</option>'; }).join('');
-    s.onchange = function () { p.className = 'pair'; };
-    p.appendChild(s); body.appendChild(p); sels.push({ s: s, p: p, a: r[1] });
-  });
-  return {
-    check: function () {
-      if (card.classList.contains('done')) return null;
-      if (sels.some(function (x) { return !x.s.value; })) return { ok: false, skip: true, msg: 'Wähle für jeden Begriff eine Erklärung aus.' };
-      var bad = 0; sels.forEach(function (x) { var ok = x.s.value === x.a; x.p.className = 'pair ' + (ok ? 'good' : 'bad'); if (!ok) bad++; });
-      var used = {}; sels.forEach(function (x) { used[x.s.value] = (used[x.s.value] || 0) + 1; });
-      if (!bad) return { ok: true, msg: 'Alle Zuordnungen stimmen.' };
-      var dup = Object.keys(used).some(function (k) { return used[k] > 1; });
-      return { ok: false, msg: (bad === 1 ? 'Eine Zuordnung stimmt nicht (rot).' : bad + ' Zuordnungen stimmen nicht (rot).') + (dup ? ' Jede Erklärung passt nur zu einem Begriff.' : '') + ' Lies die Erklärungen noch einmal genau.' };
-    },
-    solution: function () { return t.rows.map(function (r) { return '<p><b>' + esc(r[0]) + ':</b> ' + esc(r[1]) + '</p>'; }).join(''); },
-    reveal: function () { sels.forEach(function (x) { x.s.value = x.a; x.p.className = 'pair good'; }); }
+GAMES.marker = { init: function (c, d) {
+  var pen = 0, st = c.stage, sents = shuffle(d.items.map(function (x, i) { return { x: x[0], a: x[1], v: null, why: x[2] }; }));
+  st.innerHTML = '<div class="pens">' + d.cats.map(function (n, i) { return '<button class="pen p' + i + (i === 0 ? ' sel' : '') + '" data-p="' + i + '">' + esc(n) + '</button>'; }).join('') + '</div><div class="paper2"><b>' + esc(d.title) + '</b><p></p></div><div class="row"><button class="btn done-btn">Markierung abgeben</button></div>';
+  st.querySelectorAll('.pen').forEach(function (b) { b.onclick = function () { pen = +b.dataset.p; st.querySelectorAll('.pen').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+  var P2 = st.querySelector('.paper2 p');
+  sents.forEach(function (s) { var sp = mk('span', 'mk', esc(s.x) + ' '); s.el = sp; sp.onclick = function () { if (c.finished) return; s.v = s.v === pen ? null : pen; sp.className = 'mk' + (s.v == null ? '' : ' c' + s.v); }; P2.appendChild(sp); });
+  c.sol = function () { return sents.map(function (s) { return esc(s.x) + ' → ' + esc(d.cats[s.a]); }).join('<br>'); };
+  st.querySelector('.done-btn').onclick = function () {
+    if (c.finished) return; var un = sents.filter(function (s) { return s.v == null; }).length; if (un) return say('Es sind noch ' + un + ' Sätze nicht markiert. Jeder Satz gehört zu einer Dimension.', 'interested', 0);
+    var bad = sents.filter(function (s) { return s.v !== s.a; });
+    if (!bad.length) c.win('Alle Sätze sind der richtigen Dimension zugeordnet. So liest du einen politischen Text in der SKK.');
+    else { sents.forEach(function (s) { s.el.classList.toggle('wrongmk', s.v !== s.a); }); c.bad(bad.length + (bad.length === 1 ? ' Satz ist' : ' Sätze sind') + ' falsch markiert (rot unterstrichen). Frage dich bei jedem: Geht es um die Sache selbst (Inhalt), um Zuständigkeit und Regeln (Form) oder um Gruppen und ihre Interessen (Prozess)?'); }
   };
-};
+  c.auto = function () { sents.forEach(function (s) { st.querySelector('.pen[data-p="' + s.a + '"]').click(); s.el.click(); }); st.querySelector('.done-btn').click(); return Promise.resolve(); };
+} };
 
-/* --- Lückentext --- */
-W_TYPES.gap = function (t, card, body) {
-  var answers = [], bank = []; t.parts.forEach(function (p) { if (typeof p !== 'string') answers.push(p.a); });
-  bank = shuffle(answers.concat(t.bank || []).filter(function (x, i, a) { return a.indexOf(x) === i; }));
-  var wrap = mk('div', 'cl'), sels = [];
-  t.parts.forEach(function (p) {
-    if (typeof p === 'string') { wrap.appendChild(document.createTextNode(p)); return; }
-    var s = mk('select'); s.innerHTML = '<option value="">…</option>' + bank.map(function (d) { return '<option>' + esc(d) + '</option>'; }).join('');
-    s.onchange = function () { s.className = ''; }; wrap.appendChild(s); sels.push({ s: s, a: p.a });
-  });
-  body.appendChild(wrap);
-  if (t.bild) body.appendChild(mk('p', 'hint', 'Die Angaben findest du unter der Karikatur und im Bild.'));
-  return {
-    check: function () {
-      if (card.classList.contains('done')) return null;
-      if (sels.some(function (x) { return !x.s.value; })) return { ok: false, skip: true, msg: 'Fülle zuerst alle Lücken aus.' };
-      var bad = 0; sels.forEach(function (x) { var ok = x.s.value === x.a; x.s.className = ok ? 'good' : 'bad'; if (!ok) bad++; });
-      return bad ? { ok: false, msg: (bad === 1 ? 'Eine Lücke ist noch falsch (rot).' : bad + ' Lücken sind noch falsch (rot).') + ' Lies den Satz noch einmal im Ganzen.' } : { ok: true, msg: 'Alle Lücken stimmen.' };
-    },
-    solution: function () { return '<p>' + t.parts.map(function (p) { return typeof p === 'string' ? esc(p) : '<b>' + esc(p.a) + '</b>'; }).join('') + '</p>'; },
-    reveal: function () { sels.forEach(function (x) { x.s.value = x.a; x.s.className = 'good'; }); }
+GAMES.build = { init: function (c, d) {
+  var rows = d.words.map(function (w) { var el = mk('div', 'pair'), strip = mk('div', 'syls'), pool = mk('div', 'syls'); var r = { a: w[1].join(''), syl: shuffle(w[1].map(function (x, i) { return { x: x, i: i }; })), picked: [], el: el, strip: strip, pool: pool }; el.appendChild(mk('div', null, '<b>' + esc(w[0]) + '</b>')); strip.className = 'syls strip'; el.appendChild(strip); el.appendChild(pool); c.stage.appendChild(el); return r; });
+  function draw(r) { r.pool.innerHTML = ''; r.strip.innerHTML = ''; r.syl.filter(function (s) { return r.picked.indexOf(s) < 0; }).forEach(function (s) { var b = mk('button', 'syl', esc(s.x)); b.onclick = function () { if (c.finished) return; r.picked.push(s); r.el.className = 'pair'; draw(r); }; r.pool.appendChild(b); }); r.picked.forEach(function (s) { var b = mk('button', 'syl on', esc(s.x)); b.onclick = function () { if (c.finished) return; r.picked.splice(r.picked.indexOf(s), 1); r.el.className = 'pair'; draw(r); }; r.strip.appendChild(b); }); }
+  rows.forEach(draw); var go = mk('button', 'btn', 'Begriffe prüfen lassen'); c.stage.appendChild(mk('div', 'row')).appendChild(go);
+  c.sol = function () { return rows.map(function (r) { return '<b>' + esc(r.a) + '</b>'; }).join(', '); };
+  go.onclick = function () {
+    if (c.finished) return; if (rows.some(function (r) { return r.picked.length < r.syl.length; })) return say('Setze bei jedem Begriff erst alle Silben ein.', 'interested', 0);
+    var bad = 0; rows.forEach(function (r) { var ok = r.picked.map(function (s) { return s.x; }).join('') === r.a; r.el.className = 'pair ' + (ok ? 'good' : 'bad'); if (!ok) bad++; });
+    if (!bad) c.win('Alle Fachbegriffe stimmen: ' + rows.map(function (r) { return esc(r.a); }).join(', ') + '.'); else c.bad((bad === 1 ? 'Ein Begriff stimmt' : bad + ' Begriffe stimmen') + ' noch nicht (rot). Lies die Erklärung noch einmal und setze die Silben neu.');
   };
-};
+  c.auto = function () { rows.forEach(function (r) { r.syl.slice().sort(function (a, b) { return a.i - b.i; }).forEach(function (s) { r.pool.querySelectorAll('.syl').forEach(function (b) { if (b.textContent === s.x && !b._u) { } }); }); r.picked = r.syl.slice().sort(function (a, b) { return a.i - b.i; }); draw(r); }); go.click(); return Promise.resolve(); };
+} };
 
-/* --- Reihenfolge --- */
-W_TYPES.order = function (t, card, body) {
-  var items = t.items.map(function (x, i) { return { x: x, i: i }; }), pool = mk('div', 'pool'), seq = mk('div', 'seq'), picked = [];
-  var wrap = mk('div', 'ordwrap'); wrap.appendChild(mk('h4', null, 'Zur Auswahl (antippen):')); wrap.appendChild(pool); wrap.appendChild(mk('h4', null, 'Deine Reihenfolge (zum Entfernen antippen):')); wrap.appendChild(seq); body.appendChild(wrap);
-  var order = shuffle(items);
+/* ===== Spiele 2: Waage, Wortwolke, Frage-Runde in der Sprechblase, Smartphone-Röntgen, Fließband, Just-in-time-Simulator ===== */
+GAMES.waage = { init: function (c, d) {
+  var st = c.stage, cards = shuffle(d.items), sel = null, cnt = [0, 0];
+  st.innerHTML = '<div class="scale"><div class="beam" id="bm-' + c.t.id + '"></div><div class="pans"><button class="pan" data-s="0"><b>' + esc(d.sides[0]) + '</b><span class="stack"></span></button><button class="pan" data-s="1"><b>' + esc(d.sides[1]) + '</b><span class="stack"></span></button></div></div><div class="hand"></div>';
+  var beam = st.querySelector('.beam'), hand = st.querySelector('.hand'), pans = st.querySelectorAll('.pan');
+  function tilt() { var a = Math.max(-14, Math.min(14, (cnt[1] - cnt[0]) * 4)); beam.style.transform = 'rotate(' + a + 'deg)'; }
+  cards.forEach(function (it) { var b = mk('button', 'wcard', esc(it[0])); it.el = b; b.onclick = function () { if (c.finished || it.placed) return; cards.forEach(function (x) { if (x.el) x.el.classList.remove('sel'); }); b.classList.add('sel'); sel = it; }; hand.appendChild(b); });
+  pans.forEach(function (p) { p.onclick = function () {
+    if (!sel || c.finished) return say('Tippe zuerst eine Karte an, dann die Waagschale.', 'interested', 0); var s = +p.dataset.s, it = sel;
+    if (s === it[1]) { it.placed = true; it.el.remove(); cnt[s]++; p.querySelector('.stack').appendChild(mk('i', 'w', '●')); tilt(); sel = null; var left = cards.filter(function (x) { return !x.placed; }).length; if (!left) c.win(esc(it[2]) + ' Am Ende halten sich Chancen und Risiken die Waage. Beides gehört zur Globalisierung.'); else c.good(esc(it[2]), 4500); }
+    else { it.el.classList.remove('sel'); sel = null; c.bad(esc(it[2]) + ' Das gehört auf die andere Seite.'); }
+  }; });
+  c.sol = function () { return cards.filter(function (x) { return !x.placed; }).map(function (x) { return esc(x[0]) + ' → ' + esc(d.sides[x[1]]); }).join('<br>'); };
+  c.auto = function () { return new Promise(function (res) { (function step() { var it = cards.filter(function (x) { return !x.placed; })[0]; if (!it) return res(); it.el.click(); pans[it[1]].click(); setTimeout(step, 100); })(); }); };
+} };
+
+GAMES.wort = { init: function (c, d) {
+  var st = c.stage, sel = null, gaps = [], html = '', bank = shuffle(d.parts.filter(function (p) { return typeof p !== 'string'; }).map(function (p) { return p.a; }).concat(d.bank || []));
+  var wrap = mk('div', 'cl'), cloud = mk('div', 'chips');
+  d.parts.forEach(function (p) { if (typeof p === 'string') return wrap.appendChild(document.createTextNode(p)); var g = mk('button', 'gap', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'); g.onclick = function () { if (c.finished) return; if (sel) { var o = gaps.filter(function (x) { return x.w === sel.dataset.w; })[0]; if (o) { o.w = null; o.el.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; o.el.className = 'gap'; if (o.chip) o.chip.classList.remove('used'); } var gg = gaps.filter(function (x) { return x.el === g; })[0]; if (gg.chip) gg.chip.classList.remove('used'); gg.w = sel.dataset.w; gg.chip = sel; g.textContent = gg.w; g.className = 'gap on'; sel.classList.add('used'); sel.classList.remove('sel'); sel = null; } else { var gx = gaps.filter(function (x) { return x.el === g; })[0]; if (gx.w) { gx.chip.classList.remove('used'); gx.w = null; g.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; g.className = 'gap'; } } }; gaps.push({ el: g, a: p.a, w: null, chip: null }); wrap.appendChild(g); });
+  bank.forEach(function (w) { var b = mk('button', 'chip', esc(w)); b.dataset.w = w; b.onclick = function () { if (c.finished || b.classList.contains('used')) return; if (sel) sel.classList.remove('sel'); sel = b; b.classList.add('sel'); }; cloud.appendChild(b); });
+  st.appendChild(cloud); st.appendChild(wrap); var go = mk('button', 'btn', 'Text prüfen lassen'); st.appendChild(mk('div', 'row')).appendChild(go);
+  c.sol = function () { return d.parts.map(function (p) { return typeof p === 'string' ? esc(p) : '<b>' + esc(p.a) + '</b>'; }).join(''); };
+  go.onclick = function () { if (c.finished) return; if (gaps.some(function (g) { return !g.w; })) return say('Es sind noch Lücken leer. Tippe ein Wort an und danach eine Lücke.', 'interested', 0); var bad = 0; gaps.forEach(function (g) { var ok = g.w === g.a; g.el.className = 'gap on ' + (ok ? 'good' : 'bad'); if (!ok) bad++; }); if (!bad) c.win(d.win); else c.bad((bad === 1 ? 'Eine Lücke ist' : bad + ' Lücken sind') + ' noch falsch (rot). Lies den Satz um die Lücke herum und überlege, welche Dimension gemeint ist. Tippe ein falsches Wort in der Lücke an, um es zu entfernen.'); };
+  c.auto = function () { gaps.forEach(function (g) { cloud.querySelectorAll('.chip').forEach(function (ch) { if (ch.dataset.w === g.a && !ch.classList.contains('used')) { ch.click(); g.el.click(); } }); }); go.click(); return Promise.resolve(); };
+} };
+
+/* Frage-Runde: Herr Neumann stellt die Fragen, die Antworten stehen als Knöpfe in seiner Sprechblase */
+GAMES.quiz = { waitGo: true, init: function (c, d) {
+  c.stage.innerHTML = '<div class="dots"></div><div class="row"><button class="btn sec again">Aktuelle Frage wiederholen</button></div>'; c.qi = 0; c.d = d; c.dots = c.stage.querySelector('.dots');
+  c.stage.querySelector('.again').onclick = function () { CUR = c; if (c.started && c.curAsk) c.curAsk(); };
+  c.sol = function () { var q = d.qs[c.qi]; return q ? esc(q.opts[q.a]) : ''; };
+  c.draw = function () { c.dots.innerHTML = d.qs.map(function (_, k) { return '<i class="' + (k < c.qi ? 'on' : '') + '"></i>'; }).join(''); };
+  c.draw();
+}, go: function (c) {
+  var d = c.d;
+  function ask(prefix) { var q = d.qs[c.qi]; c.curAsk = function () { c.ask('<b>Frage ' + (c.qi + 1) + ' von ' + d.qs.length + '</b><br>' + q.q, q.opts, q.a, q.why, next); }; c.ask('<b>Frage ' + (c.qi + 1) + ' von ' + d.qs.length + '</b><br>' + q.q, q.opts, q.a, q.why, next, prefix); }
+  function next(pre) { c.qi++; c.draw(); if (c.qi >= d.qs.length) return c.win(pre.replace('✓ ', '') + ' ' + d.win); ask(pre); }
+  ask('');
+  c.auto = function () { return new Promise(function (res) { (function step() { if (c.finished) return res(); if (c.pend) document.querySelector('[data-g="o:' + c.pend.ci + '"]') ? document.querySelector('[data-g="o:' + c.pend.ci + '"]').click() : c.onG('o:' + c.pend.ci); setTimeout(step, 150); })(); }); };
+} };
+
+GAMES.roentgen = { waitGo: false, init: function (c, d) {
+  var st = c.stage, left = d.parts.length, cur = null;
+  st.innerHTML = '<div class="phonewrap"><svg viewBox="0 0 300 340" class="phone"><rect x="70" y="8" width="160" height="324" rx="26" fill="#2b2f3a" stroke="#111" stroke-width="3"/>' + d.parts.map(function (p, i) { return '<g class="part" data-i="' + i + '" tabindex="0" role="button" aria-label="Bauteil ' + (i + 1) + '"><rect x="' + p.r[0] + '" y="' + p.r[1] + '" width="' + p.r[2] + '" height="' + p.r[3] + '" rx="8" fill="' + p.col + '" stroke="#fff" stroke-width="2.5"/><text x="' + (p.r[0] + p.r[2] / 2) + '" y="' + (p.r[1] + p.r[3] / 2 + 6) + '" text-anchor="middle" font-size="17" fill="#111">' + (i + 1) + '</text></g>'; }).join('') + '</svg><div class="dots"></div></div>';
+  var dots = st.querySelector('.dots'), solved = {};
+  function draw() { dots.innerHTML = d.parts.map(function (_, k) { return '<i class="' + (solved[k] ? 'on' : '') + '"></i>'; }).join(''); }
+  draw(); c.sol = function () { return d.parts.filter(function (p, i) { return !solved[i]; }).map(function (p) { return esc(p.name) + ': ' + esc(p.opts[p.a]); }).join('<br>'); };
+  function open(i) { if (solved[i] || c.finished) return; var p = d.parts[i]; cur = i; c.ask('<b>Bauteil ' + (i + 1) + '</b><br>' + p.q, p.opts, p.a, p.why, function (pre) { solved[i] = true; left--; st.querySelector('.part[data-i="' + i + '"] rect').setAttribute('fill', '#7fd39a'); draw(); if (!left) c.win(pre.replace('✓ ', '') + ' Du kennst jetzt die wichtigsten Bauteile und Rohstoffe.'); else say('<b>' + esc(pre) + '</b><br><br>Tippe das nächste Bauteil an.', 'happy', 0); }); }
+  st.querySelectorAll('.part').forEach(function (g) { g.onclick = function () { open(+g.dataset.i); }; g.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') open(+g.dataset.i); }; });
+  c.auto = function () { return new Promise(function (res) { (function step() { if (c.finished) return res(); if (c.pend) c.onG('o:' + c.pend.ci); else { var i = d.parts.findIndex(function (p, k) { return !solved[k]; }); if (i >= 0) open(i); } setTimeout(step, 150); })(); }); };
+} };
+
+GAMES.band = { init: function (c, d) {
+  var st = c.stage, order = d.items, nx = 0, cards = shuffle(order.map(function (x, i) { return { x: x, i: i }; }));
+  st.innerHTML = '<div class="belt"><div class="track">' + cards.concat(cards).map(function (z) { return '<button class="bcard" data-i="' + z.i + '">' + esc(z.x) + '</button>'; }).join('') + '</div></div><div class="done-strip"></div>';
+  var strip = st.querySelector('.done-strip'), track = st.querySelector('.track');
+  c.sol = function () { return order.map(function (x, i) { return (i + 1) + '. ' + esc(x); }).join('<br>'); };
+  track.addEventListener('click', function (e) { var b = e.target.closest('.bcard'); if (!b || c.finished) return; var i = +b.dataset.i;
+    if (i === nx) { track.querySelectorAll('.bcard[data-i="' + i + '"]').forEach(function (x) { x.classList.add('gone'); }); strip.appendChild(mk('span', 'sdone', (nx + 1) + '. ' + esc(order[nx]))); nx++; if (nx >= order.length) c.win(d.win); else c.good(esc(d.why[nx - 1]) + ' Welcher Schritt folgt jetzt?', 4500); }
+    else c.bad('Der Schritt „' + esc(order[i]) + '“ kommt noch nicht dran. ' + (i > nx ? 'Davor muss noch etwas passieren.' : '')); });
+  c.auto = function () { return new Promise(function (res) { (function step() { if (nx >= order.length) return res(); track.querySelector('.bcard[data-i="' + nx + '"]').click(); setTimeout(step, 100); })(); }); };
+} };
+
+GAMES.jit = { waitGo: true, init: function (c, d) {
+  var st = c.stage, ran = {}, run = false; c.d = d;
+  st.innerHTML = '<div class="jit"><div class="strat" data-s="0"><b>🏭 Kleines Lager</b><span>„Just-in-time“: Teile kommen genau dann an, wenn sie gebraucht werden.</span><button class="btn runb" data-s="0">Sechs Wochen simulieren</button><div class="weeks" id="wk0-' + c.t.id + '"></div><div class="kost" id="ko0-' + c.t.id + '">Lagerkosten: –</div></div><div class="strat" data-s="1"><b>🏬 Großes Lager</b><span>Die Fabrik hat Vorräte für mehrere Wochen.</span><button class="btn runb" data-s="1">Sechs Wochen simulieren</button><div class="weeks" id="wk1-' + c.t.id + '"></div><div class="kost" id="ko1-' + c.t.id + '">Lagerkosten: –</div></div></div>';
+  c.auto = function () { c.fast = true; return new Promise(function (res) { var rb = st.querySelectorAll('.runb'); rb[0].click(); var iv = setInterval(function () { if (!run && ran[0] && !ran[1]) rb[1].click(); if (c.pend) c.onG('o:' + c.pend.ci); if (c.finished) { clearInterval(iv); res(); } }, 80); }); };
+  c.sol = function () { return 'Starte beide Simulationen. Dann siehst du: Das kleine Lager ist günstig, aber bei einem Hafenstreik steht die Produktion still. Das große Lager ist teurer, aber sicherer.'; };
+  st.querySelectorAll('.runb').forEach(function (b) { b.onclick = function () {
+    if (run || c.finished) return; var s = +b.dataset.s; if (ran[s]) return; run = true; var W = st.querySelector('#wk' + s + '-' + c.t.id), K = st.querySelector('#ko' + s + '-' + c.t.id), w = 0, cost = 0; W.innerHTML = '';
+    var t = setInterval(function () { w++; var strike = w === 3 || w === 4, stop = strike && s === 0; cost += s === 0 ? 1 : 4; W.appendChild(mk('span', 'wk ' + (stop ? 'stop' : 'ok'), (stop ? '⛔' : '✅') + '<small>Woche ' + w + (strike ? '<br>Hafenstreik' : '') + '</small>')); K.textContent = 'Lagerkosten: ' + cost + ' Euro-Einheiten'; if (w >= 6) { clearInterval(t); ran[s] = true; run = false; if (ran[0] && ran[1]) { setTimeout(question, 600); } else say(s === 0 ? 'Beim kleinen Lager sind in Woche 3 und 4 die Teile ausgeblieben. Die Produktion stand still. Starte jetzt das große Lager.' : 'Das große Lager hat den Streik überbrückt, aber die Lagerkosten sind viel höher. Starte jetzt das kleine Lager.', 'interested', 0); } }, c.fast ? 10 : 450);
+  }; });
+  function question() { c.ask('Jetzt bist du dran, Chef: <b>Warum nutzen viele Firmen trotzdem das Just-in-time-Prinzip?</b>', d.opts, 0, d.why, function (pre) { c.win(pre.replace('✓ ', '') + ' Das Prinzip spart Geld und macht die Lieferkette zugleich anfällig. Das ist die Kernaussage für deine SKK.'); }); }
+}, go: function (c) { say('Starte die erste Simulation mit dem Knopf im Spiel.', 'interested', 0); },
+  autoSetup: 1 };
+
+/* Duell: Aussage steht im Modul, Antwort per Knopf, Rückmeldung nur in der Sprechblase */
+GAMES.duell = { init: function (c, d) {
+  var st = c.stage, qi = 0, lock = false, ans = function (q) { return q.opts[q.a]; };
+  (function () { var qs, n = 0; do { qs = shuffle(d.qs).slice(0, d.n || d.qs.length); n++; var kinds = {}; qs.forEach(function (q) { kinds[ans(q)] = 1; }); if (Object.keys(kinds).length >= 2) break; } while (n < 100); d = { qs: qs, fixed: d.fixed, defs: d.defs, win: d.win }; })();
+  st.innerHTML = '<div class="dots"></div><div class="scene duq"></div><div class="two duo"></div>';
+  var dots = st.querySelector('.dots'), qb = st.querySelector('.duq'), ob = st.querySelector('.duo');
   function draw() {
-    pool.innerHTML = ''; seq.innerHTML = '';
-    order.filter(function (o) { return picked.indexOf(o) < 0; }).forEach(function (o) { var b = mk('button', 'ocard', esc(o.x)); b.onclick = function () { if (card.classList.contains('done')) return; picked.push(o); draw(); }; pool.appendChild(b); });
-    picked.forEach(function (o) { var b = mk('button', 'ocard', esc(o.x)); o.el = b; b.onclick = function () { if (card.classList.contains('done')) return; picked.splice(picked.indexOf(o), 1); draw(); }; seq.appendChild(b); });
+    dots.innerHTML = d.qs.map(function (_, k) { return '<i class="' + (k < qi ? 'on' : '') + '"></i>'; }).join('');
+    var q = d.qs[qi]; qb.innerHTML = '<small>Aussage ' + (qi + 1) + ' von ' + d.qs.length + '</small><br>' + esc(q.q); ob.innerHTML = '';
+    var o = d.fixed ? q.opts.map(function (x, i) { return { x: x, ok: i === q.a }; }) : shuffle(q.opts.map(function (x, i) { return { x: x, ok: i === q.a }; }));
+    if (d.fixed) o = shuffle(d.fixed.map(function (x) { return { x: x, ok: x === q.opts[q.a] }; }));
+    o.forEach(function (z) { var b = mk('button', 'opt', esc(z.x)); b.onclick = function () {
+      if (c.finished || lock) return;
+      if (z.ok) { lock = true; b.classList.add('good'); var why = q.why; qi++; setTimeout(function () { lock = false; if (qi >= d.qs.length) { dots.innerHTML = d.qs.map(function () { return '<i class="on"></i>'; }).join(''); c.win(esc(why) + ' ' + d.win); } else { draw(); c.good(esc(why), 0); } }, 350); }
+      else { b.classList.add('bad'); b.disabled = true; c.bad('Das passt nicht. Du hast „' + esc(z.x) + '“ gewählt. ' + (d.defs && d.defs[z.x] ? esc(d.defs[z.x]) + ' ' : '') + 'Lies die Aussage noch einmal und überlege neu.'); } };
+      ob.appendChild(b); });
   }
   draw();
-  return {
-    check: function () {
-      if (card.classList.contains('done')) return null;
-      if (picked.length < items.length) return { ok: false, skip: true, msg: 'Es fehlen noch Schritte in deiner Reihenfolge.' };
-      var bad = 0; picked.forEach(function (o, k) { var ok = o.i === k; o.el.classList.add(ok ? 'good' : 'bad'); if (!ok) bad++; });
-      return bad ? { ok: false, msg: 'Die rot markierten Schritte stehen noch an der falschen Stelle. Tippe sie an, um sie zu entfernen, und setze sie neu.' } : { ok: true, msg: t.why };
-    },
-    solution: function () { return '<ol>' + t.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>'; },
-    reveal: function () { picked = items.slice(); draw(); picked.forEach(function (o) { o.el.classList.add('good'); }); }
-  };
-};
+  c.sol = function () { var q = d.qs[qi]; return q ? esc(q.opts[q.a]) : ''; };
+  c.auto = function () { return new Promise(function (res) { (function s() { if (c.finished) return res(); var q = d.qs[qi]; if (!q) return setTimeout(s, 150); var b = [].slice.call(ob.querySelectorAll('.opt')).filter(function (x) { return x.textContent === q.opts[q.a]; })[0]; if (b && !lock) b.click(); setTimeout(s, 150); })(); }); };
+} };
 
-/* --- Freitext: Herr Neumann prüft anhand von Stichwort-Gruppen --- */
-W_TYPES.free = function (t, card, body) {
-  var ta = mk('textarea'); ta.placeholder = 'Schreibe hier in ganzen Sätzen …'; ta.setAttribute('aria-label', 'Deine Antwort');
-  var cnt = mk('div', 'count', '0 Zeichen'); ta.oninput = function () { cnt.textContent = ta.value.trim().length + ' Zeichen (mindestens ' + t.min + ')'; };
-  body.appendChild(ta); body.appendChild(cnt);
-  body.appendChild(mk('p', 'hint', 'Herr Neumann prüft, ob die wichtigen Punkte vorkommen. Er achtet auf deine Wörter, nicht auf die Rechtschreibung.'));
-  return {
-    check: function () {
-      if (card.classList.contains('done')) return null;
-      var x = ta.value.trim(), words = x.split(/\s+/).filter(Boolean), uniq = {}; words.forEach(function (w) { uniq[w.toLowerCase()] = 1; });
-      if (!x) return { ok: false, skip: true, msg: 'Du hast noch nichts geschrieben. Versuch es, ein falscher Anfang ist besser als gar keiner.' };
-      if (x.length < t.min || words.length < 8) return { ok: false, skip: true, msg: 'Das ist mir noch zu knapp. Schreibe in ganzen Sätzen und erkläre etwas mehr (mindestens ' + t.min + ' Zeichen, du hast ' + x.length + ').' };
-      if (Object.keys(uniq).length < words.length * 0.55) return { ok: false, msg: 'Das sieht nach Wiederholungen aus. Schreibe bitte eine ernsthafte Antwort in eigenen Worten.' };
-      var hit = t.groups.filter(function (g) { return g.rx.test(x); }), miss = t.groups.filter(function (g) { return !g.rx.test(x); });
-      if (hit.length >= t.need) {
-        var more = miss.length ? ' Noch stärker wäre die Antwort mit: ' + miss.map(function (g) { return esc(g.label); }).join('; ') + '.' : '';
-        return { ok: true, msg: 'Das ist inhaltlich gut. Du hast die wichtigen Punkte genannt.' + more + ' Vergleiche mit der Musterlösung.', sample: true };
-      }
-      return { ok: false, msg: (t.need < t.groups.length ? 'Da fehlt noch etwas. Nenne mindestens ' + t.need + ' dieser Punkte: ' : 'Da fehlt noch etwas. Ich vermisse: ') + miss.map(function (g) { return esc(g.label); }).join('; ') + '. Ergänze das und prüfe noch einmal.' };
-    },
-    solution: function () { return '<p><b>Musterlösung:</b> ' + esc(t.sample) + '</p>'; },
-    after: function () { var l = card.querySelector('.loesung'); l.innerHTML = '<p><b>Zum Vergleichen, Musterlösung:</b> ' + esc(t.sample) + '</p>'; l.classList.add('show'); }
-  };
-};
+/* ===== Spiele 3: Treibhaus-Simulator, Memory, Nachhaltigkeits-Lampen, Zeitstrahl, Parcours, Steckbrief, Deutungs-Pins, Schreibwerkstatt ===== */
+GAMES.klima = { waitGo: true, init: function (c, d) {
+  var st = c.stage, v = 60, step = 0;
+  st.innerHTML = '<div class="sim"><svg viewBox="0 0 300 220" class="simsvg" role="img" aria-label="Erde mit Treibhausgas-Schicht"><circle cx="40" cy="36" r="22" fill="#ffd34d" stroke="#c99a00" stroke-width="3"/><path d="M62 44 L110 74 M60 56 L104 100 M54 64 L92 122" stroke="#f0b400" stroke-width="4" stroke-linecap="round"/><rect x="0" y="130" width="300" height="90" fill="#5b8e5b"/><ellipse cx="150" cy="185" rx="120" ry="22" fill="#3f6f93" opacity=".55"/><rect id="sl-' + c.t.id + '" x="0" y="96" width="300" height="26" rx="13" fill="#8a8f98"/><g id="ar-' + c.t.id + '" stroke="#d6453d" stroke-width="3.5" fill="none" stroke-linecap="round"></g></svg><div class="temp"><span id="tm-' + c.t.id + '">15</span> °C</div></div><div class="sl"><label for="rg-' + c.t.id + '">Treibhausgase in der Luft</label><input type="range" id="rg-' + c.t.id + '" min="0" max="200" step="5" value="60"><div class="scalebar"><span>keine</span><span>natürlich</span><span>viel mehr</span></div></div><div class="row"><button class="btn chk2">Einstellung abgeben</button></div>';
+  var rg = st.querySelector('input'), sl = st.querySelector('#sl-' + c.t.id), ar = st.querySelector('#ar-' + c.t.id), tm = st.querySelector('#tm-' + c.t.id), btn = st.querySelector('.chk2');
+  function temp() { return v <= 100 ? -18 + 0.33 * v : 15 + (v - 100) * 0.04; }
+  function draw() { v = +rg.value; var t = temp(); tm.textContent = (Math.round(t * 10) / 10).toString().replace('.', ','); tm.parentNode.style.color = t < 0 ? '#2f6fb5' : t > 16 ? '#c0392b' : '#2e8b57'; sl.setAttribute('opacity', (0.15 + 0.85 * Math.min(v, 200) / 200).toFixed(2)); var n = 6, k = Math.round(v / 200 * n), h = ''; for (var i = 0; i < n; i++) { var x = 130 + i * 28; if (i < k) h += '<path d="M' + x + ' 150 L' + x + ' 124 M' + x + ' 94 q-12 -6 -20 4" marker-end="" /><path d="M' + (x - 20) + ' 98 L' + (x - 20) + ' 128" stroke="#e8743c"/>'; else h += '<path d="M' + x + ' 150 L' + x + ' 20" stroke-dasharray="1 9"/>'; } ar.innerHTML = h; }
+  rg.oninput = draw; draw();
+  var Q = d.steps; c.sol = function () { return Q[step].sol; };
+  function intro() { var q = Q[step]; say('<b>Aufgabe ' + (step + 1) + ' von ' + Q.length + '</b><br>' + q.task, 'interested', 0); }
+  c.intro = intro;
+  btn.onclick = function () { if (c.finished) return; var q = Q[step]; if (q.ok(v)) { var m = q.why; step++; if (step >= Q.length) c.win(m); else { say('<b>Richtig.</b> ' + esc(m) + '<br><br><b>Aufgabe ' + (step + 1) + ' von ' + Q.length + '</b><br>' + Q[step].task, 'happy', 0); var b = B(); if (b) b.richtig(c.t.id); } } else c.bad(q.no); };
+  c.rulesExtra = 1; c.auto = function () { return new Promise(function (res) { (function s() { if (c.finished) return res(); rg.value = Q[step].set; draw(); btn.click(); setTimeout(s, 120); })(); }); };
+}, go: function (c) { c.intro(); } };
 
-/* --- Bildaufgabe: Bildteile finden --- */
-W_TYPES.spots = function (t, card, body) {
-  body.innerHTML = figure(); var box = body.querySelector('.spotbox'), queue = shuffle(t.spots), idx = 0, errs = 0, ended = false;
-  var prompt = mk('div', 'spotq'); body.insertBefore(prompt, body.firstChild);
-  function ask() { prompt.textContent = idx < queue.length ? 'Tippe auf: ' + queue[idx][0] + ' (' + (idx + 1) + ' von ' + queue.length + ')' : 'Alle Bildteile gefunden.'; }
-  ask();
-  function ping(x, y, ok) { var p = mk('div', 'ping ' + (ok ? 'ok' : 'no')); p.style.left = x + 'px'; p.style.top = y + 'px'; box.appendChild(p); setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, 900); }
-  box.addEventListener('click', function (e) {
-    if (ended || idx >= queue.length) return;
-    var r = box.getBoundingClientRect(), px = e.clientX - r.left, py = e.clientY - r.top, x = px / r.width * 100, y = py / r.height * 100, s = queue[idx][1];
-    var inside = x >= s[0] && x <= s[2] && y >= s[1] && y <= s[3];
-    ping(px, py, inside);
-    if (inside) {
-      var rc = mk('div', 'rect'); rc.style.cssText = 'left:' + s[0] + '%;top:' + s[1] + '%;width:' + (s[2] - s[0]) + '%;height:' + (s[3] - s[1]) + '%'; box.appendChild(rc);
-      idx++; ask();
-      if (idx >= queue.length) { ended = true; outcome(t, card, true, errs ? 'Alle Bildteile gefunden. Du hast ' + errs + ' Mal danebengetippt, schau beim nächsten Mal genauer hin.' : 'Alle Bildteile beim ersten Versuch gefunden. Genau so beschreibt man ein Bild: gründlich.'); }
-      else { var b = B(); if (b) b.richtig(t.id + '-' + idx); }
-    } else {
-      errs++; S.tries[t.id] = errs; var b2 = B(); if (b2) b2.falsch(t.id);
-      setFb(card, 'no', nm('Dort ist nicht das, was ich meine. Suche: <b>' + esc(queue[idx][0]) + '</b>.')); if (errs >= 3) card.querySelector('.showsol').style.display = '';
-    }
-  });
-  return {
-    auto: true, check: function () { return null; },
-    solution: function () { return '<p>Die gesuchten Bildteile sind jetzt grün umrandet.</p>'; },
-    reveal: function () { ended = true; queue.forEach(function (q) { var s = q[1], rc = mk('div', 'rect'); rc.style.cssText = 'left:' + s[0] + '%;top:' + s[1] + '%;width:' + (s[2] - s[0]) + '%;height:' + (s[3] - s[1]) + '%'; box.appendChild(rc); }); if (!S.done[t.id]) { S.done[t.id] = 'help'; card.classList.add('done'); tabs(); } }
-  };
-};
-(function () { var f = W_TYPES.free; W_TYPES.free = function (t, card, body) { var w = f(t, card, body), c = w.check; w.check = function () { var r = c(); if (r && r.ok) setTimeout(w.after, 0); return r; }; return w; }; })();
+GAMES.memory = { init: function (c, d) {
+  var st = c.stage, cards = shuffle(d.pairs.reduce(function (a, p, i) { return a.concat([{ k: i, x: p[0], kind: 'a' }, { k: i, x: p[1], kind: 'b' }]); }, [])), open = [], found = 0, mis = 0, lock = false;
+  var grid = mk('div', 'mem'); st.appendChild(grid);
+  cards.forEach(function (z) { var b = mk('button', 'mcard', '<span class="back">?</span><span class="front">' + esc(z.x) + '</span>'); z.el = b; b.onclick = function () { if (lock || c.finished || b.classList.contains('up') || b.classList.contains('ok')) return; b.classList.add('up'); open.push(z); if (open.length === 2) { lock = true; var a = open[0], bb = open[1]; if (a.k === bb.k && a.kind !== bb.kind) { setTimeout(function () { a.el.classList.add('ok'); bb.el.classList.add('ok'); open = []; lock = false; found++; var pr = d.pairs[a.k]; if (found >= d.pairs.length) c.win(esc(pr[2]) + ' Alle Paare sind gefunden.'); else c.good(esc(pr[2]), 5000); }, 450); } else { mis++; setTimeout(function () { a.el.classList.remove('up'); bb.el.classList.remove('up'); open = []; lock = false; if (mis === 6 && !c.finished) { c.helped = true; say('Das ist ein bisschen knifflig. Merke dir, wo die Folgen liegen. Schau dir die Merkbox zum Klimawandel noch einmal an: Welche Folge gehört zu welcher Region?', 'caring', 0); } }, 900); } } }; grid.appendChild(b); });
+  c.sol = function () { return d.pairs.map(function (p) { return esc(p[0]) + ' ↔ ' + esc(p[1]); }).join('<br>'); };
+  var win0 = c.win; c.win = function (m) { if (mis > 5) c.m = 1; win0(m); };
+  c.auto = function () { return new Promise(function (res) { (function s() { if (c.finished) return res(); if (!lock) { var z = cards.filter(function (x) { return !x.el.classList.contains('ok') && !x.el.classList.contains('up'); }); if (z.length) { var a = z[0], bb = z.filter(function (x) { return x.k === a.k && x !== a; })[0]; a.el.click(); bb.el.click(); } } setTimeout(s, 200); })(); }); };
+} };
 
-/* ================= SKK-Probe ================= */
-var P = null;
+GAMES.lampen = { init: function (c, d) {
+  var st = c.stage, sc = shuffle(d.scenes), i = 0;
+  st.innerHTML = '<div class="scene"></div><div class="lamps">' + d.sides.map(function (s, k) { return '<button class="lamp l' + k + '" data-k="' + k + '"><span class="bulb">💡</span><b>' + esc(s) + '</b></button>'; }).join('') + '</div><div class="dots"></div>';
+  var S1 = st.querySelector('.scene'), dots = st.querySelector('.dots');
+  function draw() { dots.innerHTML = sc.map(function (_, k) { return '<i class="' + (k < i ? 'on' : '') + '"></i>'; }).join(''); if (i < sc.length) S1.innerHTML = esc(sc[i][0]); }
+  draw(); c.sol = function () { return esc(sc[i][0]) + ' → ' + esc(d.sides[sc[i][1]]); };
+  st.querySelectorAll('.lamp').forEach(function (b) { b.onclick = function () { if (c.finished || i >= sc.length) return; var k = +b.dataset.k, it = sc[i]; if (k === it[1]) { b.classList.add('lit'); setTimeout(function () { b.classList.remove('lit'); }, 700); i++; if (i >= sc.length) { draw(); c.win(esc(it[2]) + ' Nachhaltig ist nur, wenn alle drei Seiten zusammenpassen.'); } else { draw(); c.good(esc(it[2]), 4500); } } else c.bad('Die Seite „' + esc(d.sides[k]) + '“ ist hier nicht das Problem. Frage dich: Was geht hier auf Kosten der Zukunft oder anderer?'); }; });
+  c.auto = function () { return new Promise(function (res) { (function s() { if (i >= sc.length) return res(); st.querySelector('.lamp[data-k="' + sc[i][1] + '"]').click(); setTimeout(s, 100); })(); }); };
+} };
+
+GAMES.zeit = { init: function (c, d) {
+  var st = c.stage, sel = null, evs = shuffle(d.events), placed = 0;
+  st.innerHTML = '<div class="tl"><div class="line"></div>' + d.events.map(function (e, k) { return '<button class="slot" data-k="' + k + '"><b>' + esc(e[0]) + '</b><span class="in"></span></button>'; }).join('') + '</div><div class="hand"></div>';
+  var hand = st.querySelector('.hand');
+  evs.forEach(function (e) { var b = mk('button', 'wcard', esc(e[1])); e.el = b; b.onclick = function () { if (c.finished || e.placed) return; evs.forEach(function (x) { x.el.classList.remove('sel'); }); b.classList.add('sel'); sel = e; }; hand.appendChild(b); });
+  st.querySelectorAll('.slot').forEach(function (sl) { sl.onclick = function () { if (!sel || c.finished || sl.classList.contains('ok')) return say('Tippe zuerst ein Ereignis an, dann das Jahr auf dem Zeitstrahl.', 'interested', 0); var k = +sl.dataset.k; if (d.events[k] === sel) { sel.placed = true; sl.classList.add('ok'); sl.querySelector('.in').textContent = sel[1]; sel.el.remove(); var m = sel[2]; sel = null; placed++; if (placed >= d.events.length) c.win(esc(m)); else c.good(esc(m), 5000); } else { sel.el.classList.remove('sel'); var e = sel; sel = null; c.bad('„' + esc(e[1]) + '“ gehört nicht zu ' + esc(sl.querySelector('b').textContent) + '. Überlege, wer wann was gesagt hat und wie nah es an heute liegt.'); } }; });
+  c.sol = function () { return d.events.map(function (e) { return esc(e[0]) + ': ' + esc(e[1]); }).join('<br>'); };
+  c.auto = function () { return new Promise(function (res) { (function s() { var e = evs.filter(function (x) { return !x.placed; })[0]; if (!e) return res(); e.el.click(); st.querySelector('.slot[data-k="' + d.events.indexOf(e) + '"]').click(); setTimeout(s, 100); })(); }); };
+} };
+
+GAMES.parcours = { init: function (c, d) {
+  var st = c.stage, i = 0, steps = d.scenes;
+  st.innerHTML = '<div class="meter"><span>Fußabdruck-Meter (Spiel)</span><div class="bar"><i style="width:100%"></i></div></div><div class="scene"></div><div class="two"></div>';
+  var S1 = st.querySelector('.scene'), two = st.querySelector('.two'), bar = st.querySelector('.bar i');
+  function draw() { var s = steps[i]; S1.innerHTML = '<b>Situation ' + (i + 1) + ' von ' + steps.length + '</b><br>' + esc(s.q); two.innerHTML = ''; shuffle([{ x: s.good, ok: true }, { x: s.bad, ok: false }]).forEach(function (o) { var b = mk('button', 'opt', esc(o.x)); b.onclick = function () { if (c.finished) return; if (o.ok) { i++; bar.style.width = (100 - Math.round(i / steps.length * 60)) + '%'; if (i >= steps.length) { S1.innerHTML = '🌍 Geschafft.'; two.innerHTML = ''; c.win(esc(s.why)); } else { c.good(esc(s.why), 5000); draw(); } } else { b.classList.add('bad'); c.bad(esc(s.nope)); } }; two.appendChild(b); }); }
+  draw(); c.sol = function () { return esc(steps[i].good); };
+  c.auto = function () { return new Promise(function (res) { (function s() { if (i >= steps.length) return res(); var g = [].slice.call(two.querySelectorAll('.opt')).filter(function (b) { return b.textContent === steps[i].good; })[0]; g.click(); setTimeout(s, 100); })(); }); };
+} };
+
+GAMES.steckbrief = { init: function (c, d) {
+  var st = c.stage, sels = []; st.insertAdjacentHTML('beforeend', figureHTML());
+  var f = mk('div', 'form'); d.fields.forEach(function (fl) { var row = mk('div', 'frow', '<label>' + esc(fl.l) + '</label>'), s = mk('select'); s.innerHTML = '<option value="">– wählen –</option>' + shuffle(fl.o).map(function (o) { return '<option>' + esc(o) + '</option>'; }).join(''); s.onchange = function () { s.className = ''; }; row.appendChild(s); f.appendChild(row); sels.push({ s: s, a: fl.o[0], l: fl.l, note: fl.note }); }); st.appendChild(f);
+  var go = mk('button', 'btn', 'Steckbrief prüfen lassen'); st.appendChild(mk('div', 'row')).appendChild(go);
+  c.sol = function () { return sels.map(function (x) { return esc(x.l) + ': <b>' + esc(x.a) + '</b>'; }).join('<br>'); };
+  go.onclick = function () { if (c.finished) return; if (sels.some(function (x) { return !x.s.value; })) return say('Es fehlen noch Angaben. Fülle jedes Feld aus.', 'interested', 0); var bad = sels.filter(function (x) { var ok = x.s.value === x.a; x.s.className = ok ? 'good' : 'bad'; return !ok; }); if (!bad.length) c.win('Der Steckbrief stimmt. Merke: Der Titel steht unter dem Bild, das Thema musst du aus dem Bild erschließen.'); else c.bad((bad.length === 1 ? 'Eine Angabe stimmt' : bad.length + ' Angaben stimmen') + ' nicht (rot). ' + bad.map(function (x) { return x.note || ''; }).filter(Boolean)[0]); };
+  c.auto = function () { sels.forEach(function (x) { x.s.value = x.a; }); go.click(); return Promise.resolve(); };
+} };
+
+GAMES.pins = { waitGo: true, init: function (c, d) {
+  var st = c.stage; st.insertAdjacentHTML('beforeend', figureHTML(true)); var box = st.querySelector('.spotbox'), solved = {}, left = d.spots.length; c.d = d; c.box = box;
+  st.insertAdjacentHTML('beforeend', '<div class="dots"></div>'); var dots = st.querySelector('.dots');
+  function draw() { dots.innerHTML = d.spots.map(function (_, k) { return '<i class="' + (solved[k] ? 'on' : '') + '"></i>'; }).join(''); } draw();
+  c.sol = function () { return d.spots.filter(function (s, k) { return !solved[k]; }).map(function (s) { return esc(s.name) + ': ' + esc(s.opts[s.a]); }).join('<br>'); };
+  function open(k) { if (solved[k] || c.finished) return; var s = d.spots[k]; c.ask('<b>' + esc(s.name) + '</b><br>' + s.q, s.opts, s.a, s.why, function (pre) { solved[k] = true; left--; var r = mk('div', 'rect'); r.style.cssText = 'left:' + s.r[0] + '%;top:' + s.r[1] + '%;width:' + (s.r[2] - s.r[0]) + '%;height:' + (s.r[3] - s.r[1]) + '%'; box.appendChild(r); draw(); if (!left) c.win(pre.replace('✓ ', '') + ' Damit hast du alle Bildelemente gedeutet.'); else say('<b>' + esc(pre) + '</b><br><br>Tippe das nächste Bildelement an.', 'happy', 0); }); }
+  box.addEventListener('click', function (e) { if (c.finished) return; var r = box.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * 100, y = (e.clientY - r.top) / r.height * 100, best = -1, ba = 1e9;
+    d.spots.forEach(function (s, k) { if (x >= s.r[0] && x <= s.r[2] && y >= s.r[1] && y <= s.r[3]) { var a = (s.r[2] - s.r[0]) * (s.r[3] - s.r[1]); if (a < ba) { ba = a; best = k; } } });
+    if (best < 0) return say('Dort gibt es nichts zu deuten. Tippe ein wichtiges Bildelement an, zum Beispiel etwas Auffälliges im Bild.', 'interested', 0); if (solved[best]) return say('Das hast du schon gedeutet.', 'interested', 0); CUR = c; open(best); });
+  c.open = open; c.auto = function () { return new Promise(function (res) { (function s() { if (c.finished) return res(); if (c.pend) c.onG('o:' + c.pend.ci); else { var k = d.spots.findIndex(function (z, i) { return !solved[i]; }); if (k >= 0) open(k); } setTimeout(s, 120); })(); }); };
+}, go: function (c) { say('Tippe auf ein Bildelement der Karikatur. Ich frage dich dann, wofür es steht.', 'interested', 0); } };
+
+GAMES.free = { init: function (c, d) {
+  var ta = mk('textarea'); ta.placeholder = 'Schreibe hier in ganzen Sätzen …'; ta.setAttribute('aria-label', 'Deine Antwort'); var cnt = mk('div', 'count', '0 Zeichen'); ta.oninput = function () { cnt.textContent = ta.value.trim().length + ' Zeichen'; };
+  if (d.bild) c.stage.insertAdjacentHTML('beforeend', figureHTML()); c.stage.appendChild(ta); c.stage.appendChild(cnt); var go = mk('button', 'btn', 'Herr Neumann soll das lesen'); c.stage.appendChild(mk('div', 'row')).appendChild(go);
+  c.sol = function () { return '<b>Musterlösung:</b> ' + esc(d.sample); };
+  go.onclick = function () {
+    if (c.finished) return; var x = ta.value.trim(), words = x.split(/\s+/).filter(Boolean), uniq = {}; words.forEach(function (w) { uniq[w.toLowerCase()] = 1; });
+    if (!x) return say('Du hast noch nichts geschrieben. Ein unvollständiger Anfang ist besser als gar keiner.', 'interested', 0);
+    if (x.length < d.min || words.length < 8) return say('Das ist mir noch zu knapp. Schreibe in ganzen Sätzen und erkläre etwas mehr. Ich erwarte mindestens ' + d.min + ' Zeichen, du hast ' + x.length + '.', 'serious', 0);
+    if (Object.keys(uniq).length < words.length * 0.55) return say('Das sind viele Wiederholungen. Bitte schreibe eine ernsthafte Antwort in eigenen Worten.', 'serious', 0);
+    if (d.forbid && d.forbid.rx.test(x)) return c.bad(d.forbid.label);
+    var hit = d.groups.filter(function (g) { return g.rx.test(x); }), miss = d.groups.filter(function (g) { return !g.rx.test(x); });
+    if (hit.length >= d.need) { c.win('Das ist inhaltlich gut. Du hast die wichtigen Punkte genannt.' + (miss.length ? ' Noch stärker wäre es mit: ' + miss.map(function (g) { return esc(g.label); }).join('; ') + '.' : '') + '<br><br><b>Zum Vergleichen, Musterlösung:</b> ' + esc(d.sample)); }
+    else c.bad((d.need < d.groups.length ? 'Da fehlt noch etwas. Nenne mindestens ' + d.need + ' dieser Punkte: ' : 'Da fehlt noch etwas. Ich vermisse: ') + miss.map(function (g) { return esc(g.label); }).join('; ') + '. Ergänze das und gib mir den Text noch einmal.');
+  };
+  c.auto = function () { ta.value = d.sample; go.click(); return Promise.resolve(); };
+} };
+
+function figureHTML(spots) { return '<figure class="fig"><div class="spotbox">' + BILD + '</div><figcaption>„Schnäppchenjagd“ · Übungskarikatur für dieses Modul · Zeichner: N. N. · Tageszeitung · 2026 (alle Angaben erfunden)</figcaption></figure>'; }
+
+/* ===== Spiele je Kapitel (ersetzt die Formular-Aufgaben) ===== */
+var OLD = {}; CH.forEach(function (c) { c.tasks.forEach(function (t) { OLD[t.id] = t; }); });
+function T(id, game, title, q, rules, tips, data) { return { id: id, game: game, title: title, q: q, rules: rules, tips: tips, data: data }; }
+var NEW = {
+pol: [
+  T('pol_post', 'postbote', 'Der Postbote von Spandau', 'Stelle jeden Brief an das zuständige Gebäude zu.',
+    'Du bist Postbote in Berlin-Spandau. Oben stehen drei Gebäude, darunter liegt ein Brief von Bürgern. Lies den Brief und tippe auf das Gebäude, das dafür zuständig ist. Bei der falschen Adresse sage ich dir, warum. Der Brief wird erst weitergereicht, wenn er richtig zugestellt ist.',
+    ['Überlege, wie groß das Gebiet ist, für das die Entscheidung gilt: ein Kiez, das Land Berlin oder ganz Deutschland?', 'Der Park im Spandau-Beispiel war Sache des Bezirksamts, nicht des Abgeordnetenhauses.'],
+    { houses: [['🏘️', 'Bezirksamt'], ['🏛️', 'Abgeordnetenhaus Berlin'], ['🇩🇪', 'Bundestag']], wrong: function (it, n) { return n + ' ist dafür nicht zuständig. ' + it[2]; },
+      items: [['„Liebes Amt, auf der Grünfläche in unserem Kiez fehlen Bänke. Bitte stellt neue auf.“', 0, 'Dinge vor Ort sind Sache des Bezirksamts.'], ['„Sehr geehrte Abgeordnete, bitte ändert das Berliner Schulgesetz.“', 1, 'Das Schulgesetz gilt für das Land Berlin. Dafür ist das Abgeordnetenhaus zuständig.'], ['„Liebe Abgeordnete, bitte beschließt ein Gesetz, das in ganz Deutschland gilt.“', 2, 'Gesetze für ganz Deutschland beschließt der Bundestag.'], ['„Der Skatepark in unserem Kiez braucht neue Rampen.“', 0, 'Ein Skatepark im Kiez gehört zum Bezirk. Zuständig ist das Bezirksamt.'], ['„Bitte beschließt den Haushalt des Landes Berlin so, dass mehr Geld in die Schulen fließt.“', 1, 'Über den Landeshaushalt entscheidet das Abgeordnetenhaus.'], ['„Bitte legt für ganz Deutschland fest, wie Verbraucher beim Einkauf besser geschützt werden.“', 2, 'Eine Regel für das ganze Land ist Sache des Bundes.']] }),
+  T('pol_wer', 'wer', 'Wer bin ich?', 'Errate die Begriffe aus den Hinweisen von Herrn Neumann.',
+    'Ich verstecke einen Begriff aus dem Kapitel und gebe dir Hinweise, einen nach dem anderen. Tippe den Begriff an, wenn du ihn kennst. Je weniger Hinweise du brauchst, desto mehr Punkte bekommst du: drei, zwei oder einen. Mit „Nächster Hinweis“ höre ich weiter.',
+    ['Die Hinweise werden immer genauer. Du musst nicht beim ersten raten.', 'Denke an das Spandau-Beispiel mit Skatepark, Unterschriften und Bezirksamt.'],
+    { terms: ['Macht', 'Konflikt', 'Gesellschaft', 'Öffentlichkeit', 'Kompromiss'], rounds: [
+      { a: 'Konflikt', clues: ['Ich entstehe, wenn zwei Seiten etwas Unterschiedliches wollen.', 'Skater und Anwohner hatten mich im Spandau-Beispiel.', 'Man kann mich nur lösen, wenn beide Seiten bereit sind, etwas nachzugeben.'], why: 'Unterschiedliche Interessen, Meinungen oder Ziele prallen aufeinander und scheinen unvereinbar.' },
+      { a: 'Öffentlichkeit', clues: ['Bei mir kann jeder zuschauen und mitreden.', 'Ein Problem, das am Küchentisch bleibt, ist noch nicht bei mir angekommen.', 'Ein Post mit Bauplan und Lärmstudie bringt ein Thema zu mir.'], why: 'Sie ist der Raum, in dem Themen für alle sichtbar und diskutierbar werden.' },
+      { a: 'Macht', clues: ['Ich habe damit zu tun, etwas durchzusetzen.', 'Man braucht mich, wenn andere nicht mitmachen wollen.', 'Eine große Gruppe mit vielen Unterschriften hat mehr von mir als eine einzelne Person.'], why: 'Macht ist die Fähigkeit, den eigenen Willen auch gegen den Widerstand anderer durchzusetzen.' },
+      { a: 'Gesellschaft', clues: ['Ich bestehe aus Menschen.', 'Meine Mitglieder teilen Merkmale, Interessen und Regeln.', 'Du gehörst zu mir: als Schüler, als Skater und als Bürger deines Bezirks.'], why: 'Eine Gesellschaft ist eine Gruppe von Menschen, die gemeinsame Merkmale, Interessen und Regeln teilen.' }] }),
+  T('pol_find', 'find', 'Fehlerdetektiv', 'Finde die Fehler im Text zum Spandau-Beispiel.',
+    'Unten steht ein kurzer Text zum Spandau-Beispiel. Darin stecken genau zwei Fehler. Tippe die Sätze an, die nicht stimmen. Mit „Meine Fehler melden“ gibst du ab, und ich sage dir, ob du richtig liegst.', OLD.pol4b.tips, { items: OLD.pol4b.items })
+],
+dim: [
+  T('dim_mark', 'marker', 'Textmarker-Training', 'Markiere die Sätze eines Zeitungsartikels in den Farben der drei Dimensionen.',
+    'Du bekommst einen Zeitungsausschnitt zum Handyverbot. Wähle oben einen Stift (Inhalt, Form oder Prozess) und tippe dann auf die Sätze, die dazu passen. Jeder Satz bekommt genau eine Farbe. Mit einem zweiten Tippen mit demselben Stift nimmst du die Farbe wieder weg. Wenn du fertig bist, gib die Markierung ab.',
+    ['Frage dich bei jedem Satz: Geht es um die Sache selbst, um Zuständigkeit und Regeln, oder um Gruppen und ihre Interessen?', 'Wörter wie „zuständig“, „Regeln“ und „Mehrheitsrecht“ zeigen die Form an. Wörter wie „Argument“ zeigen den Inhalt an, „Interessen“ und „Kompromiss“ den Prozess.'],
+    { cats: ['Inhalt', 'Form', 'Prozess'], title: 'Handyverbot an der Schule? (Übungstext)', items: [['Die Schulleitung möchte Handys auf dem Schulhof verbieten, weil viele Schüler in der Pause nur noch auf ihre Displays schauen.', 0], ['Befürworter sagen, ohne Handys würden die Kinder in der Pause wieder mehr miteinander reden.', 0], ['Entscheiden darf die Schulkonferenz, denn sie ist für die Hausordnung zuständig.', 1], ['Gegner argumentieren, dass ein Handy im Notfall wichtig ist.', 0], ['Abgestimmt wird nach dem Mehrheitsrecht.', 1], ['Die Schülervertretung sammelt Unterschriften und äußert ihre Meinung in der Schülerzeitung.', 2], ['Eltern und Lehrer haben unterschiedliche Interessen und verhandeln über einen Kompromiss.', 2], ['Die Hausordnung ist die rechtliche Grundlage für die neue Regel.', 1]] }),
+  T('dim_build', 'build', 'Silbenpuzzle', 'Setze die Fachbegriffe aus Silben zusammen.',
+    'Zu jeder Erklärung gehört ein Fachbegriff. Die Silben liegen durcheinander darunter. Tippe sie in der richtigen Reihenfolge an. Zum Entfernen tippst du eine Silbe in der oberen Reihe noch einmal an. Wenn alle Begriffe stehen, lasse sie prüfen.', OLD.dim0.tips, { words: OLD.dim0.words }),
+  T('dim_free', 'free', 'Schreibwerkstatt', 'Formuliere je eine Leitfrage zu Inhalt, Form und Prozess.',
+    'Hier schreibst du selbst. Formuliere zum Handyverbot je eine Frage zum Inhalt, zur Form und zum Prozess. Ich lese deinen Text und achte darauf, ob die wichtigen Punkte vorkommen. Wenn etwas fehlt, sage ich dir, was.', OLD.dim5.tips, { min: OLD.dim5.min, need: OLD.dim5.need, groups: OLD.dim5.groups, sample: OLD.dim5.sample })
+],
+glo: [
+  T('glo_waage', 'waage', 'Die Globalisierungs-Waage', 'Lege Chancen und Risiken auf die richtige Waagschale.',
+    'Unten liegen Karten mit Folgen der Globalisierung. Tippe eine Karte an und danach die Waagschale, auf die sie gehört: Chancen links, Risiken rechts. Die Waage zeigt, wie viel schon liegt. Bei der falschen Seite sage ich dir, warum.',
+    ['Frage dich: Ist das ein Vorteil für Menschen oder ein Nachteil und eine Gefahr?', 'Denke an die Smartphone-Lieferkette: Was kann dort schiefgehen?'],
+    { sides: ['Chancen', 'Risiken'], items: [['Produkte aus aller Welt sind günstig und vielfältig zu haben.', 0, 'Das ist eine Chance: Weltweiter Handel bringt Auswahl und günstige Preise.'], ['Eine Störung der Lieferkette lässt Bauteile fehlen.', 1, 'Das ist ein Risiko: Weltweite Lieferketten sind anfällig für Störungen.'], ['Menschen tauschen sich in Sekunden weltweit aus.', 0, 'Das ist eine Chance: Internet und Social Media vernetzen Menschen.'], ['Der weltweite Transport erzeugt viele Treibhausgase.', 1, 'Das ist ein Risiko für Klima und Umwelt.'], ['Kulturen lernen voneinander und mischen sich.', 0, 'Das ist eine Chance: Filme, Serien und Musik verbreiten sich weltweit.'], ['Der Rohstoffabbau belastet Umwelt und Menschen.', 1, 'Das ist ein Risiko: Abbau ist oft gefährlich und schadet der Umwelt.'], ['Staaten lösen Krisen gemeinsam, zum Beispiel in der EU.', 0, 'Das ist eine Chance: Bündnisse und Verträge helfen bei gemeinsamen Problemen.'], ['Manche Arbeiter im Rohstoffabbau erhalten nur geringe Löhne.', 1, 'Das ist ein Risiko: Billige Produkte können auf Kosten der Arbeiter gehen.']] }),
+  T('glo_wort', 'wort', 'Wortwolke', 'Baue die Definition der Globalisierung aus der Wortwolke zusammen.',
+    'Oben schweben Wörter, darunter steht der Text mit Lücken. Tippe ein Wort an und danach die Lücke, in die es gehört. Ein falsches Wort holst du zurück, indem du seine Lücke noch einmal antippst. Zwei Wörter passen nirgends hinein. Mit „Text prüfen lassen“ lese ich nach.', OLD.glo2.tips, { parts: OLD.glo2.parts, bank: OLD.glo2.bank, win: 'Die Definition steht. Merke dir: Globalisierung hat viele Dimensionen, nicht nur die Wirtschaft.' }),
+  T('glo_quiz', 'duell', 'Schlagzeilen-Express', 'Ordne jede Schlagzeile der passenden Dimension der Globalisierung zu.',
+    'Im Spiel steht eine Schlagzeile. Tippe die Dimension der Globalisierung an, zu der sie passt. Wenn du falsch liegst, sage ich dir, worauf du achten musst, und du darfst noch einmal wählen.',
+    ['Die Dimensionen sind Wirtschaft, Kultur, Kommunikation, Umwelt und Politik.', 'Frage dich: Worum geht es im Kern, um Waren, Medien, Austausch, Natur oder Verträge?'],
+    { n: 5, win: 'Du hast alle Schlagzeilen richtig zugeordnet.', qs: [
+      { q: 'Schlagzeile: „Neue Serie begeistert Zuschauer in aller Welt.“', opts: ['Kultur', 'Wirtschaft', 'Politik', 'Umwelt'], a: 0, why: 'Filme, Serien und Musik verbreiten sich weltweit und verändern unsere Kultur.' },
+      { q: 'Schlagzeile: „Containerschiffe bringen täglich Waren in deutsche Häfen.“', opts: ['Wirtschaft', 'Kultur', 'Kommunikation', 'Politik'], a: 0, why: 'Der weltweite Transport von Waren und globale Lieferketten gehören zur Dimension Wirtschaft.' },
+      { q: 'Schlagzeile: „Berliner Klasse chattet per Video mit einer Schule am anderen Ende der Welt.“', opts: ['Kommunikation', 'Umwelt', 'Wirtschaft', 'Politik'], a: 0, why: 'Durch das Internet und Social Media entsteht eine grenzenlose Kommunikation.' },
+      { q: 'Schlagzeile: „Weltweiter Konsum lässt Rohstoffe knapp werden.“', opts: ['Umwelt', 'Kultur', 'Kommunikation', 'Wirtschaft'], a: 0, why: 'Massenhafter Konsum und enormer Rohstoffabbau bringen Herausforderungen für die Umwelt.' },
+      { q: 'Schlagzeile: „Berliner Jugendliche tanzen zu einem Lied, das in Südkorea entstanden ist.“', opts: ['Kultur', 'Wirtschaft', 'Kommunikation', 'Umwelt'], a: 0, why: 'Musik verbreitet sich weltweit und verändert unsere Kultur.' },
+      { q: 'Schlagzeile: „Ein Online-Händler liefert Kleidung aus Asien nach Deutschland.“', opts: ['Wirtschaft', 'Politik', 'Kultur', 'Umwelt'], a: 0, why: 'Weltweiter Handel und Lieferketten gehören zur Dimension Wirtschaft.' },
+      { q: 'Schlagzeile: „Die Vereinten Nationen verhandeln über gemeinsame Klimaziele.“', opts: ['Politik', 'Kommunikation', 'Wirtschaft', 'Kultur'], a: 0, why: 'Verträge und Bündnisse zwischen Staaten gehören zur Dimension Politik.' },
+      { q: 'Schlagzeile: „EU-Staaten schließen einen gemeinsamen Vertrag, um eine Krise zu lösen.“', opts: ['Politik', 'Umwelt', 'Kultur', 'Kommunikation'], a: 0, why: 'Verträge und Bündnisse wie die EU gehören zur Dimension Politik.' }] })
+],
+sma: [
+  T('sma_roent', 'roentgen', 'Smartphone-Röntgen', 'Tippe die Bauteile an und beantworte meine Fragen.',
+    'Du siehst ein Smartphone von innen. Jedes Bauteil hat eine Nummer. Tippe ein Bauteil an, dann stelle ich dir in meiner Sprechblase eine Frage dazu. Beantworte sie richtig, dann leuchtet das Bauteil grün. Du musst alle sechs Bauteile schaffen.',
+    ['Die Platine trägt kleine Bauteile aus Tantal. Das Metall wird aus Coltan gewonnen.', 'Für die Batterie braucht man ein anderes Metall als für die Platine.'],
+    { parts: [
+      { name: 'Display', r: [82, 22, 136, 68, 0], col: '#9fd6f5', q: 'Auch das Display wird in einem eigenen Schritt hergestellt. Was zeigt das über ein Smartphone?', opts: ['Es entsteht aus vielen Teilen und Schritten', 'Es wird komplett an einem einzigen Ort hergestellt', 'Es braucht nur Rohstoffe, die aus Deutschland stammen'], a: 0, why: 'Ein Smartphone wirkt wie ein Produkt, besteht aber aus vielen Teilen aus vielen Ländern.' },
+      { name: 'Kamera', r: [150, 98, 66, 40], col: '#d9c3f2', q: 'Welche Aufgabe hat der Kamera-Sensor?', opts: ['Er nimmt Bilder auf, damit man fotografieren kann', 'Er speichert alle Apps und Fotos dauerhaft auf dem Gerät', 'Er steuert den Stromfluss zwischen Akku und Platine'], a: 0, why: 'Der Bildsensor sorgt dafür, dass das Handy fotografieren kann.' },
+      { name: 'Platine', r: [82, 98, 60, 112], col: '#7bc47f', q: 'Auf der Platine stecken sehr kleine Bauteile aus Tantal. Aus welchem Erz wird dieses Metall gewonnen?', opts: ['Aus Coltan', 'Aus Bauxit', 'Aus Eisenerz'], a: 0, why: 'Aus Coltan gewinnt man Tantal. Es wird unter anderem im Osten der Demokratischen Republik Kongo abgebaut.' },
+      { name: 'Prozessor', r: [150, 146, 66, 34], col: '#f4a38c', q: 'Wofür ist der Prozessor-Chip da?', opts: ['Er rechnet und steuert alle Abläufe im Gerät', 'Er speichert dauerhaft Fotos, Musik und Apps', 'Er lädt den Akku auf, sobald das Kabel steckt'], a: 0, why: 'Auf winzigen Chips wird gerechnet und gesteuert.' },
+      { name: 'Speicher', r: [150, 186, 66, 34], col: '#f7e08a', q: 'Wofür braucht man Speicherchips?', opts: ['Damit Apps und Fotos gespeichert werden', 'Damit das Display bei Sonnenlicht hell leuchtet', 'Damit das Gerät Fotos aufnehmen und scharfstellen kann'], a: 0, why: 'Speicherchips sorgen dafür, dass Apps und Fotos gespeichert werden können.' },
+      { name: 'Batterie', r: [82, 226, 136, 68, 0], col: '#b8e0b0', q: 'Welches Metall ist für Smartphone-Batterien wichtig?', opts: ['Lithium', 'Tantal', 'Eisenerz'], a: 0, why: 'Lithium ist wichtig für die Batterien. Tantal steckt dagegen in Bauteilen auf der Platine.' }] }),
+  T('sma_band', 'band', 'Das Fließband', 'Tippe die Schritte der Lieferkette in der richtigen Reihenfolge vom Band.',
+    'Auf dem Fließband laufen Schritte der Smartphone-Lieferkette vorbei. Tippe immer den Schritt an, der als Nächstes dran ist. Du beginnst bei den Rohstoffen und endest im Laden. Ein falscher Schritt bleibt liegen, und ich sage dir, was davor noch fehlt.',
+    ['Ohne Rohstoffe kann nichts hergestellt werden.', 'Erst wenn alle Teile fertig sind, kann das Gerät zusammengebaut werden.'],
+    { win: 'Die Lieferkette steht: Abbau, Aufbereitung, Bauteile, Endmontage, Verkauf. Auf jedem Schritt gibt es Risiken.', items: ['Rohstoffe wie Coltan und Lithium abbauen', 'Rohstoffe aufbereiten und reinigen', 'Chips, Displays und Sensoren herstellen', 'Endmontage und Test', 'Verkauf in großen Märkten'], why: ['Am Anfang stehen die Rohstoffe.', 'Die Rohstoffe werden gereinigt und zu brauchbaren Materialien verarbeitet.', 'Aus den Materialien entstehen die Bauteile.', 'Alle Teile werden zusammengebaut und geprüft.', ''] }),
+  T('sma_jit', 'jit', 'Just-in-time-Simulator', 'Vergleiche zwei Lager-Strategien und finde heraus, was bei einem Hafenstreik passiert.',
+    'Du leitest eine Smartphone-Fabrik. Probiere beide Strategien aus: ein kleines Lager nach dem Just-in-time-Prinzip und ein großes Lager. Drücke bei jeder Strategie auf „Sechs Wochen simulieren“. In Woche 3 und 4 streiken die Hafenarbeiter. Beobachte, was mit der Produktion und den Kosten passiert. Danach stelle ich dir eine Frage.',
+    ['Achte auf die roten Wochen und auf die Lagerkosten.', 'Frage dich: Warum würde eine Firma freiwillig das riskantere Lager wählen?'],
+    { opts: ['Es spart Lagerkosten', 'Es schützt vor jeder Störung', 'Es verkürzt die Wege der Rohstoffe'], why: 'Wenig Lager spart Geld. Dafür fehlen bei einem Hafenstreik, extremem Wetter oder Konflikten schnell Bauteile.' })
+],
+kli: [
+  T('kli_sim', 'klima', 'Der Treibhaus-Simulator', 'Stelle den Regler für die Treibhausgase ein und beobachte die Temperatur.',
+    'Du steuerst die Treibhausgase in der Atmosphäre mit dem Regler. Oben siehst du die Erde und die Temperatur. Ich gebe dir drei Aufgaben nacheinander in meiner Sprechblase. Stelle den Regler ein und gib die Einstellung ab. Beobachte, was mit den Wärmepfeilen und der Temperatur passiert.',
+    ['Die Mitte des Reglers ist der natürliche Zustand der Erde.', 'Die Temperatur, die du suchst, steht in der Anzeige. Schiebe langsam und beobachte.'],
+    { steps: [
+      { task: 'Stelle den Regler so ein, dass es <b>gar keine Treibhausgase</b> gibt. Gib die Einstellung dann ab.', ok: function (v) { return v <= 5; }, set: 0, why: 'Ohne Treibhausgase fehlt das schützende Glasdach. Die Wärme entweicht ins Weltall, die Erde würde auf etwa −18 °C auskühlen. Leben wäre kaum möglich.', no: 'Das ist noch nicht ganz ohne Treibhausgase. Schiebe den Regler ganz nach links.', sol: 'Schiebe den Regler ganz nach links, bis keine Gase mehr da sind.' },
+      { task: 'Jetzt der <b>natürliche Treibhauseffekt</b>: Stelle den Regler so ein, dass die Erde im Durchschnitt <b>15 °C</b> hat.', ok: function (v) { return v >= 95 && v <= 105; }, set: 100, why: 'Der natürliche Treibhauseffekt hebt die Durchschnittstemperatur auf ideale 15 °C. Wir sind auf ihn angewiesen.', no: 'Das sind noch nicht 15 °C. Beobachte die Temperaturanzeige und stelle den Regler in die Mitte.', sol: 'Der Regler steht in der Mitte, bei der Markierung „natürlich“.' },
+      { task: 'Nun der Mensch: Fabriken, fossile Energien und Abholzung bringen immer mehr Treibhausgase in die Luft. Schiebe den Regler <b>ganz nach rechts</b> und gib die Einstellung ab.', ok: function (v) { return v >= 195; }, set: 200, why: 'Das Glasdach wird zu dick: Es bleibt viel Wärme in der Atmosphäre. Bis 2100 könnte die Temperatur um etwa 4 °C steigen. Eis schmilzt, der Meeresspiegel steigt, und Extremwetter nimmt zu.', no: 'Noch nicht genug. Schiebe den Regler weiter nach rechts.', sol: 'Den Regler bis ganz rechts schieben.' }] }),
+  T('kli_mem', 'memory', 'Folgen-Memory', 'Finde die Paare aus Region und Folge des Klimawandels.',
+    'Du siehst acht verdeckte Karten. Decke immer zwei auf. Gehören sie zusammen, bleiben sie offen: eine Region und die passende Folge des Klimawandels. Wenn nicht, drehen sie sich wieder um. Merke dir, wo was liegt. Bei jedem Paar sage ich dir etwas dazu.',
+    ['Es sind vier Regionen oder Themen und vier Folgen.', 'Schau in den Merkkasten, wenn du unsicher bist, welche Folge zu welcher Region gehört.'],
+    { pairs: [['Arktis', 'Das Eis schmilzt, Eisbären verlieren ihren Lebensraum', 'In der Arktis schmilzt das Eis rasant. Eisbären sind auf das Packeis angewiesen, um Robben zu jagen.'], ['Ozeanien', 'Korallen sterben, flache Inseln drohen zu versinken', 'In Ozeanien erwärmen sich die Meere. Am Great Barrier Reef sterben Korallen, und flache Pazifik-Inseln drohen im Meer zu versinken.'], ['Europa', 'Im Norden Überschwemmungen, im Süden Dürren', 'In Europa ist die Lage zweigeteilt: Im Norden drohen Überschwemmungen, im Süden Dürren und Waldbrände.'], ['Golfstrom', 'Warme Meeresströmung gerät aus dem Gleichgewicht', 'Der Golfstrom gerät durch die Eisschmelze aus dem Gleichgewicht. Das verändert das Klima in Nord- und Westeuropa.']] }),
+  T('kli_free', 'free', 'Schreibwerkstatt', 'Erkläre den Unterschied zwischen natürlichem Treibhauseffekt und Klimawandel.',
+    'Jetzt schreibst du selbst. Erkläre in zwei bis drei Sätzen den Unterschied zwischen dem natürlichen Treibhauseffekt und dem menschengemachten Klimawandel. Ich lese mit und prüfe, ob beide Seiten vorkommen.', OLD.kli6.tips, { min: OLD.kli6.min, need: OLD.kli6.need, groups: OLD.kli6.groups, sample: OLD.kli6.sample })
+],
+fuss: [
+  T('fuss_lampen', 'lampen', 'Die drei Lampen der Nachhaltigkeit', 'Finde heraus, welche Seite der Nachhaltigkeit zu kurz kommt.',
+    'Nachhaltigkeit hat drei Seiten: Umwelt, Soziales und Wirtschaft. Unter jeder Situation leuchtet eine Lampe pro Seite. Tippe die Lampe der Seite an, die in der Situation zu kurz kommt. Wenn du falsch liegst, sage ich dir, worauf du achten musst.',
+    ['Frage dich: Wer oder was leidet unter dieser Situation, die Natur, die Menschen oder der Betrieb?', 'Zur Wirtschaft gehört auch, dass ein Betrieb auf Dauer bestehen kann.'],
+    { sides: ['Umwelt', 'Soziales', 'Wirtschaft'], scenes: [['Eine große Fangflotte fischt ein Gebiet leer und zieht weiter.', 0, 'Leergefischte Meere gehen auf Kosten der Umwelt und der Zukunft.'], ['Kleidung ist so billig, dass Näherinnen kaum davon leben können.', 1, 'Hier kommt das Soziale zu kurz: Menschen können von ihrer Arbeit nicht leben.'], ['Eine Bäckerei arbeitet so umweltfreundlich und fair, dass sie ihre Kosten nie deckt und schließen muss.', 2, 'Auch die Wirtschaft muss tragfähig sein. Ein Betrieb, der dauerhaft draufzahlt, hält nicht durch.'], ['Ein Kraftwerk liefert sehr günstigen Strom, stößt aber enorm viel CO₂ aus.', 0, 'Günstiger Strom nützt wenig, wenn die Umwelt dafür leidet.'], ['Ein Unternehmen spart Kosten, indem es seine Beschäftigten kaum bezahlt.', 1, 'Hier wird am Sozialen gespart. Faire Bezahlung gehört zu einer nachhaltigen Wirtschaft.']] }),
+  T('fuss_zeit', 'zeit', 'Zeitstrahl', 'Ordne die drei Ereignisse dem richtigen Jahr auf dem Zeitstrahl zu.',
+    'Auf dem Zeitstrahl stehen drei Jahreszahlen. Darunter liegen Karten mit Ereignissen zur Nachhaltigkeit. Tippe eine Karte an und danach das Jahr, in dem das Ereignis stattfand. Bei jedem richtigen Treffer erkläre ich dir kurz den Hintergrund.',
+    ['Das Wort „nachhaltig“ kommt aus der Forstwirtschaft und ist sehr alt.', 'Der Erdüberlastungstag, den du aus dem Merkkasten kennst, ist das jüngste Ereignis.'],
+    { events: [['1713', 'Carlowitz fordert, nur so viel Holz zu schlagen, wie nachwachsen kann', 'Hans Carl von Carlowitz sah 1713, dass das Holz knapp wurde. Daher kommt das Wort „nachhaltig“.'], ['1987', 'Der Brundtland-Bericht der Vereinten Nationen erscheint', 'Im Brundtland-Bericht von 1987 steht: Eine Entwicklung ist nachhaltig, wenn spätere Generationen nicht schlechter leben müssen.'], ['2026', 'Erdüberlastungstag Deutschlands am 10. Mai', 'Für Deutschland lag der Erdüberlastungstag 2026 am 10. Mai. Ab diesem Tag wird mehr verbraucht, als die Erde im Jahr nachliefert.']] }),
+  T('fuss_par', 'parcours', 'Der Alltags-Parcours', 'Triff vier Entscheidungen im Alltag und senke deinen Fußabdruck.',
+    'Du erlebst vier Alltagssituationen. In jeder wählst du zwischen zwei Möglichkeiten. Tippe die nachhaltigere an. Der Fußabdruck-Meter oben sinkt nur im Spiel, er ist keine Messung. Bei jeder Wahl sage ich dir, warum.',
+    ['Frage dich: Was spart Rohstoffe, Energie und Fläche?', 'Was schon da ist, muss nicht noch einmal hergestellt werden.'],
+    { scenes: [
+      { q: 'Dein Fahrrad hat einen Platten.', good: 'Das Rad reparieren', bad: 'Ein neues Rad kaufen', why: 'Reparieren statt wegwerfen spart die Rohstoffe und die Energie für ein neues Rad.', nope: 'Ein neues Rad zu kaufen heißt, dass ein altes Rad weggeworfen wird. Überlege, was nachhaltiger ist.' },
+      { q: 'Ein altes Haus steht leer und soll genutzt werden.', good: 'Das Haus umbauen', bad: 'Das Haus abreißen und neu bauen', why: 'Alte Häuser umzubauen statt neu zu bauen spart Material und Energie, denn das Haus steht ja schon.', nope: 'Abreißen und neu bauen braucht viele neue Rohstoffe. Überlege, was nachhaltiger ist.' },
+      { q: 'Dein Handy läuft noch gut, aber ein neues Modell erscheint.', good: 'Das Handy weiter benutzen', bad: 'Das neue Modell kaufen', why: 'Für ein Smartphone werden Rohstoffe wie Coltan und Lithium abgebaut und über weite Wege transportiert. Je länger du es nutzt, desto besser.', nope: 'Ein neues Smartphone bedeutet wieder Rohstoffabbau und Transport. Überlege, was nachhaltiger ist.' },
+      { q: 'Vom Mittagessen bleibt etwas übrig.', good: 'Aufheben und später essen', bad: 'In den Müll werfen', why: 'In jedem Essen stecken Fläche, Wasser und Energie. Wer Reste verwertet, verschwendet nichts.', nope: 'Weggeworfenes Essen war umsonst erzeugt. Überlege, was nachhaltiger ist.' }] })
+],
+kar: [
+  T('kar_steck', 'steckbrief', 'Der Steckbrief', 'Fülle den Steckbrief für die Einleitung der Karikaturanalyse aus.',
+    'Die Karikatur „Schnäppchenjagd“ ist neu für dich. Die Einleitung braucht fünf Angaben: Titel, Jahr, Zeichner, Veröffentlichungsort und Thema. Die meisten stehen unter dem Bild. Wähle in jedem Feld die passende Angabe. Achtung: Der Text in der Sprechblase ist nicht der Titel, und das Thema steht nirgends.',
+    ['Die formalen Angaben stehen unter dem Bild, der Titel in Anführungszeichen.', 'Das Thema erkennst du an den Bildelementen: Smartphone, Fabrik, Mine und Elektroschrott.'],
+    { fields: [{ l: 'Titel', o: ['„Schnäppchenjagd“', '„So günstig!“', '„Der Eisberg“'], note: 'Der Titel steht unter dem Bild in Anführungszeichen. Der Text in der Sprechblase ist nicht der Titel.' }, { l: 'Jahr', o: ['2026', '2004', '1989'], note: 'Das Jahr steht unter dem Bild.' }, { l: 'Zeichner', o: ['N. N.', 'Erika Muster', 'Karl Beispiel'], note: 'Der Zeichner steht unter dem Bild.' }, { l: 'Veröffentlichungsort', o: ['Tageszeitung', 'Schulbuch', 'Wetterbericht'], note: 'Der Veröffentlichungsort steht unter dem Bild.' }, { l: 'Thema', o: ['Smartphone-Produktion', 'Urlaub am Meer', 'Wetter im Winter'], note: 'Das Thema steht nirgends. Du erschließt es aus den Bildelementen: Smartphone, Fabrik, Mine und Schrott.' }] }),
+  T('kar_duell', 'duell', 'Das Beschreibungs-Duell', 'Beschreibung, Deutung oder Wertung? Ordne Aussagen zur Karikatur zu.',
+    'Im Spiel stehen sechs Aussagen zur Karikatur. Entscheide per Tipp, ob sie eine Beschreibung, eine Deutung oder eine Wertung sind. Eine Beschreibung sagt sachlich, was zu sehen ist. Eine Deutung sagt, was es bedeutet. Eine Wertung ist deine Meinung. Bei einem Fehler erkläre ich dir den Unterschied.',
+    ['Beschreibung: Das könntest du auch einem Blinden vorlesen.', '„Steht für“ und „bedeutet“ verraten die Deutung, „ich finde“ verrät die Wertung.'],
+    { n: 6, fixed: ['Beschreibung', 'Deutung', 'Wertung'], defs: { 'Beschreibung': 'Eine Beschreibung sagt nur sachlich, was im Bild zu sehen ist.', 'Deutung': 'Eine Deutung sagt, wofür ein Bildelement steht oder was es bedeutet.', 'Wertung': 'Eine Wertung ist eine eigene Meinung, zum Beispiel ob die Karikatur überzeugend ist.' }, win: 'Du hältst Beschreibung, Deutung und Wertung sauber auseinander. Das ist der häufigste Fehler in Karikaturanalysen.', qs: [
+      { q: '„Auf der Spitze des Eisbergs steht ein lachender Mann und hält ein Smartphone hoch.“', opts: ['Beschreibung', 'Deutung', 'Wertung'], a: 0, why: 'Das ist eine sachliche Beschreibung: Man sieht es einfach im Bild.' },
+      { q: '„Der Eisberg steht dafür, dass man nur einen kleinen Teil des Problems sieht.“', opts: ['Deutung', 'Beschreibung', 'Wertung'], a: 0, why: 'Das ist eine Deutung: Es geht darum, wofür ein Bildelement steht.' },
+      { q: '„Ich finde, der Zeichner übertreibt hier viel zu stark.“', opts: ['Wertung', 'Beschreibung', 'Deutung'], a: 0, why: 'Das ist eine Wertung: „Ich finde“ zeigt deine Meinung. Sie gehört in den Schluss.' },
+      { q: '„Unter Wasser liegen im Eisberg drei Räume übereinander.“', opts: ['Beschreibung', 'Deutung', 'Wertung'], a: 0, why: 'Das ist eine Beschreibung: Man kann nachzählen, was zu sehen ist.' },
+      { q: '„Die gebeugten Arbeiter stehen für harte Arbeitsbedingungen.“', opts: ['Deutung', 'Beschreibung', 'Wertung'], a: 0, why: 'Das ist eine Deutung: „Stehen für“ zeigt, dass etwas gedeutet wird.' },
+      { q: '„Rechts im Bild fährt ein Containerschiff, aus dessen Schornstein eine Wolke mit der Aufschrift CO₂ aufsteigt.“', opts: ['Beschreibung', 'Deutung', 'Wertung'], a: 0, why: 'Das ist eine Beschreibung: Man sieht es im Bild, es wird nichts erklärt oder bewertet.' },
+      { q: '„Der Mann an der Spitze ruft „So günstig!“ und hält ein Preisschild mit „nur 99 €“ neben sein Smartphone.“', opts: ['Beschreibung', 'Deutung', 'Wertung'], a: 0, why: 'Das ist eine Beschreibung: Es steht nur da, was zu sehen und zu lesen ist.' },
+      { q: '„Das Containerschiff mit der CO₂-Wolke steht für die Umweltbelastung durch den weltweiten Transport.“', opts: ['Deutung', 'Beschreibung', 'Wertung'], a: 0, why: 'Das ist eine Deutung: Ein Bildelement wird erklärt.' },
+      { q: '„Der Elektroschrott ganz unten zeigt, dass die Lieferkette am Ende als Müll endet.“', opts: ['Deutung', 'Beschreibung', 'Wertung'], a: 0, why: 'Das ist eine Deutung: Es wird gesagt, was das Bildelement bedeutet.' },
+      { q: '„Ich halte die Idee mit dem Eisberg für sehr treffend gewählt.“', opts: ['Wertung', 'Beschreibung', 'Deutung'], a: 0, why: 'Das ist eine Wertung: „Ich halte“ zeigt eine eigene Meinung.' },
+      { q: '„Meiner Meinung nach zeigt die Karikatur das Problem zu einseitig.“', opts: ['Wertung', 'Beschreibung', 'Deutung'], a: 0, why: 'Das ist eine Wertung: „Meiner Meinung nach“ kennzeichnet ein eigenes Urteil.' },
+      { q: '„Die Karikatur ist sehr gelungen und wirkt überzeugend.“', opts: ['Wertung', 'Deutung', 'Beschreibung'], a: 0, why: 'Das ist eine Wertung: Du beurteilst, wie überzeugend die Karikatur ist.' }] }),
+  T('kar_besch', 'free', 'Bildbeschreibung', 'Beschreibe die Karikatur sachlich in vier bis sechs Sätzen.',
+    'Jetzt beschreibst du die Karikatur selbst. Sage, was zu sehen ist: Personen, Orte, Gegenstände und Text. Aber nur das, was man sieht. Keine Bedeutung und keine Meinung. Ich lese deinen Text und prüfe, ob die wichtigen Bildteile vorkommen. Wenn du deutest oder wertest, sage ich es dir.', OLD.kar3b.tips, { bild: true, min: OLD.kar3b.min, need: OLD.kar3b.need, groups: OLD.kar3b.groups, forbid: OLD.kar3b.forbid, sample: OLD.kar3b.sample }),
+  T('kar_pins', 'pins', 'Die Deutungs-Pins', 'Tippe Bildelemente an und deute sie.',
+    'Tippe auf der Karikatur ein Bildelement an, zum Beispiel den Käufer, den Eisberg oder das Schiff. Ich frage dich dann in meiner Sprechblase, wofür es steht. Beantworte die Frage richtig, dann bekommt das Bildelement einen grünen Rahmen. Du musst sechs Bildelemente deuten.',
+    ['Der Eisberg zeigt nur einen kleinen Teil.', 'Unter Wasser liegt der Teil der Lieferkette, den Käufer nicht sehen.'],
+    { spots: [
+      { name: 'Die Eisbergspitze', r: [33, 27, 67, 41], q: 'Wofür steht die Spitze des Eisbergs über Wasser?', opts: ['Für das, was Käufer im Laden sehen', 'Für das Eis, das durch den Klimawandel schmilzt', 'Für den Ort, an dem das Gerät erfunden wurde'], a: 0, why: 'Die Spitze steht für den kleinen Teil, den Käufer sehen.' },
+      { name: 'Die Fabrikhalle', r: [27, 45, 73, 61], q: 'Was zeigt die Fabrikhalle unter Wasser?', opts: ['Die Produktion, die Käufer nie sehen', 'Den Ort, an dem das Smartphone verkauft wird', 'Eine besonders umweltfreundliche Fabrik im Ausland'], a: 0, why: 'Die Herstellung der Bauteile bleibt für den Käufer unsichtbar.' },
+      { name: 'Die Mine', r: [26, 62, 76, 79], q: 'Wofür stehen die Bergleute in der Mine?', opts: ['Für den Rohstoffabbau unter harten Bedingungen', 'Für Touristen, die den Eisberg besichtigen', 'Für die Erfinder des Smartphones, die stolz sind'], a: 0, why: 'Der Rohstoffabbau ist oft gefährlich, und manche Arbeiter erhalten nur geringe Löhne.' },
+      { name: 'Der Elektroschrott', r: [33, 81, 67, 96], q: 'Was zeigt der Elektroschrott ganz unten im Eisberg?', opts: ['Das Ende der Lieferkette: weggeworfene Geräte', 'Den Anfang der Lieferkette mit den Rohstoffen', 'Eine Ausstellung für alte Handys'], a: 0, why: 'Am Ende der Lieferkette steht der Müll, der auch Umwelt und Menschen belastet.' },
+      { name: 'Das Containerschiff', r: [77, 9, 99, 46], q: 'Wofür steht das Containerschiff mit der CO₂-Wolke?', opts: ['Für weite Transportwege und CO₂', 'Für den Urlaub des Käufers auf dem Meer', 'Für die Rettung der Bergleute von der Insel'], a: 0, why: 'Der weltweite Transport verursacht Treibhausgase.' },
+      { name: 'Der Käufer und seine Sprechblase', r: [22, 1, 57, 26], q: 'Welches Stilmittel steckt im Ruf „So günstig!“, wenn man das ganze Bild kennt?', opts: ['Ironie: Er jubelt trotz verborgener Folgen', 'Übertreibung: Er ruft lauter als alle anderen', 'Symbol: Er steht für die Bergleute unter ihm'], a: 0, why: 'Der Käufer freut sich über den Preis, das Bild zeigt aber das Gegenteil von Freude. Das ist Ironie.' }] }),
+  T('kar_schluss', 'free', 'Schreibwerkstatt: der Schluss', 'Schreibe den Schluss: Hauptaussage und begründete Meinung.',
+    'Zum Schluss schreibst du den Schluss der Analyse: Nenne die Hauptaussage der Karikatur und beurteile sie mit einer begründeten Meinung. Zwei bis drei Sätze reichen. Ich lese mit und achte auf beide Teile.', OLD.kar7.tips, { bild: true, min: OLD.kar7.min, need: OLD.kar7.need, groups: OLD.kar7.groups, sample: OLD.kar7.sample })
+]
+};
+CH.forEach(function (c) { c.tasks = NEW[c.id]; }); reindex();
+CHI.kar.sub = 'Übungskarikatur „Schnäppchenjagd“';
+
+/* ===== Was hast du dir gemerkt?: Fragen im Modul, Rückmeldung in der Sprechblase von Herrn Neumann ===== */
 function buildProbe() {
   var mc = PROBE.map(function (p) { return { kind: 'mc', ch: p.ch, q: p.q, o: p.o, why: p.why }; });
-  CH.forEach(function (c) { c.tasks.forEach(function (t) { if (t.type === 'mc') mc.push({ kind: 'mc', ch: c.id, q: plain(t.q), o: t.o, why: t.why }); }); });
   var tf = PROBE_TF.map(function (p) { return { kind: 'tf', ch: p.ch, q: p.s, v: p.v, why: p.why }; });
   function pick(pool, n) { var by = {}; shuffle(pool).forEach(function (q) { (by[q.ch] = by[q.ch] || []).push(q); }); var out = [], ids = shuffle(Object.keys(by)); while (out.length < n && ids.length) { ids.forEach(function (k) { if (out.length < n && by[k].length) out.push(by[k].shift()); }); ids = ids.filter(function (k) { return by[k].length; }); } return out; }
-  var qs = shuffle(pick(mc, 8).concat(pick(tf, 4)));
-  P = { qs: qs, i: 0, ok: 0, wrong: {}, answered: false };
+  P = { qs: shuffle(pick(mc, 8).concat(pick(tf, 4))), i: 0, ok: 0, wrong: {} };
 }
 function renderProbe(v) {
-  if (!P) buildProbe();
-  v.appendChild(mk('h2', null, '📝 SKK-Probe'));
-  v.appendChild(mk('p', 'sub', 'Zwölf gemischte Fragen aus allen Kapiteln. Lies in Ruhe. Zurückgehen ist wie in der SKK nicht möglich.'));
+  if (!P) buildProbe(); CUR = null;
+  v.appendChild(mk('h2', null, '🧠 Was hast du dir gemerkt?')); v.appendChild(mk('p', 'sub', 'Zwölf gemischte Fragen aus allen Kapiteln. Zurückgehen ist nicht möglich, also lies jede Frage in Ruhe.'));
   if (P.i >= P.qs.length) return renderProbeEnd(v);
   var q = P.qs[P.i], card = mk('div', 'card task'), done = false;
-  card.innerHTML = '<div class="pq">Frage ' + (P.i + 1) + ' von ' + P.qs.length + '</div><div class="q">' + (q.kind === 'tf' ? 'Wahr oder falsch? <br><i>' + esc(q.q) + '</i>' : esc(q.q)) + '</div><div class="body"></div><div class="fb" role="status"></div><div class="row"></div>';
+  card.innerHTML = '<div class="pq">Frage ' + (P.i + 1) + ' von ' + P.qs.length + '</div><div class="q">' + (q.kind === 'tf' ? 'Wahr oder falsch?<br><i>' + esc(q.q) + '</i>' : esc(q.q)) + '</div><div class="body"></div><div class="row"></div>';
   var body = card.querySelector('.body'), row = card.querySelector('.row'), opts = q.kind === 'tf' ? [{ x: 'Stimmt', ok: q.v }, { x: 'Stimmt nicht', ok: !q.v }] : shuffle(q.o.map(function (x, i) { return { x: x, ok: i === 0 }; })), box = mk('div', 'opts');
-  opts.forEach(function (o) {
-    var b = mk('button', 'opt', esc(o.x));
-    b.onclick = function () {
-      if (done) return; done = true; var b2 = B();
-      opts.forEach(function (p) { p.el.disabled = true; if (p.ok) p.el.classList.add('good'); });
-      if (o.ok) { P.ok++; b.classList.add('good'); setFb(card, 'ok', nm('✓ ' + esc(q.why))); if (b2) b2.richtig('probe' + P.i); }
-      else { b.classList.remove('good'); b.classList.add('bad'); P.wrong[q.ch] = (P.wrong[q.ch] || 0) + 1; setFb(card, 'no', nm('Nicht ganz. ' + esc(q.why))); if (b2) b2.falsch('probe' + P.i); }
-      var n = mk('button', 'btn', P.i + 1 < P.qs.length ? 'Nächste Frage →' : 'Ergebnis ansehen →'); n.onclick = function () { P.i++; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }; row.appendChild(n);
-    };
-    o.el = b; box.appendChild(b);
-  });
+  opts.forEach(function (o) { var b = mk('button', 'opt', esc(o.x)); b.onclick = function () {
+    if (done) return; done = true; opts.forEach(function (p) { p.el.disabled = true; if (p.ok) p.el.classList.add('good'); });
+    if (o.ok) { P.ok++; say('<b>Richtig.</b> ' + esc(q.why), 'happy', 8000); var bb = B(); if (bb) bb.richtig('probe' + P.i); } else { b.classList.add('bad'); P.wrong[q.ch] = (P.wrong[q.ch] || 0) + 1; say('<b>Nicht ganz.</b> ' + esc(q.why), 'caring', 0); var b2 = B(); if (b2) b2.falsch('probe' + P.i); }
+    var n = mk('button', 'btn', P.i + 1 < P.qs.length ? 'Nächste Frage →' : 'Ergebnis ansehen →'); n.onclick = function () { P.i++; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }; row.appendChild(n); }; o.el = b; box.appendChild(b); });
   body.appendChild(box); v.appendChild(card);
 }
 function renderProbeEnd(v) {
   var n = P.qs.length, ok = P.ok, wrong = Object.keys(P.wrong).sort(function (a, b) { return P.wrong[b] - P.wrong[a]; });
-  var msg = ok >= 11 ? 'Sehr stark. Du bist gut vorbereitet. Lies vor der SKK noch einmal die Merkkästen durch.' : ok >= 8 ? 'Das ist solide. Mit etwas Wiederholung sitzt es.' : ok >= 5 ? 'Da ist noch Luft nach oben. Das ist in Ordnung, dafür übst du ja.' : 'Das war noch nicht so gut. Keine Sorge: Arbeite die Kapitel mit den Merkkästen noch einmal durch und versuche es dann erneut.';
-  var c = mk('div', 'card', '<div class="big">' + ok + ' von ' + n + ' richtig</div><p class="hello" style="background:none;border:0;padding:0"><b class="nm" style="color:var(--board)">Herr Neumann:</b>&nbsp;' + msg + '</p>');
-  if (wrong.length) {
-    c.appendChild(mk('p', null, '<b>Hier lohnt sich eine Wiederholung:</b>')); var ul = mk('ul', 'res');
-    wrong.forEach(function (id) { var li = mk('li', null, esc(CHI[id].title) + ' (' + P.wrong[id] + (P.wrong[id] === 1 ? ' Fehler' : ' Fehler') + ') '), b = mk('button', 'btn sec', 'Zum Kapitel'); b.style.padding = '5px 12px'; b.style.fontSize = '14px'; b.onclick = function () { go(id); }; li.appendChild(b); ul.appendChild(li); });
-    c.appendChild(ul);
-  } else c.appendChild(mk('p', null, 'Kein einziger Fehler. Du kannst dich jetzt guten Gewissens auf die SKK verlassen.'));
-  var row = mk('div', 'row'), r = mk('button', 'btn', 'Neue Runde mit anderen Fragen'); r.onclick = function () { P = null; render(); window.scrollTo({ top: 0 }); }; row.appendChild(r); c.appendChild(row);
-  v.appendChild(c);
-  if (B() && !P.said) { P.said = 1; setTimeout(function () { nsay('<p class="kb-text"><b>' + ok + ' von ' + n + ' richtig.</b> ' + esc(msg) + '</p>', ok >= 8 ? 'proud' : 'caring', 0); }, 600); }
+  var msg = ok >= 11 ? 'Sehr stark. Du bist gut vorbereitet. Lies vor der SKK noch einmal die Merkkästen durch.' : ok >= 8 ? 'Das ist solide. Mit etwas Wiederholung sitzt es.' : ok >= 5 ? 'Da ist noch Luft nach oben. Das ist in Ordnung, dafür übst du ja.' : 'Das war noch nicht gut. Keine Sorge: Spiele die Kapitel noch einmal durch und versuche es dann erneut.';
+  var c = mk('div', 'card', '<div class="big">' + ok + ' von ' + n + ' richtig</div>');
+  if (wrong.length) { c.appendChild(mk('p', null, '<b>Hier lohnt sich eine Wiederholung:</b>')); var ul = mk('ul', 'res'); wrong.forEach(function (id) { var li = mk('li', null, esc(CHI[id].title) + ' (' + P.wrong[id] + (P.wrong[id] === 1 ? ' Fehler' : ' Fehler') + ') '), b = mk('button', 'btn sec', 'Zum Kapitel'); b.style.cssText = 'padding:5px 12px;font-size:14px'; b.onclick = function () { go(id); }; li.appendChild(b); ul.appendChild(li); }); c.appendChild(ul); } else c.appendChild(mk('p', null, 'Kein einziger Fehler.'));
+  var row = mk('div', 'row'), r = mk('button', 'btn', 'Neue Runde mit anderen Fragen'); r.onclick = function () { P = null; render(); window.scrollTo({ top: 0 }); }; row.appendChild(r); c.appendChild(row); v.appendChild(c);
+  setTimeout(function () { say('<b>' + ok + ' von ' + n + ' richtig.</b> ' + esc(msg), ok >= 8 ? 'proud' : 'caring', 0); }, 400);
 }
-
-/* ================= Start ================= */
-function startAll() {
-  BILD = document.getElementById('bild-src').innerHTML;
-  tabs(); render(); updateStars();
-  if (window.Begleiter && window.Kolbi) {
-    Begleiter.init({ mode: 'lernen', offsetBottom: 56, aufgabe: 'Wähle ein Kapitel. Jedes hat einen Merkkasten und Aufgaben. Am Ende kannst du dich in der SKK-Probe testen.', hilfe: 'Beginne mit Kapitel 1 oder mit dem Thema, bei dem du dich unsicher fühlst.', tipps: [] });
-  }
-}
+function startAll() { BILD = document.getElementById('bild-src').innerHTML; tabs(); render(); updateStars(); if (B()) Begleiter.init({ mode: 'lernen', offsetBottom: 56, aufgabe: 'Wähle ein Kapitel. Jedes hat einen Merkkasten und Spiele.', hilfe: 'Beginne mit Kapitel 1.', tipps: [] }); }
 document.addEventListener('DOMContentLoaded', startAll);
 
 </script>
