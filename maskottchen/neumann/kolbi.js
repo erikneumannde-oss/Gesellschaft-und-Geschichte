@@ -542,7 +542,7 @@
       window.addEventListener('orientationchange', function () { setTimeout(function () { place(pos.x, pos.y, false); }, 200); });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && bubbleOpen && !locked) closeBubble(); });
 
-      var sp = loadPos(), a = anchors()[0];
+      var sp = loadPos(), a = anchors()[cfg.startAnchor || 0];
       if (sp) { place(sp.fx * vw(), sp.fy * vh(), false); setTimeout(API.arrive, 300); }
       else { pos = { x: a.x, y: vh() + 120 }; place(a.x, vh() + 120, false); setTimeout(function () { place(a.x, a.y, true); }, 400); }
       scheduleMicro(); breakCheck(); setInterval(breakCheck, 30000);

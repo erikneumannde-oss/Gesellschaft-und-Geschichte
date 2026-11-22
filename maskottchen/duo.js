@@ -396,9 +396,19 @@
     w = w || 'R'; curAsk = o; chatSeq++; clearTimeout(chatT); mood(w, 'interested', 4000);
     openBubble(X + who(w) + '<p class="kb-text">' + esc(o.text) + '<br><br><b>Brauchst du Hilfe?</b></p>' +
       '<button class="kb-opt" data-k="tip"><span class="kb-dot"></span>Tipp anzeigen</button>' +
+      (window.Woerter && Woerter.count() ? '<button class="kb-opt" data-k="wort"><span class="kb-dot"></span>Wort erklären</button>' : '') +
       '<button class="kb-opt" data-k="no"><span class="kb-dot"></span>Ohne Hilfe weitermachen</button>' +
       (o.id ? '<label class="kb-mute"><input type="checkbox" id="kb-mute"> Diesen Tipp nicht mehr anzeigen</label>' : '') +
       '<div class="kb-links">' + quietLink() + '<button class="kb-link" data-k="off">Ausblenden</button></div>', 40000, w);
+  }
+  // Wort erklären (Wörterbuch aus maskottchen/woerterbuch.js und maskottchen/glossare/…)
+  function wortModus(w) {
+    w = w || speaker || 'R'; curAsk = null; chatSeq++; mood(w, 'interested', 4000);
+    openBubble(X + who(w) + '<p class="kb-text">' + Woerter.ASK + '</p><button class="kb-opt" data-k="no"><span class="kb-dot" style="background:#9ca3af"></span>Doch nicht</button>', 0, w);
+    Woerter.watch(function (res, sel) {
+      chatSeq++; mood(w, res ? 'happy' : 'oops', 3000);
+      openBubble(X + who(w) + '<p class="kb-text" style="margin-bottom:8px">' + Woerter.html(res, sel) + '</p><button class="kb-opt" data-k="wort"><span class="kb-dot"></span>Noch ein Wort</button><button class="kb-ok" data-k="no">Alles klar</button>', 0, w);
+    });
   }
   function showTip(o) { chatSeq++; mood(speaker, 'thinking', 5000); openBubble(X + who(speaker) + '<p class="kb-text" style="margin-bottom:8px">' + esc(o.tip) + '</p><button class="kb-ok" data-k="no">Alles klar</button>', 60000, speaker); }
   function showIntro() {
@@ -410,7 +420,9 @@
     var t = e.target.closest ? e.target.closest('[data-k]') : null; if (!t) return;
     var k = t.getAttribute('data-k'), o = curAsk, m = document.getElementById('kb-mute');
     if (m && m.checked && o && o.id) { st.mute[o.id] = 1; save(); }
+    if (k !== 'wort' && window.Woerter) Woerter.stop();
     if (k === 'tip' && o) showTip(o);
+    else if (k === 'wort' && window.Woerter) wortModus(speaker);
     else if (k === 'wy') wellAnswer(true);
     else if (k === 'wn') wellAnswer(false);
     else if (k === 'off') API.hide();
@@ -620,6 +632,8 @@
     mood: function (m, ms, w) { w ? mood(w, m, ms) : moodBoth(m, ms); },
     _remark: function () { if (el.root) remark(); },
     _idle: function (sec) { lastAct = Date.now() - sec * 1000; },
+    // Standbild einer Figur (für Gastauftritte, z. B. bei der Vorstellung durch Herrn Neumann und Lily)
+    figure: function (w, m) { var S = SKINS[w]; if (!S) return ''; var f = faceSVG({ skin: S }, m || 'happy'); return S.svg().replace(/<g id="(tt|rr)-face"><\/g>/, function (x, p) { return '<g id="' + p + '-face">' + f + '</g>'; }); },
     hide: function () { st.off = true; save(); closeBubble(); applyOff(); },
     show: function () { st.off = false; save(); applyOff(); }
   };

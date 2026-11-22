@@ -19,9 +19,10 @@
 */
 (function () {
   'use strict';
-  var B = window.Begleiter = {};
-  var BASE = (document.currentScript && document.currentScript.src || '').replace(/neumann-begleiter\.js.*$/, '');
-  var cfg = {}, SK = null, KEY = 'neumann-begleiter-vorstellung';
+  // Fabrik: eine Begleiter-Schicht je Engine-Instanz (Kolbi = erste Figur, KolbiB = zweite Figur, z. B. Lily neben Herrn Neumann)
+  function make(ENG, PFX) {
+  var B = {}, Kolbi = null;
+  var cfg = {}, SK = null, P = {};
   var q = {}, log = [], streakWrong = 0, streakOk = 0, curId = null, stage = 0;
   var lastWarn = 0, warns = 0, lastPraise = 0, checkins = 0, wordMode = false, wordTimer = null, factBag = [], niceBag = [];
   var t0 = Date.now(), lastCheck = Date.now(), asked = false;
@@ -31,21 +32,21 @@
   function bag(src, store) { if (!store.length) { store.push.apply(store, src.slice()); for (var i = store.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = store[i]; store[i] = store[j]; store[j] = t; } } return store.pop(); }
   function X() { return '<button class="kb-x" aria-label="Schließen" data-k="close">×</button>'; }
   function opt(k, label, dot) { return '<button class="kb-opt" data-nb="' + k + '"><span class="kb-dot"' + (dot ? ' style="background:' + dot + '"' : '') + '></span>' + esc(label) + '</button>'; }
-  function say(html, m, ms) { Kolbi.open(html, ms || 0, m || 'happy'); }
-  function busy() { return Kolbi.bubbleRect && Kolbi.bubbleRect(); }
+  function say(html, m, ms) { if (Kolbi) Kolbi.open(html, ms || 0, m || 'happy'); }
+  function busy() { return Kolbi && Kolbi.bubbleRect && Kolbi.bubbleRect(); }
 
   // ------------------------------------------------------------------ Menü
   function menu() {
     wordMode = false;
-    var h = X() + '<p class="kb-text"><b>' + (cfg.mode === 'lernen' ? 'Wobei kann ich dir helfen?' : 'Schön, dass du da bist!') + '</b></p>';
+    var h = X() + '<p class="kb-text"><b>' + (cfg.mode === 'lernen' ? (P.help || 'Wobei kann ich dir helfen?') : (P.hello || 'Schön, dass du da bist!')) + '</b></p>';
     if (cfg.mode === 'lernen') {
       if (cfg.aufgabe) h += opt('aufgabe', 'Aufgabe erklären');
       if (cfg.tipps && cfg.tipps.length) h += opt('tipp', 'Tipp geben');
-      h += opt('wort', 'Wort erklären');
+      if (cfg.glossar && Object.keys(cfg.glossar).length) h += opt('wort', 'Wort erklären');
       h += opt('fakt', 'Etwas Interessantes erzählen') + opt('mut', 'Ein freundliches Wort') + opt('checkin', 'Wie geht es mir gerade?');
     } else {
       if (cfg.seite) h += opt('seite', 'Was gibt es hier?');
-      h += opt('vorstellung', 'Hugo und Kolbi vorstellen') + opt('fakt', 'Etwas Interessantes erzählen') + opt('mut', 'Ein freundliches Wort');
+      if (window.TeamIntro) h += opt('vorstellung', 'Unser Team vorstellen'); h += opt('fakt', 'Etwas Interessantes erzählen') + opt('mut', 'Ein freundliches Wort');
     }
     say(h, 'interested');
   }
@@ -176,9 +177,8 @@
     if (cfg.mode !== 'lernen') return;
     if ((fast || sameFast) && n - lastWarn > 45000) {
       lastWarn = n; warns++;
-      var txt = warns === 1 ? 'Moment mal. Du klickst gerade sehr schnell durch. Lies die Frage noch einmal in Ruhe, Raten bringt dich hier nicht weiter.'
-        : warns === 2 ? 'Ich sehe, dass du wieder durchklickst. So lernst du nichts, auch wenn am Ende „richtig“ dasteht. Atme kurz durch und lies die Aufgabe noch einmal.'
-        : 'Bitte nimm die Aufgabe ernst, mir zuliebe und dir zuliebe. Ich helfe dir gern, aber dafür musst du mir sagen, wo es hakt.';
+      var W = P.warn || ['Moment mal. Du klickst gerade sehr schnell durch. Lies die Frage noch einmal in Ruhe, Raten bringt dich hier nicht weiter.', 'Ich sehe, dass du wieder durchklickst. So lernst du nichts, auch wenn am Ende „richtig“ dasteht. Atme kurz durch und lies die Aufgabe noch einmal.', 'Bitte nimm die Aufgabe ernst, mir zuliebe und dir zuliebe. Ich helfe dir gern, aber dafür musst du mir sagen, wo es hakt.'];
+      var txt = W[Math.min(warns, W.length) - 1];
       say(X() + '<p class="kb-text"><b>' + esc(txt) + '</b></p>' + (cfg.tipps && cfg.tipps.length ? opt('tipp', 'Ich brauche einen Tipp') : '') + opt('close', 'Ich lese noch einmal'), 'serious');
     } else if (o.wrong === 2 && !busy()) {
       say(X() + '<p class="kb-text">Knifflig, oder? Lies die Frage noch einmal und überlege in Ruhe. Soll ich dir einen Tipp geben?</p>' + (cfg.tipps && cfg.tipps.length ? opt('tipp', 'Ja, bitte') : '') + opt('close', 'Ich probiere es allein'), 'caring');
@@ -190,118 +190,40 @@
   B.richtig = function (id) {
     id = id || curId || 'x'; var o = rec(id, true), had = o.wrong || 0, n = Date.now(), guessed = recent(15000, false).length >= 3;
     streakOk++; var sw = streakWrong; streakWrong = 0; if (had === 0 && !guessed) stage = 0; if (cfg.mode !== 'lernen') return;
-    if (guessed) { say(X() + '<p class="kb-text"><b>Richtig. Aber war das Zufall?</b> Schau dir noch einmal an, warum genau diese Antwort stimmt. Nur so bleibt es hängen.</p>' + opt('close', 'Mache ich'), 'serious'); }
-    else if (had >= 2 && n - lastPraise > 8000) { lastPraise = n; say(X() + '<p class="kb-text"><b>' + rnd(['Geschafft! Dranbleiben lohnt sich.', 'Da ist der Knoten geplatzt. Gut durchgehalten!', 'Siehst du? Du kannst das.']) + '</b></p>', 'proud', 5000); }
+    if (guessed) { say(X() + '<p class="kb-text">' + (P.lucky || '<b>Richtig. Aber war das Zufall?</b> Schau dir noch einmal an, warum genau diese Antwort stimmt. Nur so bleibt es hängen.') + '</p>' + opt('close', 'Mache ich'), 'serious'); }
+    else if (had >= 2 && n - lastPraise > 8000) { lastPraise = n; say(X() + '<p class="kb-text"><b>' + rnd(P.persist || ['Geschafft! Dranbleiben lohnt sich.', 'Da ist der Knoten geplatzt. Gut durchgehalten!', 'Siehst du? Du kannst das.']) + '</b></p>', 'proud', 5000); }
     else if (had === 0 && (streakOk === 3 || streakOk === 6 || streakOk === 10) && n - lastPraise > 8000) { lastPraise = n; say(X() + '<p class="kb-text"><b>' + (streakOk >= 6 ? 'Richtig stark, so konzentriert zu arbeiten!' : 'Drei hintereinander richtig. Das läuft!') + '</b></p>', 'excited', 4500); }
     else if (!busy()) { Kolbi.mood('happy', 1600); }
   };
-  B.fertig = function () { say(X() + '<p class="kb-text"><b>Das war geschafft!</b> Du hast dir die Zeit genommen und mitgedacht. Gönn dir jetzt eine kleine Pause.</p>' + back(), 'proud', 0); };
+  B.fertig = function () { say(X() + '<p class="kb-text">' + (P.done || '<b>Das war geschafft!</b> Du hast dir die Zeit genommen und mitgedacht. Gönn dir jetzt eine kleine Pause.') + '</p>' + back(), 'proud', 0); };
   B.tippNext = function () { var t = cfg.tipps || []; if (!t.length) return null; var n = Math.min(stage, t.length - 1) + 1; tipp(); return { shown: n, total: t.length }; };   // für Tipp-Knöpfe der Module: Tipp in der Sprechblase
   B.setAufgabe = function (text, tipps, id, hilfe) { cfg.aufgabe = text; cfg.hilfe = hilfe || ''; cfg.tipps = tipps || []; if (id !== curId) stage = 0; if (id) curId = id; };
 
-  // ------------------------------------------------------------------ Vorstellung (Übersichtsseiten)
-  // Vorstellung: Kolbi und Hugo erscheinen kurz selbst im Bild, begrüßen den Anwender, stellen sich vor, verabschieden sich und gehen wieder.
-  var actorCss = false, hugoTried = false, run = 0;
-  function needHugo(cb) {
-    if (hugoTried) return cb(); hugoTried = true;
-    if ((window.KolbiSkins && window.KolbiSkins.hugo) || !BASE) return cb();
-    var sc = document.createElement('script'); sc.src = BASE + 'skin-hugo.js?v=20261121'; sc.onload = sc.onerror = cb; document.head.appendChild(sc);
-  }
-  function actorStyle() {
-    if (actorCss) return; actorCss = true;
+  // ------------------------------------------------------------------ Vorstellung des Teams (Übersichtsseiten, siehe team-auto.js)
+  var scaleCss = false;
+  function scaleStyle() {
+    if (scaleCss) return; scaleCss = true;
     var st = document.createElement('style');
-    st.textContent = '.nb-actor{position:fixed;right:132px;bottom:64px;z-index:2147482000;width:68px;pointer-events:none;transform:translateX(340px);opacity:0}' +
-      '.nb-actor.in{animation:nbin .8s cubic-bezier(.2,1.2,.4,1) forwards}.nb-actor.out{animation:nbout .8s ease-in forwards}' +
-      '.nb-actor .nb-av{display:block;width:68px;transform-origin:50% 100%}.nb-actor .nb-av svg{display:block;width:100%;height:auto}.nb-actor.in .nb-av{animation:nbhop .5s ease-out .5s 1}.nb-actor.wave .nb-av{animation:nbwave .6s ease-in-out 3}' +
-      '.nb-bub{position:absolute;right:6px;bottom:92px;width:240px;max-width:calc(100vw - 150px);background:#fffbe6;color:#1f2937;border:1px solid #d6cfa8;border-radius:16px;padding:10px 14px 12px;font:14px/1.4 system-ui,sans-serif;box-shadow:0 8px 26px rgba(0,0,0,.28);pointer-events:auto;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s}' +
-      '.nb-bub.on{opacity:1;transform:none}.nb-bub:after{content:"";position:absolute;right:34px;bottom:-8px;width:14px;height:14px;background:#fffbe6;border-right:1px solid #d6cfa8;border-bottom:1px solid #d6cfa8;transform:rotate(45deg)}' +
-      '.nb-hint{display:block;margin-top:6px;font-size:11.5px;color:#6b7280}.nb-bub button{display:block;margin:8px 0 -4px auto;background:none;border:0;color:#4b5563;font-size:12px;text-decoration:underline;cursor:pointer;padding:2px 0}' +
-      '#kolbi-char{scale:var(--nbs,1.3);transform-origin:50% 100%}@keyframes nbin{from{transform:translateX(340px);opacity:0}to{transform:none;opacity:1}}@keyframes nbout{from{transform:none;opacity:1}to{transform:translateX(340px);opacity:0}}' +
-      '@keyframes nbhop{0%,100%{transform:none}40%{transform:translateY(-16px)}}@keyframes nbwave{0%,100%{transform:rotate(0)}25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}' +
-      '@media (prefers-reduced-motion:reduce){.nb-actor.in,.nb-actor.out{animation-duration:.01s}.nb-actor .nb-av{animation:none!important}}';
+    st.textContent = '#' + PFX + '-char{scale:var(--nbs-' + PFX + ',1.3);transform-origin:50% 100%}';
     document.head.appendChild(st);
   }
-  var ACTORS = {
-    kolbi: { skin: 'kolbi', col: '#38bdf8', lines: ['Hallo, ich bin Kolbi! 🧪 Schön, dass du da bist.', 'Ich bin der Laborkolben und wohne in den Simulationen und Lernmodulen. Tippe mich dort an, dann bekommst du Hilfe oder einen Tipp.', 'Bis gleich in den Modulen! Tschüss!'] },
-    hugo: { skin: 'hugo', col: '#e0334f', lines: ['Hi, ich bin Hugo! ⚛️ Schön, dich zu sehen.', 'Ich bin ein Wasserstoff-Atom und kümmere mich um die Physik: Atombau, Energie und Elektronen.', 'Wir sehen uns bei den Orbitalen und bei der Thermodynamik. Tschüss!'] }
-  };
-  function actor(key, done, myRun) {
-    var A = ACTORS[key], sk = window.KolbiSkins && window.KolbiSkins[A.skin], svg = '';
-    try { if (sk) svg = String(sk.svg(A.col)).replace(/kk-/g, 'kg-'); } catch (e) { svg = ''; }
-    if (!svg) return done();
-    actorStyle();
-    var el = document.createElement('div'); el.className = 'nb-actor'; el.setAttribute('aria-live', 'polite');
-    el.innerHTML = '<div class="nb-bub"><span class="nb-t"></span><span class="nb-hint"></span><button type="button" class="nb-skip">Überspringen</button></div><span class="nb-av" aria-hidden="true">' + svg + '</span>';
-    document.body.appendChild(el);
-    var bub = el.querySelector('.nb-bub'), txt = el.querySelector('.nb-t'), ended = false, idx = -1, ready = false, tm = null;
-    function finish(skipped) {
-      if (ended) return; ended = true; clearTimeout(tm);
-      document.removeEventListener('click', onClick, true); document.removeEventListener('keydown', onKey, true);
-      bub.classList.remove('on'); el.classList.remove('wave', 'in'); void el.offsetWidth; el.classList.add('out');
-      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); if (!skipped) done(); }, 850);
-    }
-    function next() {
-      if (ended || !ready) return;
-      idx++;
-      if (idx >= A.lines.length) return finish(false);
-      txt.textContent = A.lines[idx]; bub.classList.add('on');
-      el.classList.remove('wave'); void el.offsetWidth; if (idx === 0 || idx === A.lines.length - 1) el.classList.add('wave');
-      hint.textContent = idx === A.lines.length - 1 ? 'Klick oder Enter: Tschüss' : 'Klick oder Enter: weiter';
-    }
-    function onClick(e) {
-      if (e.target.closest && e.target.closest('.nb-skip')) { e.preventDefault(); e.stopPropagation(); actorAbort(); return; }
-      e.preventDefault(); e.stopPropagation(); next();
-    }
-    function onKey(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); next(); } }
-    var hint = el.querySelector('.nb-hint');
-    document.addEventListener('click', onClick, true); document.addEventListener('keydown', onKey, true);
-    actorAbort = function () { finish(true); skipAll(); };
-    el.classList.add('in');
-    tm = setTimeout(function () { try { if (window.Kolbi) Kolbi.mood('happy', 3000); } catch (e) {} ready = true; next(); }, 900);
-  }
-  var actorAbort = function () {};
-  function skipAll() { run++; B._vor(3); }
-  var VOR = [
-    { m: 'excited', h: '<b>Hallo, ich bin Herr Neumann!</b><br>Ich begleite dich durch die Lernmodule. Zwei Freunde von mir möchte ich dir kurz vorstellen. Sie kommen gleich vorbei.', btn: 'Gern, bitte!' },
-    null, null,
-    { m: 'interested', h: '<b>Und ich?</b> Auf den Übersichtsseiten erkläre ich dir, was es hier gibt. In den Wiederholungs- und Arbeitenmodulen bin ich dein Lernbegleiter. Dort erkläre ich Aufgaben, gebe Tipps und erkläre Wörter, die du markierst. Ich erzähle dir nichts, was dich ablenkt, außer du fragst mich.', btn: 'Verstanden, danke!' }
-  ];
-  B.vorstellung = function (i) {
-    i = i || 0; run++; actorStyle();
-    needHugo(function () { B._vor(i === 0 ? 0 : 3); });
-  };
-  B._vor = function (i) {
-    var s = VOR[i], mine = run;
-    function ende() { try { localStorage.setItem(KEY, '1'); } catch (e) {} }
-    if (i === 0) {
-      Kolbi.guide({ endLabel: 'Vorstellung beenden', html: s.h, btn: s.btn, mood: s.m,
-        onGo: function () {
-          Kolbi.guideEnd();
-          actor('kolbi', function () { if (mine !== run) return; actor('hugo', function () { if (mine !== run) return; B._vor(3); }, mine); }, mine);
-        },
-        onEnd: function () { Kolbi.guideEnd(); ende(); } });
-    } else {
-      Kolbi.guide({ endLabel: 'Vorstellung beenden', html: s.h, btn: s.btn, mood: s.m,
-        onGo: function () { Kolbi.guideEnd(); Kolbi.mood('excited', 2000); ende(); },
-        onEnd: function () { Kolbi.guideEnd(); ende(); } });
-    }
-  };
+  B.vorstellung = function () { if (window.TeamIntro) window.TeamIntro.start(); };
 
   // ------------------------------------------------------------------ Start
-  B.init = function (o) { actorStyle(); document.documentElement.style.setProperty("--nbs", o && o.mode === "lernen" ? "1.12" : "1.3");
-    var g0 = cfg.glossar || {}; cfg = o || {}; cfg.glossar = cfg.glossar ? (function (a, b) { Object.keys(b).forEach(function (k) { a[k] = b[k]; }); return a; })(g0, cfg.glossar) : g0; IDX = null; cfg.mode = cfg.mode || 'lernen'; SK = window.KolbiSkins && window.KolbiSkins.neumann; if (!SK || !window.Kolbi) return;
+  B.init = function (o) { scaleStyle(); document.documentElement.style.setProperty('--nbs-' + PFX, o && o.scale ? String(o.scale) : (o && o.mode === 'lernen' ? '1.12' : '1.3'));
+    var g0 = cfg.glossar || {}; cfg = o || {}; cfg.glossar = cfg.glossar ? (function (a, b) { Object.keys(b).forEach(function (k) { a[k] = b[k]; }); return a; })(g0, cfg.glossar) : g0; IDX = null; cfg.mode = cfg.mode || 'lernen'; SK = window.KolbiSkins && window.KolbiSkins[cfg.skin || 'neumann']; Kolbi = window[ENG] || null; if (!SK || !Kolbi) return; P = (SK.t && SK.t.B) || {};
     Kolbi.init({
-      id: cfg.id || 'neumann', skin: SK, color: '#5b7a6a', offsetBottom: cfg.offsetBottom == null ? 56 : cfg.offsetBottom,
+      id: cfg.id || SK.key, skin: SK, color: SK.color || '#5b7a6a', offsetBottom: cfg.offsetBottom == null ? 56 : cfg.offsetBottom, startAnchor: cfg.startAnchor || 0,
       intro: false,
       canTalk: function () { return cfg.mode === 'uebersicht'; },    // im Lernmodus kein Zufallsgerede
       tapHelp: function () { return null; }, comments: cfg.comments || ['Such dir aus, womit du anfangen möchtest.']
     });
     Kolbi.help = menu;      // Antippen öffnet das Menü
-    var root = document.getElementById('kolbi-bubble');
+    var root = document.getElementById(PFX + '-bubble');
     if (root) root.addEventListener('click', function (e) {
       var t = e.target.closest && e.target.closest('[data-nb]'); if (!t) return; var k = t.getAttribute('data-nb');
       if (k === 'menu') menu(); else if (k === 'aufgabe') aufgabe(); else if (k === 'tipp') tipp(); else if (k === 'wort') wortModus();
-      else if (k === 'fakt') fakt(); else if (k === 'mut') mut(); else if (k === 'checkin') checkin(); else if (k === 'vorstellung') B.vorstellung(0); else if (k === 'seite') seite();
+      else if (k === 'fakt') fakt(); else if (k === 'mut') mut(); else if (k === 'checkin') checkin(); else if (k === 'vorstellung') { Kolbi.hush(); B.vorstellung(); } else if (k === 'seite') seite();
       else if (k.indexOf('ci-') === 0) checkinReply(k.slice(3));
       else if (k === 'close') Kolbi.hush();
     });
@@ -312,11 +234,14 @@
         var min = (Date.now() - lastCheck) / 60000;
         if (min >= 20 && checkins < 3 && !busy() && !document.hidden) { lastCheck = Date.now(); checkins++; checkin(); }
       }, 30000);
-    } else if (cfg.vorstellung) {
-      var seen = false; try { seen = !!localStorage.getItem(KEY); } catch (e) {}
-      if (!seen) setTimeout(function () { B.vorstellung(0); }, 1800);
     }
   };
   B._checkinSoon = function () { lastCheck = 0; };      // nur zum Testen
   B.checkinNow = checkin;
+  B.engine = function () { return Kolbi; };
+  B.say = function (html, m, ms) { say(X() + '<p class="kb-text">' + html + '</p>', m, ms); };
+  return B;
+  }
+  window.Begleiter = make('Kolbi', 'kolbi');
+  window.Begleiter2 = make('KolbiB', 'kolbb');
 })();

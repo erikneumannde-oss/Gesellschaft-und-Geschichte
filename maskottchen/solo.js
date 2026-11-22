@@ -186,7 +186,13 @@
   }
   function showAsk(o) {
     curHelp = o; mood('interested', 4000);
-    openBubble(who() + '<p>' + esc(o.text) + '<br><br><b>Brauchst du Hilfe?</b></p><button class="so-opt" data-k="tip">Tipp anzeigen</button><button class="so-opt" data-k="no">Ohne Hilfe weitermachen</button><button class="so-lk" data-k="off">Ausblenden</button>' + quietLink(), 40000);
+    openBubble(who() + '<p>' + esc(o.text) + '<br><br><b>Brauchst du Hilfe?</b></p><button class="so-opt" data-k="tip">Tipp anzeigen</button>' + (window.Woerter && Woerter.count() ? '<button class="so-opt" data-k="wort">Wort erklären</button>' : '') + '<button class="so-opt" data-k="no">Ohne Hilfe weitermachen</button><button class="so-lk" data-k="off">Ausblenden</button>' + quietLink(), 40000);
+  }
+  // Wort erklären (Wörterbuch aus maskottchen/woerterbuch.js und maskottchen/glossare/…)
+  function wortModus() {
+    curHelp = null; mood('interested', 4000);
+    openBubble(who() + '<p>' + Woerter.ASK + '</p><button class="so-opt" data-k="no">Doch nicht</button>', 0);
+    Woerter.watch(function (res, sel) { mood(res ? 'happy' : 'oops', 3000); openBubble(who() + '<p>' + Woerter.html(res, sel) + '</p><button class="so-opt" data-k="wort">Noch ein Wort</button><button class="so-opt" data-k="no">Alles klar</button>', 0); });
   }
   function showTip(o) { mood('thinking', 5000); openBubble(who() + '<p>' + esc(o.tip) + '</p><button class="so-opt" data-k="no">Alles klar</button>', 60000); }
   function applyOff() { if (!el.root) return; el.node.style.display = st.off ? 'none' : ''; el.back.style.display = st.off ? 'block' : 'none'; if (st.off) closeBubble(); }
@@ -262,7 +268,8 @@
       render();
       el.bubble.addEventListener('click', function (e) {
         var t = e.target.closest ? e.target.closest('[data-k]') : null; if (!t) return; var k = t.getAttribute('data-k'), o = curHelp;
-        if (k === 'tip' && o) showTip(o); else if (k === 'wy') wellAnswer(true); else if (k === 'wn') wellAnswer(false); else if (k === 'off') { st.off = true; save(); applyOff(); } else if (k === 'quiet') { st.quiet = !st.quiet; save(); closeBubble(); mood('happy', 1200); } else closeBubble();
+        if (k !== 'wort' && window.Woerter) Woerter.stop();
+        if (k === 'tip' && o) showTip(o); else if (k === 'wort' && window.Woerter) wortModus(); else if (k === 'wy') wellAnswer(true); else if (k === 'wn') wellAnswer(false); else if (k === 'off') { st.off = true; save(); applyOff(); } else if (k === 'quiet') { st.quiet = !st.quiet; save(); closeBubble(); mood('happy', 1200); } else closeBubble();
       });
       el.back.addEventListener('click', function () { st.off = false; save(); applyOff(); API.help(); });
       // Ziehen, Tippen, Kitzeln
@@ -308,7 +315,9 @@
     refresh: function () { if (el.root) render(); },
     help: function () { var o = cfg.help ? cfg.help() : null; if (!o) { say('Hallo, ich bin ' + sk().name + '!', 'happy'); return; } showAsk(o); },
     close: function () { if (el.root) closeBubble(); },
-    isOpen: function () { return bubbleOpen; }
+    isOpen: function () { return bubbleOpen; },
+    // Standbild einer Figur (für Gastauftritte bei der Vorstellung)
+    figure: function (k, m) { return SKINS[k] ? SKINS[k].svg(m || 'happy') : ''; }
   };
   window.Solo = API;
 })();

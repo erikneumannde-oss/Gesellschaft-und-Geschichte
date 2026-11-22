@@ -1,5 +1,6 @@
 /*
-  Tinto & Rolli für Navigationsseiten (Startseite, Bereichsseiten, Pinnwände).
+  Tinto & Rolli für die Navigationsseiten (Pinnwände) von Klasse 7 und 8.
+  Alle anderen Navigationsseiten (Startseite, Bereichsseiten, ab Klasse 9, Oberstufe) leitet diese Datei an neumann/team-auto.js weiter.
   Einbinden:  <script src=".../maskottchen/duo-auto.js"></script>
   Erkennt anhand des Pfades, wo der Schüler gerade ist, begrüßt ihn auf der Startseite bei jedem Besuch
   und erklärt beim ersten Besuch pro Sitzung, was es hier gibt.
@@ -12,6 +13,13 @@
   var root = base.replace(/maskottchen\/$/, '');                    // Wurzel der Seite
   var rel = decodeURIComponent(location.href.replace(/[?#].*$/, '').slice(root.length)).replace(/index\.html$/, '');
   var isRoot = rel === '';
+
+  // Ab Klasse 9 und auf den Übersichtsseiten übernehmen Herr Neumann und Lily (siehe neumann/team-auto.js).
+  // Tinto und Rolli bleiben in Klasse 7 und 8.
+  if (!/^(Geschichte|Politische-Bildung)\/Klasse-(7|8|7-8)\//.test(rel.normalize ? rel.normalize('NFC') : rel)) {
+    var t = document.createElement('script'); t.src = base + 'neumann/team-auto.js?v=20261122c'; (document.head || document.documentElement).appendChild(t);
+    return;
+  }
 
   function run() {
     var h1 = document.querySelector('.paper h1'), title = h1 ? h1.textContent.trim() : (document.title || '').trim();

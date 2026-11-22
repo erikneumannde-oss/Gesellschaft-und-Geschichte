@@ -234,6 +234,38 @@
       new MutationObserver(function () { clearTimeout(timer); timer = setTimeout(scan, 300); }).observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['class'] });
     }
   }
-  function start() { if (window.Duo) return run(); var s = document.createElement('script'); s.src = base + 'duo.js'; s.onload = run; document.head.appendChild(s); }
+  // Klasse 10 und Oberstufe: Herr Neumann als Lernbegleiter statt Tinto und Rolli (gleiche Modultexte und Tipps)
+  function runNeumann() {
+    var app = APPS[folder] || null, entries = CHECKS[folder] || [], tips = [];
+    entries.forEach(function (e) { (e.tips || []).forEach(function (t) { if (tips.indexOf(t) < 0) tips.push(t); }); });
+    Begleiter.init({ mode: 'lernen', skin: 'neumann', glossar: window.Woerter ? Woerter.all() : {}, id: 'app-' + folder, offsetBottom: app && app.bottom ? app.bottom : 56, aufgabe: app ? app.text : '', hilfe: app ? app.tip : '', tipps: tips });
+    if (!entries.length || !window.MutationObserver) return;
+    var all = entries.map(function (e) { return e.sel; }).join(','), last = window.WeakMap ? new WeakMap() : null, timer = null, n = 0;
+    function scan() {
+      var nodes = document.querySelectorAll(all);
+      for (var i = 0; i < nodes.length; i++) {
+        var el = nodes[i]; if (el.offsetParent === null && getComputedStyle(el).position !== 'fixed') continue;
+        var v = verdict(el), sig = v + '|' + (el.textContent || '').trim().slice(0, 80);
+        if (!v || (last && last.get(el) === sig)) continue; if (last) last.set(el, sig);
+        if (v === 'good') Begleiter.richtig('a' + n); else Begleiter.falsch('a' + n);
+        if (v === 'good') n++;
+      }
+    }
+    new MutationObserver(function () { clearTimeout(timer); timer = setTimeout(scan, 300); }).observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['class'] });
+  }
+  if (/(^|\/)(Klasse-10|Oberstufe)\//.test(rel + '/')) {
+    var nb = base + 'neumann/', list = ['kolbi.js', 'skin-neumann.js', 'neumann-begleiter.js'];
+    var go = function () { words(function () { (function nx(i) { if (i >= list.length) return runNeumann(); var s = document.createElement('script'); s.src = nb + list[i] + '?v=20261122c'; s.onload = s.onerror = function () { nx(i + 1); }; document.head.appendChild(s); })(0); }); };
+    if (document.body) go(); else document.addEventListener('DOMContentLoaded', go);
+    return;
+  }
+  // Wörterbuch für „Wort erklären“: allgemeine Wörter + Wörter des Moduls (nicht in der Glorious Revolution, dort erklärt Wilhelm III.)
+  function slug(f) { return f.replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/Ä/g, 'Ae').replace(/Ö/g, 'Oe').replace(/Ü/g, 'Ue').replace(/ß/g, 'ss'); }
+  function words(cb) {
+    if (folder === 'Glorious-Revolution') return cb();
+    var list = ['woerterbuch.js', 'glossare/allgemein.js', 'glossare/' + slug(folder) + '.js'];
+    (function nx(i) { if (i >= list.length) return cb(); var s = document.createElement('script'); s.src = base + list[i] + '?v=20261122c'; s.onload = s.onerror = function () { nx(i + 1); }; document.head.appendChild(s); })(0);
+  }
+  function start() { words(function () { if (window.Duo) return run(); var s = document.createElement('script'); s.src = base + 'duo.js?v=20261122c'; s.onload = run; document.head.appendChild(s); }); }
   if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);
 })();
