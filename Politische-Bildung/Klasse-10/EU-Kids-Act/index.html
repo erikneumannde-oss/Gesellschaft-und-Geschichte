@@ -1,0 +1,1019 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EU Kids Act · Politische Bildung Klasse 10</title>
+<link rel="icon" type="image/png" href="../../../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../../../icons/apple-touch-icon.png">
+<style>
+:root{--board:#2f4b3f;--board2:#3a5a4c;--chalk:#f6f3e8;--frame:#8a5d3b;--paper:#fffdf6;--ink:#26303a;--muted:#667380;--line:#dcd5c0;--gold:#e0a63a;--gold-d:#b9801c;--ok:#2e8b57;--bad:#c0392b;--blue:#386fa4}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--ink);font-family:'Segoe UI',system-ui,-apple-system,Roboto,Tahoma,sans-serif;line-height:1.5;background-color:#f3efe0;
+ background-image:linear-gradient(rgba(70,120,170,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(70,120,170,.13) 1px,transparent 1px);background-size:24px 24px}
+.wrap{max-width:880px;margin:0 auto;padding:10px 12px 220px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 0 8px}
+.back{background:#7d8a86;color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:8px 14px;border-radius:8px}
+.stars{background:var(--paper);border:2px solid var(--gold);color:var(--gold-d);font-weight:800;border-radius:999px;padding:5px 13px;font-size:15px;box-shadow:0 2px 0 rgba(0,0,0,.08)}
+.tafel{background:radial-gradient(ellipse at 30% 20%,var(--board2),var(--board));color:var(--chalk);border:9px solid var(--frame);border-radius:10px;padding:16px 16px 14px;text-align:center;box-shadow:0 8px 20px rgba(60,40,20,.3),inset 0 0 40px rgba(0,0,0,.25);position:relative}
+.tafel h1{margin:0;font-size:clamp(21px,5.2vw,31px);line-height:1.2;letter-spacing:.3px;text-shadow:0 0 1px rgba(255,255,255,.4)}
+.tafel p{margin:6px 0 0;font-size:14.5px;opacity:.92}
+.tafel .kreide{position:absolute;left:14px;bottom:-9px;width:46px;height:9px;background:#f4efe0;border-radius:2px;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+nav#tabs{position:sticky;top:0;z-index:20;display:flex;gap:6px;overflow-x:auto;padding:10px 2px 8px;margin-top:8px;background:linear-gradient(#f3efe0 75%,rgba(243,239,224,0));-webkit-overflow-scrolling:touch}
+nav#tabs button{flex:none;border:2px solid var(--line);background:var(--paper);color:var(--ink);font:inherit;font-size:14px;font-weight:700;padding:8px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+nav#tabs button.on{background:var(--board);border-color:var(--board);color:var(--chalk)}
+nav#tabs button.fin::after{content:' ✓';color:var(--ok)} nav#tabs button.on.fin::after{color:#9be0b4}
+h2{font-size:clamp(20px,4.6vw,25px);margin:12px 0 4px}
+.sub{color:var(--muted);margin:0 0 8px;font-size:14.5px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 15px;margin:12px 0;box-shadow:0 3px 8px rgba(80,60,20,.08)}
+.merk{background:#fff8dc;border:1px solid #ecd98a;border-left:7px solid var(--gold)}
+.merk h3{margin:0 0 6px;font-size:17px} .merk ul{margin:0;padding-left:20px} .merk li{margin:6px 0}
+.hello{display:flex;gap:12px;align-items:flex-start;background:#eef6f0;border:1px solid #bcd8c6;border-left:7px solid var(--board)}
+.hello .em{font-size:34px;line-height:1}
+.hello p{margin:0 0 6px} .hello p:last-child{margin:0}
+.chap{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));margin:10px 0}
+.chap button{text-align:left;background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:13px;font:inherit;color:var(--ink);cursor:pointer;box-shadow:0 3px 8px rgba(80,60,20,.08)}
+.chap button:hover{border-color:var(--gold)} .chap b{display:block;font-size:16.5px;margin-bottom:2px}
+.chap .s{display:block;font-size:13.5px;color:var(--muted);margin-bottom:7px} .chap .ic{font-size:26px;float:right;margin-left:8px}
+.pbar{height:9px;background:#e8e2cf;border-radius:6px;overflow:hidden} .pbar i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.cnt{font-size:12.5px;color:var(--muted);margin-top:4px;display:block}
+.task .head{display:flex;gap:10px;align-items:flex-start}
+.task .nr{flex:none;background:var(--board);color:var(--chalk);font-weight:800;font-size:14px;border-radius:8px;padding:3px 10px;margin-top:1px}
+.task.done .nr{background:var(--ok)} .task.done{border-color:#b9dcc6}
+.task .q{font-weight:600} .task .body{margin-top:10px}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn{background:var(--board);color:var(--chalk);border:0;border-radius:9px;padding:11px 17px;font:inherit;font-size:15.5px;font-weight:700;cursor:pointer}
+.btn:hover{background:#264035} .btn:disabled{background:#b8b4a4;cursor:not-allowed}
+.btn.tip{background:var(--gold);color:#3c2a06} .btn.tip:hover{background:var(--gold-d);color:#fff}
+.btn.sec{background:#ece6d2;color:var(--ink);border:1px solid var(--line)} .btn.sec:hover{background:#e2dcc6}
+.fb{margin-top:10px;padding:10px 12px;border-radius:9px;font-size:15px;display:none}
+.fb.show{display:block} .fb.ok{background:#e8f5ed;border:1px solid #a9d9bb} .fb.no{background:#fdecea;border:1px solid #f0b8b2} .fb.neutral{background:#f3efe2;border:1px solid var(--line)}
+.fb b.nm{color:var(--board)}
+.loesung{display:none;margin-top:10px;background:#f2edfa;border-left:6px solid #8a5fb4;border-radius:9px;padding:10px 14px;font-size:15px}
+.loesung.show{display:block} .loesung p{margin:4px 0}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;background:#fff;border:2px solid #d8d2bd;border-radius:10px;padding:10px 12px;font:inherit;font-size:15.5px;color:var(--ink);cursor:pointer}
+.opt:hover{border-color:var(--gold)} .opt.sel{border-color:var(--blue);background:#eaf2fb} .opt.good{border-color:var(--ok);background:#e8f5ed} .opt.bad{border-color:var(--bad);background:#fdecea}
+.mrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;padding:9px 6px;border-bottom:1px solid var(--line)}
+.mrow:last-child{border-bottom:0} .mrow .t{flex:1 1 230px}
+.mrow.good{background:#eef8f1} .mrow.bad{background:#fdf1ef}
+.seg{display:inline-flex;flex-wrap:wrap;border:2px solid #cfc8b0;border-radius:9px;overflow:hidden}
+.seg button{border:0;background:#fff;font:inherit;font-size:14.5px;padding:8px 12px;cursor:pointer;color:var(--ink)}
+.seg button+button{border-left:2px solid #cfc8b0} .seg button.sel{background:var(--blue);color:#fff}
+.why{flex-basis:100%;font-size:14px;color:#3d4b57;margin:2px 0 0}
+select{font:inherit;font-size:16px;padding:7px 8px;border:2px solid #c9c2a8;border-radius:8px;background:#fff;color:var(--ink);max-width:100%}
+select.good{border-color:var(--ok);background:#e8f5ed} select.bad{border-color:var(--bad);background:#fdecea}
+.pair{display:grid;gap:6px;padding:9px 0;border-bottom:1px solid var(--line)} .pair:last-child{border-bottom:0} .pair b{font-size:15.5px}
+.pair select{width:100%} .pair.good{background:#eef8f1} .pair.bad{background:#fdf1ef}
+.cl{line-height:2.4}
+.cl select{margin:0 3px;max-width:58vw}
+.ordwrap h4{margin:8px 0 4px;font-size:13.5px;color:var(--muted)}
+.pool,.seq{display:grid;gap:6px} .seq{counter-reset:s;min-height:46px;border:2px dashed #cfc8b0;border-radius:10px;padding:6px}
+.ocard{text-align:left;background:#fff;border:2px solid #d8d2bd;border-radius:10px;padding:9px 12px;font:inherit;font-size:15px;color:var(--ink);cursor:pointer}
+.seq .ocard{border-color:var(--blue);background:#eaf2fb} .seq .ocard::before{counter-increment:s;content:counter(s) '. ';font-weight:800;color:var(--blue)}
+.seq.nonum .ocard::before{content:none}
+.seq .ocard.good{border-color:var(--ok);background:#e8f5ed} .seq .ocard.bad{border-color:var(--bad);background:#fdecea}
+textarea{width:100%;font:inherit;font-size:16px;padding:10px;border:2px solid #cfc8b0;border-radius:10px;resize:vertical;min-height:110px;background:#fff;color:var(--ink)}
+.count{font-size:12.5px;color:var(--muted);text-align:right;margin-top:2px}
+.fig{margin:6px 0 4px;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.fig svg{display:block;width:100%;height:auto}
+.fig figcaption{font-size:13px;color:var(--muted);padding:6px 10px;border-top:1px solid var(--line);background:#faf7ea}
+.spotbox{position:relative;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.spotbox svg{pointer-events:none}
+.ping{position:absolute;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;pointer-events:none;animation:ping .8s ease-out forwards}
+.ping.ok{border:4px solid var(--ok);background:rgba(46,139,87,.22)} .ping.no{border:4px solid var(--bad);background:rgba(192,57,43,.18)}
+@keyframes ping{from{transform:scale(.4);opacity:1}to{transform:scale(1.3);opacity:0}}
+.rect{position:absolute;border:3px solid var(--ok);background:rgba(46,139,87,.16);border-radius:8px;pointer-events:none}
+.spotq{font-weight:800;color:var(--board);margin:6px 0}
+.hint{color:var(--muted);font-size:13.5px;margin:6px 0 0}
+.badge{display:inline-block;background:var(--gold);color:#3c2a06;font-weight:800;border-radius:999px;padding:3px 12px;font-size:13.5px;margin-left:6px;vertical-align:middle}
+.pq{font-size:17px;font-weight:700;margin:4px 0 10px}
+.big{font-size:34px;font-weight:800;color:var(--board)}
+.res li{margin:6px 0}
+.foot{margin:26px 0 0;text-align:center}.impressum{color:#555;font-size:12.5px}
+.card{scroll-margin-top:72px}
+@media (max-width:480px){.card{padding:12px}.wrap{padding-left:8px;padding-right:8px}}
+@media (orientation:landscape) and (max-width:1000px){.wrap{padding-right:96px}}
+@media (prefers-reduced-motion:reduce){.ping{animation-duration:.01s}}
+
+.task .q2{font-size:14.5px;color:var(--muted);margin-top:1px}
+.stage{margin-top:10px}.go{background:var(--board)}
+.dots{display:flex;gap:6px;justify-content:center;margin:8px 0}.dots i{width:12px;height:12px;border-radius:50%;background:#ddd5bd}.dots i.on{background:var(--ok)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.chip{background:#fff;border:2px solid #cfc8b0;border-radius:999px;padding:8px 14px;font:inherit;font-size:15px;cursor:pointer;color:var(--ink)}.chip.sel{border-color:var(--blue);background:#eaf2fb}.chip.good{border-color:var(--ok);background:#e8f5ed}.chip.bad{border-color:var(--bad);background:#fdecea}.chip.used{opacity:.35}
+.werhead{font-size:14.5px;color:var(--muted)}
+.town{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.bld{background:#fff;border:2px solid #d8d2bd;border-radius:12px;padding:10px 4px;font:inherit;cursor:pointer;text-align:center;color:var(--ink)}.bld .e{display:block;font-size:34px}.bld b{font-size:13.5px}.bld:hover{border-color:var(--gold)}
+.letter{margin:10px auto;max-width:480px;background:#fffdf0;border:2px solid #e3d9b2;border-radius:6px;padding:12px 14px;font-style:italic;box-shadow:0 3px 6px rgba(0,0,0,.12);transition:transform .35s,opacity .35s}.letter.fly{transform:translateY(-60px) scale(.5);opacity:0}
+.pens{display:flex;gap:8px;flex-wrap:wrap}.pen{border:3px solid transparent;border-radius:10px;padding:8px 14px;font:inherit;font-weight:700;cursor:pointer;color:#222}.pen.p0{background:#ffe27a}.pen.p1{background:#9fd0ff}.pen.p2{background:#a8e6b4}.pen.sel{border-color:#222}
+.paper2{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;line-height:2}.paper2 p{margin:6px 0 0}.mk{cursor:pointer;border-radius:3px}.mk.c0{background:#ffe27a}.mk.c1{background:#9fd0ff}.mk.c2{background:#a8e6b4}.mk.wrongmk{text-decoration:underline wavy var(--bad)}
+.syls{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.syls.strip{min-height:46px;border:2px dashed #cfc8b0;border-radius:10px;padding:5px}.syl{background:#fff;border:2px solid #d8d2bd;border-radius:10px;padding:9px 14px;font:inherit;font-size:16px;cursor:pointer;color:var(--ink)}.syl.on{border-color:var(--blue);background:#eaf2fb}
+.scale{margin-top:6px}.beam{height:10px;background:#8a5d3b;border-radius:6px;margin:14px 8% 0;transition:transform .5s;transform-origin:50% 50%}.pans{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:-2px}.pan{background:#fdf6df;border:3px solid #e3c86e;border-radius:0 0 40px 40px;min-height:86px;padding:8px;font:inherit;cursor:pointer;color:var(--ink)}.pan .stack{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;margin-top:6px}.pan .w{font-style:normal;color:var(--board)}
+.hand{display:grid;gap:6px;margin-top:10px}.wcard{background:#fff;border:2px solid #d8d2bd;border-radius:10px;padding:9px 12px;font:inherit;font-size:15px;text-align:left;cursor:pointer;color:var(--ink)}.wcard.sel{border-color:var(--blue);background:#eaf2fb}
+.gap{border:0;border-bottom:3px solid var(--ink);background:transparent;font:inherit;font-size:16px;padding:0 6px;margin:0 3px;cursor:pointer;min-width:60px;color:var(--ink)}.gap.on{background:#eaf2fb}.gap.good{background:#e8f5ed}.gap.bad{background:#fdecea}
+.belt{overflow:hidden;background:repeating-linear-gradient(90deg,#4b5159 0 18px,#434950 18px 36px);border:4px solid #2e3338;border-radius:12px;padding:12px 0;height:92px;position:relative}.track{display:flex;gap:14px;width:max-content;animation:belt 28s linear infinite}.belt:hover .track{animation-play-state:paused}.bcard{flex:none;width:170px;height:62px;background:#fff6d7;border:2px solid #e3c86e;border-radius:10px;font:inherit;font-size:13.5px;cursor:pointer;color:var(--ink);padding:4px 8px}.bcard.gone{visibility:hidden}
+@keyframes belt{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.done-strip{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.sdone{background:#e8f5ed;border:2px solid var(--ok);border-radius:999px;padding:4px 12px;font-size:13.5px}
+.phonewrap{text-align:center}.phone{width:min(100%,260px);height:auto}.part{cursor:pointer}.part:hover rect{stroke:#e0a63a}
+.jit{display:grid;gap:10px}.strat{background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px}.strat span{display:block;font-size:14px;color:var(--muted);margin:2px 0 8px}.weeks{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:50px}.wk{border-radius:8px;padding:4px 8px;text-align:center;font-size:18px}.wk small{display:block;font-size:11px}.wk.ok{background:#e8f5ed}.wk.stop{background:#fdecea}.kost{font-size:14px;margin-top:6px}
+.sim{position:relative}.simsvg{width:100%;height:auto;background:#cfe8ff;border-radius:12px}.temp{position:absolute;right:10px;top:8px;background:rgba(255,255,255,.9);border-radius:10px;padding:2px 12px;font-size:30px;font-weight:800}.sl{margin-top:10px}.sl input{width:100%;height:32px}.scalebar{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted)}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.mcard{position:relative;height:104px;border:0;padding:0;background:transparent;cursor:pointer;perspective:600px;font:inherit}.mcard .back,.mcard .front{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;border-radius:10px;padding:5px;font-size:12.5px;backface-visibility:hidden;transition:transform .35s;color:var(--ink)}.mcard .back{background:var(--board);color:var(--chalk);font-size:28px;border:3px solid var(--frame)}.mcard .front{background:#fffbe8;border:3px solid #e3c86e;transform:rotateY(180deg)}.mcard.up .back,.mcard.ok .back{transform:rotateY(180deg)}.mcard.up .front,.mcard.ok .front{transform:none}.mcard.ok .front{border-color:var(--ok);background:#e8f5ed}
+.scene{background:#fffdf0;border:2px solid #e3d9b2;border-radius:12px;padding:12px;font-size:16px;margin-bottom:10px}.lamps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.lamp{background:#2f3a40;color:#f2f2f2;border:0;border-radius:12px;padding:10px 4px;font:inherit;cursor:pointer}.lamp .bulb{display:block;font-size:30px;filter:grayscale(1) brightness(.6)}.lamp.lit .bulb{filter:none}.lamp b{font-size:13.5px}
+.tl{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:14px}.tl .line{position:absolute;left:0;right:0;top:20px;height:6px;background:#8a5d3b;border-radius:3px}.slot{position:relative;z-index:1;background:#fff;border:3px solid #c9c2a8;border-radius:12px;padding:8px 4px;font:inherit;cursor:pointer;min-height:96px;color:var(--ink)}.slot b{display:block;font-size:20px}.slot .in{display:block;font-size:12.5px;margin-top:4px}.slot.ok{border-color:var(--ok);background:#e8f5ed}
+.meter{font-size:13.5px;color:var(--muted)}.bar{height:14px;background:#e8e2cf;border-radius:8px;overflow:hidden;margin:4px 0 10px}.bar i{display:block;height:100%;background:linear-gradient(90deg,#4caf70,#e0a63a);transition:width .4s}.two{display:grid;gap:8px}
+.form{display:grid;gap:8px;margin-top:8px}.frow{display:grid;grid-template-columns:1fr;gap:3px}.frow label{font-weight:600;font-size:14px}.frow select{width:100%}
+select.good{border-color:var(--ok);background:#e8f5ed}select.bad{border-color:var(--bad);background:#fdecea}
+.rect{position:absolute;border:3px solid var(--ok);background:rgba(46,139,87,.16);border-radius:8px;pointer-events:none}
+.zoom{position:fixed;inset:0;z-index:9999;background:rgba(20,28,24,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:10px}.zoom svg{width:100%;max-height:80vh;background:#fff;border-radius:10px}@media(orientation:portrait){.zoom svg{width:96vw}}.fig svg{width:100%;height:auto;max-width:300px;display:block;margin:0 auto}.feed{max-width:340px;margin:8px auto;background:#1d2530;border-radius:22px;padding:10px;color:#fff}.feed .vid{height:110px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:8px}.feed .cap{font-size:14px;margin:2px 4px 8px}.feed .cd{font-size:13px;opacity:.85;text-align:center;margin-bottom:6px}.feed .cnt{font-size:13px;text-align:center;opacity:.7}.pk{display:grid;gap:8px;margin-top:6px}.pcard{background:#fff;border:2px solid #d8d2bd;border-radius:12px;padding:10px 12px;font:inherit;text-align:left;cursor:pointer;color:var(--ink)}.pcard small{display:block;color:var(--muted);margin-top:3px}.pcard.in{border-color:var(--blue);background:#eaf2fb}.pcard.dafuer.in{border-color:#2e8b57;background:#e8f5ed}.pcard.dagegen.in{border-color:#c0392b;background:#fdecea}.pcount{font-weight:700;margin:6px 0}.rk{border-left:6px solid var(--line);padding:6px 10px;margin:8px 0;background:#fff;border-radius:6px}.rk.dafuer{border-color:#2e8b57}.rk.dagegen{border-color:#c0392b}.rk .ge{margin-top:6px;font-size:14.5px;color:var(--muted)}
+/* ===== Design: hell, EU-Blau und Gelb, digital ===== */
+:root{--board:#1446b8;--board2:#0b3a8f;--chalk:#fff;--frame:#0b3a8f;--paper:#fff;--ink:#1b2640;--muted:#5b6785;--line:#d9e0ee;--gold:#ffcc00;--gold-d:#d9a800;--ok:#1f9d6b;--bad:#d63a4a;--blue:#1d6fe0}
+body{background-color:#eef2f9;background-image:radial-gradient(rgba(20,70,184,.10) 1.2px,transparent 1.2px);background-size:18px 18px}
+.back{background:#fff;color:#0b3a8f;border:1px solid #c9d4ea}
+.stars{background:#fff;border-color:#ffcc00;color:#8a6d00}
+.tafel{background:linear-gradient(120deg,#0b3a8f,#1446b8 55%,#1d6fe0);border:0;border-radius:18px;padding:18px 92px 18px 18px;text-align:left;box-shadow:0 8px 22px rgba(11,58,143,.25);color:#fff;overflow:hidden}
+.tafel h1{text-shadow:none;font-size:clamp(21px,5.4vw,30px);letter-spacing:0;position:relative;z-index:1}
+.tafel .kreide,.tafel p{display:none}
+.tafel .eu{position:absolute;right:10px;top:50%;width:84px;height:84px;transform:translateY(-50%);opacity:.95}
+nav#tabs{background:linear-gradient(#eef2f9 72%,rgba(238,242,249,0))}
+nav#tabs button{background:#fff;border-color:#d0d9ec;color:#1b2640}
+nav#tabs button.on{background:#1446b8;border-color:#1446b8;color:#fff}
+nav#tabs button.on.fin::after{color:#ffcc00}
+h2{color:#0b3a8f}
+.card{background:#fff;border:1px solid #dde4f1;box-shadow:0 3px 10px rgba(20,50,120,.07)}
+.read{border-left:6px solid #1446b8;font-size:16.5px;line-height:1.7}
+.read h3{margin:0 0 8px;font-size:18px;color:#0b3a8f} .read p{margin:0 0 11px} .read p:last-child{margin:0} .read b{color:#0b2a6b;background:linear-gradient(transparent 62%,rgba(255,204,0,.45) 62%)}
+details.merk{background:#fffbe6;border:1px solid #f1df8c;border-left:6px solid #ffcc00}
+details.merk summary{cursor:pointer;font-weight:700;font-size:16px;padding:2px 0}
+details.merk ul{margin:8px 0 0;padding-left:20px} details.merk li{margin:6px 0}
+h3.sect{margin:22px 0 2px;font-size:14.5px;letter-spacing:.08em;text-transform:uppercase;color:#1446b8}
+.chap button{border-color:#d0d9ec} .chap button:hover{border-color:#1446b8}
+.chap .ic{background:#eef3ff;border-radius:12px;padding:4px 6px}
+.pbar{background:#e3e9f5} .pbar i{background:linear-gradient(90deg,#1446b8,#1d6fe0)}
+.task .nr{background:#1446b8;color:#fff} .task.done .nr{background:var(--ok)}
+.btn{background:#1446b8;color:#fff} .btn:hover{background:#0b3a8f}
+.btn.tip{background:#ffcc00;color:#3a2e00} .btn.tip:hover{background:#e6b800;color:#3a2e00}
+.btn.sec{background:#eef2f9;color:#1b2640;border:1px solid #c9d4ea} .btn.sec:hover{background:#e2e8f4}
+.btn.gostart{display:block;margin:4px auto 10px;font-size:17px;padding:12px 22px}
+.opt:hover,.wcard:hover{border-color:#1446b8}
+.fig{background:#f4f6fb} .fig figcaption{background:#f7f9fd}
+.spotbox{display:block;width:100%;max-width:300px;margin:0 auto}
+.spotbox svg{display:block;width:100%;height:auto}
+.pan{background:#f4f7ff!important;border-color:#b9c8e8!important;color:#1b2640!important}
+.beam{background:linear-gradient(90deg,#1446b8,#ffcc00)!important}
+.stack{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;min-height:18px;justify-content:center} .stack .w{font-style:normal;color:#1446b8;font-size:14px}
+/* Zeitfresser */
+.feed{max-width:330px;margin:4px auto;background:#0a0c16;border:3px solid #2c3250;border-radius:26px;padding:12px 12px 14px;position:relative;overflow:hidden}
+.fhead{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#9aa2bd;margin-bottom:8px}
+.clock{font-size:26px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums} .clock.late{color:#ff5a6a}
+.vid{height:210px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:82px;transition:background .3s}
+.cap{margin:8px 2px 0;color:#eceef6;font-weight:600;font-size:15px;min-height:22px}
+.notif{position:absolute;left:10px;right:10px;top:46px;background:#f4f4f6;color:#222;border-radius:12px;padding:9px 11px;font-size:13.5px;font-weight:600;transform:translateY(-220%);opacity:0;transition:transform .35s,opacity .35s;pointer-events:none;box-shadow:0 6px 16px rgba(0,0,0,.45)} .notif.on{transform:translateY(0);opacity:1;pointer-events:auto;z-index:3}
+.cd{min-height:20px;margin:6px 2px 0;font-size:13px;color:#ffc83d;font-weight:700}
+.ftools{display:flex;align-items:center;gap:10px} .heart{background:none;border:0;font-size:26px;cursor:pointer} .likes{color:#eceef6;font-weight:700} .streak{margin-left:auto;background:#00000088;color:#fff;border-radius:12px;padding:3px 10px;font-size:13px}
+.notif{border:0;text-align:left;font:inherit;cursor:pointer}
+.fback{display:block;background:#2c3250;color:#fff;border:0;border-radius:10px;padding:6px 10px;font:inherit;font-size:13px;font-weight:700;margin:0 0 8px;cursor:pointer}
+.prof{color:#cfd5ea;font-size:13px;margin:0 2px 6px} .prof b{color:#fff}
+.chat{margin-top:6px;min-height:84px;font-size:13px;color:#cfd5ea} .chat div{padding:2px 0} .chat .me{color:#ffcc00;font-weight:700}
+.gift,.sendsnap,.tomia{background:#ff3d7f;color:#fff;border:0;border-radius:12px;padding:8px 12px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;margin-top:6px}
+.snap{background:#1d2333;border-radius:16px;padding:14px;color:#eceef6;min-height:210px} .snap p{margin:0 0 8px} .snap .ok{color:#2fd08a;font-weight:700} .snap .lena{background:#2c3250;border-radius:12px;padding:8px 10px}
+.bon{color:#ffcc00;font-weight:700;font-size:13px}
+.over{color:#ff5a6a;font-weight:700;font-size:13px;min-height:18px;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a class="back" href="../index.html">← Zur Pinnwand</a><span class="stars" id="stars" title="Sterne für richtige Antworten ohne Hilfe">⭐ 0</span></div>
+  <div class="tafel"><h1>Social Media ab wann? Der EU Kids Act</h1><svg class="eu" viewBox="0 0 100 100" aria-hidden="true"><text x="84.0" y="54.0" font-size="13" text-anchor="middle" fill="#ffcc00">★</text><text x="79.4" y="71.0" font-size="13" text-anchor="middle" fill="#ffcc00">★</text><text x="67.0" y="83.4" font-size="13" text-anchor="middle" fill="#ffcc00">★</text><text x="50.0" y="88.0" font-size="13" text-anchor="middle" fill="#ffcc00">★</text><text x="33.0" y="83.4" font-size="13" text-anchor="middle" fill="#ffcc00">★</text><text x="20.6" y="71.0" font-size="13" text-anchor="middle" fill="#ffcc00">★</text><text x="16.0" y="54.0" font-size="13" text-anchor="middle" fill="#ffcc00">★</text><text x="20.6" y="37.0" font-size="13" text-anchor="middle" fill="#ffcc00">★</text><text x="33.0" y="24.6" font-size="13" text-anchor="middle" fill="#ffcc00">★</text><text x="50.0" y="20.0" font-size="13" text-anchor="middle" fill="#ffcc00">★</text><text x="67.0" y="24.6" font-size="13" text-anchor="middle" fill="#ffcc00">★</text><text x="79.4" y="37.0" font-size="13" text-anchor="middle" fill="#ffcc00">★</text></svg></div>
+  <nav id="tabs" aria-label="Kapitel"></nav>
+  <main id="view"></main>
+  <p class="foot"><a class="impressum" href="../../../impressum.html">Impressum &amp; Datenschutz</a></p>
+</div>
+<script src="../../../maskottchen/neumann/kolbi.js?v=20261122b"></script>
+<script src="../../../maskottchen/neumann/skin-neumann.js?v=20261122b"></script>
+<script src="../../../maskottchen/neumann/neumann-begleiter.js?v=20261122b"></script>
+<script src="../../../maskottchen/neumann/glossare/politik10-eu.js?v=20261122b"></script>
+<script>
+/* EU Kids Act (Stand: Gesetzentwurf der EU-Kommission vom 17. September 2026, noch nicht beschlossen)
+   Aufbau: 1 Lesen · 2 Spielen · 3 Lesen · 4 Spielen und Argumentieren · Was hast du dir gemerkt? · Rucksack */
+var FIG = { cap: 'Übungs-App für dieses Modul (erfundene Beispiel-Oberfläche)', svg:
+'<svg viewBox="0 0 300 540" role="img" aria-label="Bildschirm einer Video-App"><rect x="2" y="2" width="296" height="536" rx="30" fill="#1d2530" stroke="#0e131a" stroke-width="4"/>' +
+'<rect x="110" y="10" width="80" height="8" rx="4" fill="#0e131a"/>' +
+'<text x="108" y="62" font-size="14" fill="#9aa5b1" font-family="sans-serif">Folge ich</text><text x="168" y="62" font-size="16" font-weight="700" fill="#fff" font-family="sans-serif">Für dich</text><rect x="168" y="67" width="52" height="3" fill="#fff"/>' +
+'<rect x="12" y="76" width="276" height="254" rx="16" fill="#3b6ea5"/><text x="150" y="215" font-size="70" text-anchor="middle">🐱</text>' +
+'<rect x="20" y="82" width="62" height="24" rx="12" fill="#00000066"/><text x="30" y="99" font-size="14" fill="#fff" font-family="sans-serif">🔥 87</text>' +
+'<text x="262" y="150" font-size="22" text-anchor="middle">❤️</text><text x="262" y="190" font-size="22" text-anchor="middle">💬</text><text x="262" y="230" font-size="22" text-anchor="middle">↗️</text>' +
+'<rect x="20" y="296" width="260" height="26" rx="13" fill="#000000aa"/><text x="150" y="314" font-size="13" fill="#fff" text-anchor="middle" font-family="sans-serif">Nächstes Video in 3 …</text>' +
+'<rect x="16" y="340" width="268" height="52" rx="14" fill="#f4f4f6"/><text x="30" y="362" font-size="13" font-weight="700" fill="#222" font-family="sans-serif">🔔 Mia hat ein neues Video gepostet!</text><text x="30" y="380" font-size="12" fill="#555" font-family="sans-serif">Schau schnell rein, bevor es weg ist.</text>' +
+'<rect x="16" y="404" width="268" height="52" rx="12" fill="#a5533b"/><rect x="16" y="462" width="268" height="52" rx="12" fill="#4b8a5a"/><text x="150" y="436" font-size="22" text-anchor="middle">🐶</text><text x="150" y="494" font-size="22" text-anchor="middle">🎮</text></svg>' };
+
+var MC = ['Frage', 'Das stimmt nicht. Lies die passende Stelle im Text noch einmal.'];
+function T(id, game, title, q, rules, tips, data, extra) { var t = { id: id, game: game, title: title, q: q, rules: rules, tips: tips, data: data }; if (extra) for (var k in extra) t[k] = extra[k]; return t; }
+
+var CH = [
+/* ============================================================ 1 LESEN */
+{ id: 'l1', ico: '📖', kind: 'lesen', title: 'Lesen: Das plant die EU', sub: 'Zwei Texte, danach Fragen dazu',
+  intro: 'Lies zuerst die beiden Texte in Ruhe. Wenn du ein Wort nicht kennst, tippe mich an, wähle „Wort erklären“ und markiere das Wort. Danach beantwortest du Fragen zu den Texten.',
+  texts: [
+    { title: 'Text 1: Drei Stufen für Social Media', p: [
+      'Plattformen wie TikTok, Instagram oder Snapchat legen das Mindestalter bisher meist selbst fest, in der Regel liegt es bei <b>13 Jahren</b>. Geprüft wird oft nur mit einem Feld, in das man sein Geburtsdatum eintippt. Dazu kommt: In den EU-Ländern gelten unterschiedliche Regeln.',
+      'Deshalb hat die <b>EU-Kommission</b> am 17. September 2026 einen Gesetzentwurf vorgelegt, den <b>EU Kids Act</b>. Die Idee ist ein „gestufter Einstieg“: Kinder und Jugendliche sollen Schritt für Schritt Zugang zu sozialen Medien bekommen.',
+      '<b>Unter 13 Jahren</b> gibt es kein Social-Media-Konto. Auf kindgerechten Video-Plattformen dürfen die Eltern über ihr eigenes Konto einen begrenzten Zugang erlauben. <b>Mit 13 und 14 Jahren</b> gibt es ein <b>Mini-Konto</b>. Die Eltern richten es ein und behalten die Kontrolle. Die Funktionen sind eingeschränkt, es gilt höchstens <b>eine Stunde pro Tag</b>, und neue Kontakte müssen die Eltern erlauben. <b>Ab 15 Jahren</b> können Jugendliche ein eigenes Konto eröffnen. Die Plattform muss dann aber sicher gebaut sein.',
+      'Das eingetippte Geburtsdatum soll künftig nicht mehr reichen. Die Plattformen sollen das Alter mit einem geprüften Verfahren kontrollieren, zum Beispiel mit einer EU-App. Die Plattform soll dabei nur ein <b>Ja oder Nein</b> erfahren: Ist die Person alt genug? Für bestehende Konten gilt: Innerhalb von sechs Monaten nach Inkrafttreten müssen die Plattformen prüfen, ob Nutzer unter 15 sind, und deren Konten abschalten.',
+      'Wer sich nicht an die Regeln hält, muss mit hohen Strafen rechnen: bis zu <b>6 % des weltweiten Jahresumsatzes</b>. Ein Rechenbeispiel: Hat ein Konzern 100 Milliarden Euro Umsatz im Jahr, wären das bis zu 6 Milliarden Euro.'] },
+    { title: 'Text 2: Vom Entwurf zum Gesetz', p: [
+      'Ein Entwurf ist noch kein Gesetz. In der EU läuft es so: Die Kommission schlägt vor. Dann verhandeln das <b>Europäische Parlament</b> (gewählte Abgeordnete aus allen EU-Ländern) und der <b>Rat</b> (Vertreter der Regierungen) über den Text. Beide können ihn ändern. Erst wenn beide zustimmen, wird er Gesetz. Der Kids Act ist als <b>Verordnung</b> geplant. Das ist ein Gesetz, das dann in allen EU-Ländern gleich gilt.',
+      'Das Thema ist nicht neu. Im <b>November 2025</b> forderte das Europäische Parlament ein Mindestalter von 16 Jahren für Social Media. Ab 13 sollten Jugendliche mit Erlaubnis der Eltern dürfen. 483 Abgeordnete stimmten dafür, 92 dagegen, 86 enthielten sich. Der Beschluss war aber nur eine Aufforderung und noch kein Gesetz. Am <b>10. Dezember 2025</b> führte Australien als erstes Land ein Verbot für unter 16-Jährige ein.',
+      'Am <b>17. September 2026</b> legte die Kommission den EU Kids Act vor. Am <b>14. Oktober 2026</b> beschloss die Bundesregierung Eckpunkte: Unter 13 soll die Nutzung sozialer Netzwerke grundsätzlich verboten werden, übergangsweise, bis es eine EU-Regel gibt. Ab 2027 soll in Deutschland für den Altersnachweis die digitale Brieftasche „D-You“ genutzt werden. Auch Frankreich, Italien, Griechenland, Österreich, Polen und Belgien haben eigene Maßnahmen angemeldet.',
+      'Wie gut wirkt ein Verbot? Australien zeigt, dass es nicht einfach ist. Eine Umfrage der australischen Regierung unter 10- bis 15-Jährigen ergab: Vor dem Verbot nutzten <b>85,9 %</b> die betroffenen Plattformen, danach noch <b>81,5 %</b>. Das Verbot lässt sich also offenbar leicht umgehen.',
+      'Ein festes Datum für das Inkrafttreten des EU Kids Act gibt es nicht. Die Kommission soll bis zum <b>31. August 2030</b> prüfen, welche Folgen das Gesetz für die Grundrechte hat.'] }
+  ],
+  tasks: [
+    T('l1_q1', 'duell', 'Fragen zu Text 1', 'Beantworte die Fragen zum Text „Drei Stufen für Social Media“.',
+      'Ich stelle dir sieben Fragen zu Text 1. Wähle bei jeder Frage die richtige Antwort. Wenn du falsch liegst, sage ich dir, wo du nachlesen kannst, und du darfst noch einmal wählen.',
+      ['Die Antworten stehen alle im Text. Lies die passende Stelle noch einmal.', 'Achte auf Zahlen und Altersangaben.'],
+      { label: 'Frage', wrong: 'Das stimmt nicht. Lies die passende Stelle in Text 1 noch einmal.', win: 'Du hast Text 1 gut verstanden.', n: 7, qs: [
+        { q: 'Wer hat den EU Kids Act vorgelegt?', opts: ['Die EU-Kommission', 'Das Europäische Parlament', 'Die Bundesregierung', 'Die Plattformen selbst'], a: 0, why: 'Die EU-Kommission hat den Entwurf am 17. September 2026 vorgelegt.' },
+        { q: 'Wie wird das Alter bisher oft geprüft?', opts: ['Man tippt sein Geburtsdatum ein', 'Mit einem Ausweis in der Schule', 'Die Eltern rufen bei der Plattform an', 'Gar nicht, es gibt keine Regel'], a: 0, why: 'Oft reicht ein Feld, in das man das Geburtsdatum eintippt.' },
+        { q: 'Was sieht der Entwurf für 13- und 14-Jährige vor?', opts: ['Ein Mini-Konto, das die Eltern einrichten', 'Ein eigenes Konto ohne jede Einschränkung', 'Gar kein Konto bis zum 15. Geburtstag', 'Ein Konto, das die Schule für sie verwaltet'], a: 0, why: 'Mit 13 und 14 gibt es ein Mini-Konto, das die Eltern einrichten und kontrollieren.' },
+        { q: 'Wie lange darf ein Mini-Konto höchstens pro Tag genutzt werden?', opts: ['Eine Stunde', 'Zwei Stunden', 'Drei Stunden', 'Dreißig Minuten'], a: 0, why: 'Im Entwurf ist eine Stunde pro Tag vorgesehen.' },
+        { q: 'Was soll die Plattform bei der Alterskontrolle erfahren?', opts: ['Nur „Ja“ oder „Nein“', 'Das genaue Geburtsdatum', 'Den vollständigen Namen', 'Eine Kopie des Ausweises'], a: 0, why: 'Die Plattform soll nur erfahren, ob die Person alt genug ist.' },
+        { q: 'Was müssen die Plattformen bei bestehenden Konten tun?', opts: ['Konten von Nutzern unter 15 prüfen und abschalten', 'Alle bestehenden Konten löschen und neu anlegen', 'Nur die Konten von unter 13-Jährigen genauer prüfen', 'Nichts, denn bestehende Konten sind ausgenommen'], a: 0, why: 'Innerhalb von sechs Monaten nach Inkrafttreten müssen sie das prüfen und die Konten abschalten.' },
+        { q: 'Ein Konzern hat 50 Milliarden Euro Umsatz im Jahr. Wie hoch kann die Strafe höchstens sein?', opts: ['3 Milliarden Euro', '6 Milliarden Euro', '300 Millionen Euro', '30 Milliarden Euro'], a: 0, why: '6 % von 50 Milliarden Euro sind 3 Milliarden Euro.' }] },
+      { go: '▶ Fragen starten' }),
+    T('l1_q2', 'duell', 'Fragen zu Text 2', 'Beantworte die Fragen zum Text „Vom Entwurf zum Gesetz“.',
+      'Jetzt kommen sieben Fragen zu Text 2. Das geht genauso: Wähle die richtige Antwort. Wenn du falsch liegst, helfe ich dir.',
+      ['Die Antworten stehen im Text. Achte auf Daten und Zahlen.', 'Ein Entwurf wird erst Gesetz, wenn Parlament und Rat zustimmen.'],
+      { label: 'Frage', wrong: 'Das stimmt nicht. Lies die passende Stelle in Text 2 noch einmal.', win: 'Du hast auch Text 2 gut verstanden.', n: 7, qs: [
+        { q: 'Wer muss dem Entwurf zustimmen, damit er Gesetz wird?', opts: ['Das Parlament und der Rat', 'Nur die EU-Kommission', 'Nur der Bundestag', 'Die Plattformen und die Eltern'], a: 0, why: 'Parlament und Rat verhandeln und müssen beide zustimmen.' },
+        { q: 'Was bedeutet „Verordnung“ in der EU?', opts: ['Ein Gesetz, das überall in der EU gleich gilt', 'Eine Empfehlung, an die sich niemand halten muss', 'Eine Regel, die nur für Schulen in Europa gilt', 'Ein Beschluss, den die Plattformen selbst fassen'], a: 0, why: 'Eine Verordnung gilt direkt und gleich in allen EU-Ländern.' },
+        { q: 'Was forderte das Europäische Parlament im November 2025?', opts: ['Ein Mindestalter von 16 Jahren', 'Ein Verbot für alle unter 18', 'Ein Verbot nur für unter 10-Jährige', 'Gar keine Altersgrenze'], a: 0, why: 'Das Parlament forderte ein Mindestalter von 16, ab 13 mit Erlaubnis der Eltern.' },
+        { q: 'Was war am 10. Dezember 2025 neu?', opts: ['Australien führte ein Verbot für unter 16 ein', 'Die EU beschloss den Kids Act endgültig als Gesetz', 'Deutschland verbot Social Media für alle Jugendlichen', 'TikTok senkte sein Mindestalter freiwillig auf zehn'], a: 0, why: 'Australien war das erste Land mit einem solchen Verbot.' },
+        { q: 'Was beschloss die Bundesregierung am 14. Oktober 2026?', opts: ['Eckpunkte mit einem Übergangsverbot unter 13', 'Ein fertiges Gesetz, das sofort in Kraft tritt', 'Eine Ablehnung des EU Kids Act als Ganzes', 'Ein Verbot sozialer Netzwerke bis zum Alter 18'], a: 0, why: 'Es sind Eckpunkte. Unter 13 soll es übergangsweise ein Verbot geben, bis eine EU-Regel kommt.' },
+        { q: 'Wie viele Abgeordnete stimmten im November 2025 für die Forderung des Parlaments?', opts: ['483', '92', '86', '661'], a: 0, why: '483 stimmten dafür, 92 dagegen, 86 enthielten sich.' },
+        { q: 'Bis wann soll die Kommission die Folgen für die Grundrechte prüfen?', opts: ['Bis zum 31. August 2030', 'Bis zum Ende des Jahres 2026', 'Bis zum 1. Januar des Jahres 2028', 'Eine Frist dafür gibt es nicht'], a: 0, why: 'Die Prüfung der Folgen für die Grundrechte ist bis 31. August 2030 vorgesehen.' }] },
+      { go: '▶ Fragen starten' })
+  ] },
+
+/* ============================================================ 2 SPIELEN */
+{ id: 's1', ico: '🎮', kind: 'spiel', title: 'Spielen: Gesetzentwurf', sub: 'Türsteher, Zeitstrahl, Memory und mehr',
+  intro: 'Jetzt spielst du mit dem, was du gelesen hast. Auf „Spiel starten“ erkläre ich dir jeweils die Regeln. Wenn du etwas nachschlagen willst, klappe unten „Zum Nachschlagen“ auf.',
+  merk: [
+    'Der <b>EU Kids Act</b> ist ein Gesetzentwurf der EU-Kommission vom 17. September 2026. Parlament und Rat müssen zustimmen.',
+    '<b>Unter 13:</b> kein Social-Media-Konto. <b>13 und 14:</b> Mini-Konto, Eltern richten es ein, höchstens 1 Stunde pro Tag. <b>Ab 15:</b> eigenes Konto.',
+    '<b>Alterskontrolle:</b> geprüftes Verfahren, die Plattform erfährt nur „Ja“ oder „Nein“.',
+    '<b>Strafe:</b> bis zu 6 % des weltweiten Jahresumsatzes.',
+    '<b>Verordnung:</b> gilt in allen EU-Ländern gleich. <b>Beweislast:</b> Die Plattformen müssen beweisen, dass sie sicher sind.'
+  ],
+  tasks: [
+    T('s1_tuer', 'postbote', 'Der Türsteher', 'Welche Tür bekommt jede Person nach dem Gesetzentwurf?',
+      'Vor dir stehen vier Türen. Unter den Türen steht jeweils eine Person. Lies genau, wie alt sie ist und was sie will. Tippe dann die Tür an, die nach dem Entwurf für sie gilt. Bei der falschen Tür sage ich dir, worauf du achten musst.',
+      ['Die Grenzen sind 13 und 15. Achte genau auf das Alter, auch auf „morgen“ und „gestern“.', 'Unter 13 gibt es zwei Möglichkeiten: kein Social-Media-Konto, aber kindgerechte Video-Plattformen über das Eltern-Konto.'],
+      { icon: '🧑', endText: '🚪 Alle sind durch die richtige Tür.', allDone: 'Alle haben die richtige Tür bekommen.', houses: [['🚫', 'Kein Konto'], ['🧸', 'Kinder-Video mit Eltern-Konto'], ['👨‍👩‍👧', 'Mini-Konto'], ['✅', 'Eigenes Konto']],
+        wrong: function (it, n) { return 'Die Tür „' + n + '“ ist es nicht. Schau noch einmal genau auf das Alter und auf das, was die Person will.'; },
+        items: [['Ali ist 12 und will unbedingt Instagram nutzen.', 0, 'Unter 13 gibt es kein Social-Media-Konto.'], ['Leni ist 11 und schaut Kindervideos über das Konto ihrer Mutter.', 1, 'Auf kindgerechten Video-Plattformen dürfen Eltern über ihr eigenes Konto einen begrenzten Zugang erlauben.'], ['Paul wurde gestern 13 und will Snapchat nutzen.', 2, 'Mit 13 und 14 gibt es ein Mini-Konto, das die Eltern einrichten.'], ['Zoe wird morgen 15 und will heute schon ein eigenes Konto.', 2, 'Heute ist sie noch 14. Ein eigenes Konto gibt es erst ab 15.'], ['Finn ist seit einer Woche 15 und legt ein Konto an.', 3, 'Ab 15 ist ein eigenes Konto möglich.'], ['Mara ist 14 und hat ein Konto. Ihre Eltern erlauben alle neuen Kontakte.', 2, 'Das Mini-Konto verlangt, dass die Eltern Kontakte erlauben. Das gilt bis zum 15. Geburtstag.'], ['Noah ist 12. Seine Eltern erlauben ihm ein eigenes TikTok-Profil.', 0, 'Auch mit Erlaubnis der Eltern gibt es unter 13 kein Social-Media-Konto.'], ['Yara ist 17 und will ein Konto, das nur ihr gehört.', 3, 'Ab 15 gibt es ein eigenes Konto, dort gelten die Regeln für sicheres Design bis 18.'], ['Jonas ist 9 und möchte ein Kinder-Lernvideo auf einem kindgerechten Dienst schauen.', 1, 'Für kindgerechte Video-Plattformen gibt es den Zugang über das Konto der Eltern.'], ['Lena ist 14 und möchte täglich vier Stunden im Mini-Konto verbringen.', 2, 'Auch hier ist es das Mini-Konto. Dort ist aber höchstens eine Stunde pro Tag erlaubt.']] }),
+    T('s1_zeit', 'zeit', 'Der Zeitstrahl', 'Ordne sechs Ereignisse dem richtigen Zeitpunkt zu.',
+      'Auf dem Zeitstrahl stehen sechs Zeitpunkte. Darunter liegen Karten mit Ereignissen aus Text 2. Tippe eine Karte an und danach den Zeitpunkt, zu dem das Ereignis passt. Bei jedem Treffer erkläre ich dir kurz den Hintergrund.',
+      ['Die Zeitpunkte sind der Reihe nach geordnet: das Älteste steht links oben.', 'Der Beschluss des Parlaments kam vor dem Verbot in Australien.'],
+      { events: [['Nov. 2025', 'Das EU-Parlament fordert ein Mindestalter von 16 Jahren', 'Das Parlament stimmte mit 483 zu 92 Stimmen dafür. Es war aber nur eine Aufforderung und noch kein Gesetz.'], ['10. Dez. 2025', 'Australien führt das Verbot für unter 16-Jährige ein', 'Australien war das erste Land mit einem landesweiten Verbot dieser Art.'], ['17. Sep. 2026', 'Die EU-Kommission legt den EU Kids Act vor', 'Jetzt verhandeln das Europäische Parlament und der Rat über den Entwurf.'], ['14. Okt. 2026', 'Die Bundesregierung beschließt Eckpunkte mit einem Verbot unter 13', 'Das ist als Übergangsregel gedacht, bis es eine EU-Regel gibt.'], ['Ab 2027', 'Deutschland will für den Altersnachweis die „D-You“-Wallet nutzen', 'Die digitale Brieftasche soll in Deutschland ab 2027 für die Altersprüfung eingesetzt werden.'], ['Bis 31. Aug. 2030', 'Die Kommission prüft die Folgen für die Grundrechte', 'Diese Prüfung ist bis zum 31. August 2030 vorgesehen.']] }),
+    T('s1_mem', 'memory', 'Begriffe-Memory', 'Finde acht Paare aus Begriff und Erklärung.',
+      'Du siehst sechzehn verdeckte Karten. Decke immer zwei auf: ein Begriff und seine Erklärung. Passen sie zusammen, bleiben sie offen. Wenn nicht, drehen sie sich wieder um. Merke dir, wo was liegt. Bei jedem Paar sage ich dir etwas dazu.',
+      ['Fange mit den Begriffen an, bei denen du dir sicher bist.', 'Schau bei Unsicherheit unten im Kasten „Zum Nachschlagen“.'],
+      { pairs: [['EU-Kommission', 'Schlägt Gesetze vor', 'Die Kommission legt Gesetzentwürfe vor, hier den EU Kids Act.'], ['Europäisches Parlament', 'Gewählte Abgeordnete, muss zustimmen', 'Das Parlament wird gewählt und muss neuen Gesetzen zustimmen.'], ['Rat der EU', 'Vertreter der Regierungen, muss zustimmen', 'Im Rat sitzen Vertreter der Regierungen der EU-Länder.'], ['Verordnung', 'Gilt in allen EU-Ländern gleich', 'Eine Verordnung gilt direkt und einheitlich in der ganzen EU.'], ['Mini-Konto', 'Für 13 und 14, Eltern richten es ein', 'Das Mini-Konto hat eingeschränkte Funktionen und höchstens eine Stunde pro Tag.'], ['Altersnachweis', 'Plattform erfährt nur Ja oder Nein', 'Die Plattform soll nicht mehr über dich erfahren als „alt genug“.'], ['Bußgeld', 'Bis zu 6 % des Jahresumsatzes', 'Das Bußgeld soll Plattformen dazu bringen, die Regeln einzuhalten.'], ['Gestufter Einstieg', 'Schritt für Schritt mit 13, 15 und 18', 'Die Kommission spricht von Aufschub statt von einem Verbot.']] }),
+    T('s1_wer', 'wer', 'Wer bin ich?', 'Errate fünf Begriffe aus den Hinweisen von Herrn Neumann.',
+      'Ich verstecke einen Begriff aus den Texten und gebe dir Hinweise, einen nach dem anderen. Tippe den Begriff an, wenn du ihn kennst. Je weniger Hinweise du brauchst, desto mehr Punkte bekommst du: drei, zwei oder einen.',
+      ['Die Hinweise werden immer genauer. Du musst nicht beim ersten raten.', 'Alle Begriffe stehen in den Texten.'],
+      { terms: ['Verordnung', 'Beweislast', 'Rat', 'Eckpunkte', 'Gestufter Einstieg', 'Mini-Konto'], rounds: [
+        { a: 'Verordnung', clues: ['Ich bin eine Art von EU-Gesetz.', 'Ich gelte nicht nur in einem Land.', 'Ich gelte in allen EU-Ländern gleich, ohne dass jedes Land mich erst umsetzen muss.'], why: 'Eine Verordnung gilt direkt und einheitlich in der ganzen EU.' },
+        { a: 'Beweislast', clues: ['Wer mich trägt, muss etwas beweisen.', 'Früher musste die Aufsicht beweisen, dass etwas falsch ist.', 'Beim Kids Act tragen mich die Plattformen: Sie müssen beweisen, dass sie sicher sind.'], why: 'Die Beweislast verschiebt sich von den Aufsichtsbehörden auf die Plattformen.' },
+        { a: 'Rat', clues: ['Ich bin eine Gruppe von Vertretern.', 'In mir sitzen Mitglieder der Regierungen der EU-Länder.', 'Ohne meine Zustimmung wird der Entwurf kein Gesetz.'], why: 'Der Rat vertritt die Regierungen der EU-Länder und muss zustimmen.' },
+        { a: 'Eckpunkte', clues: ['Ich bin noch kein fertiger Gesetzestext.', 'Ich beschreibe nur die wichtigsten Linien eines Vorhabens.', 'Die Bundesregierung hat mich am 14. Oktober 2026 zum Jugendmedienschutz beschlossen.'], why: 'Eckpunkte legen die Richtung fest. Der Gesetzestext kommt erst danach.' },
+        { a: 'Gestufter Einstieg', clues: ['Ich bin ein Prinzip des Kids Act.', 'Bei mir gibt es nicht alles auf einmal.', 'Ich beschreibe die Stufen bei 13, 15 und 18 Jahren.'], why: 'Die Kommission spricht von einem Aufschub statt von einem Verbot: Zugang Schritt für Schritt.' }] }),
+    T('s1_find', 'find', 'Mythen-Check', 'Drei von acht Sätzen stimmen nicht. Finde sie.',
+      'Unten stehen acht Sätze zum EU Kids Act. Drei davon sind falsch, die anderen stimmen. Tippe die falschen Sätze an und gib sie mit „Meine Fehler melden“ ab. Ich sage dir, ob du richtig liegst.',
+      ['Lies im Text nach, was schon beschlossen ist und was nicht.', 'Bei Zahlen lohnt sich ein genauer Blick: Alter, Stunden, Prozent.'],
+      { items: [['Der EU Kids Act ist ein Entwurf der EU-Kommission vom 17. September 2026.', false, ''], ['Weil die Bundesregierung Eckpunkte beschlossen hat, gilt in Deutschland schon ein Gesetz.', true, 'Eckpunkte sind noch kein Gesetz. Sie zeigen nur die Richtung.'], ['Die Plattform soll bei der Alterskontrolle nur erfahren, ob die Person alt genug ist.', false, ''], ['Mit 13 und 14 sind im Mini-Konto bis zu drei Stunden pro Tag erlaubt.', true, 'Im Mini-Konto ist höchstens eine Stunde pro Tag vorgesehen.'], ['Das Europäische Parlament besteht aus gewählten Abgeordneten aus allen EU-Ländern.', false, ''], ['Das Europäische Parlament hat im November 2025 ein Gesetz mit Mindestalter 16 beschlossen.', true, 'Das Parlament hat nur eine Aufforderung beschlossen. Ein Gesetz war das nicht.'], ['Die Strafe kann bis zu 6 % des weltweiten Jahresumsatzes betragen.', false, ''], ['Der Rat der EU besteht aus Vertretern der Regierungen der EU-Länder.', false, '']] }),
+    T('s1_wort', 'wort', 'Lückentext', 'Setze die Zusammenfassung des Entwurfs richtig zusammen.',
+      'Oben schweben Wörter, darunter steht eine Zusammenfassung mit Lücken. Tippe ein Wort an und danach die Lücke, in die es gehört. Ein falsches Wort holst du zurück, indem du die Lücke noch einmal antippst. Drei Wörter passen nirgends hinein. Mit „Text prüfen lassen“ lese ich nach.',
+      ['Lies den ganzen Satz, nicht nur das Wort vor der Lücke.', 'Zahlen und Altersangaben stehen in Text 1.'],
+      { parts: ['Der EU Kids Act ist ein ', { a: 'Entwurf' }, ' der ', { a: 'Kommission' }, '. Unter ', { a: '13' }, ' Jahren soll es kein Konto geben. Mit 13 und 14 gibt es ein ', { a: 'Mini-Konto' }, ', das die ', { a: 'Eltern' }, ' einrichten. Ab ', { a: '15' }, ' ist ein eigenes Konto möglich. Das Alter soll mit einem geprüften Verfahren kontrolliert werden, die Plattform erfährt nur ' + '„Ja“ oder „Nein“. Wer sich nicht an die Regeln hält, muss bis zu ', { a: '6 %' }, ' des weltweiten Jahresumsatzes als ', { a: 'Strafe' }, ' zahlen.'], bank: ['Gesetz', 'Schule', 'Lehrer'], win: 'Die Zusammenfassung steht. Genau diese Eckdaten brauchst du für die Diskussion.' })
+  ] },
+
+/* ============================================================ 3 LESEN */
+{ id: 'l2', ico: '📖', kind: 'lesen', title: 'Lesen: Tricks und Streit', sub: 'Zwei Texte, danach Fragen dazu',
+  intro: 'Auch hier gilt: Lies zuerst die beiden Texte in Ruhe. Unbekannte Wörter erkläre ich dir: Tippe mich an, wähle „Wort erklären“ und markiere das Wort. Danach folgen die Fragen.',
+  texts: [
+    { title: 'Text 3: Die Tricks der Apps', p: [
+      'Die EU-Kommission beschreibt viele Plattformen als <b>hochgradig süchtig machend</b>. Sie seien darauf ausgelegt, die Aufmerksamkeit so lange wie möglich zu binden. Der EU Kids Act soll deshalb nicht nur Altersgrenzen setzen, sondern auch verbieten, wie Apps gebaut sind. Dieses Verbot soll für alle <b>unter 18</b> gelten.',
+      'Folgende Tricks sollen für Minderjährige eingeschränkt werden: <b>Endloses Scrollen und Autoplay:</b> Es gibt kein Ende, das nächste Video startet von allein. <b>Streaks:</b> Eine Serie zählt die Tage in Folge. Wer einen Tag auslässt, verliert sie. <b>Push-Nachrichten:</b> Das Handy meldet sich und holt Kinder zurück, auch ohne dass sie etwas vorhatten. Dazu gehören Nachrichten in der Schlafenszeit. <b>Belohnungen:</b> Die App belohnt, wenn man oft und lange dabei ist.',
+      'Auch die Videos, die die App zeigt, spielen eine Rolle. Ein <b>Empfehlungs-Algorithmus</b> wählt aus, was man als Nächstes sieht. Oft lernt er aus dem Verhalten, wie man am längsten bleibt, und kann Jugendliche in einen „Kaninchenbau“ aus immer ähnlichen, manchmal schädlichen Inhalten ziehen. Der Entwurf will, dass Empfehlungen auf Sicherheit und seelische Gesundheit achten. Personalisierung durch <b>Tracking</b> soll standardmäßig ausgeschaltet sein.',
+      'Was Apps stattdessen müssen: wirksame <b>Pausen und Zeitlimits</b> anbieten, Profile Minderjähriger standardmäßig <b>privat</b> einstellen, Kontakt durch Fremde nur mit Erlaubnis zulassen und das Blockieren und Stummschalten einfach machen. KI-Begleiter sind standardmäßig ausgeschaltet und dürfen Kinder nicht emotional abhängig machen.'] },
+    { title: 'Text 4: Befürworter und Kritiker', p: [
+      'Über den Entwurf wird heftig gestritten. <b>Die Kommission</b> sagt: Kinder verdienen ein sichereres Internet (so Ursula von der Leyen). Ihre Vizepräsidentin Henna Virkkunen nennt den Entwurf einen <b>Aufschub statt eines Verbots</b>: Kinder bekommen ab 13, 15 und 18 Jahren schrittweise mehr Zugang. Die Kinderrechts-Organisation <b>Save the Children</b> unterstützt Altersgrenzen, wenn die Altersprüfung den Datenschutz einhält. Auch die Medienaufsicht <b>KJM</b> hält Alterskontrollen für nötig, damit gestufte Zugänge funktionieren.',
+      'Die <b>Kritiker aus dem Datenschutz</b> warnen vor der Kontrolle selbst. Sie würde <b>alle</b> Nutzer treffen, auch Erwachsene. Der <b>Chaos Computer Club</b> sieht die anonyme Nutzung des Internets in Gefahr. Die Organisation <b>EDRi</b> sagt, dass Menschen ohne Ausweis oder Smartphone benachteiligt würden. Mehr als 400 Forschende aus IT-Sicherheit und Datenschutz warnten im März in einem offenen Brief vor Alterskontrollen.',
+      'Andere Kritiker kommen aus der <b>Jugend- und Elternarbeit</b>. Die <b>Bundesschülerkonferenz</b> sagt: Verbote allein lehren keinen sicheren Umgang, Jugendliche sollten vorher beteiligt werden. Der <b>Kinderschutzbund</b> warnt, der Zugang dürfe nicht allein von der Zustimmung der Eltern abhängen, besonders nicht bei Jugendlichen aus belasteten Familien. Das <b>Deutsche Kinderhilfswerk</b> kritisiert einen Ausschluss ohne passende Alternativen. Der <b>Deutsche Lehrerverband</b> meint: Teilhabe lässt sich nicht auf einen Geburtstag verschieben, Pflichten für Plattformen sollten für alle Altersgruppen gelten.',
+      '<b>Wirken Verbote überhaupt?</b> Kritiker verweisen auf Australien. Dort gilt seit dem 10. Dezember 2025 ein Verbot für unter 16-Jährige. Drei Monate danach befragte die australische Regierung 10- bis 15-Jährige: Vor dem Verbot nutzten <b>85,9 %</b> die betroffenen Plattformen, danach noch <b>81,5 %</b>. Die meisten hatten ihre Konten also noch, vor allem weil die Plattformen kaum kontrollierten. Befürworter halten dagegen: Der EU-Entwurf verlangt eine geprüfte Alterskontrolle statt eines eingetippten Geburtsdatums und verbietet zusätzlich süchtig machende Tricks.',
+      'Ein weiterer Kritikpunkt kommt von EDRi: <b>Das Alter ist nicht das eigentliche Problem.</b> Die Ursachen lägen im Geschäftsmodell der Plattformen und in manipulativen Praktiken. Der Entwurf setze beim Aufschub an statt bei der Gestaltung. Dem entgegnet die Kommission: Gerade deshalb verbiete der Entwurf auch süchtig machendes Design.'] }
+  ],
+  tasks: [
+    T('l2_q1', 'duell', 'Fragen zu Text 3', 'Beantworte die Fragen zum Text „Die Tricks der Apps“.',
+      'Ich stelle dir sieben Fragen zu Text 3. Wähle bei jeder Frage die richtige Antwort. Wenn du falsch liegst, sage ich dir, wo du nachlesen kannst.',
+      ['Die Antworten stehen im Text.', 'Streaks, Push-Nachrichten und Autoplay sind Beispiele für Tricks.'],
+      { label: 'Frage', wrong: 'Das stimmt nicht. Lies die passende Stelle in Text 3 noch einmal.', win: 'Du hast Text 3 gut verstanden.', n: 7, qs: [
+        { q: 'Für wen soll das Verbot süchtig machender Tricks gelten?', opts: ['Für alle unter 18', 'Nur für unter 13-Jährige', 'Nur für 13- und 14-Jährige', 'Nur für Erwachsene'], a: 0, why: 'Das Verbot soll für alle Minderjährigen gelten, also für alle unter 18.' },
+        { q: 'Was ist ein Streak?', opts: ['Eine Tages-Serie, die reißt, wenn man auslässt', 'Eine Belohnung für ein besonders gutes Video', 'Eine Nachricht, die direkt von der Plattform kommt', 'Ein Filter, der Fotos automatisch verschönert'], a: 0, why: 'Wer einen Tag auslässt, verliert die Serie. Das soll zum täglichen Öffnen anregen.' },
+        { q: 'Was bewirken Push-Nachrichten in der Schlafenszeit?', opts: ['Sie holen Kinder zurück in die App', 'Sie helfen den Kindern beim Einschlafen', 'Sie zeigen den Kindern die Uhrzeit an', 'Sie sperren die App für den Rest des Tages'], a: 0, why: 'Push-Nachrichten melden sich von allein und holen Kinder zurück.' },
+        { q: 'Was macht der Empfehlungs-Algorithmus?', opts: ['Er sucht aus, was man als Nächstes sieht', 'Er prüft das Alter aller Nutzerinnen und Nutzer', 'Er sperrt alle Konten nach einer Stunde Nutzung', 'Er löscht schädliche Videos automatisch sofort'], a: 0, why: 'Der Algorithmus wählt Beiträge aus, oft so, dass man möglichst lange bleibt.' },
+        { q: 'Wie sollen Profile Minderjähriger standardmäßig eingestellt sein?', opts: ['Privat', 'Öffentlich', 'Gar nicht sichtbar', 'Nur für die Schule sichtbar'], a: 0, why: 'Profile Minderjähriger sollen standardmäßig privat sein.' },
+        { q: 'Was sollen Apps stattdessen anbieten?', opts: ['Wirksame Pausen und Zeitlimits', 'Mehr Belohnungen für längere Nutzung', 'Mehr Werbung in den Pausen', 'Tägliche Pflicht-Logins'], a: 0, why: 'Pausen und Zeitlimits sollen die Nutzung begrenzen helfen.' },
+        { q: 'Was gilt für KI-Begleiter nach dem Entwurf?', opts: ['Sie sind von Anfang an ausgeschaltet', 'Sie sind für alle Jugendlichen eine Pflicht', 'Sie dürfen Kinder ruhig abhängig machen', 'Sie sind nur nachts überhaupt erlaubt'], a: 0, why: 'KI-Begleiter sind standardmäßig aus und dürfen nicht emotional abhängig machen.' }] },
+      { go: '▶ Fragen starten' }),
+    T('l2_q2', 'duell', 'Fragen zu Text 4', 'Beantworte die Fragen zum Text „Befürworter und Kritiker“.',
+      'Jetzt kommen acht Fragen zu Text 4. Bei jeder Frage geht es darum, wer was sagt. Wähle die richtige Antwort.',
+      ['Achte darauf, wer etwas sagt: Kommission, Datenschützer, Jugend- oder Elternarbeit?', 'Die Namen der Organisationen stehen fett gedruckt im Text.'],
+      { label: 'Frage', wrong: 'Das stimmt nicht. Lies die passende Stelle in Text 4 noch einmal.', win: 'Du hast auch Text 4 gut verstanden.', n: 8, qs: [
+        { q: 'Was meint Henna Virkkunen mit „Aufschub statt Verbot“?', opts: ['Kinder bekommen Stück für Stück mehr Zugang', 'Social Media wird für alle Menschen verboten', 'Das ganze Gesetz wird auf später verschoben', 'Nur Erwachsene dürfen soziale Medien nutzen'], a: 0, why: 'Kinder bekommen ab 13, 15 und 18 schrittweise mehr Zugang.' },
+        { q: 'Wovor warnt der Chaos Computer Club?', opts: ['Vor Gefahren für die anonyme Internetnutzung', 'Vor zu wenigen Altersstufen im ganzen Entwurf', 'Vor zu hohen Strafen gegen die Plattformen', 'Vor zu viel Medienbildung an den Schulen'], a: 0, why: 'Der CCC sieht die anonyme Internetnutzung durch Alterskontrollen in Gefahr.' },
+        { q: 'Was sagt die Bundesschülerkonferenz?', opts: ['Verbote allein lehren keinen sicheren Umgang', 'Social Media sollte für alle verboten werden', 'Alterskontrollen sind unnötig, weil niemand schummelt', 'Plattformen sollten selbst entscheiden'], a: 0, why: 'Sie fordert außerdem, dass Jugendliche vorher beteiligt werden.' },
+        { q: 'Wer unterstützt Altersgrenzen, wenn die Prüfung den Datenschutz einhält?', opts: ['Save the Children', 'Der Chaos Computer Club', 'EDRi', 'Der Lehrerverband'], a: 0, why: 'Save the Children unterstützt Altersgrenzen mit datenschutzkonformer Prüfung.' },
+        { q: 'Was ist die zentrale Kritik von EDRi?', opts: ['Nicht das Alter, sondern das Geschäftsmodell ist es', 'Die Strafen im Entwurf sind für Konzerne zu niedrig', 'Der Entwurf ist insgesamt viel zu kurz und zu vage geraten', 'Kinder sollten gar keine eigenen Handys haben dürfen'], a: 0, why: 'EDRi sagt, der Entwurf setze beim Aufschub an statt bei der Gestaltung der Plattformen.' },
+        { q: 'Was entgegnet die Kommission auf diese Kritik?', opts: ['Der Entwurf verbietet auch süchtig machendes Design', 'Die Kritik ist falsch, weil Jugendliche immer schummeln', 'Das Geschäftsmodell ist nicht änderbar', 'Der Entwurf wird zurückgezogen'], a: 0, why: 'Genau deshalb verbietet der Entwurf auch süchtig machendes Design.' },
+        { q: 'Was zeigte die Umfrage in Australien drei Monate nach dem Verbot?', opts: ['Die Nutzung ging nur wenig zurück', 'Fast niemand nutzte danach noch Social Media', 'Die Nutzung hat sich danach verdoppelt', 'Die Jugendlichen wurden gar nicht befragt'], a: 0, why: 'Vorher nutzten 85,9 %, danach noch 81,5 % der 10- bis 15-Jährigen die betroffenen Plattformen.' },
+        { q: 'Was fordert der Deutsche Lehrerverband?', opts: ['Pflichten für Plattformen, die für alle gelten', 'Ein Verbot sozialer Medien ab dem 15. Geburtstag', 'Mehr Handys für die Arbeit in den Klassenräumen', 'Keine Altersgrenzen und überhaupt keine Regeln'], a: 0, why: 'Teilhabe lasse sich nicht auf einen Geburtstag verschieben, sagt der Lehrerverband.' }] },
+      { go: '▶ Fragen starten' })
+  ] },
+
+/* ============================================================ 4 SPIELEN UND ARGUMENTIEREN */
+{ id: 's2', ico: '⚖️', kind: 'spiel', title: 'Spielen und Argumentieren', sub: 'Tricks entlarven, Sichtweisen, Argumente',
+  intro: 'Zuerst geht es um die Tricks der Apps und die Sichtweisen. Danach übst du das Argumentieren, damit du gut für die Diskussion gerüstet bist. Auf „Spiel starten“ erkläre ich dir jeweils die Regeln.',
+  merk: [
+    '<b>Tricks:</b> endloses Scrollen und Autoplay, Streaks, Push-Nachrichten, Belohnungen, Empfehlungs-Algorithmus. Verbot für alle unter 18.',
+    '<b>Stattdessen:</b> wirksame Pausen und Zeitlimits, private Profile, kein Kontakt durch Fremde ohne Erlaubnis.',
+    '<b>Befürworter:</b> Kommission, Save the Children, KJM. <b>Kritiker:</b> Datenschützer (CCC, EDRi), Jugend- und Elternverbände, Lehrerverband.',
+    'Ein <b>Argument</b> hat drei Teile: Behauptung, Begründung, Beispiel. Einen <b>Fakt</b> kann man prüfen, eine <b>Meinung</b> ist eine Einschätzung.'
+  ],
+  tasks: [
+    T('s2_feed', 'zeitfresser', 'Der Zeitfresser', 'Du willst nur kurz schauen. Schaffst du es, rechtzeitig aufzuhören?',
+      'Stell dir vor: Es ist 18:40 Uhr. Um 19:00 Uhr musst du zum Training. Du schaust nur kurz in eine Video-App. Der Feed läuft von allein. Jedes Video entspricht vier Minuten in echter Zeit, die Uhr oben läuft mit. Tippe auf „App schließen“, wenn du aufhören willst. Danach gehen wir gemeinsam durch, was die App getan hat.',
+      ['Du kannst den Feed so lange laufen lassen, wie du möchtest. Entscheide ehrlich, wann du aufhören würdest.', 'Achte darauf, was die App tut, wenn du nichts tippst.'],
+      { start: 18 * 60 + 40, deadline: 19 * 60, vmin: 4, wait: 7000, videos: [['🐱', 'Katze rutscht vom Sofa'], ['🛹', 'Skate-Trick in der Halle'], ['🍕', 'Pizza in 30 Sekunden'], ['🎸', 'Straßenmusik in Berlin'], ['🐶', 'Hund lernt ein Kunststück'], ['⚽', 'Tor des Monats'], ['🎨', 'Zeichnen im Zeitraffer'], ['🌋', 'Vulkan von oben'], ['🚲', 'Radtour am Wasser'], ['🎤', 'Schulband im Proberaum']] }),
+    T('s2_pins', 'pins', 'Der Tricks-Scanner', 'Tippe auf der App Elemente an und finde heraus, was sie bewirken.',
+      'Du siehst den Bildschirm einer Video-App. Tippe ein Element an, zum Beispiel die Flamme, ein Banner oder eine Leiste. Ich frage dich dann, was es bewirkt und was der Entwurf dazu vorsieht. Beantworte die Frage richtig, dann bekommt das Element einen grünen Rahmen. Du musst alle fünf Elemente schaffen.',
+      ['Es gibt fünf Elemente: ein Tab oben, eine Zahl mit Flamme, eine Leiste im Video, ein Banner und die Videos darunter.', 'Überlege bei jedem Element, ob es dich zum Dranbleiben oder zum Wiederkommen bringen soll.'],
+      { fig: FIG, goText: 'Tippe auf ein Element der App. Ich frage dich dann, was es bewirkt.', spots: [
+        { name: 'Der Tab „Für dich“', r: [35, 8.5, 75.5, 13.6], q: 'Wer entscheidet, welche Videos hier erscheinen, und was sieht der Entwurf dazu vor?', opts: ['Ein Algorithmus, der auf Sicherheit achten soll', 'Die Eltern, die jedes Video vorher einzeln freigeben', 'Ein Zufallsgenerator, der künftig verboten werden soll', 'Die Schule, die alle Videos vorher gründlich überprüft'], a: 0, why: 'Ein Empfehlungs-Algorithmus wählt aus. Der Entwurf will, dass er auf Sicherheit und seelische Gesundheit achtet und Tracking-Personalisierung standardmäßig aus ist.' },
+        { name: 'Die Flamme mit der Zahl', r: [6.5, 15, 27.5, 19.8], q: 'Was ist hier der Trick, und was sieht der Entwurf dazu vor?', opts: ['Eine Serie, die reißt, wenn man auslässt. Das soll eingeschränkt werden', 'Eine Belohnung fürs Aufhören. Sie soll künftig stark ausgebaut werden', 'Ein Zähler für alle Likes. Er soll genau so sichtbar bleiben, wie er ist', 'Eine Warnung vor Betrug im Netz. Sie soll für alle Apps Pflicht werden'], a: 0, why: 'Streaks bestrafen, wenn man nicht täglich zurückkommt. Der Entwurf will solche Mechaniken für Minderjährige einschränken.' },
+        { name: 'Die Leiste im Video', r: [6.7, 54.8, 93.3, 59.6], q: 'Was bewirkt die Leiste „Nächstes Video in 3 …“, und was soll sich ändern?', opts: ['Das nächste Video startet allein. Endloses Autoplay soll wegfallen', 'Das Video wird sofort gelöscht. Das soll künftig automatisch passieren', 'Die App fragt alle 3 Sekunden nach dem Alter. Das soll Pflicht sein', 'Die App speichert das Video ab. Das soll künftig verboten werden'], a: 0, why: 'Das ist Autoplay. Endloses Weiterlaufen ohne echte Pausen soll es für Minderjährige nicht mehr geben.' },
+        { name: 'Das Banner', r: [5.3, 63, 94.7, 72.6], q: 'Warum meldet sich die App mit so einer Nachricht, und was sieht der Entwurf vor?', opts: ['Sie will zurückholen. Solche Nachrichten sollen eingeschränkt werden', 'Sie warnt vor gefährlichen Viren auf dem Gerät. Das soll Pflicht werden', 'Sie bietet Hilfe bei Problemen an. Das soll künftig verboten werden', 'Sie meldet das Alter der Person an die Eltern. Das soll geprüft werden'], a: 0, why: 'Push-Nachrichten holen Kinder zurück, auch ohne dass sie etwas vorhatten. Gerade in der Schlafenszeit sollen sie eingeschränkt werden.' },
+        { name: 'Die Videos darunter', r: [5.3, 74.8, 94.7, 95.2], q: 'Was zeigt das Stück Feed unter dem Video, und was fordert der Entwurf?', opts: ['Es gibt kein Ende. Der Entwurf verlangt Pausen und Zeitlimits', 'Der Feed endet nach zehn Videos. Das soll genau so bleiben', 'Es sind Werbeblöcke im Feed. Sie sollen künftig länger werden', 'Es sind Freunde der Person. Sie müssen erst freigegeben werden'], a: 0, why: 'Endloses Scrollen hat keinen natürlichen Stopp. Der Entwurf verlangt wirksame Pausen und Zeitlimits.' }] }),
+    T('s2_wer', 'duell', 'Wer würde das sagen?', 'Ordne Aussagen den Sichtweisen aus der Debatte zu.',
+      'Im Spiel steht eine Aussage mit eigenen Worten. Tippe an, wer sie am ehesten sagen würde. Es gibt sechs Sichtweisen. Wenn du falsch liegst, erkläre ich dir die Sichtweise.',
+      ['Lies in Text 4 nach, worum es jeder Gruppe geht.', 'Überlege: Geht es um Schutz, um Daten, um Mitsprache, um Teilhabe oder um die Ursache?'],
+      { label: 'Aussage', n: 8, fixed: ['EU-Kommission', 'Datenschützer', 'Schülervertretung', 'Kinderschutzbund', 'Lehrerverband', 'EDRi'], defs: { 'EU-Kommission': 'Die EU-Kommission hat den Entwurf geschrieben und will Kinder einheitlich schützen.', 'Datenschützer': 'Datenschützer wie der Chaos Computer Club warnen vor den Folgen der Alterskontrolle für alle Nutzer.', 'Schülervertretung': 'Die Bundesschülerkonferenz will, dass Jugendliche mitreden und den Umgang lernen.', 'Kinderschutzbund': 'Der Kinderschutzbund denkt besonders an Jugendliche aus belasteten Familien.', 'Lehrerverband': 'Der Lehrerverband fordert Pflichten für Plattformen für alle Altersgruppen.', 'EDRi': 'EDRi kritisiert, dass der Entwurf nicht bei den Ursachen im Geschäftsmodell ansetzt.' }, win: 'Du kannst die Sichtweisen jetzt gut auseinanderhalten.', qs: [
+        { q: '„Kinder verdienen ein sichereres Internet. Wir geben ihnen den Zugang Schritt für Schritt.“', opts: ['EU-Kommission'], a: 0, why: 'Das ist die Sicht der Kommission, die den Aufschub statt eines Verbots betont.' },
+        { q: '„Wir brauchen keine Maßnahme gegen das Netz, wir brauchen eine gegen das Geschäftsmodell der Plattformen.“', opts: ['EDRi'], a: 0, why: 'EDRi sagt: Das Alter ist nicht das eigentliche Problem, sondern das Geschäftsmodell.' },
+        { q: '„Wer sich im Netz nur mit Ausweis bewegen darf, kann nicht mehr anonym bleiben.“', opts: ['Datenschützer'], a: 0, why: 'Das ist die Sorge von Datenschützern wie dem Chaos Computer Club.' },
+        { q: '„Wir wollen vorher gefragt werden, denn mit einem Verbot allein lernen wir nichts.“', opts: ['Schülervertretung'], a: 0, why: 'Das ist die Forderung der Bundesschülerkonferenz.' },
+        { q: '„Manche Eltern haben keine Zeit oder Unterstützung. Der Zugang darf nicht allein von ihnen abhängen.“', opts: ['Kinderschutzbund'], a: 0, why: 'Der Kinderschutzbund warnt vor Nachteilen für Jugendliche aus belasteten Familien.' },
+        { q: '„Mitmachen kann man nicht auf einen Geburtstag verschieben. Plattformen sollten für alle sicherer werden.“', opts: ['Lehrerverband'], a: 0, why: 'Das sagt der Deutsche Lehrerverband.' },
+        { q: '„Die Beweislast soll bei den Plattformen liegen, nicht bei den Behörden.“', opts: ['EU-Kommission'], a: 0, why: 'Das steht im Entwurf der Kommission.' },
+        { q: '„Wenn für alle das Alter geprüft wird, entsteht eine riesige Infrastruktur, die man missbrauchen kann.“', opts: ['Datenschützer'], a: 0, why: 'Datenschützer warnen vor dem Missbrauch der entstehenden Kontrollstruktur.' },
+        { q: '„Kinder ohne Ausweis, ohne Smartphone oder ohne Hilfe zu Hause könnten Online-Gemeinschaften verlieren.“', opts: ['EDRi'], a: 0, why: 'Diese Sorge nennt EDRi für Menschen ohne Ausweis oder Smartphone und für Kinder mit wenig Unterstützung.' },
+        { q: '„Jugendliche brauchen ein Fach, in dem sie den Umgang mit Social Media lernen.“', opts: ['Schülervertretung'], a: 0, why: 'Mehr Medienbildung wird auch von der Schülervertretung gefordert.' },
+        { q: '„Verbote allein lösen es nicht. Wir müssen alle Plattformen verpflichten, nicht nur für Kinder.“', opts: ['Lehrerverband'], a: 0, why: 'Der Lehrerverband fordert Plattformpflichten für alle Altersgruppen.' },
+        { q: '„Hohe Strafen wirken: Wer nicht sicher ist, zahlt bis zu 6 % vom Jahresumsatz.“', opts: ['EU-Kommission'], a: 0, why: 'Die Strafen stehen im Entwurf der Kommission.' }] }, { sect: 'Sichtweisen' }),
+    T('s2_waage', 'waage', 'Die Argument-Waage', 'Sortiere zwölf Aussagen: Spricht sie für oder gegen den Gesetzentwurf?',
+      'Unten liegen zwölf Argumente aus der Debatte. Tippe eine Karte an und danach die Waagschale, auf die sie gehört: „Dafür“ heißt, das Argument spricht für den Gesetzentwurf. „Dagegen“ heißt, es spricht gegen ihn. Vorsicht: Manche Karten klingen freundlich, sind aber Kritik, und umgekehrt. Bei einem Fehler sage ich dir, worauf du achten musst.',
+      ['Lies bis zum Ende: Oft entscheidet erst der zweite Teil des Satzes, auf welche Seite ein Argument gehört.', 'Frage dich: Würde die EU-Kommission das sagen, oder eher jemand, der den Entwurf kritisiert?'],
+      { sides: ['Dafür', 'Dagegen'], hint: 'Lies den Satz bis zum Ende. Wem würde dieses Argument in der Diskussion helfen?', items: [
+        ['Das Alter ist nicht das eigentliche Problem. Die Ursache liegt im Geschäftsmodell der Plattformen.', 1, 'Das ist ein Argument dagegen: Es sagt, der Entwurf setze an der falschen Stelle an (EDRi).'],
+        ['Ein einheitliches Gesetz erspart Familien in Europa viele verschiedene Regeln.', 0, 'Das ist ein Argument dafür: einheitliche Regeln statt Flickenteppich.'],
+        ['Auch Jugendliche mit wenig Unterstützung zu Hause könnten den Zugang zu Online-Gemeinschaften verlieren.', 1, 'Das ist ein Argument dagegen: Es warnt vor Nachteilen für Betroffene (Kinderschutzbund).'],
+        ['Ein Aufschub ist kein Verbot: Kinder bekommen schrittweise mehr Zugang.', 0, 'Das ist ein Argument dafür: Es soll zeigen, dass der Entwurf Teilhabe nicht ausschließt.'],
+        ['Wenn Eltern über Kontakte entscheiden, werden sie von Begleitern zu Kontrolleuren.', 1, 'Das ist ein Argument dagegen (Gesellschaft für Medienpädagogik).'],
+        ['Bei Verstößen drohen Strafen bis zu 6 % vom Umsatz, das beeindruckt auch Weltkonzerne.', 0, 'Das ist ein Argument dafür: Es zeigt, warum die Regeln durchsetzbar sein sollen.'],
+        ['In Australien ging die Nutzung nach dem Verbot nur von 85,9 % auf 81,5 % zurück.', 1, 'Das ist ein Argument dagegen: Die Zahlen sollen zeigen, dass Verbote kaum wirken.'],
+        ['Die Plattform erfährt bei der Alterskontrolle nur ein Ja oder Nein, nicht mehr über die Person.', 0, 'Das ist ein Argument dafür: Es soll die Sorge um den Datenschutz entkräften.'],
+        ['Endlich müssen die Plattformen beweisen, dass sie sicher sind, und nicht mehr die Behörden.', 0, 'Das ist ein Argument dafür: Die Beweislast liegt bei denen, die mit den Apps Geld verdienen.'],
+        ['Kinder zu schützen ist richtig, aber dafür müssten sich bald alle im Netz ausweisen, auch Erwachsene.', 1, 'Das ist ein Argument dagegen: Der erste Teil klingt zustimmend, aber am Ende steht die Kritik an der Alterskontrolle für alle.'],
+        ['Sicheres Design klingt gut, doch Medienkompetenz entsteht nicht durch Aussperren.', 1, 'Das ist ein Argument dagegen (Deutscher Lehrerverband): Es lobt einen Teil, kritisiert aber den Ausschluss.'],
+        ['Viele Jugendliche finden Verbote nervig, doch Autoplay und Streaks halten auch sie gegen ihren Willen fest.', 0, 'Das ist ein Argument dafür: Der erste Teil klingt nach Kritik, aber am Ende steht der Grund für das Verbot süchtig machender Tricks.']] }, { sect: 'Argumente üben' }),
+    T('s2_entkraeften', 'duell', 'Entkräften', 'Finde zu jedem Argument die passende Antwort der Gegenseite.',
+      'Im Spiel steht ein Argument. Du wählst, welche Antwort die Gegenseite darauf am besten geben würde. Es geht nicht um deine Meinung, sondern darum, die Gegenseite zu verstehen. Bei einem Fehler sage ich dir, warum die Antwort nicht passt.',
+      ['Lies die Antworten genau: Welche antwortet wirklich auf das Argument?', 'Manche Antworten sind zwar richtig, gehören aber zu einem anderen Argument.'],
+      { label: 'Argument', n: 6, wrong: 'Diese Antwort passt nicht zu dem Argument. Sie geht auf etwas anderes ein. Lies noch einmal, worum es im Argument genau geht.', win: 'Du kannst Argumente jetzt aus der Sicht der Gegenseite beantworten. Das macht jede Diskussion stärker.', qs: [
+        { q: 'Argument (Kritiker): „Die Alterskontrolle trifft alle Nutzer, auch Erwachsene.“', opts: ['Die Plattform erfährt nur „Ja“ oder „Nein“, per EU-App', 'Die Strafen für Plattformen können sehr hoch ausfallen, bis zu 6 %', 'Mit 15 dürfen Jugendliche ein eigenes Konto haben und nutzen', 'Die Eltern behalten im Mini-Konto die volle Kontrolle über alles'], a: 0, why: 'Die Kommission antwortet mit der datensparenden Prüfung: Die Plattform erfährt nur Ja oder Nein.' },
+        { q: 'Argument (Kritiker): „Das Alter ist nicht das eigentliche Problem, sondern das Geschäftsmodell.“', opts: ['Der Entwurf verbietet auch süchtig machendes Design', 'Die Alterskontrolle läuft über eine kostenlose EU-App', 'Im Mini-Konto behalten die Eltern die Kontrolle', 'Ab 15 gibt es ein eigenes Konto für Jugendliche'], a: 0, why: 'Die Kommission verweist darauf, dass der Entwurf zusätzlich süchtig machendes Design verbietet.' },
+        { q: 'Argument (Befürworter): „Die Apps sind darauf ausgelegt, dass Kinder möglichst lange bleiben.“', opts: ['Geräteeinstellungen und Medienbildung genügen, sagen Kritiker', 'Die Plattform erfährt bei der Prüfung nur ein Ja oder ein Nein', 'Bei Verstößen drohen Strafen von bis zu 6 % des Jahresumsatzes', 'Mit 15 Jahren dürfen Jugendliche ein eigenes Konto eröffnen'], a: 0, why: 'Kritiker wie die Stiftung Datenschutz sehen mildere Mittel wie Geräteeinstellungen und mehr Medienbildung.' },
+        { q: 'Argument (Kritiker): „In Australien nutzten nach dem Verbot noch 81,5 % die Plattformen. Verbote wirken kaum.“', opts: ['Der Entwurf verlangt geprüfte Kontrollen und verbietet Suchttricks', 'Die Plattform erfährt bei der Alterskontrolle nur ein Ja oder ein Nein', 'Der Rat der EU muss dem Entwurf der Kommission noch zustimmen', 'Mit 15 Jahren dürfen Jugendliche ein eigenes Konto eröffnen'], a: 0, why: 'Befürworter sagen: Der EU-Entwurf geht über ein reines Verbot hinaus, mit geprüfter Altersprüfung und Design-Regeln.' },
+        { q: 'Argument (Kritiker): „Der Zugang darf nicht allein von der Zustimmung der Eltern abhängen.“', opts: ['Die Eltern-Werkzeuge im Mini-Konto sind immer schon aktiv', 'Die Plattform erfährt bei der Prüfung nur ein Ja oder ein Nein', 'Die Kommission prüft bis 2030 die Folgen für die Grundrechte', 'Der Entwurf verbietet auch süchtig machendes Design der Apps'], a: 0, why: 'Die Kommission verweist auf die immer aktiven Eltern-Werkzeuge. Die Sorge um belastete Familien bleibt als Kritik bestehen.' },
+        { q: 'Argument (Befürworter): „Ein EU-Gesetz verhindert einen Flickenteppich aus 27 Regeln.“', opts: ['Laut Hans-Bredow-Institut sind die Vorgaben kaum erfüllbar', 'Der Entwurf verbietet zusätzlich auch süchtig machendes Design', 'Die Plattform erfährt bei der Prüfung nur ein Ja oder ein Nein', 'Mit 13 gibt es ein Mini-Konto, das die Eltern einrichten'], a: 0, why: 'Das Hans-Bredow-Institut hält die Anforderungen des Entwurfs nach dem Stand der Technik für nicht erfüllbar.' }] }),
+    T('s2_fm', 'duell', 'Fakt, Meinung oder beides?', 'Entscheide, ob eine Aussage ein Fakt, eine Meinung oder eine Mischung ist.',
+      'Im Spiel steht eine Aussage. Tippe an, ob sie ein „Fakt“, eine „Meinung“ oder eine „Mischung“ ist. Eine Mischung ist ein Satz, der einen Fakt nennt und ihn gleichzeitig bewertet. Bei einem Fehler erkläre ich dir den Unterschied.',
+      ['Frage dich: Kann man das nachschlagen? Und: Steckt ein Urteil darin, zum Beispiel „gut“, „zu viel“ oder „sinnvoll“?', 'Bei einer Mischung gibt es einen prüfbaren Teil und einen wertenden Teil.'],
+      { label: 'Aussage', n: 8, fixed: ['Fakt', 'Meinung', 'Mischung'], defs: { 'Fakt': 'Ein Fakt lässt sich prüfen, zum Beispiel durch Nachschlagen.', 'Meinung': 'Eine Meinung ist eine Einschätzung. Man kann sie teilen oder nicht, aber nicht einfach nachprüfen.', 'Mischung': 'Eine Mischung enthält einen prüfbaren Teil und ein Urteil darüber.' }, win: 'Du kannst Fakten, Meinungen und Mischungen auseinanderhalten. Das hilft dir in jeder Diskussion.', qs: [
+        { q: 'Die EU-Kommission hat den EU Kids Act am 17. September 2026 vorgeschlagen.', opts: ['Fakt'], a: 0, why: 'Das lässt sich nachprüfen.' },
+        { q: 'Ein Verbot ist der beste Weg, Kinder zu schützen.', opts: ['Meinung'], a: 0, why: '„Der beste Weg“ ist eine Einschätzung, die sich nicht einfach nachprüfen lässt.' },
+        { q: 'Weil die Nutzung in Australien nur von 85,9 % auf 81,5 % sank, ist das Verbot gescheitert.', opts: ['Mischung'], a: 0, why: 'Die Zahlen sind ein Fakt. „Gescheitert“ ist eine Bewertung.' },
+        { q: 'Mini-Konten dürfen höchstens eine Stunde pro Tag genutzt werden.', opts: ['Fakt'], a: 0, why: 'Das steht so im Entwurf und lässt sich nachlesen.' },
+        { q: 'Die Strafe von 6 % des Umsatzes ist viel zu hoch.', opts: ['Mischung'], a: 0, why: 'Die Höhe ist ein Fakt. „Viel zu hoch“ ist ein Urteil.' },
+        { q: 'Mit 15 ist man reif genug für ein eigenes Konto.', opts: ['Meinung'], a: 0, why: 'Wann jemand „reif genug“ ist, sieht jeder anders.' },
+        { q: 'Die Plattform erfährt bei der Altersprüfung nur ein Ja oder Nein, das ist gut für den Datenschutz.', opts: ['Mischung'], a: 0, why: 'Der erste Teil ist ein Fakt aus dem Entwurf. „Gut für den Datenschutz“ ist eine Bewertung.' },
+        { q: 'Die Alterskontrolle ist ein Angriff auf die Freiheit im Netz.', opts: ['Meinung'], a: 0, why: 'Das ist eine Bewertung, die manche teilen und andere nicht.' },
+        { q: 'Der Rat der EU besteht aus Vertretern der Regierungen.', opts: ['Fakt'], a: 0, why: 'Das lässt sich nachschlagen.' },
+        { q: 'Weil Apps Streaks nutzen, sollten sie ganz verboten werden.', opts: ['Mischung'], a: 0, why: 'Dass Apps Streaks nutzen, ist ein Fakt. „Sollten ganz verboten werden“ ist eine Forderung.' },
+        { q: 'Eltern sollten über die Kontakte ihrer Kinder entscheiden dürfen.', opts: ['Meinung'], a: 0, why: 'Das ist eine Forderung. Ob sie richtig ist, darüber kann man streiten.' },
+        { q: 'Das Europäische Parlament forderte im November 2025 ein Mindestalter von 16 Jahren.', opts: ['Fakt'], a: 0, why: 'Das ist belegt und lässt sich nachprüfen.' }] }),
+    T('s2_pack', 'packen', 'Pack deinen Rucksack', 'Wähle vier Argumente, die dich am meisten überzeugen.',
+      'Unten stehen zwölf Argumente aus der Debatte, sechs dafür und sechs dagegen. Tippe vier an, die dich am meisten überzeugen. Es gibt kein Richtig oder Falsch. Mit „Rucksack abgeben“ packst du sie für die Diskussion ein. Später zeige ich dir im Reiter 🎒, was die Gegenseite dazu sagt.',
+      ['Wähle nicht nach der Länge, sondern danach, was dich überzeugt.', 'Du kannst Argumente von beiden Seiten wählen.'],
+      { max: 4, args: [
+        { t: 'Apps sollen Kinder nicht mit Streaks und Autoplay festhalten dürfen.', who: 'Dafür · wird oft von Eltern gesagt', side: 'Dafür', counter: 'Mildere Mittel wie Geräte-Einstellungen oder mehr Medienbildung würden reichen, sagen Kritiker, zum Beispiel die Stiftung Datenschutz.' },
+        { t: 'Ein EU-Gesetz ist besser als 27 verschiedene Regeln.', who: 'Dafür · Sicht der EU-Kommission', side: 'Dafür', counter: 'Das Hans-Bredow-Institut warnt, die Anforderungen des Entwurfs seien nach dem Stand der Technik nicht erfüllbar.' },
+        { t: 'Die Plattformen müssen beweisen, dass ihre Dienste sicher sind, nicht die Aufsicht.', who: 'Dafür · Sicht der EU-Kommission', side: 'Dafür', counter: 'Kritiker sagen: Trotzdem müssen sich alle Nutzer ausweisen, auch Erwachsene.' },
+        { t: 'Ein Aufschub ist kein Verbot: Ab 13, 15 und 18 gibt es schrittweise mehr Freiheit.', who: 'Dafür · Sicht der Kommission', side: 'Dafür', counter: 'Das Deutsche Kinderhilfswerk warnt: Ein Ausschluss ohne altersgerechte Alternativen verkenne die Rechte der Kinder.' },
+        { t: 'Eltern bekommen Werkzeuge für Kontakte und Zeitlimits.', who: 'Dafür · wird oft von Eltern gesagt', side: 'Dafür', counter: 'Die Gesellschaft für Medienpädagogik (GMK) warnt: Eltern würden von Begleitern zu Kontrolleuren.' },
+        { t: 'Hohe Strafen sorgen dafür, dass sich auch große Plattformen an die Regeln halten.', who: 'Dafür · Sicht der Kommission', side: 'Dafür', counter: 'Kritiker sagen, die Kontrollen könnten umgangen werden, wie die Erfahrungen aus Australien zeigen.' },
+        { t: 'Die Alterskontrolle betrifft alle Nutzer, auch Erwachsene.', who: 'Dagegen · Sicht von Datenschützern', side: 'Dagegen', counter: 'Die Kommission sagt: Die Plattform erfährt nur „Alter erreicht, ja oder nein“. Dafür soll es eine EU-App geben.' },
+        { t: 'Verbote lassen sich umgehen. In Australien nutzten danach noch 81,5 % die Plattformen.', who: 'Dagegen · Sicht von Kritikern', side: 'Dagegen', counter: 'Befürworter sagen: Der EU-Entwurf verlangt mehr als ein eingetipptes Geburtsdatum und verbietet zusätzlich süchtig machende Tricks.' },
+        { t: 'Nicht jede Familie hat Zeit oder Wissen, um ein Mini-Konto einzurichten.', who: 'Dagegen · Sicht von Elternverbänden', side: 'Dagegen', counter: 'Die Kommission sagt: Die Eltern-Werkzeuge sind immer aktiv und müssen nicht erst gesucht werden.' },
+        { t: 'Mit einem Verbot lernen Jugendliche nicht, sicher mit Social Media umzugehen.', who: 'Dagegen · Sicht der Schülervertretung', side: 'Dagegen', counter: 'Befürworter sagen: Der gestufte Einstieg mit Mini-Konto ist selbst ein Weg, den Umgang Schritt für Schritt zu lernen.' },
+        { t: 'Freunde und Gruppen laufen über soziale Medien. Ohne Konto ist man außen vor.', who: 'Dagegen · Sicht von Jugendlichen', side: 'Dagegen', counter: 'Befürworter sagen: Ab 13 gibt es ein Mini-Konto, und Kontakte kann man mit Erlaubnis der Eltern freigeben.' },
+        { t: 'Der Entwurf geht nicht an die Ursache, das Geschäftsmodell der Plattformen.', who: 'Dagegen · Sicht von EDRi', side: 'Dagegen', counter: 'Die Kommission antwortet: Gerade deshalb verbietet der Entwurf auch süchtig machendes Design.' }] }),
+    T('s2_free', 'free', 'Schreibwerkstatt', 'Schreibe ein eigenes Argument mit Behauptung, Begründung und Beispiel.',
+      'Jetzt schreibst du selbst: ein Argument in zwei bis vier Sätzen. Es darf dafür oder dagegen sein, das ist deine Entscheidung. Nenne eine Behauptung, eine Begründung mit „weil“ und ein Beispiel. Ich lese mit und sage dir, was fehlt.',
+      ['Fange an mit: „Ich bin dafür/dagegen, dass …“', 'Setze danach „weil …“ und „zum Beispiel …“.'],
+      { min: 140, need: 3, groups: [
+        { label: 'eine klare Behauptung („Ich finde …“, „Ich bin dafür/dagegen …“)', rx: /(ich (finde|bin|denke|meine|glaube)|meiner meinung|dafür|dagegen|sinnvoll|falsch|richtig)/i },
+        { label: 'eine Begründung mit „weil“ oder „denn“', rx: /(weil|denn|da |deshalb|darum)/i },
+        { label: 'ein Beispiel („zum Beispiel“, „etwa“)', rx: /(zum beispiel|z\. ?b\.|beispielsweise|etwa|wie bei|in australien|bei vielen apps)/i }],
+        sample: 'Beispiel dafür: Ich bin dafür, dass Apps keine süchtig machenden Tricks mehr benutzen dürfen, weil Jugendliche sonst schwer aufhören können. Zum Beispiel startet bei vielen Apps das nächste Video von allein. — Beispiel dagegen: Ich bin gegen die Alterskontrolle, weil sie alle Nutzer trifft und sensible Daten erzeugt. Zum Beispiel müssten auch Erwachsene ihr Alter nachweisen.' })
+  ] }
+];
+
+/* Fragen für „Was hast du dir gemerkt?“: o[0] ist die richtige Antwort; ch = Kapitel, zu dem „Zum Kapitel“ führt */
+var PROBE = [
+  { ch: 'l1', q: 'Was ist der EU Kids Act aktuell?', o: ['Ein Vorschlag der EU-Kommission', 'Ein Gesetz, das in der ganzen EU schon gilt', 'Ein Beschluss des deutschen Bundestags', 'Eine freiwillige Regel der Plattformen'], why: 'Es ist ein Gesetzentwurf. Parlament und Rat müssen noch zustimmen.' },
+  { ch: 'l1', q: 'Was sieht der Entwurf für 13- und 14-Jährige vor?', o: ['Ein Mini-Konto mit Eltern-Aufsicht', 'Ein eigenes Konto ohne jede Zeitgrenze', 'Gar kein Konto, auch nicht mit Eltern', 'Ein Konto, das die Schule für sie verwaltet'], why: 'Mit 13 und 14 gibt es ein Mini-Konto unter Aufsicht der Eltern.' },
+  { ch: 'l1', q: 'Ab welchem Alter ist ein eigenes Konto vorgesehen?', o: ['Ab 15 Jahren', 'Ab 13 Jahren', 'Ab 16 Jahren', 'Ab 18 Jahren'], why: 'Ab 15 soll ein eigenes Konto möglich sein.' },
+  { ch: 'l1', q: 'Womit müssen Plattformen bei Verstößen rechnen?', o: ['Mit Bußgeldern bis 6 % vom Umsatz', 'Mit einem Verbot für das ganze nächste Jahr', 'Mit einer Verwarnung durch die Schulleitung', 'Mit einer festen Gebühr von hundert Euro'], why: 'Es drohen Bußgelder von bis zu 6 % des weltweiten Jahresumsatzes.' },
+  { ch: 'l1', q: 'Wer muss dem Entwurf zustimmen, damit er Gesetz wird?', o: ['Das Parlament und der Rat', 'Nur die Kommission, die ihn geschrieben hat', 'Allein der Bundestag in Berlin', 'Die Plattformen und die Eltern'], why: 'Das Europäische Parlament und der Rat müssen beide zustimmen.' },
+  { ch: 'l2', q: 'Was zeigte die Umfrage der australischen Regierung nach dem Verbot?', o: ['Die Nutzung ging nur wenig zurück', 'Fast niemand nutzte danach noch Social Media', 'Die Nutzung hat sich danach verdoppelt', 'Die Regierung hat gar nicht gefragt'], why: 'Laut Umfrage nutzten vorher 85,9 %, danach noch 81,5 % der 10- bis 15-Jährigen betroffene Plattformen.' },
+  { ch: 'l1', q: 'Was hat die Bundesregierung am 14. Oktober 2026 beschlossen?', o: ['Eckpunkte: unter 13 übergangsweise verboten', 'Ein fertiges Gesetz, das ab sofort überall gilt', 'Eine Ablehnung des Vorschlags der EU-Kommission', 'Ein Verbot für alle Jugendlichen unter 18 Jahren'], why: 'Es sind Eckpunkte, die übergangsweise ein Verbot unter 13 vorsehen, bis es eine EU-Regel gibt.' },
+  { ch: 'l2', q: 'Was bewirkt eine Streak-Flamme in einer App?', o: ['Man kommt täglich, um die Serie zu retten', 'Man bekommt einen Preis, wenn man früh aufhört', 'Man sieht danach weniger Werbung im Feed', 'Man kann Videos dadurch schneller finden'], why: 'Wer einen Tag auslässt, verliert die Serie. Deshalb schauen viele jeden Tag rein.' },
+  { ch: 'l2', q: 'Was ist Autoplay?', o: ['Das nächste Video startet von allein', 'Man spielt automatisch gegen andere Nutzer', 'Die App spielt dabei nur Musik ohne Bilder ab', 'Die Eltern geben jedes Video einzeln frei'], why: 'Bei Autoplay läuft der Feed ohne dein Zutun weiter.' },
+  { ch: 'l2', q: 'Was sollen Apps nach dem Entwurf stattdessen anbieten?', o: ['Wirksame Pausen und Zeitlimits', 'Noch mehr persönliche Empfehlungen', 'Eine Pflicht zum täglichen Login', 'Mehr Werbung für Jugendliche'], why: 'Pausen, Zeitlimits und sichere Voreinstellungen sollen Pflicht werden.' },
+  { ch: 'l2', q: 'Wovor warnen Datenschützer beim Altersnachweis vor allem?', o: ['Er trifft alle Nutzer und erzeugt Daten', 'Er ist für Plattformen viel zu billig', 'Er macht Jugendliche zu schnell erwachsen', 'Er verbietet das Posten von Fotos im Netz'], why: 'Die Kontrolle würde auch Erwachsene betreffen. Dabei entstehen sensible Daten.' },
+  { ch: 'l2', q: 'Was fordert die Bundesschülerkonferenz?', o: ['Jugendliche früh mitreden lassen', 'Ein Verbot für alle unter 18 Jahren', 'Mehr Werbung für Jugendliche in Apps', 'Weniger Medienbildung an den Schulen'], why: 'Sie sagt: Verbote allein lehren keinen sicheren Umgang. Jugendliche sollen vorher mitreden.' },
+  { ch: 'l2', q: 'Was ist die zentrale Kritik von EDRi?', o: ['Die Ursache liegt im Geschäftsmodell der Apps', 'Die Strafen für die Plattformen sind viel zu hoch', 'Der Entwurf kommt in Europa leider viel zu spät', 'Kinder sollten überhaupt kein Internet nutzen dürfen'], why: 'EDRi sagt, die Ursache liege im Geschäftsmodell der Plattformen und nicht im Alter.' },
+  { ch: 's2', q: 'Aus welchen drei Teilen besteht ein gutes Argument?', o: ['Behauptung, Begründung, Beispiel', 'Frage, Antwort, Schlussfolgerung', 'Überschrift, Meinung, Zusammenfassung', 'Titel, Text, Bild und Quellenangabe'], why: 'Ein gutes Argument hat eine Behauptung, eine Begründung und ein Beispiel.' },
+  { ch: 'l2', q: 'Wer hat gesagt, der Entwurf sei ein „Aufschub statt eines Verbots“?', o: ['Die EU-Kommission', 'Der Chaos Computer Club', 'Die Schülervertretung', 'Die australische Regierung'], why: 'Henna Virkkunen von der Kommission stellte den Entwurf als Aufschub dar.' }
+];
+var PROBE_TF = [
+  { ch: 'l1', s: 'Der EU Kids Act ist schon ein beschlossenes Gesetz.', v: false, why: 'Es ist erst ein Entwurf. Parlament und Rat müssen noch zustimmen.' },
+  { ch: 'l1', s: 'Ein eingetipptes Geburtsdatum soll als Altersnachweis genügen.', v: false, why: 'Die bloße Selbstangabe reicht nicht aus. Es soll geprüfte Verfahren geben.' },
+  { ch: 'l1', s: 'Die Plattform soll beim Altersnachweis nur erfahren, ob die Altersgrenze erreicht ist.', v: true, why: 'Sie erfährt nur „Ja“ oder „Nein“, nicht mehr über die Person.' },
+  { ch: 'l1', s: 'Die Bundesregierung hat mit den Eckpunkten schon ein Gesetz beschlossen.', v: false, why: 'Eckpunkte sind noch kein Gesetz. Sie zeigen nur die Richtung.' },
+  { ch: 'l1', s: 'Im Mini-Konto gilt eine Grenze von höchstens einer Stunde pro Tag.', v: true, why: 'Das ist die Zeitgrenze für 13- und 14-Jährige im Entwurf.' },
+  { ch: 'l2', s: 'Streaks und endloses Autoplay sollen für Minderjährige eingeschränkt werden.', v: true, why: 'Beides gehört zu den süchtig machenden Tricks, die der Entwurf bremsen will.' },
+  { ch: 'l2', s: 'Das Verbot süchtig machender Tricks soll nur für 13-Jährige gelten.', v: false, why: 'Es soll für alle Minderjährigen gelten, also für alle unter 18.' },
+  { ch: 'l2', s: 'Die Kritik an Alterskontrollen kommt nur von den Plattformen selbst.', v: false, why: 'Auch Datenschutz- und Elternverbände und Fachleute äußern Kritik.' },
+  { ch: 's2', s: '„Das Gesetz ist eine Zumutung“ ist ein Fakt.', v: false, why: 'Das ist eine Meinung. Ein Fakt lässt sich prüfen.' },
+  { ch: 'l1', s: 'Australien hat im Dezember 2025 ein Verbot für unter 16-Jährige eingeführt.', v: true, why: 'Australien war das erste Land mit einem solchen landesweiten Verbot.' }
+];
+
+'use strict';
+/* ===== Kern: Zustand, Navigation, Spielkarten, Sprechblasen von Herrn Neumann ===== */
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function mk(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function plain(h) { var d = document.createElement('div'); d.innerHTML = h; return (d.textContent || '').replace(/\s+/g, ' ').trim(); }
+function B() { return window.Begleiter && window.Kolbi ? window.Begleiter : null; }
+
+var S = { tab: 'start', done: {}, stars: 0 }, CUR = null, BILD = '', P = null;
+var CHI = {}; CH.forEach(function (c) { CHI[c.id] = c; });
+var TASKS = {}; function reindex() { TASKS = {}; CH.forEach(function (c) { c.tasks.forEach(function (t) { t.ch = c.id; TASKS[t.id] = t; }); }); } reindex();
+function chapterDone(c) { return c.tasks.every(function (t) { return S.done[t.id]; }); }
+function chapterCount(c) { return c.tasks.filter(function (t) { return S.done[t.id]; }).length; }
+function updateStars() { $('stars').textContent = '⭐ ' + S.stars; }
+
+/* --- Sprechblase --- */
+function bubble(html, btns) { return '<button class="kb-x" aria-label="Schließen" data-k="close">×</button><p class="kb-text">' + html + '</p>' + (btns || []).map(function (b) { return '<button class="kb-opt" data-g="' + b[0] + '"><span class="kb-dot"></span>' + esc(b[1]) + '</button>'; }).join(''); }
+function say(html, mood, ms, btns) { try { if (window.Kolbi && Kolbi.open) Kolbi.open(bubble(html, btns), ms || 0, mood || 'happy'); } catch (e) {} }
+document.addEventListener('click', function (e) { var t = e.target.closest && e.target.closest('[data-g]'); if (!t || !CUR) return; e.stopPropagation(); CUR.onG(t.getAttribute('data-g')); }, true);
+
+/* --- Navigation --- */
+function tabs() {
+  var n = $('tabs'); n.innerHTML = '';
+  function add(id, label) { var b = mk('button', (S.tab === id ? 'on ' : '') + ((CHI[id] && chapterDone(CHI[id])) ? 'fin' : ''), label); b.onclick = function () { go(id); }; n.appendChild(b); }
+  add('start', '🏠'); CH.forEach(function (c, i) { add(c.id, c.ico + ' ' + (i + 1)); }); add('probe', '🧠 Gemerkt?'); add('pack', '🎒');
+}
+function go(id) {
+  S.tab = id; CUR = null; tabs(); render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+  var b = B(); if (!b) return;
+  if (CHI[id]) { b.setAufgabe(CHI[id].title + '.', [], 'kap-' + id, ''); if (CHI[id].intro) say(CHI[id].intro, 'interested', 0); }
+  else if (id === 'probe') b.setAufgabe('Was hast du dir gemerkt? Zehn Fragen aus allen Kapiteln.', [], 'probe', 'Lies jede Frage in Ruhe.');
+  else if (id === 'pack') b.setAufgabe('Dein Rucksack für die Diskussion.', [], 'pack', 'Lies deine Argumente und die Gegenargumente.');
+  else b.setAufgabe('Wähle einen Teil.', [], 'start', 'Beginne mit Teil 1.');
+}
+function render() { var v = $('view'); v.innerHTML = ''; if (S.tab === 'start') return renderStart(v); if (S.tab === 'probe') return renderProbe(v); if (S.tab === 'pack') return renderPack(v); renderChapter(v, CHI[S.tab]); }
+
+function renderStart(v) {
+  v.appendChild(mk('h2', null, 'Wähle einen Teil'));
+  var g = mk('div', 'chap');
+  CH.forEach(function (c, i) {
+    var n = chapterCount(c), t = c.tasks.length, b = mk('button', null, '<span class="ic">' + c.ico + '</span><b>' + (i + 1) + ' · ' + esc(c.title) + (n === t ? '<span class="badge">geschafft</span>' : '') + '</b><span class="s">' + esc(c.sub) + '</span><div class="pbar"><i style="width:' + Math.round(100 * n / t) + '%"></i></div><span class="cnt">' + n + ' von ' + t + (c.kind === 'lesen' ? ' Fragenrunden' : ' Spielen') + '</span>');
+    b.onclick = function () { go(c.id); }; g.appendChild(b);
+  });
+  var p = mk('button', null, '<span class="ic">🧠</span><b>Was hast du dir gemerkt?</b><span class="s">Zwölf gemischte Fragen aus allen Teilen.</span><span class="cnt">Neue Fragen bei jeder Runde</span>'); p.onclick = function () { go('probe'); }; g.appendChild(p);
+  var q = mk('button', null, '<span class="ic">🎒</span><b>Dein Rucksack</b><span class="s">Deine Argumente und die Gegenseite, für die Diskussion.</span><span class="cnt">Du füllst ihn in Teil 4</span>'); q.onclick = function () { go('pack'); }; g.appendChild(q);
+  v.appendChild(g);
+}
+function renderChapter(v, c) {
+  v.appendChild(mk('h2', null, c.ico + ' ' + esc(c.title) + (chapterDone(c) ? '<span class="badge">geschafft</span>' : '')));
+  v.appendChild(mk('p', 'sub', esc(c.sub)));
+  if (c.texts) c.texts.forEach(function (t) { var d = mk('article', 'card read', '<h3>' + esc(t.title) + '</h3>' + t.p.map(function (p) { return '<p>' + p + '</p>'; }).join('')); v.appendChild(d); });
+  if (c.merk) v.appendChild(mk('details', 'card merk', '<summary>📌 Zum Nachschlagen</summary><ul>' + c.merk.map(function (m) { return '<li>' + m + '</li>'; }).join('') + '</ul>'));
+  c.tasks.forEach(function (t, i) { if (t.sect) v.appendChild(mk('h3', 'sect', esc(t.sect))); v.appendChild(taskCard(t, i + 1)); });
+  var nx = CH[CH.indexOf(c) + 1], row = mk('div', 'row'), b = mk('button', 'btn', nx ? 'Weiter zu Teil ' + (CH.indexOf(nx) + 1) + ' →' : 'Weiter zu „Was hast du dir gemerkt?“ →'); b.onclick = function () { go(nx ? nx.id : 'probe'); }; row.appendChild(b); v.appendChild(row);
+}
+
+/* --- Spielkarte --- */
+var GAMES = {};
+function taskCard(t, nr) {
+  var card = mk('div', 'card task' + (S.done[t.id] ? ' done' : '')); card.id = 'task-' + t.id;
+  card.innerHTML = '<div class="head"><span class="nr">' + nr + '</span><div><div class="q">' + esc(t.title) + '</div><div class="q2">' + t.q + '</div></div></div><div class="stage"><button class="btn go">' + (S.done[t.id] ? '↻ Noch einmal' : (t.go || '▶ Spiel starten')) + '</button></div><div class="row"><button class="btn tip tipb">💡 Tipp</button><button class="btn sec rulesb">❓ Regeln</button></div>';
+  var stage = card.querySelector('.stage'), c = makeCtx(t, card, stage);
+  card._c = c;
+  card.querySelector('.go').onclick = function () { stage.innerHTML = ''; c.start(); };
+  card.querySelector('.tipb').onclick = function () { CUR = c; c.tip(); };
+  card.querySelector('.rulesb').onclick = function () { CUR = c; c.rules(); };
+  return card;
+}
+function makeCtx(t, card, stage) {
+  var c = { t: t, card: card, stage: stage, m: 0, helped: false, tipi: 0, started: false, finished: false, pend: null, sol: null, auto: null };
+  c.rules = function () { var b = B(); if (b) b.setAufgabe(plain(t.q), t.tips || [], t.id, ''); say('<b>So geht es:</b> ' + t.rules, 'interested', 0, c.went || !c.waitGo ? [] : [['go', 'Los geht’s']]); };
+  c.start = function () {
+    CUR = c; c.started = true; c.went = false; c.m = 0; c.helped = false; c.tipi = 0; c.finished = false;
+    var b = B(); if (b) b.setAufgabe(plain(t.q), t.tips || [], t.id, '');
+    var g = GAMES[t.game]; c.waitGo = !!g.waitGo; g.init(c, t.data || t);
+    if (c.waitGo) { c.addGo(); c.rules(); } else say('<b>So geht es:</b> ' + t.rules, 'interested', 0);
+  };
+  c.addGo = function () { var g = GAMES[t.game], b = mk('button', 'btn gostart', '▶ ' + (g.goLabel || 'Los geht’s')); b.onclick = function () { CUR = c; c.onG('go'); }; stage.insertBefore(b, stage.firstChild); };
+  c.good = function (msg, ms) { var b = B(); if (b) b.richtig(t.id); say('<b>Richtig.</b> ' + msg, 'happy', ms == null ? 7000 : ms); };
+  c.bad = function (msg) { c.m++; var btns = []; if (c.m >= 2 && t.tips && t.tips.length) btns.push(['tip', 'Tipp']); if (c.m >= 3 && c.sol) btns.push(['sol', 'Lösung zeigen']); say(msg, 'caring', 0, btns); var b = B(); if (b) b.falsch(t.id); };
+  c.win = function (msg) {
+    if (c.finished) return; c.finished = true; var first = c.m === 0 && !c.helped;
+    if (!S.done[t.id]) { S.done[t.id] = first ? 'first' : 'help'; if (first) { S.stars++; updateStars(); } }
+    card.classList.add('done'); tabs(); var b = B(); if (b) b.richtig(t.id);
+    var ch = CHI[t.ch], all = ch && chapterDone(ch);
+    say('<b>Geschafft!</b> ' + msg + (all ? '<br><br><b>Kapitel „' + esc(ch.title) + '“ ist komplett.</b> Du kannst es später noch einmal spielen.' : ''), 'proud', 0);
+  };
+  c.tip = function () {
+    var tp = t.tips || []; if (!tp.length) return say('Lies die Aufgabe noch einmal in Ruhe.', 'thinking', 0);
+    var i = Math.min(c.tipi, tp.length - 1); c.helped = true; c.tipi++;
+    say('<b>Tipp ' + (i + 1) + ' von ' + tp.length + '</b><br>' + esc(tp[i]), 'thinking', 0, i < tp.length - 1 ? [['tip', 'Noch ein Tipp']] : []);
+  };
+  c.onG = function (k) {
+    if (k === 'tip') c.tip(); else if (k === 'sol') { c.helped = true; say('<b>Lösung:</b> ' + (c.sol ? c.sol() : ''), 'interested', 0); }
+    else if (k === 'go') { if (c.went) return; c.went = true; var gs = stage.querySelector('.gostart'); if (gs) gs.remove(); var g = GAMES[t.game]; if (g.go) g.go(c); }
+    else if (k.indexOf('o:') === 0 && c.pend) { var p = c.pend, i = +k.slice(2); p.on(i); }
+  };
+  /* Frage in der Sprechblase: opts werden gemischt, a ist der Index der richtigen Antwort in opts */
+  c.ask = function (q, opts, a, why, onright, prefix) {
+    var o = shuffle(opts.map(function (x, i) { return { x: x, ok: i === a }; })), dead = {};
+    c.pend = { ci: o.map(function (z) { return z.ok; }).indexOf(true), on: function (i) {
+      if (dead[i]) return; if (o[i].ok) { c.pend = null; var bb = B(); if (bb) bb.richtig(t.id); onright('✓ ' + (why || 'Richtig.')); }
+      else { dead[i] = true; c.m++; show('Das stimmt nicht. ' + (c.m >= 2 && t.tips && t.tips.length ? '' : ''), true); var b = B(); if (b) b.falsch(t.id); }
+    } };
+    function show(pre, wrong) { say((pre ? '<b>' + pre + '</b><br><br>' : '') + q, wrong ? 'caring' : 'interested', 0, o.map(function (z, i) { return dead[i] ? null : ['o:' + i, z.x]; }).filter(Boolean).concat(wrong && c.m >= 2 && t.tips && t.tips.length ? [['tip', '💡 Tipp']] : [])); }
+    show(prefix || '', false);
+  };
+  return c;
+}
+
+/* ===== Spiele 1: Postbote, Wer bin ich, Fehlerdetektiv, Textmarker, Silbenpuzzle ===== */
+GAMES.postbote = { init: function (c, d) {
+  var items = shuffle(d.items), i = 0, st = c.stage, n = d.houses.length;
+  st.innerHTML = '<div class="town">' + d.houses.map(function (h, k) { return '<button class="bld" data-b="' + k + '"><span class="e">' + h[0] + '</span><b>' + esc(h[1]) + '</b></button>'; }).join('') + '</div><div class="letter" id="ltr-' + c.t.id + '"></div><div class="dots"></div>';
+  var L = st.querySelector('.letter'), dots = st.querySelector('.dots');
+  function draw() { dots.innerHTML = items.map(function (_, k) { return '<i class="' + (k < i ? 'on' : '') + '"></i>'; }).join(''); if (i < items.length) { L.className = 'letter'; L.innerHTML = (d.icon || '✉️') + ' ' + esc(items[i][0]); } }
+  draw(); c.sol = function () { return items.map(function (x) { return esc(x[0]) + ' → ' + esc(d.houses[x[1]][1]); }).join('<br>'); };
+  st.querySelectorAll('.bld').forEach(function (b) { b.onclick = function () {
+    if (i >= items.length || c.finished) return; var k = +b.dataset.b, it = items[i];
+    if (k === it[1]) { L.classList.add('fly'); i++; if (i >= items.length) { setTimeout(function () { L.innerHTML = d.endText || '📬 Alle Briefe sind angekommen.'; L.className = 'letter'; }, 350); draw(); c.win(esc(it[2]) + ' ' + (d.allDone || 'Alle Briefe haben die richtige Adresse erreicht.')); } else { var pre = esc(it[2]); setTimeout(draw, 350); c.good(pre, 4500); } }
+    else c.bad(esc(d.wrong(it, d.houses[k][1])));
+  }; });
+  c.auto = function () { return new Promise(function (res) { (function step() { if (i >= items.length) return res(); st.querySelector('.bld[data-b="' + items[i][1] + '"]').click(); setTimeout(step, 420); })(); }); };
+} };
+
+GAMES.wer = { waitGo: true, init: function (c, d) {
+  var r = 0, k = 0, pts = 0, st = c.stage, solved = {};
+  st.innerHTML = '<div class="werhead">Runde <b id="wr-' + c.t.id + '">1</b> von ' + d.rounds.length + ' · Punkte: <b id="wp-' + c.t.id + '">0</b></div><div class="chips"></div><div class="row"><button class="btn sec hint">Nächster Hinweis</button></div>';
+  var chips = st.querySelector('.chips'), RW = st.querySelector('#wr-' + c.t.id), PW = st.querySelector('#wp-' + c.t.id);
+  d.terms.forEach(function (w) { var b = mk('button', 'chip', esc(w)); b.dataset.w = w; chips.appendChild(b); });
+  function clue() { var R = d.rounds[r]; if (k >= R.clues.length) { say('Mehr Hinweise habe ich nicht. Rate mit dem, was du hast.', 'interested', 0); return; } say('<b>Hinweis ' + (k + 1) + ' von ' + R.clues.length + '</b><br>' + esc(R.clues[k]), 'interested', 0); k++; }
+  function nextRound() { r++; k = 0; if (r >= d.rounds.length) return; RW.textContent = r + 1; setTimeout(clue, 0); }
+  st.querySelector('.hint').onclick = clue;
+  chips.addEventListener('click', function (e) {
+    var b = e.target.closest('.chip'); if (!b || b.disabled || c.finished) return; if (k === 0) return say('Hol dir zuerst einen Hinweis, dann rätst du.', 'interested', 0);
+    var R = d.rounds[r];
+    if (b.dataset.w === R.a) { var p = Math.max(1, 4 - k); pts += p; PW.textContent = pts; b.disabled = true; b.classList.add('good'); var m = '„' + R.a + '“ ist richtig. ' + R.why;
+      if (r + 1 >= d.rounds.length) c.win(m + ' Du hast ' + pts + ' Punkte gesammelt.'); else { say('<b>Richtig.</b> ' + esc(m.replace(/^„.*?“ ist richtig\. /, '')) + '<br><br>Nächste Runde: Ich habe einen neuen Begriff.', 'happy', 0); var bb = B(); if (bb) bb.richtig(c.t.id); nextRound(); } }
+    else { b.classList.add('bad'); setTimeout(function () { b.classList.remove('bad'); }, 600); c.bad('Nein, „' + esc(b.dataset.w) + '“ bin ich nicht. Hol dir noch einen Hinweis oder überlege weiter.'); }
+  });
+  c.sol = function () { return esc(d.rounds[r].a); }; c.first = function () { if (k === 0 && r === 0) clue(); };
+  c.auto = function () { return new Promise(function (res) { (function step() { if (c.finished) return res(); if (r < d.rounds.length) { if (k === 0) clue(); chips.querySelector('.chip[data-w="' + d.rounds[r].a + '"]').click(); } setTimeout(step, 400); })(); }); };
+}, go: function (c) { c.first(); } };
+
+GAMES.find = { init: function (c, d) {
+  var rows = d.items.map(function (it) { return { x: it[0], bad: it[1], why: it[2], on: false }; }), box = mk('div', 'opts');
+  rows.forEach(function (r) { var b = mk('button', 'opt', esc(r.x)); r.el = b; b.onclick = function () { if (c.finished) return; r.on = !r.on; b.classList.toggle('sel', r.on); }; box.appendChild(b); });
+  c.stage.appendChild(box); var go = mk('button', 'btn', 'Meine Fehler melden'); c.stage.appendChild(mk('div', 'row')).appendChild(go);
+  var w = rows.filter(function (r) { return r.bad; }).length;
+  c.sol = function () { return rows.filter(function (r) { return r.bad; }).map(function (r) { return '„' + esc(r.x) + '“ → ' + esc(r.why); }).join('<br>'); };
+  go.onclick = function () {
+    if (c.finished) return; var n = rows.filter(function (r) { return r.on; }).length;
+    if (!n) return say('Du hast noch keinen Satz markiert. Lies genauer.', 'interested', 0);
+    var wrong = rows.filter(function (r) { return r.on !== r.bad; });
+    if (!wrong.length) { rows.forEach(function (r) { if (r.bad) r.el.classList.add('good'); r.el.classList.remove('sel'); }); c.win(rows.filter(function (r) { return r.bad; }).map(function (r) { return esc(r.why); }).join(' ')); }
+    else c.bad('Das passt noch nicht. Im Text stecken ' + w + ' Fehler, du hast ' + n + ' Sätze markiert. Prüfe jeden markierten Satz noch einmal und frage dich, ob er wirklich falsch ist.');
+  };
+  c.auto = function () { rows.forEach(function (r) { if (r.bad) r.el.click(); }); go.click(); return Promise.resolve(); };
+} };
+
+GAMES.marker = { init: function (c, d) {
+  var pen = 0, st = c.stage, sents = shuffle(d.items.map(function (x, i) { return { x: x[0], a: x[1], v: null, why: x[2] }; }));
+  st.innerHTML = '<div class="pens">' + d.cats.map(function (n, i) { return '<button class="pen p' + i + (i === 0 ? ' sel' : '') + '" data-p="' + i + '">' + esc(n) + '</button>'; }).join('') + '</div><div class="paper2"><b>' + esc(d.title) + '</b><p></p></div><div class="row"><button class="btn done-btn">Markierung abgeben</button></div>';
+  st.querySelectorAll('.pen').forEach(function (b) { b.onclick = function () { pen = +b.dataset.p; st.querySelectorAll('.pen').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+  var P2 = st.querySelector('.paper2 p');
+  sents.forEach(function (s) { var sp = mk('span', 'mk', esc(s.x) + ' '); s.el = sp; sp.onclick = function () { if (c.finished) return; s.v = s.v === pen ? null : pen; sp.className = 'mk' + (s.v == null ? '' : ' c' + s.v); }; P2.appendChild(sp); });
+  c.sol = function () { return sents.map(function (s) { return esc(s.x) + ' → ' + esc(d.cats[s.a]); }).join('<br>'); };
+  st.querySelector('.done-btn').onclick = function () {
+    if (c.finished) return; var un = sents.filter(function (s) { return s.v == null; }).length; if (un) return say('Es sind noch ' + un + ' Sätze nicht markiert. Jeder Satz gehört zu einer Dimension.', 'interested', 0);
+    var bad = sents.filter(function (s) { return s.v !== s.a; });
+    if (!bad.length) c.win('Alle Sätze sind der richtigen Dimension zugeordnet. So liest du einen politischen Text in der SKK.');
+    else { sents.forEach(function (s) { s.el.classList.toggle('wrongmk', s.v !== s.a); }); c.bad(bad.length + (bad.length === 1 ? ' Satz ist' : ' Sätze sind') + ' falsch markiert (rot unterstrichen). Frage dich bei jedem: Geht es um die Sache selbst (Inhalt), um Zuständigkeit und Regeln (Form) oder um Gruppen und ihre Interessen (Prozess)?'); }
+  };
+  c.auto = function () { sents.forEach(function (s) { st.querySelector('.pen[data-p="' + s.a + '"]').click(); s.el.click(); }); st.querySelector('.done-btn').click(); return Promise.resolve(); };
+} };
+
+GAMES.build = { init: function (c, d) {
+  var rows = d.words.map(function (w) { var el = mk('div', 'pair'), strip = mk('div', 'syls'), pool = mk('div', 'syls'); var r = { a: w[1].join(''), syl: shuffle(w[1].map(function (x, i) { return { x: x, i: i }; })), picked: [], el: el, strip: strip, pool: pool }; el.appendChild(mk('div', null, '<b>' + esc(w[0]) + '</b>')); strip.className = 'syls strip'; el.appendChild(strip); el.appendChild(pool); c.stage.appendChild(el); return r; });
+  function draw(r) { r.pool.innerHTML = ''; r.strip.innerHTML = ''; r.syl.filter(function (s) { return r.picked.indexOf(s) < 0; }).forEach(function (s) { var b = mk('button', 'syl', esc(s.x)); b.onclick = function () { if (c.finished) return; r.picked.push(s); r.el.className = 'pair'; draw(r); }; r.pool.appendChild(b); }); r.picked.forEach(function (s) { var b = mk('button', 'syl on', esc(s.x)); b.onclick = function () { if (c.finished) return; r.picked.splice(r.picked.indexOf(s), 1); r.el.className = 'pair'; draw(r); }; r.strip.appendChild(b); }); }
+  rows.forEach(draw); var go = mk('button', 'btn', 'Begriffe prüfen lassen'); c.stage.appendChild(mk('div', 'row')).appendChild(go);
+  c.sol = function () { return rows.map(function (r) { return '<b>' + esc(r.a) + '</b>'; }).join(', '); };
+  go.onclick = function () {
+    if (c.finished) return; if (rows.some(function (r) { return r.picked.length < r.syl.length; })) return say('Setze bei jedem Begriff erst alle Silben ein.', 'interested', 0);
+    var bad = 0; rows.forEach(function (r) { var ok = r.picked.map(function (s) { return s.x; }).join('') === r.a; r.el.className = 'pair ' + (ok ? 'good' : 'bad'); if (!ok) bad++; });
+    if (!bad) c.win('Alle Fachbegriffe stimmen: ' + rows.map(function (r) { return esc(r.a); }).join(', ') + '.'); else c.bad((bad === 1 ? 'Ein Begriff stimmt' : bad + ' Begriffe stimmen') + ' noch nicht (rot). Lies die Erklärung noch einmal und setze die Silben neu.');
+  };
+  c.auto = function () { rows.forEach(function (r) { r.syl.slice().sort(function (a, b) { return a.i - b.i; }).forEach(function (s) { r.pool.querySelectorAll('.syl').forEach(function (b) { if (b.textContent === s.x && !b._u) { } }); }); r.picked = r.syl.slice().sort(function (a, b) { return a.i - b.i; }); draw(r); }); go.click(); return Promise.resolve(); };
+} };
+
+/* ===== Spiele 2: Waage, Wortwolke, Frage-Runde in der Sprechblase, Smartphone-Röntgen, Fließband, Just-in-time-Simulator ===== */
+GAMES.waage = { init: function (c, d) {
+  var st = c.stage, cards = shuffle(d.items), sel = null, cnt = [0, 0];
+  st.innerHTML = '<div class="scale"><div class="beam" id="bm-' + c.t.id + '"></div><div class="pans"><button class="pan" data-s="0"><b>' + esc(d.sides[0]) + '</b><span class="stack"></span></button><button class="pan" data-s="1"><b>' + esc(d.sides[1]) + '</b><span class="stack"></span></button></div></div><div class="hand"></div>';
+  var beam = st.querySelector('.beam'), hand = st.querySelector('.hand'), pans = st.querySelectorAll('.pan');
+  function tilt() { var a = Math.max(-14, Math.min(14, (cnt[1] - cnt[0]) * 4)); beam.style.transform = 'rotate(' + a + 'deg)'; }
+  cards.forEach(function (it) { var b = mk('button', 'wcard', esc(it[0])); it.el = b; b.onclick = function () { if (c.finished || it.placed) return; cards.forEach(function (x) { if (x.el) x.el.classList.remove('sel'); }); b.classList.add('sel'); sel = it; }; hand.appendChild(b); });
+  pans.forEach(function (p) { p.onclick = function () {
+    if (!sel || c.finished) return say('Tippe zuerst eine Karte an, dann die Waagschale.', 'interested', 0); var s = +p.dataset.s, it = sel;
+    if (s === it[1]) { it.placed = true; it.el.remove(); cnt[s]++; p.querySelector('.stack').appendChild(mk('i', 'w', '●')); tilt(); sel = null; var left = cards.filter(function (x) { return !x.placed; }).length; if (!left) c.win(esc(it[2]) + ' Am Ende halten sich Chancen und Risiken die Waage. Beides gehört zur Globalisierung.'); else c.good(esc(it[2]), 4500); }
+    else { it.el.classList.remove('sel'); sel = null; c.bad(esc(it[2]) + ' Das gehört auf die andere Seite.'); }
+  }; });
+  c.sol = function () { return cards.filter(function (x) { return !x.placed; }).map(function (x) { return esc(x[0]) + ' → ' + esc(d.sides[x[1]]); }).join('<br>'); };
+  c.auto = function () { return new Promise(function (res) { (function step() { var it = cards.filter(function (x) { return !x.placed; })[0]; if (!it) return res(); it.el.click(); pans[it[1]].click(); setTimeout(step, 100); })(); }); };
+} };
+
+GAMES.wort = { init: function (c, d) {
+  var st = c.stage, sel = null, gaps = [], html = '', bank = shuffle(d.parts.filter(function (p) { return typeof p !== 'string'; }).map(function (p) { return p.a; }).concat(d.bank || []));
+  var wrap = mk('div', 'cl'), cloud = mk('div', 'chips');
+  d.parts.forEach(function (p) { if (typeof p === 'string') return wrap.appendChild(document.createTextNode(p)); var g = mk('button', 'gap', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'); g.onclick = function () { if (c.finished) return; if (sel) { var o = gaps.filter(function (x) { return x.w === sel.dataset.w; })[0]; if (o) { o.w = null; o.el.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; o.el.className = 'gap'; if (o.chip) o.chip.classList.remove('used'); } var gg = gaps.filter(function (x) { return x.el === g; })[0]; if (gg.chip) gg.chip.classList.remove('used'); gg.w = sel.dataset.w; gg.chip = sel; g.textContent = gg.w; g.className = 'gap on'; sel.classList.add('used'); sel.classList.remove('sel'); sel = null; } else { var gx = gaps.filter(function (x) { return x.el === g; })[0]; if (gx.w) { gx.chip.classList.remove('used'); gx.w = null; g.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; g.className = 'gap'; } } }; gaps.push({ el: g, a: p.a, w: null, chip: null }); wrap.appendChild(g); });
+  bank.forEach(function (w) { var b = mk('button', 'chip', esc(w)); b.dataset.w = w; b.onclick = function () { if (c.finished || b.classList.contains('used')) return; if (sel) sel.classList.remove('sel'); sel = b; b.classList.add('sel'); }; cloud.appendChild(b); });
+  st.appendChild(cloud); st.appendChild(wrap); var go = mk('button', 'btn', 'Text prüfen lassen'); st.appendChild(mk('div', 'row')).appendChild(go);
+  c.sol = function () { return d.parts.map(function (p) { return typeof p === 'string' ? esc(p) : '<b>' + esc(p.a) + '</b>'; }).join(''); };
+  go.onclick = function () { if (c.finished) return; if (gaps.some(function (g) { return !g.w; })) return say('Es sind noch Lücken leer. Tippe ein Wort an und danach eine Lücke.', 'interested', 0); var bad = 0; gaps.forEach(function (g) { var ok = g.w === g.a; g.el.className = 'gap on ' + (ok ? 'good' : 'bad'); if (!ok) bad++; }); if (!bad) c.win(d.win); else c.bad((bad === 1 ? 'Eine Lücke ist' : bad + ' Lücken sind') + ' noch falsch (rot). Lies den Satz um die Lücke herum und überlege, welche Dimension gemeint ist. Tippe ein falsches Wort in der Lücke an, um es zu entfernen.'); };
+  c.auto = function () { gaps.forEach(function (g) { cloud.querySelectorAll('.chip').forEach(function (ch) { if (ch.dataset.w === g.a && !ch.classList.contains('used')) { ch.click(); g.el.click(); } }); }); go.click(); return Promise.resolve(); };
+} };
+
+/* Frage-Runde: Herr Neumann stellt die Fragen, die Antworten stehen als Knöpfe in seiner Sprechblase */
+GAMES.quiz = { waitGo: true, init: function (c, d) {
+  c.stage.innerHTML = '<div class="dots"></div><div class="row"><button class="btn sec again">Aktuelle Frage wiederholen</button></div>'; c.qi = 0; c.d = d; c.dots = c.stage.querySelector('.dots');
+  c.stage.querySelector('.again').onclick = function () { CUR = c; if (c.started && c.curAsk) c.curAsk(); };
+  c.sol = function () { var q = d.qs[c.qi]; return q ? esc(q.opts[q.a]) : ''; };
+  c.draw = function () { c.dots.innerHTML = d.qs.map(function (_, k) { return '<i class="' + (k < c.qi ? 'on' : '') + '"></i>'; }).join(''); };
+  c.draw();
+}, go: function (c) {
+  var d = c.d;
+  function ask(prefix) { var q = d.qs[c.qi]; c.curAsk = function () { c.ask('<b>Frage ' + (c.qi + 1) + ' von ' + d.qs.length + '</b><br>' + q.q, q.opts, q.a, q.why, next); }; c.ask('<b>Frage ' + (c.qi + 1) + ' von ' + d.qs.length + '</b><br>' + q.q, q.opts, q.a, q.why, next, prefix); }
+  function next(pre) { c.qi++; c.draw(); if (c.qi >= d.qs.length) return c.win(pre.replace('✓ ', '') + ' ' + d.win); ask(pre); }
+  ask('');
+  c.auto = function () { return new Promise(function (res) { (function step() { if (c.finished) return res(); if (c.pend) document.querySelector('[data-g="o:' + c.pend.ci + '"]') ? document.querySelector('[data-g="o:' + c.pend.ci + '"]').click() : c.onG('o:' + c.pend.ci); setTimeout(step, 150); })(); }); };
+} };
+
+GAMES.roentgen = { waitGo: false, init: function (c, d) {
+  var st = c.stage, left = d.parts.length, cur = null;
+  st.innerHTML = '<div class="phonewrap"><svg viewBox="0 0 300 340" class="phone"><rect x="70" y="8" width="160" height="324" rx="26" fill="#2b2f3a" stroke="#111" stroke-width="3"/>' + d.parts.map(function (p, i) { return '<g class="part" data-i="' + i + '" tabindex="0" role="button" aria-label="Bauteil ' + (i + 1) + '"><rect x="' + p.r[0] + '" y="' + p.r[1] + '" width="' + p.r[2] + '" height="' + p.r[3] + '" rx="8" fill="' + p.col + '" stroke="#fff" stroke-width="2.5"/><text x="' + (p.r[0] + p.r[2] / 2) + '" y="' + (p.r[1] + p.r[3] / 2 + 6) + '" text-anchor="middle" font-size="17" fill="#111">' + (i + 1) + '</text></g>'; }).join('') + '</svg><div class="dots"></div></div>';
+  var dots = st.querySelector('.dots'), solved = {};
+  function draw() { dots.innerHTML = d.parts.map(function (_, k) { return '<i class="' + (solved[k] ? 'on' : '') + '"></i>'; }).join(''); }
+  draw(); c.sol = function () { return d.parts.filter(function (p, i) { return !solved[i]; }).map(function (p) { return esc(p.name) + ': ' + esc(p.opts[p.a]); }).join('<br>'); };
+  function open(i) { if (solved[i] || c.finished) return; var p = d.parts[i]; cur = i; c.ask('<b>Bauteil ' + (i + 1) + '</b><br>' + p.q, p.opts, p.a, p.why, function (pre) { solved[i] = true; left--; st.querySelector('.part[data-i="' + i + '"] rect').setAttribute('fill', '#7fd39a'); draw(); if (!left) c.win(pre.replace('✓ ', '') + ' Du kennst jetzt die wichtigsten Bauteile und Rohstoffe.'); else say('<b>' + esc(pre) + '</b><br><br>Tippe das nächste Bauteil an.', 'happy', 0); }); }
+  st.querySelectorAll('.part').forEach(function (g) { g.onclick = function () { open(+g.dataset.i); }; g.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') open(+g.dataset.i); }; });
+  c.auto = function () { return new Promise(function (res) { (function step() { if (c.finished) return res(); if (c.pend) c.onG('o:' + c.pend.ci); else { var i = d.parts.findIndex(function (p, k) { return !solved[k]; }); if (i >= 0) open(i); } setTimeout(step, 150); })(); }); };
+} };
+
+GAMES.band = { init: function (c, d) {
+  var st = c.stage, order = d.items, nx = 0, cards = shuffle(order.map(function (x, i) { return { x: x, i: i }; }));
+  st.innerHTML = '<div class="belt"><div class="track">' + cards.concat(cards).map(function (z) { return '<button class="bcard" data-i="' + z.i + '">' + esc(z.x) + '</button>'; }).join('') + '</div></div><div class="done-strip"></div>';
+  var strip = st.querySelector('.done-strip'), track = st.querySelector('.track');
+  c.sol = function () { return order.map(function (x, i) { return (i + 1) + '. ' + esc(x); }).join('<br>'); };
+  track.addEventListener('click', function (e) { var b = e.target.closest('.bcard'); if (!b || c.finished) return; var i = +b.dataset.i;
+    if (i === nx) { track.querySelectorAll('.bcard[data-i="' + i + '"]').forEach(function (x) { x.classList.add('gone'); }); strip.appendChild(mk('span', 'sdone', (nx + 1) + '. ' + esc(order[nx]))); nx++; if (nx >= order.length) c.win(d.win); else c.good(esc(d.why[nx - 1]) + ' Welcher Schritt folgt jetzt?', 4500); }
+    else c.bad('Der Schritt „' + esc(order[i]) + '“ kommt noch nicht dran. ' + (i > nx ? 'Davor muss noch etwas passieren.' : '')); });
+  c.auto = function () { return new Promise(function (res) { (function step() { if (nx >= order.length) return res(); track.querySelector('.bcard[data-i="' + nx + '"]').click(); setTimeout(step, 100); })(); }); };
+} };
+
+GAMES.jit = { waitGo: true, init: function (c, d) {
+  var st = c.stage, ran = {}, run = false; c.d = d;
+  st.innerHTML = '<div class="jit"><div class="strat" data-s="0"><b>🏭 Kleines Lager</b><span>„Just-in-time“: Teile kommen genau dann an, wenn sie gebraucht werden.</span><button class="btn runb" data-s="0">Sechs Wochen simulieren</button><div class="weeks" id="wk0-' + c.t.id + '"></div><div class="kost" id="ko0-' + c.t.id + '">Lagerkosten: –</div></div><div class="strat" data-s="1"><b>🏬 Großes Lager</b><span>Die Fabrik hat Vorräte für mehrere Wochen.</span><button class="btn runb" data-s="1">Sechs Wochen simulieren</button><div class="weeks" id="wk1-' + c.t.id + '"></div><div class="kost" id="ko1-' + c.t.id + '">Lagerkosten: –</div></div></div>';
+  c.auto = function () { c.fast = true; return new Promise(function (res) { var rb = st.querySelectorAll('.runb'); rb[0].click(); var iv = setInterval(function () { if (!run && ran[0] && !ran[1]) rb[1].click(); if (c.pend) c.onG('o:' + c.pend.ci); if (c.finished) { clearInterval(iv); res(); } }, 80); }); };
+  c.sol = function () { return 'Starte beide Simulationen. Dann siehst du: Das kleine Lager ist günstig, aber bei einem Hafenstreik steht die Produktion still. Das große Lager ist teurer, aber sicherer.'; };
+  st.querySelectorAll('.runb').forEach(function (b) { b.onclick = function () {
+    if (run || c.finished) return; var s = +b.dataset.s; if (ran[s]) return; run = true; var W = st.querySelector('#wk' + s + '-' + c.t.id), K = st.querySelector('#ko' + s + '-' + c.t.id), w = 0, cost = 0; W.innerHTML = '';
+    var t = setInterval(function () { w++; var strike = w === 3 || w === 4, stop = strike && s === 0; cost += s === 0 ? 1 : 4; W.appendChild(mk('span', 'wk ' + (stop ? 'stop' : 'ok'), (stop ? '⛔' : '✅') + '<small>Woche ' + w + (strike ? '<br>Hafenstreik' : '') + '</small>')); K.textContent = 'Lagerkosten: ' + cost + ' Euro-Einheiten'; if (w >= 6) { clearInterval(t); ran[s] = true; run = false; if (ran[0] && ran[1]) { setTimeout(question, 600); } else say(s === 0 ? 'Beim kleinen Lager sind in Woche 3 und 4 die Teile ausgeblieben. Die Produktion stand still. Starte jetzt das große Lager.' : 'Das große Lager hat den Streik überbrückt, aber die Lagerkosten sind viel höher. Starte jetzt das kleine Lager.', 'interested', 0); } }, c.fast ? 10 : 450);
+  }; });
+  function question() { c.ask('Jetzt bist du dran, Chef: <b>Warum nutzen viele Firmen trotzdem das Just-in-time-Prinzip?</b>', d.opts, 0, d.why, function (pre) { c.win(pre.replace('✓ ', '') + ' Das Prinzip spart Geld und macht die Lieferkette zugleich anfällig. Das ist die Kernaussage für deine SKK.'); }); }
+}, go: function (c) { say('Starte die erste Simulation mit dem Knopf im Spiel.', 'interested', 0); },
+  autoSetup: 1 };
+
+/* Duell: Aussage steht im Modul, Antwort per Knopf, Rückmeldung nur in der Sprechblase */
+GAMES.duell = { init: function (c, d) {
+  var st = c.stage, qi = 0, lock = false, ans = function (q) { return q.opts[q.a]; };
+  (function () { var qs, n = 0; do { qs = shuffle(d.qs).slice(0, d.n || d.qs.length); n++; var kinds = {}; qs.forEach(function (q) { kinds[ans(q)] = 1; }); if (Object.keys(kinds).length >= 2) break; } while (n < 100); d = { qs: qs, fixed: d.fixed, defs: d.defs, win: d.win, label: d.label, wrong: d.wrong }; })();
+  st.innerHTML = '<div class="dots"></div><div class="scene duq"></div><div class="two duo"></div>';
+  var dots = st.querySelector('.dots'), qb = st.querySelector('.duq'), ob = st.querySelector('.duo');
+  function draw() {
+    dots.innerHTML = d.qs.map(function (_, k) { return '<i class="' + (k < qi ? 'on' : '') + '"></i>'; }).join('');
+    var q = d.qs[qi]; qb.innerHTML = '<small>' + (d.label || 'Aussage') + ' ' + (qi + 1) + ' von ' + d.qs.length + '</small><br>' + esc(q.q); ob.innerHTML = '';
+    var o = d.fixed ? q.opts.map(function (x, i) { return { x: x, ok: i === q.a }; }) : shuffle(q.opts.map(function (x, i) { return { x: x, ok: i === q.a }; }));
+    if (d.fixed) o = shuffle(d.fixed.map(function (x) { return { x: x, ok: x === q.opts[q.a] }; }));
+    o.forEach(function (z) { var b = mk('button', 'opt', esc(z.x)); b.onclick = function () {
+      if (c.finished || lock) return;
+      if (z.ok) { lock = true; b.classList.add('good'); var why = q.why; qi++; setTimeout(function () { lock = false; if (qi >= d.qs.length) { dots.innerHTML = d.qs.map(function () { return '<i class="on"></i>'; }).join(''); c.win(esc(why) + ' ' + d.win); } else { draw(); c.good(esc(why), 0); } }, 350); }
+      else { b.classList.add('bad'); b.disabled = true; c.bad(d.wrong ? esc(d.wrong) : 'Das passt nicht. Du hast „' + esc(z.x) + '“ gewählt. ' + (d.defs && d.defs[z.x] ? esc(d.defs[z.x]) + ' ' : '') + 'Lies die Aussage noch einmal und überlege neu.'); } };
+      ob.appendChild(b); });
+  }
+  draw();
+  c.sol = function () { var q = d.qs[qi]; return q ? esc(q.opts[q.a]) : ''; };
+  c.auto = function () { return new Promise(function (res) { (function s() { if (c.finished) return res(); var q = d.qs[qi]; if (!q) return setTimeout(s, 150); var b = [].slice.call(ob.querySelectorAll('.opt')).filter(function (x) { return x.textContent === q.opts[q.a]; })[0]; if (b && !lock) b.click(); setTimeout(s, 150); })(); }); };
+} };
+
+/* ===== Spiele 3: Treibhaus-Simulator, Memory, Nachhaltigkeits-Lampen, Zeitstrahl, Parcours, Steckbrief, Deutungs-Pins, Schreibwerkstatt ===== */
+GAMES.klima = { waitGo: true, init: function (c, d) {
+  var st = c.stage, v = 60, step = 0;
+  st.innerHTML = '<div class="sim"><svg viewBox="0 0 300 220" class="simsvg" role="img" aria-label="Erde mit Treibhausgas-Schicht"><circle cx="40" cy="36" r="22" fill="#ffd34d" stroke="#c99a00" stroke-width="3"/><path d="M62 44 L110 74 M60 56 L104 100 M54 64 L92 122" stroke="#f0b400" stroke-width="4" stroke-linecap="round"/><rect x="0" y="130" width="300" height="90" fill="#5b8e5b"/><ellipse cx="150" cy="185" rx="120" ry="22" fill="#3f6f93" opacity=".55"/><rect id="sl-' + c.t.id + '" x="0" y="96" width="300" height="26" rx="13" fill="#8a8f98"/><g id="ar-' + c.t.id + '" stroke="#d6453d" stroke-width="3.5" fill="none" stroke-linecap="round"></g></svg><div class="temp"><span id="tm-' + c.t.id + '">15</span> °C</div></div><div class="sl"><label for="rg-' + c.t.id + '">Treibhausgase in der Luft</label><input type="range" id="rg-' + c.t.id + '" min="0" max="200" step="5" value="60"><div class="scalebar"><span>keine</span><span>natürlich</span><span>viel mehr</span></div></div><div class="row"><button class="btn chk2">Einstellung abgeben</button></div>';
+  var rg = st.querySelector('input'), sl = st.querySelector('#sl-' + c.t.id), ar = st.querySelector('#ar-' + c.t.id), tm = st.querySelector('#tm-' + c.t.id), btn = st.querySelector('.chk2');
+  function temp() { return v <= 100 ? -18 + 0.33 * v : 15 + (v - 100) * 0.04; }
+  function draw() { v = +rg.value; var t = temp(); tm.textContent = (Math.round(t * 10) / 10).toString().replace('.', ','); tm.parentNode.style.color = t < 0 ? '#2f6fb5' : t > 16 ? '#c0392b' : '#2e8b57'; sl.setAttribute('opacity', (0.15 + 0.85 * Math.min(v, 200) / 200).toFixed(2)); var n = 6, k = Math.round(v / 200 * n), h = ''; for (var i = 0; i < n; i++) { var x = 130 + i * 28; if (i < k) h += '<path d="M' + x + ' 150 L' + x + ' 124 M' + x + ' 94 q-12 -6 -20 4" marker-end="" /><path d="M' + (x - 20) + ' 98 L' + (x - 20) + ' 128" stroke="#e8743c"/>'; else h += '<path d="M' + x + ' 150 L' + x + ' 20" stroke-dasharray="1 9"/>'; } ar.innerHTML = h; }
+  rg.oninput = draw; draw();
+  var Q = d.steps; c.sol = function () { return Q[step].sol; };
+  function intro() { var q = Q[step]; say('<b>Aufgabe ' + (step + 1) + ' von ' + Q.length + '</b><br>' + q.task, 'interested', 0); }
+  c.intro = intro;
+  btn.onclick = function () { if (c.finished) return; var q = Q[step]; if (q.ok(v)) { var m = q.why; step++; if (step >= Q.length) c.win(m); else { say('<b>Richtig.</b> ' + esc(m) + '<br><br><b>Aufgabe ' + (step + 1) + ' von ' + Q.length + '</b><br>' + Q[step].task, 'happy', 0); var b = B(); if (b) b.richtig(c.t.id); } } else c.bad(q.no); };
+  c.rulesExtra = 1; c.auto = function () { return new Promise(function (res) { (function s() { if (c.finished) return res(); rg.value = Q[step].set; draw(); btn.click(); setTimeout(s, 120); })(); }); };
+}, go: function (c) { c.intro(); } };
+
+GAMES.memory = { init: function (c, d) {
+  var st = c.stage, cards = shuffle(d.pairs.reduce(function (a, p, i) { return a.concat([{ k: i, x: p[0], kind: 'a' }, { k: i, x: p[1], kind: 'b' }]); }, [])), open = [], found = 0, mis = 0, lock = false;
+  var grid = mk('div', 'mem'); st.appendChild(grid);
+  cards.forEach(function (z) { var b = mk('button', 'mcard', '<span class="back">?</span><span class="front">' + esc(z.x) + '</span>'); z.el = b; b.onclick = function () { if (lock || c.finished || b.classList.contains('up') || b.classList.contains('ok')) return; b.classList.add('up'); open.push(z); if (open.length === 2) { lock = true; var a = open[0], bb = open[1]; if (a.k === bb.k && a.kind !== bb.kind) { setTimeout(function () { a.el.classList.add('ok'); bb.el.classList.add('ok'); open = []; lock = false; found++; var pr = d.pairs[a.k]; if (found >= d.pairs.length) c.win(esc(pr[2]) + ' Alle Paare sind gefunden.'); else c.good(esc(pr[2]), 5000); }, 450); } else { mis++; setTimeout(function () { a.el.classList.remove('up'); bb.el.classList.remove('up'); open = []; lock = false; if (mis === 6 && !c.finished) { c.helped = true; say('Das ist ein bisschen knifflig. Merke dir, wo die Folgen liegen. Schau dir die Merkbox zum Klimawandel noch einmal an: Welche Folge gehört zu welcher Region?', 'caring', 0); } }, 900); } } }; grid.appendChild(b); });
+  c.sol = function () { return d.pairs.map(function (p) { return esc(p[0]) + ' ↔ ' + esc(p[1]); }).join('<br>'); };
+  var win0 = c.win; c.win = function (m) { if (mis > 5) c.m = 1; win0(m); };
+  c.auto = function () { return new Promise(function (res) { (function s() { if (c.finished) return res(); if (!lock) { var z = cards.filter(function (x) { return !x.el.classList.contains('ok') && !x.el.classList.contains('up'); }); if (z.length) { var a = z[0], bb = z.filter(function (x) { return x.k === a.k && x !== a; })[0]; a.el.click(); bb.el.click(); } } setTimeout(s, 200); })(); }); };
+} };
+
+GAMES.lampen = { init: function (c, d) {
+  var st = c.stage, sc = shuffle(d.scenes), i = 0;
+  st.innerHTML = '<div class="scene"></div><div class="lamps">' + d.sides.map(function (s, k) { return '<button class="lamp l' + k + '" data-k="' + k + '"><span class="bulb">💡</span><b>' + esc(s) + '</b></button>'; }).join('') + '</div><div class="dots"></div>';
+  var S1 = st.querySelector('.scene'), dots = st.querySelector('.dots');
+  function draw() { dots.innerHTML = sc.map(function (_, k) { return '<i class="' + (k < i ? 'on' : '') + '"></i>'; }).join(''); if (i < sc.length) S1.innerHTML = esc(sc[i][0]); }
+  draw(); c.sol = function () { return esc(sc[i][0]) + ' → ' + esc(d.sides[sc[i][1]]); };
+  st.querySelectorAll('.lamp').forEach(function (b) { b.onclick = function () { if (c.finished || i >= sc.length) return; var k = +b.dataset.k, it = sc[i]; if (k === it[1]) { b.classList.add('lit'); setTimeout(function () { b.classList.remove('lit'); }, 700); i++; if (i >= sc.length) { draw(); c.win(esc(it[2]) + ' Nachhaltig ist nur, wenn alle drei Seiten zusammenpassen.'); } else { draw(); c.good(esc(it[2]), 4500); } } else c.bad('Die Seite „' + esc(d.sides[k]) + '“ ist hier nicht das Problem. Frage dich: Was geht hier auf Kosten der Zukunft oder anderer?'); }; });
+  c.auto = function () { return new Promise(function (res) { (function s() { if (i >= sc.length) return res(); st.querySelector('.lamp[data-k="' + sc[i][1] + '"]').click(); setTimeout(s, 100); })(); }); };
+} };
+
+GAMES.zeit = { init: function (c, d) {
+  var st = c.stage, sel = null, evs = shuffle(d.events), placed = 0;
+  st.innerHTML = '<div class="tl"><div class="line"></div>' + d.events.map(function (e, k) { return '<button class="slot" data-k="' + k + '"><b>' + esc(e[0]) + '</b><span class="in"></span></button>'; }).join('') + '</div><div class="hand"></div>';
+  var hand = st.querySelector('.hand');
+  evs.forEach(function (e) { var b = mk('button', 'wcard', esc(e[1])); e.el = b; b.onclick = function () { if (c.finished || e.placed) return; evs.forEach(function (x) { x.el.classList.remove('sel'); }); b.classList.add('sel'); sel = e; }; hand.appendChild(b); });
+  st.querySelectorAll('.slot').forEach(function (sl) { sl.onclick = function () { if (!sel || c.finished || sl.classList.contains('ok')) return say('Tippe zuerst ein Ereignis an, dann das Jahr auf dem Zeitstrahl.', 'interested', 0); var k = +sl.dataset.k; if (d.events[k] === sel) { sel.placed = true; sl.classList.add('ok'); sl.querySelector('.in').textContent = sel[1]; sel.el.remove(); var m = sel[2]; sel = null; placed++; if (placed >= d.events.length) c.win(esc(m)); else c.good(esc(m), 5000); } else { sel.el.classList.remove('sel'); var e = sel; sel = null; c.bad('„' + esc(e[1]) + '“ gehört nicht zu ' + esc(sl.querySelector('b').textContent) + '. Überlege, wer wann was gesagt hat und wie nah es an heute liegt.'); } }; });
+  c.sol = function () { return d.events.map(function (e) { return esc(e[0]) + ': ' + esc(e[1]); }).join('<br>'); };
+  c.auto = function () { return new Promise(function (res) { (function s() { var e = evs.filter(function (x) { return !x.placed; })[0]; if (!e) return res(); e.el.click(); st.querySelector('.slot[data-k="' + d.events.indexOf(e) + '"]').click(); setTimeout(s, 100); })(); }); };
+} };
+
+GAMES.parcours = { init: function (c, d) {
+  var st = c.stage, i = 0, steps = d.scenes;
+  st.innerHTML = '<div class="meter"><span>Fußabdruck-Meter (Spiel)</span><div class="bar"><i style="width:100%"></i></div></div><div class="scene"></div><div class="two"></div>';
+  var S1 = st.querySelector('.scene'), two = st.querySelector('.two'), bar = st.querySelector('.bar i');
+  function draw() { var s = steps[i]; S1.innerHTML = '<b>Situation ' + (i + 1) + ' von ' + steps.length + '</b><br>' + esc(s.q); two.innerHTML = ''; shuffle([{ x: s.good, ok: true }, { x: s.bad, ok: false }]).forEach(function (o) { var b = mk('button', 'opt', esc(o.x)); b.onclick = function () { if (c.finished) return; if (o.ok) { i++; bar.style.width = (100 - Math.round(i / steps.length * 60)) + '%'; if (i >= steps.length) { S1.innerHTML = '🌍 Geschafft.'; two.innerHTML = ''; c.win(esc(s.why)); } else { c.good(esc(s.why), 5000); draw(); } } else { b.classList.add('bad'); c.bad(esc(s.nope)); } }; two.appendChild(b); }); }
+  draw(); c.sol = function () { return esc(steps[i].good); };
+  c.auto = function () { return new Promise(function (res) { (function s() { if (i >= steps.length) return res(); var g = [].slice.call(two.querySelectorAll('.opt')).filter(function (b) { return b.textContent === steps[i].good; })[0]; g.click(); setTimeout(s, 100); })(); }); };
+} };
+
+GAMES.steckbrief = { init: function (c, d) {
+  var st = c.stage, sels = []; st.insertAdjacentHTML('beforeend', figureHTML());
+  var f = mk('div', 'form'); d.fields.forEach(function (fl) { var row = mk('div', 'frow', '<label>' + esc(fl.l) + '</label>'), s = mk('select'); s.innerHTML = '<option value="">– wählen –</option>' + shuffle(fl.o).map(function (o) { return '<option>' + esc(o) + '</option>'; }).join(''); s.onchange = function () { s.className = ''; }; row.appendChild(s); f.appendChild(row); sels.push({ s: s, a: fl.o[0], l: fl.l, note: fl.note }); }); st.appendChild(f);
+  var go = mk('button', 'btn', 'Steckbrief prüfen lassen'); st.appendChild(mk('div', 'row')).appendChild(go);
+  c.sol = function () { return sels.map(function (x) { return esc(x.l) + ': <b>' + esc(x.a) + '</b>'; }).join('<br>'); };
+  go.onclick = function () { if (c.finished) return; if (sels.some(function (x) { return !x.s.value; })) return say('Es fehlen noch Angaben. Fülle jedes Feld aus.', 'interested', 0); var bad = sels.filter(function (x) { var ok = x.s.value === x.a; x.s.className = ok ? 'good' : 'bad'; return !ok; }); if (!bad.length) c.win('Der Steckbrief stimmt. Merke: Der Titel steht unter dem Bild, das Thema musst du aus dem Bild erschließen.'); else c.bad((bad.length === 1 ? 'Eine Angabe stimmt' : bad.length + ' Angaben stimmen') + ' nicht (rot). ' + bad.map(function (x) { return x.note || ''; }).filter(Boolean)[0]); };
+  c.auto = function () { sels.forEach(function (x) { x.s.value = x.a; }); go.click(); return Promise.resolve(); };
+} };
+
+GAMES.pins = { waitGo: true, init: function (c, d) {
+  var st = c.stage; st.insertAdjacentHTML('beforeend', figureHTML(true, d.fig)); var box = st.querySelector('.spotbox'), solved = {}, left = d.spots.length; c.d = d; c.box = box;
+  st.insertAdjacentHTML('beforeend', '<div class="dots"></div>'); var dots = st.querySelector('.dots');
+  function draw() { dots.innerHTML = d.spots.map(function (_, k) { return '<i class="' + (solved[k] ? 'on' : '') + '"></i>'; }).join(''); } draw();
+  c.sol = function () { return d.spots.filter(function (s, k) { return !solved[k]; }).map(function (s) { return esc(s.name) + ': ' + esc(s.opts[s.a]); }).join('<br>'); };
+  function open(k) { if (solved[k] || c.finished) return; var s = d.spots[k]; c.ask('<b>' + esc(s.name) + '</b><br>' + s.q, s.opts, s.a, s.why, function (pre) { solved[k] = true; left--; var r = mk('div', 'rect'); r.style.cssText = 'left:' + s.r[0] + '%;top:' + s.r[1] + '%;width:' + (s.r[2] - s.r[0]) + '%;height:' + (s.r[3] - s.r[1]) + '%'; box.appendChild(r); draw(); if (!left) c.win(pre.replace('✓ ', '') + ' Damit hast du alle Bildelemente gedeutet.'); else say('<b>' + esc(pre) + '</b><br><br>Tippe das nächste Bildelement an.', 'happy', 0); }); }
+  box.addEventListener('click', function (e) { if (c.finished) return; var r = box.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * 100, y = (e.clientY - r.top) / r.height * 100, best = -1, ba = 1e9;
+    d.spots.forEach(function (s, k) { if (x >= s.r[0] && x <= s.r[2] && y >= s.r[1] && y <= s.r[3]) { var a = (s.r[2] - s.r[0]) * (s.r[3] - s.r[1]); if (a < ba) { ba = a; best = k; } } });
+    if (best < 0) return say('Dort gibt es nichts zu deuten. Tippe ein wichtiges Bildelement an, zum Beispiel etwas Auffälliges im Bild.', 'interested', 0); if (solved[best]) return say('Das hast du schon gedeutet.', 'interested', 0); CUR = c; open(best); });
+  c.open = open; c.auto = function () { return new Promise(function (res) { (function s() { if (c.finished) return res(); if (c.pend) c.onG('o:' + c.pend.ci); else { var k = d.spots.findIndex(function (z, i) { return !solved[i]; }); if (k >= 0) open(k); } setTimeout(s, 120); })(); }); };
+}, go: function (c) { say(c.d.goText || 'Tippe auf ein Bildelement. Ich frage dich dann, wofür es steht.', 'interested', 0); } };
+
+GAMES.free = { init: function (c, d) {
+  var ta = mk('textarea'); ta.placeholder = 'Schreibe hier in ganzen Sätzen …'; ta.setAttribute('aria-label', 'Deine Antwort'); var cnt = mk('div', 'count', '0 Zeichen'); ta.oninput = function () { cnt.textContent = ta.value.trim().length + ' Zeichen'; };
+  if (d.bild) c.stage.insertAdjacentHTML('beforeend', figureHTML()); c.stage.appendChild(ta); c.stage.appendChild(cnt); var go = mk('button', 'btn', 'Herr Neumann soll das lesen'); c.stage.appendChild(mk('div', 'row')).appendChild(go);
+  c.sol = function () { return '<b>Musterlösung:</b> ' + esc(d.sample); };
+  go.onclick = function () {
+    if (c.finished) return; var x = ta.value.trim(), words = x.split(/\s+/).filter(Boolean), uniq = {}; words.forEach(function (w) { uniq[w.toLowerCase()] = 1; });
+    if (!x) return say('Du hast noch nichts geschrieben. Ein unvollständiger Anfang ist besser als gar keiner.', 'interested', 0);
+    if (x.length < d.min || words.length < 8) return say('Das ist mir noch zu knapp. Schreibe in ganzen Sätzen und erkläre etwas mehr. Ich erwarte mindestens ' + d.min + ' Zeichen, du hast ' + x.length + '.', 'serious', 0);
+    if (Object.keys(uniq).length < words.length * 0.55) return say('Das sind viele Wiederholungen. Bitte schreibe eine ernsthafte Antwort in eigenen Worten.', 'serious', 0);
+    if (d.forbid && d.forbid.rx.test(x)) return c.bad(d.forbid.label);
+    var hit = d.groups.filter(function (g) { return g.rx.test(x); }), miss = d.groups.filter(function (g) { return !g.rx.test(x); });
+    if (hit.length >= d.need) { c.win('Das ist inhaltlich gut. Du hast die wichtigen Punkte genannt.' + (miss.length ? ' Noch stärker wäre es mit: ' + miss.map(function (g) { return esc(g.label); }).join('; ') + '.' : '') + '<br><br><b>Zum Vergleichen, Musterlösung:</b> ' + esc(d.sample)); }
+    else c.bad((d.need < d.groups.length ? 'Da fehlt noch etwas. Nenne mindestens ' + d.need + ' dieser Punkte: ' : 'Da fehlt noch etwas. Ich vermisse: ') + miss.map(function (g) { return esc(g.label); }).join('; ') + '. Ergänze das und gib mir den Text noch einmal.');
+  };
+  c.auto = function () { ta.value = d.sample; go.click(); return Promise.resolve(); };
+} };
+
+function figureHTML(spots, fig) { fig = fig || window.FIG || { svg: '', cap: '' }; return '<figure class="fig"><div class="spotbox">' + fig.svg + '</div><figcaption>' + fig.cap + '</figcaption></figure>'; }
+
+/* ===== Spiele 4: Endlos-Feed (Erfahrung), Argumente-Börse (Rucksack packen) ===== */
+/* Zeitfresser: Feed-Simulation mit Vorsatz, Uhr und typischen Tricks */
+function hhmm(m) { m = Math.round(m); var h = Math.floor(m / 60) % 24, mm = m % 60; return (h < 10 ? '0' : '') + h + ':' + (mm < 10 ? '0' : '') + mm; }
+GAMES.zeitfresser = { waitGo: true, goLabel: 'App öffnen', init: function (c, d) {
+  var st = c.stage, n = 0, fi = 0, run = false, timer = null, t0 = 0, W = function () { return c.fast ? 150 : d.wait; }, likes = 0, bannerT = null, view = 'feed', act = null, streak = 87, bonus = -1, chatT = null, mi = 0;
+  c.dets = {};
+  var EV = {
+    1: ['🔔 Mia hat ein neues Video gepostet! Tippe, um es zu sehen.', 'mia'],
+    3: ['🔥 Deine Serie mit Lena (87 Tage) reißt heute! Schick ihr ein Foto.', 'snap'],
+    4: ['🔴 Noah ist jetzt live! Komm rein, bevor es vorbei ist.', 'live'],
+    5: ['⏰ Erinnerung: Dein Training beginnt jetzt.', null],
+    7: ['🎁 Bonus: Schau 3 weitere Videos und hol dir ein Abzeichen!', 'bonus'],
+    10: ['🔔 Mia hat dich in einem Kommentar erwähnt.', 'mia']
+  };
+  var MIA = [['💃', 'Mia: Neue Tanz-Challenge'], ['🎤', 'Mia: Fragerunde, Teil 2'], ['🍜', 'Mia: Ramen um Mitternacht'], ['📦', 'Mia: Was ist in dem Paket?']];
+  var CHAT = ['Lukas: lol 😂', 'Ela: Noah grüß mich!!', 'Ben: wie heißt der Song?', 'Sami: bin seit 1 Stunde hier 😅', 'Noah: Gleich kommt die große Überraschung, bleibt dran!', 'Ela: 🔥🔥🔥', 'Tim: nur noch 5 Minuten, dann geh ich', 'Noah: Wer bis zum Ende bleibt, wird gegrüßt!', 'Jana: ❤️❤️', 'Ben: ich auch nicht 😂'];
+  st.innerHTML = '<div class="feed"><div class="fhead"><span class="clock"></span><span class="goal">Training um ' + hhmm(d.deadline) + '</span></div><button class="fback" style="display:none">← Zurück zum Feed</button><div class="screen"></div><button class="notif"></button><div class="cd"></div><div class="ftools"><button class="heart" aria-label="Gefällt mir">🤍</button><span class="likes"></span><span class="bon"></span><span class="streak">🔥 87</span></div><div class="over"></div></div><div class="row"><button class="btn closeapp" style="display:none">App schließen</button></div>';
+  var $q = function (s) { return st.querySelector(s); }, scr = $q('.screen'), nt = $q('.notif'), cd = $q('.cd'), ck = $q('.clock'), ov = $q('.over'), hb = $q('.heart'), lk = $q('.likes'), fb = $q('.fback'), bon = $q('.bon'), sk = $q('.streak'), cols = ['#3b6ea5', '#a5533b', '#4b8a5a', '#8a5aa5', '#a58a3b', '#3b8a8a'];
+  function now() { return d.start + n * d.vmin; }
+  function clock() { ck.textContent = hhmm(now()); var late = now() >= d.deadline; ck.classList.toggle('late', late); ov.textContent = now() > d.deadline ? '+' + (now() - d.deadline) + ' Minuten nach Trainingsbeginn' : ''; }
+  function vidHTML(e, t, col) { return '<div class="vid" style="background:' + col + '">' + e + '</div><div class="cap">' + esc(t) + '</div>'; }
+  function render() {
+    clearInterval(chatT); fb.style.display = view === 'feed' ? 'none' : ''; hb.textContent = '🤍'; hb.classList.remove('on');
+    if (view === 'feed') { var v = d.videos[fi % d.videos.length]; scr.innerHTML = vidHTML(v[0], v[1], cols[fi % cols.length]); }
+    else if (view === 'mia') { var m = MIA[mi % MIA.length]; scr.innerHTML = '<div class="prof">👧 <b>mia.daily</b> · 48 Videos</div>' + vidHTML(m[0], m[1], '#b0467a'); }
+    else if (view === 'live') {
+      scr.innerHTML = '<div class="prof">🔴 <b>LIVE</b> · noah_plays · <span class="vw">1.204</span> Zuschauer</div><div class="vid" style="background:#24324a">🎮</div><div class="chat"></div><button class="gift">🌹 Rose schenken (10 Münzen)</button>';
+      var ch = scr.querySelector('.chat'), k = 0, vw = scr.querySelector('.vw');
+      var add = function (t, me) { var p = mk('div', me ? 'me' : '', esc(t)); ch.appendChild(p); while (ch.children.length > 4) ch.removeChild(ch.firstChild); };
+      add(CHAT[0]); chatT = setInterval(function () { k++; add(CHAT[k % CHAT.length]); vw.textContent = (1204 + k * 37).toLocaleString('de-DE'); }, c.fast ? 50 : 1600);
+      scr.querySelector('.gift').onclick = function () { add('Du hast Noah eine Rose geschenkt 🌹', 1); setTimeout(function () { add('Noah: Danke!!! Bleib noch, gleich kommt was Großes!'); }, c.fast ? 10 : 900); };
+    }
+    else if (view === 'snap') {
+      scr.innerHTML = '<div class="prof">💬 <b>Chat mit Lena</b></div><div class="snap"><p>🔥 <b>' + streak + ' Tage</b> in Folge</p><p>Eure Serie reißt um 24 Uhr, wenn du heute kein Foto schickst.</p><button class="sendsnap">📸 Foto senden</button></div>';
+      scr.querySelector('.sendsnap').onclick = function () { if (streak === 87) { streak = 88; sk.textContent = '🔥 88'; } this.outerHTML = '<p class="ok">✔ Serie gerettet: 88 Tage.</p><p class="lena">Lena: „Hast du Mias neues Video schon gesehen? 😂“</p><button class="tomia">Video ansehen</button>'; scr.querySelector('.tomia').onclick = function () { go2('mia'); }; };
+    }
+  }
+  function go2(v) { if (!run) return; view = v; if (v !== 'feed') c.dets[v] = 1; t0 = Date.now(); render(); }
+  function banner(e) { nt.textContent = e[0]; act = e[1]; nt.classList.add('on'); clearTimeout(bannerT); bannerT = setTimeout(function () { nt.classList.remove('on'); act = null; }, c.fast ? 60 : 5000); }
+  nt.onclick = function () { if (!run) return; var a = act; nt.classList.remove('on'); act = null; if (!a) return; if (a === 'bonus') { c.dets.bonus = 1; bonus = 0; bon.textContent = '🏅 0/3'; if (view !== 'feed') go2('feed'); } else go2(a); };
+  fb.onclick = function () { go2('feed'); };
+  function tick() {
+    if (!run || c.finished) return; n++;
+    if (n >= (d.max || 40)) { c.stopT(); return end(true); }
+    t0 = Date.now(); clock();
+    if (view === 'feed') { fi++; if (bonus >= 0 && bonus < 3) { bonus++; bon.textContent = bonus < 3 ? '🏅 ' + bonus + '/3' : '🏅 Abzeichen!'; if (bonus === 3) banner(['🏅 Abzeichen „Dauergucker“ freigeschaltet! Nächstes Ziel: 10 Videos.', null]); } render(); }
+    else if (view === 'mia') { mi++; render(); }
+    if (EV[n]) banner(EV[n]);
+  }
+  function cdl() { if (!run) return; var left = Math.max(0, W() - (Date.now() - t0)); cd.textContent = (view === 'feed' || view === 'mia') && left < 3200 ? 'Nächstes Video in ' + Math.max(1, Math.ceil(left / 1000)) + ' …' : ''; }
+  c.begin = function () { if (run || timer) return; run = true; $q('.closeapp').style.display = ''; say('Die App läuft. Du darfst alles antippen, was dich interessiert. Tippe auf „App schließen“, wenn du aufhören würdest.', 'interested', 5000); t0 = Date.now(); clock(); render(); (function loop() { timer = setTimeout(function () { if (!run) return; tick(); if (run) loop(); }, W()); })(); c.cdt = setInterval(cdl, 250); };
+  c.stopT = function () { run = false; clearTimeout(timer); clearInterval(c.cdt); clearInterval(chatT); timer = null; };
+  hb.onclick = function () { if (!run) return; likes++; hb.textContent = '❤️'; hb.classList.add('on'); lk.textContent = likes; };
+  function end(forced) {
+    var min = n * d.vmin + (forced ? 0 : Math.round(d.vmin * Math.min(1, (Date.now() - t0) / W()))), endT = d.start + min; c.stopT();
+    if (!forced && n < 2) { say('Das ging sehr schnell, du bist schon nach ' + min + ' Minuten raus. So lernst du nichts über die App. Probiere es noch einmal: Schau zu, tippe an, was dich interessiert, und überlege ehrlich, wann du in einer echten App aufhören würdest.', 'caring', 0); return GAMES.zeitfresser.reset(c, d); }
+    var ok = endT < d.deadline, head = endT === d.deadline ? '<b>Du bist genau um ' + hhmm(endT) + ' Uhr raus.</b> Da beginnt dein Training schon, du kommst also zu spät. Die App hat dagegen gearbeitet, dass du rechtzeitig aufhörst.' : ok ? '<b>Du bist um ' + hhmm(endT) + ' Uhr draußen, vor dem Training.</b> Das war nicht selbstverständlich: Die App hat dagegen gearbeitet.' : '<b>Du bist erst um ' + hhmm(endT) + ' Uhr raus, ' + (endT - d.deadline) + ' Minuten nach Trainingsbeginn.</b> Das ist kein persönliches Versagen. Die App ist so gebaut, dass man schwer aufhört.';
+    var names = { mia: 'zu Mias Videos', live: 'in Noahs Livestream', snap: 'in den Chat mit Lena', bonus: 'zur Abzeichen-Jagd' }, gone = Object.keys(c.dets).map(function (k) { return names[k]; });
+    if (gone.length) head += ' Eine Nachricht hat dich ' + (gone.length === 1 ? gone[0] : gone.slice(0, -1).join(', ') + ' und ' + gone[gone.length - 1]) + ' gelockt.';
+    var opts = ['Das nächste Video startete von allein', 'Die Nachrichten oben, die mich gelockt haben', 'Die Serie, die nicht reißen sollte', 'Der Livestream, den ich nicht verpassen wollte', 'Nichts davon, ich wollte einfach weiter'],
+      why = ['Das ist Autoplay. Endloses Weiterlaufen ohne echte Pause soll für Minderjährige eingeschränkt werden.', 'Das sind Push-Nachrichten. Solche Nachrichten, die zurückholen, sollen eingeschränkt werden, besonders nachts.', 'Das ist ein Streak. Serien, die bestrafen, wenn man auslässt, sollen für Minderjährige eingeschränkt werden.', 'Ein Livestream läuft nur jetzt. Das Gefühl, etwas zu verpassen, hält einen fest. Auch die Push-Nachricht, die dich hingeholt hat, soll eingeschränkt werden.', 'Auch das ist möglich. Aber Apps sind so gebaut, dass „einfach weiter“ immer der leichteste Weg ist. Deshalb sollen sie wirksame Pausen und Zeitlimits anbieten.'];
+    c.pend = { ci: -1, on: function (i) { c.pend = null; c.win('<b>' + esc(opts[i]) + '.</b> ' + why[i] + '<br><br>Der Entwurf will für alle unter 18 solche Tricks einschränken. Außerdem müssen Apps wirksame Pausen und Zeitlimits anbieten, damit nicht nur du allein gegen die App antreten musst.'); } };
+    say(head + '<br><br>Was hat dich am ehesten zum Weiterschauen gebracht? Es gibt keine falsche Antwort.', 'interested', 0, opts.map(function (x, i) { return ['o:' + i, x]; }));
+  }
+  c.sol = function () { return 'Tippe auf „App schließen“, wenn du aufhören willst.'; };
+  $q('.closeapp').onclick = function () { if (c.finished || !run) return; end(false); };
+  c.auto = function () { c.fast = true; return new Promise(function (res) { var iv = setInterval(function () { if (c.finished) { clearInterval(iv); return res(); } if (!run && !c.pend) { c.onG('go'); } else if (run && n === 1 && view === 'feed' && act) nt.click(); else if (run && n === 3 && view === 'mia') fb.click(); else if (run && n >= 8) $q('.closeapp').click(); else if (c.pend) c.onG('o:' + (n % 5)); }, 120); }); };
+  GAMES.zeitfresser.cur = c; clock(); render();
+}, reset: function (c, d) { c.stage.innerHTML = ''; c.went = false; c.pend = null; GAMES.zeitfresser.init(c, d); c.waitGo = true; c.addGo(); }, go: function (c) { c.begin(); } };
+
+GAMES.packen = { init: function (c, d) {
+  var st = c.stage, picked = [], max = d.max || 3, nudged = false, cards = shuffle(d.args);
+  st.innerHTML = '<div class="pcount"></div><div class="pk"></div><div class="row"><button class="btn done">Rucksack abgeben</button></div>';
+  var pk = st.querySelector('.pk'), cnt = st.querySelector('.pcount'), done = st.querySelector('.done');
+  function upd() { cnt.textContent = '🎒 ' + picked.length + ' von ' + max + ' Argumenten gepackt'; }
+  cards.forEach(function (a) { var b = mk('button', 'pcard', esc(a.t) + '<small>' + esc(a.who) + '</small>'); a.el = b; b.onclick = function () { if (c.finished) return; var i = picked.indexOf(a); if (i >= 0) { picked.splice(i, 1); b.classList.remove('in', 'dafuer', 'dagegen'); } else { if (picked.length >= max) return say('Dein Rucksack ist voll. Nimm zuerst ein Argument wieder heraus, indem du es noch einmal antippst.', 'interested', 0); picked.push(a); b.classList.add('in'); } upd(); }; pk.appendChild(b); });
+  upd();
+  c.sol = function () { return 'Es gibt hier keine falsche Auswahl. Wähle drei Argumente, die dich am meisten überzeugen.'; };
+  done.onclick = function () {
+    if (c.finished) return; if (picked.length < max) return say('Du hast erst ' + picked.length + ' von ' + max + ' Argumenten gepackt. Wähle die, die dich am meisten überzeugen. Ob dafür oder dagegen, ist deine Entscheidung.', 'interested', 0);
+    var sides = {}; picked.forEach(function (a) { sides[a.side] = 1; });
+    if (Object.keys(sides).length === 1 && !nudged) { nudged = true; return say('Du hast nur Argumente einer Seite gepackt. Das ist erlaubt. Für eine gute Diskussion lohnt es sich aber, auch ein Argument der anderen Seite zu kennen. Tausche eines aus oder gib den Rucksack so noch einmal ab.', 'thinking', 0); }
+    S.pack = picked.map(function (a) { return { t: a.t, who: a.who, side: a.side, counter: a.counter }; });
+    picked.forEach(function (a) { a.el.classList.add(a.side === 'Dafür' ? 'dafuer' : 'dagegen'); });
+    c.win('Dein Rucksack ist gepackt. Im Reiter 🎒 oben siehst du deine Argumente und, was die Gegenseite dazu sagt. Die Auswahl bleibt bei dir und wird nirgends gespeichert.');
+  };
+  c.auto = function () { cards.slice(0, max).forEach(function (a) { a.el.click(); }); var s = {}; picked.forEach(function (a) { s[a.side] = 1; }); if (Object.keys(s).length === 1) { var o = cards.filter(function (a) { return !s[a.side]; })[0]; picked[0].el.click(); o.el.click(); } done.click(); return Promise.resolve(); };
+} };
+
+/* Waage mit zwei oder drei Schalen */
+GAMES.waage = { init: function (c, d) {
+  var st = c.stage, cards = shuffle(d.items), sel = null, n = d.sides.length, cnt = []; for (var i = 0; i < n; i++) cnt.push(0);
+  st.innerHTML = '<div class="scale"><div class="beam"></div><div class="pans" style="grid-template-columns:repeat(' + n + ',1fr)">' + d.sides.map(function (s, k) { return '<button class="pan" data-s="' + k + '"><b>' + esc(s) + '</b><span class="stack"></span></button>'; }).join('') + '</div></div><div class="hand"></div>';
+  var beam = st.querySelector('.beam'), hand = st.querySelector('.hand'), pans = st.querySelectorAll('.pan');
+  function tilt() { var a = n > 1 ? Math.max(-14, Math.min(14, (cnt[1] - cnt[0]) * 3)) : 0; beam.style.transform = 'rotate(' + a + 'deg)'; }
+  cards.forEach(function (it) { var b = mk('button', 'wcard', esc(it[0])); it.el = b; b.onclick = function () { if (c.finished || it.placed) return; cards.forEach(function (x) { if (x.el) x.el.classList.remove('sel'); }); b.classList.add('sel'); sel = it; }; hand.appendChild(b); });
+  pans.forEach(function (p) { p.onclick = function () {
+    if (!sel || c.finished) return say('Tippe zuerst eine Karte an, dann die Waagschale.', 'interested', 0); var s = +p.dataset.s, it = sel;
+    if (s === it[1]) { it.placed = true; it.el.remove(); cnt[s]++; p.querySelector('.stack').appendChild(mk('i', 'w', '●')); tilt(); sel = null; var left = cards.filter(function (x) { return !x.placed; }).length; if (!left) c.win(esc(it[2]) + ' Alle Karten liegen richtig.'); else c.good(esc(it[2]), 6000); }
+    else { it.el.classList.remove('sel'); sel = null; c.bad('Das gehört nicht auf „' + esc(d.sides[s]) + '“. ' + esc(d.hint || 'Überlege noch einmal.')); }
+  }; });
+  c.sol = function () { return cards.filter(function (x) { return !x.placed; }).map(function (x) { return esc(x[0]) + ' → ' + esc(d.sides[x[1]]); }).join('<br>'); };
+  c.auto = function () { return new Promise(function (res) { (function step() { var it = cards.filter(function (x) { return !x.placed; })[0]; if (!it) return res(); it.el.click(); pans[it[1]].click(); setTimeout(step, 100); })(); }); };
+} };
+
+/* ===== Was hast du dir gemerkt?: Fragen im Modul, Rückmeldung in der Sprechblase von Herrn Neumann ===== */
+function buildProbe() {
+  var mc = PROBE.map(function (p) { return { kind: 'mc', ch: p.ch, q: p.q, o: p.o, why: p.why }; });
+  var tf = PROBE_TF.map(function (p) { return { kind: 'tf', ch: p.ch, q: p.s, v: p.v, why: p.why }; });
+  function pick(pool, n) { var by = {}; shuffle(pool).forEach(function (q) { (by[q.ch] = by[q.ch] || []).push(q); }); var out = [], ids = shuffle(Object.keys(by)); while (out.length < n && ids.length) { ids.forEach(function (k) { if (out.length < n && by[k].length) out.push(by[k].shift()); }); ids = ids.filter(function (k) { return by[k].length; }); } return out; }
+  P = { qs: shuffle(pick(mc, 8).concat(pick(tf, 4))), i: 0, ok: 0, wrong: {} };
+}
+function renderProbe(v) {
+  if (!P) buildProbe(); CUR = null;
+  v.appendChild(mk('h2', null, '🧠 Was hast du dir gemerkt?')); v.appendChild(mk('p', 'sub', 'Zwölf gemischte Fragen aus allen Teilen. Zurückgehen ist nicht möglich, also lies jede Frage in Ruhe.'));
+  if (P.i >= P.qs.length) return renderProbeEnd(v);
+  var q = P.qs[P.i], card = mk('div', 'card task'), done = false;
+  card.innerHTML = '<div class="pq">Frage ' + (P.i + 1) + ' von ' + P.qs.length + '</div><div class="q">' + (q.kind === 'tf' ? 'Wahr oder falsch?<br><i>' + esc(q.q) + '</i>' : esc(q.q)) + '</div><div class="body"></div><div class="row"></div>';
+  var body = card.querySelector('.body'), row = card.querySelector('.row'), opts = q.kind === 'tf' ? [{ x: 'Stimmt', ok: q.v }, { x: 'Stimmt nicht', ok: !q.v }] : shuffle(q.o.map(function (x, i) { return { x: x, ok: i === 0 }; })), box = mk('div', 'opts');
+  opts.forEach(function (o) { var b = mk('button', 'opt', esc(o.x)); b.onclick = function () {
+    if (done) return; done = true; opts.forEach(function (p) { p.el.disabled = true; if (p.ok) p.el.classList.add('good'); });
+    if (o.ok) { P.ok++; say('<b>Richtig.</b> ' + esc(q.why), 'happy', 8000); var bb = B(); if (bb) bb.richtig('probe' + P.i); } else { b.classList.add('bad'); P.wrong[q.ch] = (P.wrong[q.ch] || 0) + 1; say('<b>Nicht ganz.</b> ' + esc(q.why), 'caring', 0); var b2 = B(); if (b2) b2.falsch('probe' + P.i); }
+    var n = mk('button', 'btn', P.i + 1 < P.qs.length ? 'Nächste Frage →' : 'Ergebnis ansehen →'); n.onclick = function () { P.i++; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }; row.appendChild(n); }; o.el = b; box.appendChild(b); });
+  body.appendChild(box); v.appendChild(card);
+}
+function renderProbeEnd(v) {
+  var n = P.qs.length, ok = P.ok, wrong = Object.keys(P.wrong).sort(function (a, b) { return P.wrong[b] - P.wrong[a]; });
+  var msg = ok >= 11 ? 'Sehr stark. Du kennst die Grundlagen für die Diskussion.' : ok >= 8 ? 'Das ist solide. Ein Blick in die Merkkästen, dann sitzt es.' : ok >= 5 ? 'Da ist noch Luft nach oben. Das ist in Ordnung, dafür übst du ja.' : 'Das war noch nicht gut. Keine Sorge: Lies die Merkkästen und versuche es dann noch einmal.';
+  var c = mk('div', 'card', '<div class="big">' + ok + ' von ' + n + ' richtig</div>');
+  if (wrong.length) { c.appendChild(mk('p', null, '<b>Hier lohnt sich eine Wiederholung:</b>')); var ul = mk('ul', 'res'); wrong.forEach(function (id) { var li = mk('li', null, esc(CHI[id].title) + ' (' + P.wrong[id] + (P.wrong[id] === 1 ? ' Fehler' : ' Fehler') + ') '), b = mk('button', 'btn sec', 'Zum Teil'); b.style.cssText = 'padding:5px 12px;font-size:14px'; b.onclick = function () { go(id); }; li.appendChild(b); ul.appendChild(li); }); c.appendChild(ul); } else c.appendChild(mk('p', null, 'Kein einziger Fehler.'));
+  var row = mk('div', 'row'), r = mk('button', 'btn', 'Neue Runde mit anderen Fragen'); r.onclick = function () { P = null; render(); window.scrollTo({ top: 0 }); }; row.appendChild(r); c.appendChild(row); v.appendChild(c);
+  setTimeout(function () { say('<b>' + ok + ' von ' + n + ' richtig.</b> ' + esc(msg), ok >= 8 ? 'proud' : 'caring', 0); }, 400);
+}
+function greet() {
+  CUR = { onG: function (k) {
+    if (k === 'how') say('<b>So funktioniert es:</b> Das Modul hat vier Teile. In Teil 1 und 3 liest du Texte und beantwortest Fragen dazu. In Teil 2 und 4 spielst du Aufgaben, die das Gelesene anders festigen. Auf „Spiel starten“ erkläre ich dir die Regeln, und ich gebe dir Tipps. Wenn du ein Wort nicht kennst, tippe mich an, wähle „Wort erklären“ und <b>markiere das Wort</b>. Dann erkläre ich es dir.', 'interested', 0, [['fin', 'Und die Diskussion?']]);
+    else if (k === 'fin') say('Eine „richtige“ Meinung gibt es hier nicht. Die bildest du dir selbst. Vor und nach dem Modul stellt ihr euch in der Klasse auf der Positionierungslinie auf, danach diskutieren wir. Hier sammelst du das Wissen und die Argumente dafür.', 'happy', 0, [['los', 'Los geht’s']]);
+    else if (k === 'los') { try { Kolbi.guideEnd(); } catch (e) {} }
+  } };
+  say('<b>Hallo, ich bin Herr Neumann.</b> Schön, dass du da bist. Es geht um eine Frage, die viele von euch betrifft: Sollen soziale Medien für Jugendliche eingeschränkt werden?', 'happy', 0, [['how', 'Wie funktioniert das hier?']]);
+}
+function startAll() { tabs(); render(); updateStars(); if (B()) { Begleiter.init({ mode: 'lernen', offsetBottom: 56, aufgabe: 'Wähle einen Teil.', hilfe: 'Beginne mit Teil 1.', tipps: [] }); setTimeout(greet, 500); } }
+document.addEventListener('DOMContentLoaded', startAll);
+
+function renderPack(v) {
+  CUR = null; v.appendChild(mk('h2', null, '🎒 Dein Rucksack')); v.appendChild(mk('p', 'sub', 'Deine Argumente und was die Gegenseite dazu sagt. Das bleibt bei dir und wird nirgends gespeichert.'));
+  if (!S.pack || !S.pack.length) { var e = mk('div', 'card', '<p>Dein Rucksack ist noch leer. In Teil 4 packst du Argumente ein, die dich überzeugen.</p>'); var r = mk('div', 'row'), b = mk('button', 'btn', 'Zu Teil 4'); b.onclick = function () { go('s2'); }; r.appendChild(b); e.appendChild(r); v.appendChild(e); return; }
+  S.pack.forEach(function (a) { v.appendChild(mk('div', 'rk ' + (a.side === 'Dafür' ? 'dafuer' : 'dagegen'), '<b>' + esc(a.side) + ':</b> ' + esc(a.t) + '<div class="ge"><b>Die Gegenseite sagt:</b> ' + esc(a.counter) + '</div>')); });
+  v.appendChild(mk('div', 'card', '<h3>💬 Fragen für die Diskussion</h3><ul><li>Welches deiner Argumente überzeugt dich am meisten, und warum?</li><li>Welches Gegenargument ist das stärkste?</li><li>Hat sich deine Meinung seit der ersten Positionierungslinie verändert? Was hat den Ausschlag gegeben?</li></ul>'));
+  setTimeout(function () { say('Das ist dein Rucksack für die Diskussion. Achte darauf, ob du ein Argument mit <b>Behauptung, Begründung und Beispiel</b> aufbauen kannst.', 'happy', 0); }, 300);
+}
+
+</script>
+</body>
+</html>

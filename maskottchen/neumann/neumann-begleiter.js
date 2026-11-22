@@ -129,15 +129,21 @@
     wordMode = true;
     say(X() + '<p class="kb-text"><b>Markiere das Wort</b>, das ich erklären soll. Ziehe dazu mit dem Finger oder der Maus darüber.</p>' + opt('menu', 'Doch nicht', '#9ca3af'), 'interested');
   }
+  // Erst auswerten, wenn der Finger bzw. die Maus losgelassen ist und sich die Markierung kurz nicht mehr ändert
+  var ptrDown = false;
+  function ptr(d) { return function () { ptrDown = d; if (!d) onSelect(); }; }
+  ['touchstart', 'mousedown'].forEach(function (e) { document.addEventListener(e, ptr(true), { passive: true }); });
+  ['touchend', 'touchcancel', 'mouseup'].forEach(function (e) { document.addEventListener(e, ptr(false), { passive: true }); });
   function onSelect() {
     if (!wordMode) return;
     clearTimeout(wordTimer);
-    wordTimer = setTimeout(function () {
+    if (ptrDown) return;
+    wordTimer = setTimeout(function () { if (ptrDown) return;
       var s = window.getSelection && String(window.getSelection() || '').trim(); if (!s || s.length > 60) return;
       var r = lookup(s);
       if (r) { say(X() + r.map(function (e) { return '<p class="kb-text" style="margin-bottom:6px"><b>' + esc(e.word) + '</b><br>' + esc(e.text) + '</p>'; }).join('') + back(opt('wort', 'Noch ein Wort')), 'interested'); wordMode = false; }
       else { say(X() + '<p class="kb-text">Zu „' + esc(s.length > 30 ? s.slice(0, 30) + '…' : s) + '“ habe ich keine Erklärung vorbereitet. Frag am besten deine Lehrkraft oder schlage es im Heft nach.</p>' + opt('wort', 'Anderes Wort probieren') + back(), 'oops'); wordMode = false; }
-    }, 650);
+    }, 1300);
   }
 
   // ------------------------------------------------------------------ Wie geht es dir?
