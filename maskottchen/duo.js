@@ -15,11 +15,11 @@
 (function () {
   'use strict';
   var KEY = 'tinto-rolli-v1';
-  var cfg = { id: 'seite', offsetBottom: 56, comments: [], tapHelp: null, intro: true, canTalk: null, idleHelp: null, introExtra: '', tone: '' };
+  var cfg = { id: 'seite', offsetBottom: 56, comments: [], tapHelp: null, intro: true, canTalk: null, idleHelp: null, introExtra: '', tone: '', clickNext: false };
   var st = { off: false, mute: {}, met: false, quiet: false };
   var el = {}, CH = {}, order = ['T', 'R'];
   var pos = { x: 0, y: 0 }, side = 1;                       // pos = Position von Tinto (Anführer), side = auf welcher Seite Rolli steht
-  var wanderT = null, quietUntil = 0, bubbleOpen = false, curAsk = null, shownIds = {}, queue = [], closeT = null, chatT = null, chatSeq = 0, introActive = false;
+  var wanderT = null, quietUntil = 0, bubbleOpen = false, curAsk = null, shownIds = {}, queue = [], closeT = null, chatT = null, chatSeq = 0, introActive = false, chatNext = null;
   var speaker = 'T', lastAct = Date.now(), nextRemark = 45, base = 'happy', wasSleeping = false, yawned = false, lastPtr = 0, taps = [], lastDizzy = 0, microT = null;
 
   function load() { try { var o = JSON.parse(localStorage.getItem(KEY) || '{}'); if (o && typeof o === 'object') { st.off = !!o.off; st.mute = o.mute || {}; st.met = !!o.met; st.quiet = !!o.quiet; } } catch (e) {} }
@@ -366,7 +366,7 @@
     if (autoMs) closeT = setTimeout(closeBubble, autoMs);
   }
   function closeBubble() {
-    clearTimeout(closeT); clearTimeout(chatT); chatSeq++; bubbleOpen = false; curAsk = null; introActive = false;
+    clearTimeout(closeT); clearTimeout(chatT); chatSeq++; bubbleOpen = false; curAsk = null; introActive = false; chatNext = null;
     if (!el.bubble) return;
     el.bubble.classList.remove('show'); order.forEach(function (w) { CH[w].node.classList.remove('talk'); });
     setTimeout(function () { if (!bubbleOpen) el.bubble.classList.remove('on'); }, 200);
@@ -387,9 +387,13 @@
       mood(w, L.m || 'happy', last ? 6000 : ms + 400);
       if (L.fx === 'roll') { rollTo(CH[w], 0, 900); }
       if (!CH[o].moodT || !last) mood(o, L.om || (CH[o].mood === 'sleep' ? 'interested' : 'interested'), Math.min(ms, 3500));
+      // Mit cfg.clickNext geht es erst per Klick zur nächsten Sprechblase weiter
+      var byClick = cfg.clickNext && !last;
       openBubble(X + who(w) + '<p class="kb-text" style="margin-bottom:4px">' + esc(L.t) + '</p>' + (L.sub ? '<p class="kb-text" style="margin:0 0 4px;font-size:13px;color:#4b5563">' + esc(L.sub) + '</p>' : '') +
+        (byClick ? '<button class="kb-ok" data-k="next">Weiter ›</button>' : '') +
         (last ? '<div class="kb-links">' + quietLink() + '</div>' : ''), last ? (opts.stay || 6000 + L.t.length * 55 + (L.sub ? L.sub.length * 40 : 0)) : 0, w);
-      if (!last) chatT = setTimeout(next, ms);
+      if (byClick) chatNext = next;
+      else if (!last) chatT = setTimeout(next, ms);
     })();
   }
   function showAsk(o, w) {
@@ -418,7 +422,8 @@
       (cfg.introExtra ? '<p class="kb-text">' + cfg.introExtra + '</p>' : '') + '<p class="kb-text" style="font-size:13px;color:#4b5563;margin-top:-4px">Du kannst uns ziehen, antippen oder ausblenden.</p><button class="kb-ok" data-k="hello">Hallo, ihr zwei! 👋</button>', 0, 'T');
   }
   function onBubbleClick(e) {
-    var t = e.target.closest ? e.target.closest('[data-k]') : null; if (!t) return;
+    var t = e.target.closest ? e.target.closest('[data-k]') : null;
+    if (!t || t.getAttribute('data-k') === 'next') { if (chatNext) { var f = chatNext; chatNext = null; f(); } return; }
     var k = t.getAttribute('data-k'), o = curAsk, m = document.getElementById('kb-mute');
     if (m && m.checked && o && o.id) { st.mute[o.id] = 1; save(); }
     if (k !== 'wort' && window.Woerter) Woerter.stop();
@@ -628,6 +633,7 @@
     chat: chat,
     talk: function (lines, opts) { if (!el.root || st.off || introActive) return false; lastAct = Date.now(); if (st.quiet) { mood(lines[0].w || 'T', lines[0].m || 'happy', 2600); return false; } curAsk = null; chat(lines, opts); return true; },
     well: function () { if (el.root && !st.off && !bubbleOpen && !introActive && !st.quiet) showWell(); },
+    getTone: function () { return cfg.tone; },
     tone: function (t) { cfg.tone = t || ''; order.forEach(function (w) { if (CH[w] && !CH[w].moodT) setFace(CH[w], base); }); },
     roll: function (t, back) { if (CH.R) rollTo(CH.R, t == null ? 0 : t, back); },   // Rolli zusammenrollen (0) oder aufrollen (1)
     place: function (fx, fy) { if (!el.root) return; place(fx * vw(), fy * vh(), true); savePos(); },

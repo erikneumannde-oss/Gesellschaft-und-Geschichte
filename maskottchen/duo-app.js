@@ -42,6 +42,12 @@
       tip: 'Klicke beim Lesen die Wörter an, die dir wichtig erscheinen. Das PDF am Ende fasst deine Ergebnisse zusammen.',
       bottom: 90
     },
+    'Franzoesische-Revolution': {
+      topic: 'courrier',
+      text: 'Du arbeitest anonym für die Pariser Zeitung „Le Courrier“ und stellst ihre Titelseite zusammen. Jedes leere Feld ist eine Mappe mit Aufgaben. Ist sie fertig, wird das Feld gedruckt.',
+      tip: 'Fang mit dem Aufmacher an, er gibt dir den Überblick. Lies die Texte in der Mappe in Ruhe, bevor du antwortest. Wenn dir ein Wort fremd ist, tipp uns an und wähle „Wort erklären“.',
+      intro: false, clickNext: true
+    },
     'Paulskirchenparlament': {
       topic: 'paulskirche',
       text: 'Du bist Mitglied der Nationalversammlung von 1848/49. Du öffnest die Geheimakte, ordnest Argumente zu, fasst einen Beschluss und schreibst ein Protokoll.',
@@ -99,6 +105,7 @@
     aufklaerung: ['„Habe Mut, dich deines eigenen Verstandes zu bedienen“, schrieb Kant. Das passt zu jeder Hausaufgabe.', 'Die Aufklärung wollte, dass Menschen selbst denken, statt nur zu glauben, was man ihnen sagt.', 'Kant war angeblich so pünktlich, dass die Nachbarn nach ihm die Uhr stellten.'],
     friedrich: ['Friedrich II. wurde „der Alte Fritz“ genannt. Sein Schloss Sanssouci heißt übersetzt „ohne Sorge“.', 'Er regierte von 1740 bis 1786, also fast 46 Jahre.', 'Gruppenarbeit klappt am besten, wenn jeder ein Stück übernimmt und alle am Ende zusammenfügen.'],
     revolution: ['Die Glorious Revolution heißt „glorreich“, weil sie weitgehend ohne Blutvergießen ablief.', 'Die Bill of Rights von 1689 beschränkte die Macht des englischen Königs.', 'Ein Parlament, das dem König Bedingungen stellt: Das war damals eine große Sache.'],
+    courrier: ['Nach 1789 erschienen in Paris Hunderte neue Zeitungen. Vorher hatte es nur wenige gegeben.', 'Viele Menschen konnten damals nicht lesen. Zeitungen wurden deshalb oft laut vorgelesen, auf Plätzen und in Cafés.', 'Viele Journalisten schrieben ohne ihren Namen oder unter einem Decknamen. Das konnte sie schützen.'],
     paulskirche: ['Das Parlament tagte in einer Kirche, in der Frankfurter Paulskirche. Heute ist sie ein Ort der Erinnerung.', 'Die Abgeordneten von 1848 wollten ein geeintes Deutschland mit Grundrechten.', 'Hier wurde heftig gestritten und trotzdem versucht, einen Beschluss zu finden. Das ist Demokratie.'],
     euro: ['Den Euro gibt es als Bargeld seit dem 1. Januar 2002. Vorher brauchte man an der Grenze oft anderes Geld.', 'Eine gemeinsame Währung heißt auch: Länder müssen sich abstimmen. Das ist anstrengend, aber lehrreich.', 'In Novarien wird verhandelt wie in echt: Jede Seite hat gute Gründe.'],
     dimensionen: ['Das Wort Politik kommt vom griechischen „polis“, dem Stadtstaat.', 'Inhalt, Form, Prozess: Drei Brillen, durch die man dieselbe Politik anschauen kann.', 'Politik findet nicht nur im Bundestag statt, auch im Klassenrat.'],
@@ -165,7 +172,7 @@
     var app = APPS[folder] || null;
     var help = app ? { text: app.text, tip: app.tip } : null;
     var comments = app && TOPIC[app.topic] ? TOPIC[app.topic] : [];
-    Duo.init({ id: 'app-' + folder, offsetBottom: app && app.bottom ? app.bottom : 56, comments: comments, tone: app && app.tone ? app.tone : '', tapHelp: help ? function () { return help; } : null, idleHelp: help ? function () { return help; } : null });
+    Duo.init({ id: 'app-' + folder, offsetBottom: app && app.bottom ? app.bottom : 56, comments: comments, tone: app && app.tone ? app.tone : '', intro: !(app && app.intro === false), clickNext: !!(app && app.clickNext), tapHelp: help ? function () { return help; } : null, idleHelp: help ? function () { return help; } : null });
 
     // erster Hinweis pro Sitzung
     var key = 'tr-expl-' + rel, seen = false;
@@ -182,7 +189,7 @@
     var clicks = 0, nextPraise = 40;
     document.addEventListener('click', function (e) {
       if (!e.target.closest || e.target.closest('#dc-root')) return;
-      if (app && app.tone === 'serious') return;
+      if ((app && app.tone === 'serious') || (Duo.getTone && Duo.getTone() === 'serious')) return;
       if (++clicks >= nextPraise) { nextPraise += 40; Duo.react('love', rnd(PRAISE), 'T'); }
     }, true);
 
@@ -255,7 +262,7 @@
   }
   if (/(^|\/)(Klasse-10|Oberstufe)\//.test(rel + '/')) {
     var nb = base + 'neumann/', list = ['kolbi.js', 'skin-neumann.js', 'neumann-begleiter.js'];
-    var go = function () { words(function () { (function nx(i) { if (i >= list.length) return runNeumann(); var s = document.createElement('script'); s.src = nb + list[i] + '?v=20261122e'; s.onload = s.onerror = function () { nx(i + 1); }; document.head.appendChild(s); })(0); }); };
+    var go = function () { words(function () { (function nx(i) { if (i >= list.length) return runNeumann(); var s = document.createElement('script'); s.src = nb + list[i] + '?v=20261124a'; s.onload = s.onerror = function () { nx(i + 1); }; document.head.appendChild(s); })(0); }); };
     if (document.body) go(); else document.addEventListener('DOMContentLoaded', go);
     return;
   }
@@ -264,8 +271,8 @@
   function words(cb) {
     if (folder === 'Glorious-Revolution') return cb();
     var list = ['woerterbuch.js', 'glossare/allgemein.js', 'glossare/' + slug(folder) + '.js'];
-    (function nx(i) { if (i >= list.length) return cb(); var s = document.createElement('script'); s.src = base + list[i] + '?v=20261122e'; s.onload = s.onerror = function () { nx(i + 1); }; document.head.appendChild(s); })(0);
+    (function nx(i) { if (i >= list.length) return cb(); var s = document.createElement('script'); s.src = base + list[i] + '?v=20261124a'; s.onload = s.onerror = function () { nx(i + 1); }; document.head.appendChild(s); })(0);
   }
-  function start() { words(function () { if (window.Duo) return run(); var s = document.createElement('script'); s.src = base + 'duo.js?v=20261122e'; s.onload = run; document.head.appendChild(s); }); }
+  function start() { words(function () { if (window.Duo) return run(); var s = document.createElement('script'); s.src = base + 'duo.js?v=20261124a'; s.onload = run; document.head.appendChild(s); }); }
   if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);
 })();

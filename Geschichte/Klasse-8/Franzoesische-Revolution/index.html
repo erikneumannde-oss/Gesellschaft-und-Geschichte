@@ -1,0 +1,2093 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le Courrier – Die Französische Revolution als Zeitung</title>
+<!--
+  Lernmodul Geschichte Klasse 8: Die Französische Revolution als Zeitung.
+  Die Schüler stellen als anonyme Redaktion drei Titelseiten von „Le Courrier“ zusammen: 1791 (1785 bis 1791), 1794 (1791 bis 1794)
+  und 1797 (1794 bis 1797). Danach öffnet sich das Archiv der Redaktion mit dem Musterdetektor. Assistenten: Tinto und Rolli (maskottchen/duo-app.js), mit „Wort erklären“.
+  Gespeichert wird nur im Browser der Schüler (fertige Felder, Entscheidungen, eigene Sätze). Keine Auswertung, keine Übertragung.
+  Es wird nichts von externen Adressen geladen.
+  Umsetzung: Erik Neumann mit Hilfe von Claude
+-->
+<style>
+:root{--ink:#1d1a16;--ink2:#4a443b;--paper:#f6eedd;--paper2:#efe3c8;--rule:#2b2620;--red:#c2361f;--red2:#a32a15;--ok:#2f6b3a;--head:Didot,"Bodoni 72","Bodoni MT","Iowan Old Style",Georgia,serif;--body:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--ui:system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:var(--body);color:var(--ink);background:#3b2a1c url(redaktion.jpg) center/cover fixed;-webkit-text-size-adjust:100%}
+body:before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 35%,rgba(20,12,6,.55) 100%);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:14px 12px calc(120px + env(safe-area-inset-bottom))}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+.topbar a,.topbar button{font:600 14px var(--ui);color:var(--ink);background:rgba(246,238,221,.94);border:1px solid #cdbb94;border-radius:999px;padding:8px 14px;text-decoration:none;cursor:pointer}
+.paper{background:var(--paper);background-image:radial-gradient(rgba(120,90,40,.06) 1px,transparent 1px),linear-gradient(180deg,rgba(255,255,255,.35),rgba(0,0,0,0));background-size:5px 5px,100% 100%;border-radius:3px;box-shadow:0 18px 40px rgba(0,0,0,.45),0 2px 0 #d9caa6 inset;padding:18px 18px 22px}
+h1,h2,h3{font-family:var(--head);font-weight:700;margin:0}
+.btn{font:700 16px var(--ui);background:var(--ink);color:#fff;border:0;border-radius:10px;padding:12px 18px;cursor:pointer}
+.btn.red{background:var(--red)}
+.btn:disabled{opacity:.35;cursor:default}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.muted{color:var(--ink2)}
+.small{font-size:13px}
+/* Start */
+.mast{text-align:center;border-bottom:3px double var(--rule);padding-bottom:8px;margin-bottom:10px}
+.mast .name{font-family:var(--head);font-size:clamp(40px,11vw,74px);letter-spacing:.04em;line-height:1}
+.mast .sub{font:italic 14px var(--body);color:var(--ink2);margin-top:4px}
+.dateline{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font:13px var(--body);border-bottom:1px solid var(--rule);padding:4px 0 6px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em}
+.intro p{font-size:18px;line-height:1.55;margin:0 0 12px}
+.issues{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 6px}
+.issue{border:1.5px solid var(--rule);border-radius:4px;padding:12px 8px;text-align:center;background:var(--paper2);font:inherit;color:inherit;cursor:pointer}
+.issue b{display:block;font-family:var(--head);font-size:28px}
+.issue span{font:12px var(--ui);color:var(--ink2)}
+.issue[disabled]{opacity:.45;cursor:default}
+.issue.done{border-color:var(--ok)}
+/* Titelseite */
+.page .mast .name{font-size:clamp(44px,12vw,84px)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid .full{grid-column:1/-1}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.field{position:relative;min-height:150px;border:2px dashed #9c8c6c;border-radius:4px;padding:14px;background:rgba(255,255,255,.18);cursor:pointer;font:inherit;color:inherit;text-align:left;width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;transition:background .2s,border-color .2s}
+.field:hover{background:rgba(255,255,255,.4);border-color:var(--ink)}
+.field .lab{font:700 12px var(--ui);letter-spacing:.18em;text-transform:uppercase;color:var(--ink2)}
+.field .hint{font:15px var(--ui);color:var(--ink2)}
+.field .quill{width:34px;height:34px;opacity:.7}
+.field.locked{cursor:default;opacity:.55}
+.field.locked:hover{background:rgba(255,255,255,.18);border-color:#9c8c6c}
+.field.big{min-height:210px}
+.art{border:0;border-top:1.5px solid var(--rule);padding:10px 0 0;cursor:default;display:block;min-height:0;background:none}
+.art .kick{font:700 11px var(--ui);letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
+.art h2{font-size:clamp(26px,6.4vw,42px);line-height:1.08;margin:4px 0 8px}
+.art h3{font-size:clamp(22px,5vw,28px);line-height:1.12;margin:4px 0 8px}
+.art .dek{font:italic 17px/1.45 var(--body);margin:0 0 8px}
+.art p{font-size:16px;line-height:1.5;margin:0 0 8px;hyphens:auto;-webkit-hyphens:auto}
+.art .cols{columns:2;column-gap:18px;column-rule:1px solid #cbb994}
+@media(max-width:600px){.art .cols{columns:1}}
+.art figure{margin:6px 0 10px}
+.art figure img{display:block;max-width:100%;max-height:260px;margin:0 auto}
+.art figcaption{font:italic 12px var(--ui);color:var(--ink2);text-align:center;margin-top:4px}
+.art blockquote{margin:8px 0;padding:6px 0 6px 12px;border-left:3px solid var(--red);font-size:16px;line-height:1.45}
+.art .src{font:11.5px var(--ui);color:var(--ink2)}
+.art .box{border:1.5px solid var(--rule);padding:8px 10px;margin:8px 0;background:rgba(255,255,255,.3)}
+.art .box b{font:700 12px var(--ui);letter-spacing:.12em;text-transform:uppercase}
+.rumor-list{margin:0;padding:0;list-style:none}
+.rumor-list li{margin:0 0 8px;font-size:16px;line-height:1.45}
+.rumor-list .fc{display:block;font:600 13px var(--ui);color:var(--red2)}
+.drop{display:inline-block;opacity:0;transform:translateY(-14px) rotate(-6deg);animation:drop .38s cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes drop{to{opacity:1;transform:none}}
+.fadein{animation:fadein .8s ease forwards;opacity:0}
+@keyframes fadein{to{opacity:1}}
+.finish{margin-top:16px;text-align:center}
+.stamp{display:inline-block;font:800 22px var(--ui);letter-spacing:.2em;color:var(--red);border:4px solid var(--red);padding:6px 14px;transform:rotate(-8deg);opacity:0;animation:stamp .5s .2s ease-out forwards}
+@keyframes stamp{0%{opacity:0;transform:rotate(-8deg) scale(2.2)}100%{opacity:.9;transform:rotate(-8deg) scale(1)}}
+.roller{position:fixed;left:0;right:0;top:-40px;height:40px;background:linear-gradient(#2a2420,#6b5f55 45%,#2a2420);z-index:50;box-shadow:0 10px 30px rgba(0,0,0,.5);animation:roll 1.4s ease-in-out forwards}
+@keyframes roll{to{top:105vh}}
+/* Mappe (Untermodul) */
+.sheet-bg{position:fixed;inset:0;background:rgba(15,10,6,.6);z-index:30;display:none;overflow:auto;-webkit-overflow-scrolling:touch}
+.sheet-bg.on{display:block}
+.sheet{position:relative;max-width:760px;margin:14px auto calc(140px + env(safe-area-inset-bottom));background:#fbf6ea;border-radius:6px;box-shadow:0 20px 50px rgba(0,0,0,.5);padding:16px 16px 20px;min-height:60vh}
+.sheet .head{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1.5px solid var(--rule);padding-bottom:8px;margin-bottom:12px}
+.sheet .head .t{font:700 12px var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--ink2)}
+.sheet .x{font:600 14px var(--ui);background:none;border:1.5px solid var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer;color:var(--ink)}
+.dots{display:flex;gap:5px;margin:-2px 0 12px}
+.dots i{flex:1;height:4px;border-radius:2px;background:#ddd0b3}
+.dots i.on{background:var(--ink)}
+.step h3{font-size:24px;margin-bottom:8px}
+.step p{font-size:17px;line-height:1.55;margin:0 0 10px}
+.step .q{font:600 17px/1.45 var(--ui);margin:12px 0 10px}
+.foot{display:flex;justify-content:flex-start;gap:8px;margin-top:18px}
+.opts{display:grid;gap:8px}
+.opt{font:16px/1.35 var(--ui);text-align:left;background:#fff;border:1.5px solid #cdbf9e;border-radius:10px;padding:11px 12px;cursor:pointer;color:var(--ink)}
+.opt.sel{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
+.opt.right{border-color:var(--ok);background:#eaf4ea}
+.opt.miss{border-color:var(--red);background:#fbeae6}
+.opt[disabled]{cursor:default}
+.check{margin-top:10px}
+/* Setzkasten */
+.tray,.line{display:grid;gap:7px}
+.line{counter-reset:n;margin-bottom:12px}
+.slot{min-height:44px;border:1.5px dashed #b8a780;border-radius:6px;padding:8px 10px 8px 36px;position:relative;font:15px/1.35 var(--ui);background:#fff8;cursor:pointer}
+.slot:before{counter-increment:n;content:counter(n);position:absolute;left:10px;top:9px;font:700 14px var(--ui);color:var(--ink2)}
+.slot.fill{border-style:solid;border-color:var(--ink);background:#fff}
+.slot.right{border-color:var(--ok);background:#eaf4ea}
+.slot.miss{border-color:var(--red);background:#fbeae6}
+.slot .dt{display:block;font:700 12px var(--ui);color:var(--ok);margin-top:2px}
+.lett{font:15px/1.35 var(--ui);text-align:left;background:#2b2620;color:#f6eedd;border:0;border-radius:6px;padding:9px 11px;cursor:pointer}
+.lett.used{visibility:hidden;height:0;padding:0;margin:0}
+/* Geschichte in Bildern */
+.panel{border:1.5px solid var(--rule);border-radius:4px;padding:12px;background:#fff;margin-bottom:10px;font-size:17px;line-height:1.5}
+.panel .n{font:700 12px var(--ui);letter-spacing:.14em;color:var(--red);text-transform:uppercase;display:block;margin-bottom:4px}
+/* Marsch */
+.march{display:grid;grid-template-columns:118px 1fr;gap:12px;align-items:start}
+@media(max-width:420px){.march{grid-template-columns:86px 1fr}}
+.march img{width:100%;height:auto;display:block}
+.meter{font:600 13px var(--ui);margin:0 0 10px}
+.meter .bar{height:10px;border-radius:5px;background:#e3d6b8;overflow:hidden;margin-top:4px}
+.meter .bar i{display:block;height:100%;background:var(--red);width:5%;transition:width .8s}
+.reveal{border-left:3px solid var(--ok);background:#f1f6ef;padding:8px 10px;margin-top:10px;font-size:16px;line-height:1.5;border-radius:0 6px 6px 0}
+.reveal b{font:700 12px var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--ok);display:block}
+/* Korrekturfahne */
+.galley{border:1.5px solid var(--rule);background:#fff;border-radius:4px;padding:10px 12px;margin-bottom:10px}
+.galley .lbl{font:700 11px var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);display:block;margin-bottom:4px}
+.galley p{margin:0;font-size:17px;line-height:1.6}
+.galley .fr{font:italic 16px/1.55 var(--head);color:var(--ink2);margin:0 0 8px;padding-bottom:8px;border-bottom:1px dashed #cdbf9e}
+.galley .fr b{color:var(--red2);font-weight:700}
+.galley .de{display:block;font:700 10.5px var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);margin-bottom:2px}
+.seg{cursor:pointer;border-radius:3px;padding:1px 2px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.seg:hover{background:#f3e6c8}
+.seg.mark{background:none;text-decoration:underline wavy var(--red);text-decoration-thickness:2px;text-underline-offset:4px;color:var(--red2)}
+.seg.right{background:#e1f0df;text-decoration:none;color:var(--ink)}
+.seg.miss{background:#f9ddd6}
+.cite{font:12px var(--ui);color:var(--ink2);margin:-4px 0 10px}
+/* Wahllokal */
+.rule{border:2px solid var(--rule);background:#fff;padding:10px 12px;border-radius:4px;font-size:16px;line-height:1.45;margin-bottom:12px}
+.persons{display:grid;gap:8px}
+.person{background:#fff;border:1.5px solid #cdbf9e;border-radius:10px;padding:10px 12px}
+.person .who{font:600 16px var(--ui)}
+.person .what{font:14px var(--ui);color:var(--ink2);margin:2px 0 8px}
+.person .two{display:flex;gap:6px}
+.person .two button{flex:1;font:600 14px var(--ui);border:1.5px solid #cdbf9e;background:#fbf6ea;border-radius:8px;padding:8px 6px;cursor:pointer;color:var(--ink)}
+.person .two button.sel{background:var(--ink);color:#fff;border-color:var(--ink)}
+.person.right{border-color:var(--ok);background:#eef6ec}
+.person.miss{border-color:var(--red);background:#fbeae6}
+/* Gerüchte */
+.flyer{background:#fffdf6;border:1px solid #c9b88e;box-shadow:2px 3px 0 #d8c8a2;padding:12px;margin-bottom:12px;transform:rotate(-.4deg)}
+.flyer:nth-child(even){transform:rotate(.5deg)}
+.flyer .g{font:700 11px var(--ui);letter-spacing:.16em;color:var(--red);text-transform:uppercase}
+.flyer .txt{font:italic 18px/1.45 var(--head);margin:4px 0 10px}
+.flyer .row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
+.flyer .row span{font:600 13px var(--ui);color:var(--ink2);margin-right:4px}
+.chip{font:600 14px var(--ui);border:1.5px solid #cdbf9e;background:#fbf6ea;border-radius:999px;padding:7px 12px;cursor:pointer;color:var(--ink)}
+.chip.sel{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip.right{background:var(--ok);border-color:var(--ok);color:#fff}
+.chip.miss{background:#fbeae6;border-color:var(--red)}
+.chip[disabled]{cursor:default}
+.verdict{font:600 14px var(--ui);color:var(--ok);margin-top:6px}
+.quote{border-left:3px solid var(--red);background:#fff;padding:10px 12px;font-size:17px;line-height:1.55;margin:6px 0 4px}
+/* Statistik, Ursachen, Abstimmung */
+.stat{margin:10px 0}
+.stat .row{margin:0 0 14px}
+.stat .row b{display:block;font:700 13px var(--ui);margin-bottom:4px}
+.stat .bar{display:flex;height:34px;border:1.5px solid var(--rule);border-radius:4px;overflow:hidden;background:#fff}
+.stat .bar span{display:flex;align-items:center;justify-content:center;font:700 12px var(--ui);color:#fff;white-space:nowrap;overflow:hidden;width:0;transition:width 1.2s cubic-bezier(.3,.8,.3,1)}
+.stat .s1{background:#7d4e8f}.stat .s2{background:#b9932f}.stat .s3a{background:#4f7fa0}.stat .s3b{background:#8fb3cc;color:#1d1a16!important}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font:13px var(--ui);margin:6px 0 4px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.slider{margin:10px 0 4px}
+.slider input{width:100%;accent-color:var(--red)}
+.slider .val{font:700 22px var(--ui);text-align:center;margin-top:2px}
+.cause{background:#fff;border:1.5px solid #cdbf9e;border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.cause .ct{font:16px/1.4 var(--ui);margin-bottom:8px}
+.cause .row{display:flex;flex-wrap:wrap;gap:6px}
+.cause.right{border-color:var(--ok);background:#eef6ec}
+.cause.miss{border-color:var(--red);background:#fbeae6}
+.estates{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.estate{border:1.5px solid var(--rule);border-radius:6px;background:#fff;padding:8px 6px;text-align:center}
+.estate b{display:block;font:700 13px var(--ui)}
+.estate .n{display:block;font:700 22px var(--ui);margin:2px 0}
+.estate .v{display:inline-block;font:700 12px var(--ui);border-radius:999px;padding:2px 8px;color:#fff}
+.v.ja{background:var(--ok)}.v.nein{background:var(--red)}
+.tally{border:2px solid var(--rule);border-radius:6px;background:#fff;padding:10px 12px;margin:8px 0;font:16px/1.45 var(--ui);min-height:52px}
+.galley .gl{display:block;font:12.5px/1.4 var(--ui);color:var(--red2);margin:-4px 0 8px}
+/* Der Tisch mit der kleinen Zeitung */
+#deskView{position:fixed;inset:0;z-index:20;background:#3b2a1c url(redaktion.jpg) center/cover no-repeat}
+#deskView:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 45%,rgba(20,12,6,.45) 100%);pointer-events:none}
+#deskView .back{position:absolute;left:12px;top:calc(12px + env(safe-area-inset-top));font:600 14px var(--ui);color:var(--ink);background:rgba(246,238,221,.94);border:1px solid #cdbb94;border-radius:999px;padding:8px 14px;text-decoration:none;z-index:2}
+#mini{position:absolute;padding:0;border:0;cursor:pointer;background:var(--paper);background-image:radial-gradient(rgba(120,90,40,.07) 1px,transparent 1px);background-size:4px 4px;box-shadow:0 14px 30px rgba(0,0,0,.55),0 2px 4px rgba(0,0,0,.3);transform:rotate(-3deg);transform-origin:50% 50%;transition:transform .8s cubic-bezier(.5,0,.2,1),box-shadow .8s;display:flex;flex-direction:column;align-items:stretch;overflow:hidden;color:var(--ink)}
+#mini:hover{box-shadow:0 18px 38px rgba(0,0,0,.6),0 0 0 3px rgba(194,54,31,.55)}
+#mini .mn{font-family:var(--head);font-weight:700;text-align:center;line-height:1;margin:7% 6% 0;border-bottom:2px double var(--rule);padding-bottom:3%}
+#mini .md{font:600 2.6cqw var(--ui);letter-spacing:.12em;text-transform:uppercase;text-align:center;color:var(--ink2);margin:2% 6% 0;padding-bottom:2%;border-bottom:1px solid var(--rule)}
+#mini .mh{height:7%;margin:5% 6% 3%;background:repeating-linear-gradient(#2b2620 0 26%,transparent 26% 50%)}
+#mini .mt{flex:1;margin:0 6% 7%;display:grid;grid-template-columns:1fr 1fr;gap:6%}
+#mini .mt i{display:block;background:repeating-linear-gradient(rgba(43,38,32,.55) 0 1.5px,transparent 1.5px 7px)}
+#mini.pulse{animation:pulse 2.4s ease-in-out 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 14px 30px rgba(0,0,0,.55)}50%{box-shadow:0 14px 30px rgba(0,0,0,.55),0 0 0 6px rgba(194,54,31,.45)}}
+.wrap.fade{animation:fadein .5s ease forwards;opacity:0}
+/* Tinto und Rolli fliegen ein */
+#dc-root.flyin .dc-body{animation:flyin 1.7s cubic-bezier(.2,.9,.3,1.08) both}
+#dc-root.flyin .dc-r .dc-body{animation-delay:.3s}
+@keyframes flyin{0%{transform:translate(-75vw,-95vh) rotate(-540deg) scale(.35);opacity:0}25%{opacity:1}100%{transform:none;opacity:1}}
+/* Hinweis, falls Tinto und Rolli ausgeblendet sind */
+#toast{position:fixed;left:50%;top:calc(58px + env(safe-area-inset-top));transform:translateX(-50%);max-width:min(92vw,560px);background:#fffbe6;color:#1f2937;border:1px solid #d6cfa8;border-radius:14px;padding:10px 14px;font:15px/1.45 var(--ui);box-shadow:0 8px 26px rgba(0,0,0,.3);z-index:60;display:none}
+#toast.on{display:block}
+/* Ausgabe 1794: grauer, mit Trauerrand */
+.page{position:relative}
+.page.y94{background-color:#e9e5dc;background-image:radial-gradient(rgba(60,60,60,.08) 1px,transparent 1px);background-size:5px 5px}
+.page.y94 .mast{border-bottom-color:#111}
+.page.y94 .art .kick{color:#222}
+.art.trauer{border:4px solid #111;outline:1px solid #111;outline-offset:3px;padding:10px 12px;margin:6px 3px}
+.nachruf{margin:0 0 8px;padding:0 0 6px;border-bottom:1px solid #9a948a;font-size:15.5px;line-height:1.4}
+.nachruf b{font-family:var(--head);font-size:18px}
+.nachruf span{display:block;font:12.5px var(--ui);color:var(--ink2)}
+/* Ausgabe 1797: eleganter, mit Stempel am Rand */
+.page.y97{background-color:#f8f3e6}
+.page.y97 .mast .name{letter-spacing:.14em;font-weight:400}
+.page.y97 .mast{border-bottom:1px solid var(--rule);box-shadow:0 3px 0 #f8f3e6,0 4px 0 var(--rule)}
+.page.y97 .art{border-top:1px solid var(--rule)}
+.censor{display:block;width:max-content;margin:-6px 6px 10px auto;transform:rotate(-4deg);font:800 10px/1.2 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:#a32a15;border:2.5px solid #a32a15;border-radius:6px;padding:5px 8px;text-align:center;opacity:.8;background:rgba(248,243,230,.7)}
+.amt{border:2px solid var(--rule);background:#fff;padding:10px 12px;margin:8px 0;font:15.5px/1.5 var(--body)}
+.amt .h{display:block;text-align:center;font:700 12px var(--ui);letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px}
+.amt .fr{font-style:italic;color:var(--ink2);display:block;margin-top:6px;font-size:14px}
+.seized{position:relative}
+.seized:after{content:"Beschlagnahmt";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-12deg);font:800 24px var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--red);border:4px solid var(--red);padding:4px 12px;background:rgba(255,255,255,.65)}
+.twoimg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 10px}
+.twoimg img{width:100%;display:block;max-height:230px;object-fit:contain}
+.twoimg figcaption{grid-column:1/-1}
+/* Dominosteine */
+.line.domino .slot{border-radius:10px;border-width:2px;background:#fffdf6}
+.line.domino .slot:after{content:"";position:absolute;left:50%;bottom:-9px;width:2px;height:8px;background:#b8a780}
+.line.domino .slot:last-child:after{display:none}
+.lett.dom{background:#fffdf6;color:var(--ink);border:2px solid var(--ink);border-radius:10px;box-shadow:2px 3px 0 #2b2620}
+.slot.fall{animation:fall .45s ease-in both}
+@keyframes fall{0%{transform:rotate(0)}60%{transform:rotate(7deg)}100%{transform:rotate(0)}}
+/* Akten */
+.akte{border:1.5px solid #8a7a56;background:#efe3c4;border-radius:2px 10px 4px 4px;margin:0 0 10px;box-shadow:2px 3px 0 #cdbb94}
+.akte>button{display:flex;justify-content:space-between;align-items:center;width:100%;font:600 16px var(--ui);text-align:left;background:none;border:0;padding:12px;cursor:pointer;color:var(--ink)}
+.akte>button i{font-style:normal;font:700 11px var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--ink2)}
+.akte.seen>button i{color:var(--ok)}
+.akte .in{display:none;background:#fffdf6;border-top:1.5px dashed #8a7a56;padding:10px 12px;font-size:16.5px;line-height:1.5}
+.akte.open .in{display:block}
+.akte .in img{float:right;max-width:38%;max-height:190px;margin:0 0 6px 10px}
+.akte .in p{margin:0 0 8px}
+.akte .in .quote{clear:both}
+/* Streitszene */
+.dialog{display:grid;gap:10px}
+.say{display:grid;grid-template-columns:82px 1fr;gap:10px;align-items:end}
+.say.r{grid-template-columns:1fr 82px}
+.say img{width:82px;display:block}
+.say .bub{background:#fff;border:1.5px solid #cdbf9e;border-radius:14px;padding:9px 12px;font:16px/1.45 var(--ui)}
+.say .bub b{display:block;font:700 11px var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);margin-bottom:2px}
+/* Pendel */
+.pendel{position:relative;height:170px;margin:4px 0 8px}
+.pendel .lab{position:absolute;top:118px;font:700 12px var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);max-width:40%}
+.pendel .lab.l{left:0}.pendel .lab.r{right:0;text-align:right}
+.pendel svg{position:absolute;left:50%;top:0;transform:translateX(-50%);overflow:visible}
+.pendel .arm{transform-origin:60px 8px;transition:transform 1s cubic-bezier(.3,1.5,.5,1)}
+.evt{background:#fff;border:1.5px solid #cdbf9e;border-radius:10px;padding:10px 12px;font:16px/1.4 var(--ui);margin-bottom:8px}
+.evt .d{display:block;font:700 12px var(--ui);color:var(--red2);letter-spacing:.08em}
+/* Archiv / Musterkarten */
+.mcards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 12px}
+@media(max-width:420px){.mcards{grid-template-columns:1fr}}
+.mcard{background:#fffdf6;border:1.5px solid var(--rule);border-radius:6px;padding:10px;font:italic 17px/1.35 var(--head);box-shadow:2px 3px 0 #cdbb94}
+.mcard.off{opacity:.35;font-style:normal;font:13px var(--ui)}
+.mcard small{display:block;font:12px var(--ui);color:var(--ink2);margin-top:4px;font-style:normal}
+.cause .row .chip{font-size:13px;padding:6px 10px}
+textarea.note{width:100%;min-height:96px;font:16px/1.45 var(--ui);border:1.5px solid #cdbf9e;border-radius:10px;padding:10px;background:#fff;color:var(--ink)}
+.hidden{display:none!important}
+@media print{body{background:#fff}body:before,.topbar,.finish .btn,#dc-root,#toast,.sheet-bg{display:none!important}.paper{box-shadow:none}.wrap{max-width:none;padding:0}}
+@media(prefers-reduced-motion:reduce){.drop,.fadein,.stamp,.roller{animation-duration:.01s!important}}
+</style>
+</head>
+<body>
+<div id="deskView">
+  <a class="back" href="../">← Zur Pinnwand</a>
+  <button type="button" id="mini" class="pulse" aria-label="Die Zeitung Le Courrier ansehen"><span class="mn">Le Courrier</span><span class="md">1791 · 1794 · 1797</span><span class="mh"></span><span class="mt"><i></i><i></i></span></button>
+</div>
+<div class="wrap hidden" id="wrap">
+  <div class="topbar"><a href="../">← Zur Pinnwand</a><button type="button" id="toDesk">Zum Tisch</button><button type="button" id="toStart" class="hidden">Redaktion</button></div>
+
+  <!-- Redaktion: Start -->
+  <section id="start" class="paper">
+    <div class="mast"><div class="name">Le Courrier</div><div class="sub">Die Französische Revolution als Zeitung</div></div>
+    <div class="intro">
+      <p>Paris, im Jahr 1791. Du arbeitest für die Zeitung <i>Le Courrier</i>. Deinen Namen kennt niemand. Das ist in diesen Zeiten sicherer.</p>
+      <p>Vor dir liegt die Titelseite der nächsten Ausgabe. Die Felder sind noch leer. Jedes Feld füllst du, indem du die Mappe dazu bearbeitest. Danach wird das Feld gesetzt und gedruckt.</p>
+    </div>
+    <div class="issues">
+      <button class="issue" id="iss1791" type="button"><b>1791</b><span>1785 bis 1791</span></button>
+      <button class="issue" id="iss1794" type="button"><b>1794</b><span>1791 bis 1794</span></button>
+      <button class="issue" id="iss1797" type="button"><b>1797</b><span>1794 bis 1797</span></button>
+    </div>
+    <div id="archiveRow" class="hidden" style="text-align:center;margin:14px 0 4px"><button type="button" id="archiveBtn" class="btn red">🗄️ Das Archiv der Redaktion öffnen</button></div>
+    <p class="small muted" style="text-align:center;margin:14px 0 0"><button type="button" id="reset" class="chip">Neu anfangen</button></p>
+  </section>
+
+  <!-- Titelseite -->
+  <section id="page" class="paper page hidden">
+    <div class="mast"><div class="name">Le Courrier</div><div class="sub" id="pgSub">Nachrichten aus Paris und der Nationalversammlung</div></div>
+    <div class="dateline"><span id="pgDate1">Paris, Donnerstag, 15. September 1791</span><span id="pgDate2">Im dritten Jahr der Freiheit</span></div>
+    <div class="censor hidden" id="censor">Unter Aufsicht<br>der Polizei</div>
+    <div class="grid">
+      <div class="full" id="slotA"></div>
+      <div id="slotB"></div>
+      <div id="slotC"></div>
+      <div class="full" id="slotD"></div>
+    </div>
+    <div class="finish" id="finish"></div>
+  </section>
+</div>
+
+<div class="sheet-bg" id="sheetBg"><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+  // ------------------------------------------------------------------ Hilfen
+  function $(s, r) { return (r || document).querySelector(s); }
+  function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  var KEY = 'le-courrier-v1';
+  function fresh() { return { y1791: {}, y1794: {}, y1797: {}, printed: [], guess: '', muster: [], txt: {} }; }
+  var S = fresh();
+  try { var o = JSON.parse(localStorage.getItem(KEY) || 'null'); if (o) for (var k in o) S[k] = o[k]; } catch (e) {}
+  ['y1791', 'y1794', 'y1797', 'txt'].forEach(function (k) { if (!S[k]) S[k] = {}; });
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+
+  // Rückmeldungen und Hinweise kommen von Tinto (T) und Rolli (R). Sind beide ausgeblendet, erscheint ein kleiner Hinweis unten.
+  var toastT = null;
+  function say(text, mood, who, stay) {
+    var ok = false;
+    text = plain(text); mood = tone(mood || 'interested');
+    try { if (window.Duo && Duo.talk) ok = Duo.talk([{ w: who || 'R', t: text, m: mood }], stay ? { stay: stay } : undefined); } catch (e) {}
+    if (ok) return;
+    var bub = document.getElementById('dc-bubble'); if (bub && bub.classList.contains('on')) return;   // gerade läuft die Begrüßung von Tinto und Rolli
+    var t = $('#toast'); t.textContent = text; t.classList.add('on'); clearTimeout(toastT);
+    toastT = setTimeout(function () { t.classList.remove('on'); }, Math.max(5000, text.length * 55));
+  }
+  function talk(lines) {
+    lines = lines.map(function (l) { return { w: l.w, t: plain(l.t), m: tone(l.m) }; });
+    var ok = false; try { if (window.Duo && Duo.talk) ok = Duo.talk(lines, { stay: 12000 }); } catch (e) {}
+    if (!ok) say(lines.map(function (l) { return l.t; }).join(' '), lines[0].m, lines[0].w);
+  }
+  var GOOD = ['Richtig!', 'Genau so.', 'Stimmt!', 'Gut gemacht!'];
+  // Bei ernsten Themen (Gewalt, Hinrichtungen, Hunger) bleiben Tinto und Rolli ruhig: keine Freudensprünge, keine Emojis.
+  var ERNST = false;
+  function setErnst(v) { ERNST = !!v; try { if (window.Duo && Duo.tone) Duo.tone(ERNST ? 'serious' : ''); } catch (e) {} }
+  function good() { return ERNST ? rnd(['Stimmt.', 'Richtig.', 'Ja, so war es.', 'Genau.']) : rnd(GOOD); }
+  function tone(m) { return ERNST && (m === 'excited' || m === 'happy' || m === 'surprised') ? 'calm' : m; }
+  function plain(t) { return ERNST ? t.replace(/\s*[\u{1F300}-\u{1FAFF}\u2600-\u27BF]\uFE0F?/gu, '').replace(/!/g, '.') : t; }
+  // Mischen, aber ohne durchschaubare Muster (streng abwechselnd oder in Blöcken)
+  function mix(a, key) {
+    for (var n = 0; n < 40; n++) {
+      var b = shuffle(a), alt = true, blocks = 1;
+      for (var i = 1; i < b.length; i++) { if (key(b[i]) === key(b[i - 1])) alt = false; else blocks++; }
+      var kinds = {}; b.forEach(function (x) { kinds[key(x)] = 1; });
+      if (b.length < 4 || (!alt && blocks > Object.keys(kinds).length)) return b;
+    }
+    return shuffle(a);
+  }
+  function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
+
+  // Text oder fertiges HTML (Bild, Zitat) als Block
+  function blk(p) { return typeof p !== 'string' ? p : (/^<(div|figure|img|table|ul|ol|blockquote)/.test(p) ? el('div', '', p) : el('p', '', p)); }
+
+  // ------------------------------------------------------------------ Bausteine für die Mappen
+  // Jeder Schritt bekommt (Behälter, fertig) und ruft fertig() auf, sobald er gelöst ist.
+  function textStep(title, paras) {
+    return function (box, done) {
+      box.appendChild(el('h3', '', title));
+      paras.forEach(function (p) { box.appendChild(blk(p)); });
+      done();
+    };
+  }
+
+  function mcStep(o) {
+    // o: { lead?, q, opts:[{t, ok}], why (richtig), tip (bei falsch) }
+    return function (box, done) {
+      if (o.title) box.appendChild(el('h3', '', o.title));
+      if (o.lead) o.lead.forEach(function (n) { box.appendChild(typeof n === 'string' ? el('p', '', n) : n); });
+      box.appendChild(el('div', 'q', o.q));
+      var list = el('div', 'opts'), solved = false;
+      shuffle(o.opts).forEach(function (op) {
+        var b = el('button', 'opt', op.t); b.type = 'button';
+        b.onclick = function () {
+          if (solved || b.disabled) return;
+          if (op.ok) {
+            solved = true; b.classList.add('right');
+            [].forEach.call(list.children, function (x) { x.disabled = true; });
+            say(good() + ' ' + o.why, 'excited', 'T'); done();
+          } else { b.classList.add('miss'); b.disabled = true; say(o.tip, 'thinking', 'R'); }
+        };
+        list.appendChild(b);
+      });
+      box.appendChild(list);
+    };
+  }
+
+  function multiStep(o) {
+    // mehrere richtige Antworten; o: { q, opts:[{t, ok}], why, tip }
+    return function (box, done) {
+      if (o.title) box.appendChild(el('h3', '', o.title));
+      (o.lead || []).forEach(function (p) { box.appendChild(blk(p)); });
+      box.appendChild(el('div', 'q', o.q));
+      box.appendChild(el('p', 'small muted', 'Es können mehrere Antworten stimmen.'));
+      var list = el('div', 'opts'), sel = [], solved = false;
+      var opts = shuffle(o.opts);
+      opts.forEach(function (op, i) {
+        var b = el('button', 'opt', op.t); b.type = 'button';
+        b.onclick = function () { if (solved) return; b.classList.remove('miss'); var k = sel.indexOf(i); if (k < 0) { sel.push(i); b.classList.add('sel'); } else { sel.splice(k, 1); b.classList.remove('sel'); } };
+        list.appendChild(b);
+      });
+      box.appendChild(list);
+      var c = el('button', 'btn check', 'Prüfen'); c.type = 'button';
+      c.onclick = function () {
+        if (solved) return;
+        if (!sel.length) return say('Wähle zuerst mindestens eine Antwort aus.', 'interested', 'R');
+        var wrong = 0, missing = 0;
+        opts.forEach(function (op, i) { var on = sel.indexOf(i) >= 0; if (on && !op.ok) { wrong++; list.children[i].classList.add('miss'); } if (!on && op.ok) missing++; });
+        if (!wrong && !missing) {
+          solved = true; c.disabled = true;
+          opts.forEach(function (op, i) { if (op.ok) list.children[i].classList.add('right'); list.children[i].disabled = true; });
+          if (o.after) box.appendChild(el('div', 'fadein', o.after));
+          say(good() + ' ' + o.why, 'excited', 'T'); done();
+        } else if (wrong) say('Mindestens eine Auswahl stimmt nicht. Sie ist rot markiert. ' + o.tip, 'thinking', 'R');
+        else say('Das stimmt schon, aber es fehlt noch etwas. ' + o.tip, 'thinking', 'R');
+      };
+      box.appendChild(c);
+    };
+  }
+
+  function setzkastenStep(o) {
+    // o: { title, lead, cards:[{t, d}] in richtiger Reihenfolge }
+    return function (box, done) {
+      box.appendChild(el('h3', '', o.title));
+      o.lead.forEach(function (p) { box.appendChild(el('p', '', p)); });
+      var line = el('div', 'line'), tray = el('div', 'tray'), slots = [], pick = [];
+      o.cards.forEach(function () { var s = el('div', 'slot'); s.innerHTML = '&nbsp;'; line.appendChild(s); slots.push(s); });
+      var letters = shuffle(o.cards.map(function (c, i) { return { c: c, i: i }; }));
+      var solved = false;
+      function render() {
+        slots.forEach(function (s, k) {
+          var it = pick[k];
+          s.className = 'slot' + (it ? ' fill' : '');
+          s.innerHTML = it ? it.c.t : '&nbsp;';
+        });
+        letters.forEach(function (L) { L.b.classList.toggle('used', pick.indexOf(L) >= 0); });
+      }
+      letters.forEach(function (L) {
+        var b = el('button', 'lett' + (o.domino ? ' dom' : ''), L.c.t); b.type = 'button'; L.b = b;
+        b.onclick = function () { if (solved || pick.indexOf(L) >= 0) return; var k = 0; while (pick[k]) k++; if (k >= slots.length) return; pick[k] = L; render(); };
+        tray.appendChild(b);
+      });
+      slots.forEach(function (s, k) { s.onclick = function () { if (solved || !pick[k]) return; pick[k] = null; render(); }; });
+      if (o.domino) line.classList.add('domino');
+      box.appendChild(el('p', 'small muted', o.hint || 'Die Reihe oben ist deine Druckzeile. Ein Fehlgriff? Tippe die Zeile an, dann kommt die Letter zurück.'));
+      box.appendChild(line); box.appendChild(tray);
+      var c = el('button', 'btn check', o.check || 'Zeile prüfen'); c.type = 'button';
+      c.onclick = function () {
+        if (solved) return;
+        var filled = pick.filter(Boolean).length;
+        if (filled < slots.length) return say('Es fehlen noch ' + (slots.length - filled) + (o.domino ? ' Steine in der Kette.' : ' Lettern in der Zeile.'), 'interested', 'R');
+        var bad = 0;
+        slots.forEach(function (s, k) { var okk = pick[k].i === k; s.classList.add(okk ? 'right' : 'miss'); if (!okk) bad++; });
+        if (!bad) {
+          solved = true; c.disabled = true;
+          slots.forEach(function (s, k) { s.innerHTML = pick[k].c.t + '<span class="dt">' + pick[k].c.d + '</span>'; s.className = 'slot right'; if (o.domino) { s.style.animationDelay = (k * 0.18) + 's'; s.classList.add('fall'); } });
+          say(o.okMsg || 'Die Zeile steht! Jetzt siehst du auch die Daten.', 'excited', 'T'); done();
+        } else say(bad + (o.domino ? (bad === 1 ? ' Stein liegt' : ' Steine liegen') : (bad === 1 ? ' Letter steht' : ' Lettern stehen')) + ' noch an der falschen Stelle (rot). ' + (o.tip || 'Lies im Text oben nach, was zuerst kam.'), 'thinking', 'R');
+      };
+      box.appendChild(c);
+    };
+  }
+
+  function storyStep(title, panels) {
+    return function (box, done) {
+      box.appendChild(el('h3', '', title));
+      var i = 0, wrapP = el('div'), nx = el('button', 'btn ghost', 'Weiterlesen'); nx.type = 'button';
+      box.appendChild(wrapP); box.appendChild(nx);
+      function show() {
+        var p = el('div', 'panel fadein', '<span class="n">' + panels[i][0] + '</span>' + panels[i][1]); wrapP.appendChild(p);
+        i++; if (i >= panels.length) { nx.remove(); done(); }
+      }
+      nx.onclick = show; show();
+    };
+  }
+
+  function marchStep(stations) {
+    return function (box, done) {
+      var i = 0, crowd = 5;
+      var meter = el('div', 'meter', 'Menge auf der Straße<div class="bar"><i></i></div>'), body = el('div');
+      box.appendChild(meter); box.appendChild(body);
+      function bar() { $('i', meter).style.width = crowd + '%'; }
+      function show() {
+        var s = stations[i]; body.innerHTML = '';
+        var g = el('div', 'march'), img = el('img'); img.alt = ''; img.src = 'marktfrau-' + s.img + '.png';
+        var t = el('div'); t.appendChild(el('h3', '', s.title)); t.appendChild(el('p', '', s.text));
+        var q = el('div', 'q', s.q); t.appendChild(q);
+        var opts = el('div', 'opts'); t.appendChild(opts);
+        g.appendChild(img); g.appendChild(t); body.appendChild(g);
+        s.choices.forEach(function (c) {
+          var b = el('button', 'opt', c); b.type = 'button';
+          b.onclick = function () {
+            [].forEach.call(opts.children, function (x) { x.disabled = true; }); b.classList.add('sel');
+            crowd = Math.min(100, crowd + s.grow); bar();
+            img.src = 'marktfrau-' + s.after + '.png';
+            var r = el('div', 'reveal fadein', '<b>So war es wirklich</b>' + s.real); t.appendChild(r);
+            var nx = el('button', 'btn', i < stations.length - 1 ? 'Weiter' : 'Zum Abschluss'); nx.type = 'button'; nx.style.marginTop = '10px';
+            nx.onclick = function () { i++; if (i < stations.length) { show(); box.scrollIntoView({ block: 'start', behavior: 'smooth' }); } else { body.innerHTML = ''; body.appendChild(el('p', '', 'Der Zug ist zurück in Paris. Schau jetzt auf das Ergebnis.')); done(true); } };
+            t.appendChild(nx);
+            if (s.say) say(s.say, 'interested', 'R');
+          };
+          opts.appendChild(b);
+        });
+      }
+      bar(); show();
+    };
+  }
+
+  function diffStep(o) {
+    // o: { title, art, old, oldSrc, segs:[[text, changed]], newSrc, why, tip }
+    return function (box, done) {
+      box.appendChild(el('h3', '', o.title));
+      var g1 = el('div', 'galley', '<span class="lbl">Erklärung der Menschen- und Bürgerrechte, 1789 · ' + o.art + '</span><p class="fr" lang="fr">' + o.oldFr + '</p>' + (o.oldGl ? '<span class="gl">' + o.oldGl + '</span>' : '') + '<span class="de">Übersetzung</span><p>' + o.old + '</p>');
+      box.appendChild(g1); box.appendChild(el('div', 'cite', 'Original: Déclaration des droits de l\'homme et du citoyen, 26. August 1789. Übersetzung: ' + o.oldSrc));
+      var g2 = el('div', 'galley'), p = el('p'); g2.appendChild(el('span', 'lbl', 'Olympe de Gouges, 1791 · ' + o.art)); var fr2 = el('p', 'fr', o.newFr); fr2.lang = 'fr'; g2.appendChild(fr2); if (o.newGl) g2.appendChild(el('span', 'gl', o.newGl)); g2.appendChild(el('span', 'de', 'Übersetzung (tippe hier die Änderungen an)')); g2.appendChild(p);
+      var segs = o.segs.map(function (s) { var sp = el('span', 'seg', s[0]); sp.dataset.on = ''; p.appendChild(sp); p.appendChild(document.createTextNode(' ')); return { el: sp, ch: s[1] }; });
+      box.appendChild(g2); box.appendChild(el('div', 'cite', 'Original: Olympe de Gouges, Les Droits de la femme, 1791 (Erstausgabe). Übersetzung: ' + o.newSrc));
+      var solved = false;
+      segs.forEach(function (s) { s.el.onclick = function () { if (solved) return; s.el.classList.remove('miss'); s.el.classList.toggle('mark'); }; });
+      var c = el('button', 'btn check', 'Korrektur prüfen'); c.type = 'button';
+      c.onclick = function () {
+        if (solved) return;
+        var marked = segs.filter(function (s) { return s.el.classList.contains('mark'); });
+        if (!marked.length) return say('Tippe zuerst die Stellen an, die Gouges geändert hat.', 'interested', 'R');
+        var extra = marked.filter(function (s) { return !s.ch; }).length, miss = segs.filter(function (s) { return s.ch && !s.el.classList.contains('mark'); }).length;
+        if (!extra && !miss) {
+          solved = true; c.disabled = true; segs.forEach(function (s) { if (s.ch) { s.el.classList.remove('mark'); s.el.classList.add('right'); } });
+          say(good() + ' Du hast alle Änderungen gefunden.', 'excited', 'T'); done();
+        } else {
+          segs.forEach(function (s) { if (!s.ch && s.el.classList.contains('mark')) { s.el.classList.remove('mark'); s.el.classList.add('miss'); } });
+          var m = [];
+          if (extra) m.push(extra === 1 ? 'Eine markierte Stelle sagt inhaltlich dasselbe wie 1789.' : extra + ' markierte Stellen sagen inhaltlich dasselbe wie 1789.');
+          if (miss) m.push(miss === 1 ? 'Eine Änderung fehlt noch.' : miss + ' Änderungen fehlen noch.');
+          say(m.join(' ') + ' ' + o.tip, 'thinking', 'R');
+        }
+      };
+      box.appendChild(c);
+    };
+  }
+
+  function guessStep() {
+    return function (box, done) {
+      box.appendChild(el('h3', '', 'Freiheit, Gleichheit, Brüderlichkeit'));
+      box.appendChild(el('p', '', 'Diese drei Worte hörst du in Paris überall. Sie wurden zum Wahlspruch der Revolution: <i>Liberté, Égalité, Fraternité</i>.'));
+      box.appendChild(el('div', 'q', 'Was vermutest du: Wer ist mit „Brüderlichkeit“ gemeint?'));
+      var opts = el('div', 'opts');
+      ['Alle Menschen', 'Nur die Männer', 'Ich bin unsicher'].forEach(function (t) {
+        var b = el('button', 'opt', t); b.type = 'button';
+        b.onclick = function () { [].forEach.call(opts.children, function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); S.guess = t; save(); say('Halte deine Vermutung fest. Wir prüfen sie gleich an den Quellen.', 'interested', 'R'); done(); };
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      box.appendChild(el('p', 'small muted', 'Hier gibt es kein Richtig oder Falsch. Es ist nur deine erste Vermutung.'));
+    };
+  }
+
+  function voteStep(o) {
+    // o: { title, intro, rule, opts:[[wert, text]], people:[{who, what, ok, dead}], okMsg, tip }
+    var OPTS = o.opts || [['ja', 'darf wählen'], ['nein', 'darf nicht wählen']];
+    return function (box, done) {
+      box.appendChild(el('h3', '', o.title || 'Wer darf wählen?'));
+      box.appendChild(el('p', '', o.intro));
+      box.appendChild(el('div', 'rule', o.rule));
+      var list = el('div', 'persons'), ppl = mix(o.people, function (p) { return p.ok; }), solved = false;
+      ppl.forEach(function (p) {
+        var c = el('div', 'person', '<div class="who">' + p.who + '</div><div class="what">' + p.what + '</div>');
+        if (p.dead) { c.style.opacity = '.6'; c.style.background = '#eee9df'; list.appendChild(c); p.el = c; return; }
+        var two = el('div', 'two'); if (OPTS.length > 2) two.style.flexWrap = 'wrap';
+        OPTS.forEach(function (v) {
+          var b = el('button', '', v[1]); b.type = 'button'; if (OPTS.length > 2) b.style.flex = '1 1 30%';
+          b.onclick = function () { if (solved) return; p.pick = v[0]; c.classList.remove('miss'); [].forEach.call(two.children, function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); };
+          two.appendChild(b);
+        });
+        c.appendChild(two); list.appendChild(c); p.el = c;
+      });
+      box.appendChild(list);
+      var live = ppl.filter(function (p) { return !p.dead; });
+      var ch = el('button', 'btn check', 'Prüfen'); ch.type = 'button';
+      ch.onclick = function () {
+        if (solved) return;
+        if (live.some(function (p) { return !p.pick; })) return say('Entscheide zuerst bei allen Personen.', 'interested', 'R');
+        var bad = 0; live.forEach(function (p) { var okk = p.pick === p.ok; p.el.classList.toggle('miss', !okk); p.el.classList.toggle('right', okk); if (!okk) bad++; });
+        if (!bad) { solved = true; ch.disabled = true; say(good() + ' ' + o.okMsg, 'excited', 'T'); done(); }
+        else say(bad + (bad === 1 ? ' Entscheidung stimmt' : ' Entscheidungen stimmen') + ' noch nicht (rot). ' + o.tip, 'thinking', 'R');
+      };
+      box.appendChild(ch);
+    };
+  }
+
+  function guessBackStep() {
+    return function (box, done) {
+      box.appendChild(el('h3', '', 'Zurück zur Brüderlichkeit'));
+      box.appendChild(el('p', '', 'Am Anfang hast du vermutet: <b>„' + (S.guess || 'keine Angabe') + '“</b>.'));
+      box.appendChild(el('div', 'q', 'Was meinst du jetzt, nach der Verfassung und nach Gouges?'));
+      var opts = el('div', 'opts');
+      ['Ich bleibe bei meiner Vermutung', 'Ich sehe es jetzt anders', 'Ich bin mir noch unsicher'].forEach(function (t) {
+        var b = el('button', 'opt', t); b.type = 'button';
+        b.onclick = function () { [].forEach.call(opts.children, function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); say('Gut, dass du es festhältst. Darüber lohnt es sich, in der Klasse zu streiten.', 'happy', 'T'); done(); };
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+    };
+  }
+
+  function rumorStep(rumors) {
+    return function (box, done) {
+      box.appendChild(el('h3', '', 'Die Gerüchteküche'));
+      box.appendChild(el('p', '', 'Auf deinem Tisch liegen Flugblätter über die Königin. Entscheide bei jedem: Druckst du es in deiner Zeitung? Danach erfährst du, ob es damals wirklich gedruckt und verbreitet wurde.'));
+      var left = rumors.length;
+      rumors.forEach(function (r) {
+        var f = el('div', 'flyer', '<div class="g">Flugblatt</div><div class="txt">' + r.t + '</div>');
+        var row = el('div', 'row', '<span>Druckst du das?</span>'), v = el('div', 'reveal hidden'), decided = false;
+        [['ja', 'Ja, drucken'], ['nein', 'Nein']].forEach(function (a) {
+          var b = el('button', 'chip', a[1]); b.type = 'button';
+          b.onclick = function () {
+            [].forEach.call(row.querySelectorAll('button'), function (x) { x.classList.remove('sel'); }); b.classList.add('sel');
+            var i = S.printed.indexOf(r.id); if (a[0] === 'ja' && i < 0) S.printed.push(r.id); if (a[0] === 'nein' && i >= 0) S.printed.splice(i, 1); save();
+            if (!decided) {
+              decided = true; left--;
+              v.innerHTML = '<b>Und damals? ' + (r.then === 'ja' ? 'Wirklich gedruckt' : 'Nicht gedruckt') + '</b>' + r.why; v.classList.remove('hidden');
+              if (!left) done();
+            }
+          };
+          row.appendChild(b);
+        });
+        f.appendChild(row); f.appendChild(v); box.appendChild(f);
+      });
+    };
+  }
+
+  function queenStep() {
+    return function (box, done) {
+      box.appendChild(el('h3', '', 'Die Königin als Feindbild'));
+      box.appendChild(el('figure', '', '<img src="marie-antoinette.jpg" alt="Gemälde: Marie Antoinette in blauem Seidenkleid mit einer Rose in der Hand" style="display:block;max-width:100%;max-height:300px;margin:0 auto"><figcaption class="cite" style="text-align:center;margin-top:4px">Élisabeth Vigée Le Brun, Marie Antoinette mit der Rose, 1783. Schloss Versailles</figcaption>'));
+      [
+        'Marie Antoinette kam 1770 mit 14 Jahren aus Österreich nach Frankreich, um den späteren König Ludwig XVI. zu heiraten. Österreich war lange Frankreichs Feind gewesen. Viele nannten sie deshalb abfällig „die Österreicherin“.',
+        'Am Hof führte sie ein teures Leben mit Festen, prächtigen Kleidern und Glücksspiel. Ihr kleines Schloss, das Petit Trianon, ließ sie aufwendig umbauen. Das machte sie bei vielen unbeliebt.',
+        'Schon lange vor der Revolution kursierten Flugblätter und Spottschriften über sie, oft heimlich gedruckt und frei erfunden. Viele griffen sie gerade als Frau an: Sie sei verschwenderisch, unmoralisch und mische sich in die Politik ein.',
+        '1785 kam die Halsbandaffäre: Betrüger ergaunerten ein sündhaft teures Diamanthalsband und behaupteten, die Königin wolle es haben. Sie wusste nichts davon, doch viele glaubten, sie stecke dahinter. Als die Schulden des Staates wuchsen, nannte man sie „Madame Déficit“. Und im Juni 1791 half sie tatsächlich, die Flucht nach Varennes zu planen.'
+      ].forEach(function (t) { box.appendChild(el('p', '', t)); });
+      done();
+    };
+  }
+
+  function statStep() {
+    return function (box, done) {
+      box.appendChild(el('h3', '', 'Wer gehörte zu welchem Stand?'));
+      box.appendChild(el('p', '', 'Um 1780 lebten in Frankreich rund 24,5 Millionen Menschen. Bevor du die Zahlen siehst: Schätze selbst.'));
+      box.appendChild(el('div', 'q', 'Wie viel Prozent der Menschen gehörten deiner Meinung nach zum Dritten Stand?'));
+      var sl = el('div', 'slider', '<input type="range" min="0" max="100" value="50" aria-label="Schätzung in Prozent"><div class="val">50 %</div>'), inp = $('input', sl), val = $('.val', sl);
+      inp.oninput = function () { val.textContent = inp.value + ' %'; };
+      box.appendChild(sl);
+      var go = el('button', 'btn check', 'Schätzung abgeben'); go.type = 'button'; box.appendChild(go);
+      var res = el('div', 'hidden'); box.appendChild(res);
+      go.onclick = function () {
+        go.disabled = true; inp.disabled = true;
+        res.classList.remove('hidden');
+        res.innerHTML = '<div class="stat"><div class="row"><b>Anteil an der Bevölkerung</b><div class="bar"><span class="s1" data-w="0.5"></span><span class="s2" data-w="1.5"></span><span class="s3a" data-w="28">28 %</span><span class="s3b" data-w="70">70 %</span></div></div>' +
+          '<div class="row"><b>Anteil am Grundbesitz</b><div class="bar"><span class="s1" data-w="10">10 %</span><span class="s2" data-w="25">25 %</span><span class="s3a" data-w="30">30 %</span><span class="s3b" data-w="35">35 %</span></div></div>' +
+          '<div class="legend"><span><i class="s1"></i>Erster Stand: Geistliche (0,5 %)</span><span><i class="s2"></i>Zweiter Stand: Adel (1,5 %)</span><span><i class="s3a"></i>Dritter Stand: Bürger</span><span><i class="s3b"></i>Dritter Stand: Bauern</span></div>' +
+          '<div class="cite">Zahlen um 1780, nach: Forum Geschichte Berlin/Brandenburg 7/8, Cornelsen, S. 114. Erster Stand rund 130.000, Zweiter Stand rund 350.000, Dritter Stand rund 24 Millionen Menschen.</div></div>';
+        setTimeout(function () { [].forEach.call(res.querySelectorAll('.bar span'), function (sp) { sp.style.width = sp.dataset.w + '%'; }); }, 60);
+        var d = Math.abs(+inp.value - 98);
+        say('Du hast ' + inp.value + ' Prozent geschätzt. Tatsächlich waren es rund 98 Prozent. ' + (d <= 5 ? 'Sehr gut geschätzt!' : 'Überraschend viele, oder?'), d <= 5 ? 'excited' : 'surprised', 'R');
+        var mc = el('div'); res.appendChild(mc);
+        mcStep({
+          q: 'Was zeigt der Vergleich der beiden Balken?',
+          opts: [
+            { t: 'Adel und Geistliche besaßen viel mehr Land, als ihrer Zahl entsprach.', ok: true },
+            { t: 'Der Dritte Stand besaß fast das gesamte Land im ganzen Königreich.' },
+            { t: 'Adel und Geistliche stellten die Mehrheit der Menschen im Königreich.' },
+            { t: 'Bauern und Bürger besaßen genau so viel Land, wie es ihrer Zahl entsprach.' }
+          ],
+          why: 'Adel und Geistliche waren zusammen nur rund 2 Prozent der Menschen, besaßen aber rund 35 Prozent des Landes.',
+          tip: 'Vergleiche bei jedem Stand: Wie breit ist sein Stück im oberen Balken, wie breit im unteren?'
+        })(mc, done);
+      };
+    };
+  }
+
+  function sortStep(o) {
+    // o: { title, paras, cats:[[key,label]], items:[{t, k}], why, tip }
+    return function (box, done) {
+      box.appendChild(el('h3', '', o.title));
+      o.paras.forEach(function (p) { box.appendChild(blk(p)); });
+      box.appendChild(el('div', 'q', o.q));
+      var items = mix(o.items, function (it) { return it.k; }), solved = false, after = el('div');
+      items.forEach(function (it) {
+        var c = el('div', 'cause', '<div class="ct">' + it.t + '</div>'), row = el('div', 'row');
+        o.cats.forEach(function (k) {
+          var b = el('button', 'chip', k[1]); b.type = 'button';
+          b.onclick = function () { if (solved) return; it.pick = k[0]; c.classList.remove('miss'); [].forEach.call(row.children, function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); };
+          row.appendChild(b);
+        });
+        c.appendChild(row); box.appendChild(c); it.el = c;
+      });
+      var ch = el('button', 'btn check', 'Prüfen'); ch.type = 'button';
+      ch.onclick = function () {
+        if (solved) return;
+        if (items.some(function (it) { return !it.pick; })) return say(o.missing || 'Ordne zuerst jede Karte einer Ursache zu.', 'interested', 'R');
+        var bad = 0; items.forEach(function (it) { var okk = it.pick === it.k; it.el.classList.toggle('right', okk); it.el.classList.toggle('miss', !okk); if (!okk) bad++; });
+        if (!bad) {
+          solved = true; ch.disabled = true;
+          items.forEach(function (it) { if (it.src) it.el.appendChild(el('div', 'cite', it.src)); });
+          if (o.after) { after.innerHTML = o.after; after.className = 'fadein'; }
+          say(good() + ' ' + o.why, 'excited', 'T'); done();
+        }
+        else say(bad + (bad === 1 ? ' Karte passt' : ' Karten passen') + ' noch nicht (rot). ' + o.tip, 'thinking', 'R');
+      };
+      box.appendChild(ch); box.appendChild(after);
+    };
+  }
+
+  function ordersStep() {
+    return function (box, done) {
+      box.appendChild(el('h3', '', 'Die Generalstände'));
+      [
+        'Neue Steuern konnte der König nach altem Brauch nur mit den Generalständen beschließen. Das war eine Versammlung von Abgeordneten aller drei Stände. Sie war seit 1614 nicht mehr zusammengekommen. Im Mai 1789 trat sie in Versailles zusammen. Vorher hatten die Menschen im ganzen Land ihre Klagen in Beschwerdehefte geschrieben.',
+        'Wer vertrat eigentlich den Dritten Stand? Fast nur gebildete und wohlhabende Männer, vor allem Juristen und Anwälte, dazu Beamte und Kaufleute. Bauern, Handwerker oder Tagelöhner saßen kaum darunter. Frauen gab es unter den Abgeordneten überhaupt nicht.',
+        'Der König hatte dem Dritten Stand doppelt so viele Abgeordnete zugestanden. Offen blieb aber die wichtigste Frage: Wird nach Ständen abgestimmt oder nach Köpfen?'
+      ].forEach(function (t) { box.appendChild(el('p', '', t)); });
+      box.appendChild(el('div', 'q', 'Probiere es aus. Abgestimmt wird: Sollen Adel und Geistliche künftig Steuern zahlen?'));
+      box.appendChild(el('div', 'estates', '<div class="estate"><b>Geistliche</b><span class="n">rund 290</span><span class="v nein">Nein</span></div><div class="estate"><b>Adel</b><span class="n">rund 270</span><span class="v nein">Nein</span></div><div class="estate"><b>Dritter Stand</b><span class="n">rund 580</span><span class="v ja">Ja</span></div>'));
+      var row = el('div', 'opts'), tally = el('div', 'tally muted', 'Wähle eine Art der Abstimmung.'), tried = {};
+      [['stand', 'Nach Ständen abstimmen'], ['kopf', 'Nach Köpfen abstimmen']].forEach(function (a) {
+        var b = el('button', 'opt', a[1]); b.type = 'button';
+        b.onclick = function () {
+          [].forEach.call(row.children, function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); tally.classList.remove('muted');
+          tally.innerHTML = a[0] === 'stand'
+            ? '<b>Jeder Stand hat eine Stimme.</b><br>Nein: 2 Stimmen (Geistliche, Adel) · Ja: 1 Stimme (Dritter Stand)<br><b style="color:var(--red)">Abgelehnt.</b>'
+            : '<b>Jeder Abgeordnete hat eine Stimme.</b><br>Ja: rund 580 · Nein: rund 560<br><b style="color:var(--ok)">Angenommen</b>, und schon wenige Pfarrer oder Adlige, die zum Dritten Stand überlaufen, machen die Mehrheit sicher.';
+          tried[a[0]] = 1;
+          if (tried.stand && tried.kopf && !box.dataset.mc) {
+            box.dataset.mc = '1'; var mc = el('div'); box.appendChild(mc);
+            mcStep({
+              q: 'Warum bestand der Dritte Stand darauf, nach Köpfen abzustimmen?',
+              opts: [
+                { t: 'Nur so hatten seine vielen Abgeordneten auch wirklich Gewicht.', ok: true },
+                { t: 'So konnte der König ganz allein über alle neuen Steuern entscheiden.' },
+                { t: 'Weil er viel weniger Abgeordnete hatte als die beiden anderen Stände.' },
+                { t: 'Weil eine Abstimmung nach Köpfen schneller beendet war.' }
+              ],
+              why: 'Nach Ständen hätten Adel und Geistliche den Dritten Stand immer überstimmt, zwei gegen eins, obwohl er fast das ganze Volk vertrat.',
+              tip: 'Vergleiche die beiden Ergebnisse oben. Bei welcher Art der Abstimmung zählen die vielen Abgeordneten des Dritten Standes?'
+            })(mc, done);
+          }
+        };
+        row.appendChild(b);
+      });
+      box.appendChild(row); box.appendChild(tally);
+    };
+  }
+
+  // ------------------------------------------------------------------ Bausteine für die Ausgaben 1794 und 1797
+  function filesStep(o) {
+    // Akten zum Aufklappen. Weiter geht es, wenn alle einmal geöffnet wurden.
+    return function (box, done) {
+      box.appendChild(el('h3', '', o.title));
+      (o.lead || []).forEach(function (p) { box.appendChild(blk(p)); });
+      var left = o.files.length;
+      o.files.forEach(function (f) {
+        var a = el('div', 'akte'), b = el('button', '', '<span>' + f.name + '</span><i>Akte öffnen</i>'), inn = el('div', 'in', f.html); b.type = 'button';
+        b.onclick = function () {
+          a.classList.toggle('open');
+          if (!a.classList.contains('seen')) { a.classList.add('seen'); $('i', b).textContent = 'gelesen'; left--; if (!left) { say(o.okMsg, 'interested', 'R'); done(); } }
+        };
+        a.appendChild(b); a.appendChild(inn); box.appendChild(a);
+      });
+    };
+  }
+
+  function dialogStep(o) {
+    // o: { title, lead, who:{L:{name,img}, R:{name,img}}, lines:[[L|R, text, bild]], end }
+    return function (box, done) {
+      box.appendChild(el('h3', '', o.title));
+      (o.lead || []).forEach(function (p) { box.appendChild(blk(p)); });
+      var d = el('div', 'dialog'), i = 0, nx = el('button', 'btn ghost', 'Weiter zuhören'); nx.type = 'button';
+      box.appendChild(d); box.appendChild(nx);
+      function show() {
+        var l = o.lines[i], w = o.who[l[0]], row = el('div', 'say fadein' + (l[0] === 'R' ? ' r' : ''));
+        var img = el('img'); img.alt = ''; img.src = l[2];
+        var bub = el('div', 'bub', '<b>' + w.name + '</b>' + l[1]);
+        if (l[0] === 'R') { row.appendChild(bub); row.appendChild(img); } else { row.appendChild(img); row.appendChild(bub); }
+        d.appendChild(row); i++;
+        if (i >= o.lines.length) { nx.remove(); if (o.end) box.appendChild(el('div', 'reveal fadein', o.end)); done(); }
+      }
+      nx.onclick = show; show();
+    };
+  }
+
+  function pendelStep(o) {
+    // Ereignisse nacheinander: Schwingt das Pendel zu mehr oder zu weniger Mitbestimmung?
+    return function (box, done) {
+      box.appendChild(el('h3', '', o.title));
+      (o.lead || []).forEach(function (p) { box.appendChild(blk(p)); });
+      var pd = el('div', 'pendel', '<span class="lab l">' + o.left + '</span><span class="lab r">' + o.right + '</span><svg width="120" height="160" viewBox="0 0 120 160" aria-hidden="true"><line x1="10" y1="8" x2="110" y2="8" stroke="#2b2620" stroke-width="3"/><g class="arm"><line x1="60" y1="8" x2="60" y2="120" stroke="#2b2620" stroke-width="2.5"/><circle cx="60" cy="132" r="14" fill="#c2361f" stroke="#2b2620" stroke-width="2"/></g></svg>');
+      box.appendChild(pd);
+      var arm = $('.arm', pd), i = 0, body = el('div'), hist = el('div'); box.appendChild(body); box.appendChild(hist);
+      function swing(k) { arm.style.transform = 'rotate(' + (k === 'l' ? 38 : k === 'r' ? -38 : 0) + 'deg)'; }
+      function show() {
+        body.innerHTML = '';
+        var e = o.items[i], c = el('div', 'evt', '<span class="d">' + e.d + '</span>' + e.t), row = el('div', 'opts'); row.style.gridTemplateColumns = '1fr 1fr';
+        [['l', o.left], ['r', o.right]].forEach(function (a) {
+          var b = el('button', 'opt', (a[0] === 'l' ? '← ' : '') + a[1] + (a[0] === 'r' ? ' →' : '')); b.type = 'button';
+          b.onclick = function () {
+            if (b.disabled) return;
+            if (a[0] === e.k) {
+              swing(a[0]); [].forEach.call(row.children, function (x) { x.disabled = true; }); b.classList.add('right');
+              var h = el('div', 'evt fadein', '<span class="d">' + e.d + ' · ' + (a[0] === 'l' ? '←' : '→') + '</span>' + e.t); h.style.opacity = '.75'; hist.insertBefore(h, hist.firstChild);
+              if (e.why) say(e.why, 'interested', 'R');
+              setTimeout(function () { i++; if (i < o.items.length) show(); else { body.innerHTML = ''; body.appendChild(el('p', '', o.end)); swing(''); done(); } }, 1100);
+            } else { b.classList.add('miss'); b.disabled = true; say(e.tip || o.tip, 'thinking', 'R'); }
+          };
+          row.appendChild(b);
+        });
+        body.appendChild(c); body.appendChild(row);
+      }
+      show();
+    };
+  }
+
+  function decisionStep(o) {
+    // Redaktionsentscheidung: Es gibt kein Richtig oder Falsch, aber die Folgen werden gezeigt.
+    return function (box, done) {
+      box.appendChild(el('h3', '', o.title));
+      (o.lead || []).forEach(function (p) { box.appendChild(blk(p)); });
+      box.appendChild(el('div', 'q', o.q));
+      var row = el('div', 'opts'), res = el('div');
+      o.opts.forEach(function (a) {
+        var b = el('button', 'opt', a[1]); b.type = 'button';
+        b.onclick = function () {
+          [].forEach.call(row.children, function (x) { x.classList.remove('sel'); }); b.classList.add('sel');
+          S.txt[o.key] = a[0]; save();
+          res.innerHTML = ''; res.appendChild(el('div', 'reveal fadein', o.reveal[a[0]]));
+          if (o.say) say(o.say, 'interested', 'T');
+          done();
+        };
+        row.appendChild(b);
+      });
+      box.appendChild(row); box.appendChild(res);
+      box.appendChild(el('p', 'small muted', 'Hier gibt es kein Richtig oder Falsch. Du kannst deine Entscheidung noch ändern.'));
+    };
+  }
+
+  function noteStep(o) {
+    // Ein eigener Satz. Er bleibt nur auf diesem Gerät.
+    return function (box, done) {
+      box.appendChild(el('h3', '', o.title));
+      (o.lead || []).forEach(function (p) { box.appendChild(blk(p)); });
+      var t = el('textarea', 'note'); t.maxLength = o.max || 280; t.placeholder = o.ph || ''; t.value = S.txt[o.key] || '';
+      t.oninput = function () { S.txt[o.key] = t.value; save(); };
+      box.appendChild(t);
+      box.appendChild(el('p', 'small muted', 'Was du hier schreibst, bleibt nur auf diesem Gerät. Du kannst das Feld auch leer lassen.'));
+      done();
+    };
+  }
+
+  function picStoryStep(title, panels) {
+    // Eine kurze Geschichte in Bildern: [Zeit, Text, Bild]
+    return function (box, done) {
+      box.appendChild(el('h3', '', title));
+      var i = 0, wrapP = el('div'), nx = el('button', 'btn ghost', 'Weiterlesen'); nx.type = 'button';
+      box.appendChild(wrapP); box.appendChild(nx);
+      function show() {
+        var p = el('div', 'panel fadein march', ''), img = el('img'); img.alt = ''; img.src = panels[i][2];
+        p.appendChild(img); p.appendChild(el('div', '', '<span class="n">' + panels[i][0] + '</span>' + panels[i][1])); wrapP.appendChild(p);
+        i++; if (i >= panels.length) { nx.remove(); done(); }
+      }
+      nx.onclick = show; show();
+    };
+  }
+
+  // ------------------------------------------------------------------ Inhalte der Ausgabe 1791
+  var CL = 'Übersetzung: Gisela Bock. In: Themenportal Europäische Geschichte (Clio-online), 2009.';
+  var SRC89 = 'Nach: W. Grab (Hg.), Die Französische Revolution. Eine Dokumentation, München 1973.';
+  var SRCG = 'Nach: U. Gerhard, Gleichheit ohne Angleichung. Frauen im Recht, München 1990 (Übersetzung: Th. Sauter, G. Guttenberg, U. Gerhard).';
+  var RUMORS = [
+    { id: 'halsband', t: '„Die Königin hat sich heimlich ein Diamanthalsband für ein Vermögen erschlichen!“', then: 'ja', short: 'damals verbreitet, aber falsch',
+      why: 'Ja. Spottschriften über die Halsbandaffäre gingen schon ab 1785 von Hand zu Hand. Dabei war die Königin an dem Betrug nicht beteiligt. Betrüger hatten ihren Namen benutzt.' },
+    { id: 'defizit', t: '„Madame Déficit! Die Königin hat Frankreich in die Schulden gestürzt!“', then: 'ja', short: 'damals verbreitet, stark übertrieben',
+      why: 'Ja. Ab 1787 tauchte der Spottname „Madame Déficit“ in Flugblättern und Karikaturen auf. Der teure Hof spielte eine Rolle. Die großen Schulden kamen aber vor allem aus Kriegen.' },
+    { id: 'kuchen', t: '„Als man ihr sagte, das Volk habe kein Brot, soll sie gesagt haben: Dann sollen sie doch Kuchen essen!“', then: 'nein', short: 'erst 1843 erfunden',
+      why: 'Nein. Dieses Flugblatt hätte es 1791 gar nicht gegeben. Der Satz wurde Marie Antoinette erst 1843 zugeschrieben, 50 Jahre nach ihrem Tod. Eine ähnliche Geschichte über eine „große Prinzessin“ hatte Rousseau schon aufgeschrieben, als sie noch ein Kind in Wien war.' },
+    { id: 'flucht', t: '„Die Königin steckt hinter der Flucht nach Varennes!“', then: 'ja', short: 'damals verbreitet, und es stimmte',
+      why: 'Ja. Nach Varennes erschienen viele Flugblätter und Karikaturen gegen die Königin. Dieser Vorwurf stimmte sogar: Sie hatte die Flucht mitgeplant, zusammen mit ihrem Vertrauten, dem schwedischen Grafen Fersen.' }
+  ];
+
+  var FIELDS91 = {
+    A: {
+      label: 'Aufmacher', big: true,
+      steps: [
+        textStep('Drei Stände: eine alte Ordnung', [
+          'Seit dem Mittelalter war die Gesellschaft in Frankreich in drei Stände eingeteilt. Die Idee dahinter: Die einen beten, die anderen kämpfen, die dritten arbeiten. In welchen Stand man gehörte, entschied fast immer die Geburt.',
+          'Den Ersten Stand bildeten die Geistlichen, vom Bischof bis zum Dorfpfarrer. Den Zweiten Stand bildete der Adel. Beide Stände hatten Vorrechte, sogenannte Privilegien. Sie zahlten kaum Steuern und besetzten die hohen Ämter in Kirche, Armee und Staat.',
+          'Zum Dritten Stand gehörten alle anderen: Bauern, Handwerker und Tagelöhner, aber auch reiche Kaufleute, Bankiers, Ärzte und Anwälte. Der Dritte Stand trug fast die ganze Steuerlast. Die Bauern mussten außerdem ihren Grundherren Abgaben zahlen und für sie Frondienste leisten.'
+        ]),
+        statStep(),
+        sortStep({
+          title: 'Warum Frankreich in die Krise geriet',
+          paras: [
+            'Um 1788 kam vieles zusammen. Der Staat gab seit Jahren mehr Geld aus, als er einnahm, vor allem für Kriege und für das prunkvolle Leben am Hof. Die Schulden und die Zinsen wuchsen jedes Jahr. Ludwig XVI. wollte deshalb auch Adel und Geistliche Steuern zahlen lassen. Doch die beiden Stände wehrten sich erfolgreich.',
+            'Gleichzeitig wuchs die Not. Die Bevölkerung nahm zu, und nach einer schlechten Ernte 1788 stiegen die Brotpreise stark. Viele Familien mussten mehr als die Hälfte ihres Lohns für Brot ausgeben. Hungerunruhen waren die Folge.',
+            'Dazu kam Kritik. Gebildete Bürger lasen die Schriften der Aufklärer und fragten: Warum soll die Geburt mehr zählen als Können und Leistung? Im Januar 1789 erschien die Schrift „Was ist der Dritte Stand?“ von Abbé Sieyès. Seine Antwort: Der Dritte Stand ist alles, aber in der Politik war er bisher nichts.'
+          ],
+          q: 'Ordne jede Karte einer Ursache zu.',
+          cats: [['kasse', 'leere Staatskasse'], ['not', 'Hunger und Not'], ['kritik', 'Kritik und neue Ideen']],
+          items: [
+            { t: 'Kriege haben riesige Schulden hinterlassen.', k: 'kasse' },
+            { t: 'Das Leben am Hof in Versailles kostet viel Geld.', k: 'kasse' },
+            { t: 'Adel und Geistliche verhindern, dass sie Steuern zahlen müssen.', k: 'kasse' },
+            { t: 'Nach der schlechten Ernte von 1788 wird das Brot sehr teuer.', k: 'not' },
+            { t: 'Es gibt immer mehr Menschen, aber nicht mehr Arbeit und Nahrung.', k: 'not' },
+            { t: 'Aufklärer fordern, dass Leistung mehr zählt als Geburt.', k: 'kritik' },
+            { t: 'Sieyès schreibt: Der Dritte Stand ist alles, war aber bisher nichts.', k: 'kritik' }
+          ],
+          why: 'Leere Kasse, Hunger und neue Ideen kamen zusammen. Das machte die Lage so explosiv.',
+          tip: 'Frag dich bei jeder Karte: Geht es um Geld des Staates, um das tägliche Leben der Menschen oder um Gedanken und Forderungen?'
+        }),
+        ordersStep(),
+        textStep('Vom Ballhaus bis Varennes', [
+          'Der König gab nicht nach. Da erklärten sich die Abgeordneten des Dritten Standes am 17. Juni 1789 zur Nationalversammlung, also zur Vertretung der ganzen Nation. Drei Tage später schworen sie im Ballhaus, nicht auseinanderzugehen, bis Frankreich eine Verfassung hat. Viele Pfarrer und einige Adlige schlossen sich ihnen an.',
+          'Der König ließ Truppen um Paris zusammenziehen. Die Pariserinnen und Pariser bewaffneten sich und stürmten am 14. Juli 1789 die Bastille. Auf dem Land griffen Bauern die Schlösser ihrer Grundherren an.',
+          'Im August schaffte die Nationalversammlung die Vorrechte von Adel und Kirche ab. Danach beschloss sie die Erklärung der Menschen- und Bürgerrechte. Im Oktober zogen Tausende Frauen nach Versailles. Danach musste die Königsfamilie in Paris leben.',
+          'Die Nationalversammlung arbeitete eine Verfassung aus. Frankreich sollte eine Monarchie bleiben, aber der König sollte an die Gesetze gebunden sein. Im Juni 1791 versuchte die Königsfamilie heimlich zu fliehen und wurde in Varennes angehalten. Im September 1791 nahm der König die Verfassung an.'
+        ]),
+        setzkastenStep({
+          title: 'Der Setzkasten',
+          lead: ['Für den Aufmacher brauchst du die wichtigsten Ereignisse in der richtigen Reihenfolge. Tippe die Lettern unten so an, dass sie oben von früh nach spät in der Zeile stehen. Wenn du unsicher bist, geh mit „Zurück“ noch einmal zu den Texten.'],
+          cards: [
+            { t: 'Frankreich ist hoch verschuldet.', d: '1788' },
+            { t: 'Die Generalstände treten in Versailles zusammen.', d: 'Mai 1789' },
+            { t: 'Der Dritte Stand schwört im Ballhaus, nicht auseinanderzugehen.', d: '20. Juni 1789' },
+            { t: 'Pariserinnen und Pariser stürmen die Bastille.', d: '14. Juli 1789' },
+            { t: 'Die Vorrechte von Adel und Kirche werden abgeschafft.', d: '4. August 1789' },
+            { t: 'Die Erklärung der Menschen- und Bürgerrechte wird beschlossen.', d: '26. August 1789' },
+            { t: 'Tausende Frauen ziehen nach Versailles.', d: '5. Oktober 1789' },
+            { t: 'Die Königsfamilie flieht und wird in Varennes angehalten.', d: 'Juni 1791' },
+            { t: 'Der König nimmt die Verfassung an.', d: 'September 1791' }
+          ]
+        }),
+        storyStep('Die Flucht nach Varennes', [
+          ['Nacht zum 21. Juni 1791', 'Die Königsfamilie verlässt heimlich das Schloss in Paris. Der König ist als Kammerdiener verkleidet.'],
+          ['21. Juni, unterwegs', 'Ziel ist die Grenze im Osten. Dort warten Truppen, die zum König halten. Die schwere Kutsche kommt nur langsam voran.'],
+          ['21. Juni, abends', 'Unterwegs hat jemand den König erkannt. In dem kleinen Ort Varennes wird die Kutsche angehalten und die Familie festgehalten.'],
+          ['25. Juni', 'Die Familie wird nach Paris zurückgebracht. Viele Menschen stehen am Straßenrand und schweigen. Sie trauen dem König nicht mehr.']
+        ]),
+        mcStep({
+          q: 'Warum hat die Flucht dem König so sehr geschadet?',
+          opts: [
+            { t: 'Er schien sein Volk und die Revolution zu verlassen.', ok: true },
+            { t: 'Er hatte dafür viel Geld aus der Staatskasse genommen.' },
+            { t: 'Er wollte in Varennes heimlich eine neue Hauptstadt bauen.' },
+            { t: 'Er hatte die Königin ohne ihr Wissen in Paris gelassen.' }
+          ],
+          why: 'Wer flieht, scheint die Revolution abzulehnen. Viele fragten sich danach: Kann man diesem König noch trauen?',
+          tip: 'Lies noch einmal, wohin die Familie wollte und wer dort auf den König wartete. Was sagt das über seine Haltung zur Revolution?'
+        })
+      ],
+      render: function () {
+        return '<div class="kick">Aufmacher</div><h2>' + letters('Der Flüchtling von Varennes schwört auf die Verfassung') + '</h2>' +
+          '<figure><img src="varennes.jpg" alt="Kupferstich: Bewaffnete Bürger stellen die Königsfamilie an einem Tisch in Varennes"><figcaption>Die Festnahme der Königsfamilie in Varennes, Juni 1791. Zeitgenössischer Kupferstich nach Jean-Louis Prieur. Musée de la Révolution française, Vizille</figcaption></figure>' +
+          '<p class="dek">Im Juni floh Ludwig XVI. heimlich aus Paris und wurde in Varennes angehalten. Jetzt hat er die neue Verfassung angenommen. Kann man ihm noch trauen?</p>' +
+          '<div class="cols"><p>Drei Monate ist es her, dass der König als Kammerdiener verkleidet Paris verließ. In Varennes wurde die Familie festgehalten und nach Paris zurückgebracht. Am Straßenrand schwiegen die Menschen.</p>' +
+          '<p>Seit 1789 hat sich Frankreich verändert: Die Vorrechte von Adel und Kirche sind abgeschafft, die Menschenrechte erklärt. Nun hat Ludwig XVI. geschworen, die Verfassung zu achten. Ob er es ernst meint, wird sich zeigen.</p></div>';
+      }
+    },
+    B: {
+      label: 'Rückblick',
+      steps: [
+        textStep('Rückblick auf den Oktober 1789', ['Deine Leser sollen sich an einen Tag erinnern, der alles verändert hat. Du gehst den Weg noch einmal mit einer Marktfrau aus den Hallen. Sie ist erfunden, aber das, was ihr begegnet, ist wirklich passiert.']),
+        marchStep([
+          { title: '5. Oktober 1789, früh am Morgen', img: 'nachdenklich', after: 'entschlossen', grow: 25,
+            text: 'In den Markthallen von Paris gibt es kaum Brot, und was es gibt, ist teuer. Eine junge Frau schlägt eine Trommel. Immer mehr Frauen laufen zusammen.',
+            q: 'Was machst du?', choices: ['Ich laufe mit.', 'Ich warte erst einmal ab.'],
+            real: 'Aus vielen Vierteln strömten Frauen zusammen: Marktfrauen, Arbeiterinnen, Hausfrauen. Bald waren es Tausende.' },
+          { title: 'Vor dem Rathaus', img: 'entschlossen', after: 'entschlossen', grow: 25,
+            text: 'Die Frauen sind wütend. Die Stadt kann ihnen kein Brot geben.',
+            q: 'Was schlägst du vor?', choices: ['Ins Rathaus und Waffen holen', 'Direkt zum König nach Versailles'],
+            real: 'Beides geschah. Die Frauen drangen ins Rathaus ein und nahmen Waffen mit. Dann beschlossen sie, nach Versailles zu ziehen. Dort sollte der König für Brot sorgen. Ein Mann, Stanislas Maillard, ging voran und sorgte für Ordnung.' },
+          { title: 'Auf dem Weg', img: 'regen', after: 'regen', grow: 20,
+            text: 'Bis Versailles sind es rund 20 Kilometer. Es regnet. Einige ziehen sogar Kanonen mit.',
+            q: 'Was machst du?', choices: ['Ich gehe weiter.', 'Ich kehre um.'],
+            real: 'Die Frauen gingen weiter. Nach etwa sechs Stunden kamen sie am Nachmittag in Versailles an. Später folgten ihnen auch 15.000 bis 20.000 Nationalgardisten aus Paris.' },
+          { title: 'In Versailles', img: 'entschlossen', after: 'jubel', grow: 25,
+            text: 'Durchnässt und hungrig stehen die Frauen vor der Nationalversammlung und vor dem Schloss des Königs.',
+            q: 'Wohin gehst du?', choices: ['In die Nationalversammlung', 'Mit einer Abordnung zum König'],
+            real: 'Beides geschah. Frauen setzten sich auf die Bänke der Abgeordneten. Eine kleine Abordnung durfte zum König. Er versprach Brot und stimmte den Augustbeschlüssen und der Menschenrechtserklärung zu. Am nächsten Morgen drang eine Menge ins Schloss ein, und es gab Tote unter den Leibwachen. Dann musste die Königsfamilie mit nach Paris.' }
+        ]),
+        multiStep({
+          title: 'Was hat der Marsch gebracht?',
+          q: 'Was haben die Frauen mit dem Marsch erreicht?',
+          opts: [
+            { t: 'Die Königsfamilie musste nach Paris ziehen.', ok: true },
+            { t: 'Der König stimmte der Menschenrechtserklärung zu.', ok: true },
+            { t: 'Frauen bekamen von da an das Recht, wählen zu gehen.' },
+            { t: 'Das Brot wurde in Paris von da an dauerhaft billig.' }
+          ],
+          why: 'Der Marsch hatte große Folgen für die Revolution. Für sich selbst bekamen die Frauen aber keine neuen Rechte.',
+          tip: 'Denk an das Ende in Versailles und an den Rückweg. Was hat sich danach für die Frauen selbst geändert?'
+        }),
+        mcStep({
+          title: 'Ein Gerücht',
+          lead: ['Gegner des Marsches behaupteten später, viele Marschierende seien in Wahrheit verkleidete Männer gewesen.'],
+          q: 'Warum passte dieses Gerücht den Gegnern ins Bild?',
+          opts: [
+            { t: 'Sie trauten Frauen keine eigene politische Tat zu.', ok: true },
+            { t: 'Sie wollten die Männer von Paris für ihren Mut loben.' },
+            { t: 'Verkleidungen waren bei Märschen damals streng verboten.' },
+            { t: 'Die Frauen hatten sich selbst als Männer ausgegeben.' }
+          ],
+          why: 'Wenn es angeblich Männer waren, musste man die Frauen nicht als politische Kraft ernst nehmen.',
+          tip: 'Überlege, was das Gerücht über die Frauen sagt: Hält es sie für fähig, so etwas selbst zu tun?'
+        })
+      ],
+      render: function () {
+        return '<div class="kick">Rückblick</div><h3>' + letters('Als die Frauen den König holten') + '</h3>' +
+          '<figure><img src="frauenmarsch.jpg" alt="Kolorierte Radierung: Frauen mit Piken und einer Kanone auf dem Weg nach Versailles"><figcaption>„À Versailles, à Versailles“, kolorierte Radierung, 1789. Musée Carnavalet, Paris</figcaption></figure>' +
+          '<p class="dek">Vor zwei Jahren zogen Tausende Pariserinnen nach Versailles.</p>' +
+          '<p>Am 5. Oktober 1789 gab es in Paris kaum Brot. Marktfrauen, Arbeiterinnen und Hausfrauen zogen 20 Kilometer durch den Regen nach Versailles. Der König versprach Brot und stimmte der Menschenrechtserklärung zu. Am nächsten Tag musste die Königsfamilie nach Paris ziehen.</p>' +
+          '<p><i>Und was haben die Frauen für sich selbst bekommen?</i></p>';
+      }
+    },
+    C: {
+      label: 'Spalte',
+      steps: [
+        guessStep(),
+        textStep('Eine neue Schrift', ['In diesen Tagen erscheint in Paris eine Schrift der Schriftstellerin Olympe de Gouges. Sie nimmt sich die Erklärung der Menschen- und Bürgerrechte von 1789 vor und schreibt sie neu, Artikel für Artikel.', 'Als Redaktion vergleichst du beide Fassungen wie eine Korrekturfahne. Oben steht jeweils das französische Original, darunter eine Übersetzung. Kleine Unterschiede im Deutsch kommen von den Übersetzern. Dich interessiert nur, was Gouges inhaltlich geändert hat.']),
+        diffStep({
+          title: 'Korrekturfahne: Artikel 1', art: 'Artikel 1', oldGl: 'Achtung: Das französische Wort „homme“ (Mehrzahl „hommes“) bedeutet „Mensch“, aber auch „Mann“.', newGl: '„femme“ heißt „Frau“. „l\'homme“ heißt hier „der Mann“.', oldFr: '<b>Les hommes</b> naissent et demeurent libres et égaux en droits. Les distinctions sociales ne peuvent être fondées que sur l\'utilité commune.', newFr: '<b>La Femme</b> naît libre et demeure égale à <b>l\'homme</b> en droits. Les distinctions sociales ne peuvent être fondées que sur l\'utilité commune.',
+          old: 'Die Menschen sind und bleiben von Geburt frei und gleich an Rechten. Soziale Unterschiede dürfen nur im gemeinen Nutzen begründet sein.', oldSrc: SRC89,
+          segs: [['Die Frau', true], ['ist frei geboren', false], ['und bleibt dem Manne gleich', true], ['in allen Rechten.', false], ['Die sozialen Unterschiede können nur im allgemeinen Nutzen begründet sein.', false]], newSrc: SRCG,
+          tip: 'Lies beide Fassungen Satzteil für Satzteil nebeneinander. Wo steht bei Gouges etwas, das 1789 so nicht gemeint war?'
+        }),
+        mcStep({
+          q: 'Warum schreibt Gouges „Die Frau“, wo 1789 „Die Menschen“ stand?',
+          opts: [
+            { t: 'Weil mit „Menschen“ in der Praxis nur Männer gemeint waren.', ok: true },
+            { t: 'Weil sie die Männer ganz aus der Erklärung streichen wollte.' },
+            { t: 'Weil das Wort „Menschen“ damals im Französischen fehlte.' },
+            { t: 'Weil Frauen nach ihrer Ansicht mehr Rechte haben sollten.' }
+          ],
+          why: 'Im Französischen heißt „les hommes“ die Menschen, aber auch die Männer. 1789 klang das nach allen, gemeint waren aber vor allem Männer. Gouges macht die Frauen sichtbar.',
+          tip: 'Schau auf ihre Formulierung „dem Manne gleich“. Will sie mehr Rechte als die Männer oder genauso viele?'
+        }),
+        diffStep({
+          title: 'Korrekturfahne: Artikel 3', art: 'Artikel 3', oldFr: 'Le principe de toute Souveraineté réside essentiellement dans la Nation. Nul corps, nul individu ne peut exercer d\'autorité qui n\'en émane expressément.', newFr: 'Le principe de toute souveraineté réside essentiellement dans la Nation, qui n\'est que la réunion de <b>la Femme et de l\'Homme</b>: nul corps, nul individu, ne peut exercer d\'autorité qui n\'en émane expressement.',
+          old: 'Der Ursprung jeder Souveränität ruht letztlich in der Nation. Keine Körperschaften, kein Individuum können eine Gewalt ausüben, die nicht ausdrücklich von ihr ausgeht.', oldSrc: SRC89,
+          segs: [['Das Prinzip jeder Herrschaft ruht wesentlich in der Nation,', false], ['die nichts anderes darstellt als eine Vereinigung von Frauen und Männern.', true], ['Keine Körperschaft und keine einzelne Person kann Macht ausüben, die nicht ausdrücklich daraus hervorgeht.', false]], newSrc: SRCG,
+          tip: 'Achte darauf, wo Gouges etwas ergänzt, das in der Fassung von 1789 gar nicht vorkommt.'
+        }),
+        mcStep({
+          q: 'Was stellt Gouges in Artikel 3 klar?',
+          opts: [
+            { t: 'Zur Nation gehören Frauen genauso wie Männer.', ok: true },
+            { t: 'Die Nation soll künftig nur aus Frauen bestehen.' },
+            { t: 'Frauen sollen eine eigene Nationalversammlung haben.' },
+            { t: 'Die Macht soll wieder vom König allein ausgehen.' }
+          ],
+          why: 'Wenn die Nation aus Frauen und Männern besteht, muss die Macht auch von beiden ausgehen.',
+          tip: 'Lies den Satzteil, den du gefunden hast, noch einmal: Wer bildet bei Gouges die Nation?'
+        }),
+        mcStep({
+          title: 'Schafott und Tribüne',
+          lead: [el('div', 'quote fr', '<span lang="fr"><i>„Nul ne doit être inquiété pour ses opinions mêmes fondamentales, la femme a le droit de monter sur l\'échafaud; elle doit avoir également celui de monter à la Tribune; pourvu que ses manifestations ne troublent pas l\'ordre public établi par la Loi.“</i></span>'), el('div', 'quote', '„Niemand darf wegen seiner Meinung, auch wenn sie grundsätzlicher Art ist, verfolgt werden. Die Frau hat das Recht, das Schafott zu besteigen. Sie muß gleichermaßen das Recht haben, die Tribüne zu besteigen, vorausgesetzt, daß ihre Handlungen und Äußerungen die vom Gesetz gewahrte öffentliche Ordnung nicht stören.“'), el('div', 'cite', 'Olympe de Gouges, Artikel 10. ' + SRCG), 'Das Schafott ist das Gerüst, auf dem Verurteilte hingerichtet werden. Die Tribüne ist das Rednerpult, zum Beispiel in der Nationalversammlung.'],
+          q: 'Was meint Gouges mit diesem Vergleich?',
+          opts: [
+            { t: 'Wer bestraft werden kann, muss auch mitreden dürfen.', ok: true },
+            { t: 'Frauen sollen öfter vor Gericht gestellt werden können.' },
+            { t: 'Frauen sollen nur vor Gericht öffentlich reden dürfen.' },
+            { t: 'Für Frauen sollen künftig mildere Strafen gelten.' }
+          ],
+          why: 'Frauen werden bestraft wie Männer. Also sollen sie auch mitbestimmen dürfen wie Männer.',
+          tip: 'Das Schafott steht für Strafe, die Tribüne für das Mitreden in der Politik. Wie hängen beide bei Gouges zusammen?'
+        }),
+        voteStep({
+          intro: 'Im September 1791 ist die neue Verfassung fertig. Bald wird gewählt. Du prüfst für deine Leser, wer mitwählen darf.',
+          rule: '<b>Aus der Verfassung von 1791:</b> Wählen dürfen nur „Aktivbürger“. Das sind Männer, die älter als 25 Jahre sind, Steuern im Wert von mindestens drei Arbeitstagen zahlen und nicht als Dienstboten arbeiten.',
+          okMsg: 'Nur zwei von sieben dürfen wählen.',
+          tip: 'Prüfe jede Person an allen vier Bedingungen: Mann, über 25, genug Steuern, kein Dienstbote.',
+          people: [
+          { who: 'Pierre, 40 Jahre', what: 'reicher Kaufmann, zahlt viel Steuern', ok: 'ja' },
+          { who: 'Michel, 35 Jahre', what: 'Schmiedemeister, zahlt genug Steuern', ok: 'ja' },
+          { who: 'Jacques, 30 Jahre', what: 'Tagelöhner, zahlt kaum Steuern', ok: 'nein' },
+          { who: 'Louis, 28 Jahre', what: 'Diener in einem Adelshaus, zahlt Steuern', ok: 'nein' },
+          { who: 'Antoine, 22 Jahre', what: 'Sohn eines Arztes, zahlt Steuern', ok: 'nein' },
+          { who: 'Madame Duval, 50 Jahre', what: 'Witwe, besitzt eine Werkstatt, zahlt hohe Steuern', ok: 'nein' },
+          { who: 'Olympe de Gouges, 43 Jahre', what: 'Schriftstellerin', ok: 'nein' }
+        ] }),
+        mcStep({
+          q: 'Welche Gruppe kann nie Aktivbürger werden, egal wie alt oder reich sie wird?',
+          opts: [{ t: 'Frauen', ok: true }, { t: 'Diener' }, { t: 'Junge Männer' }, { t: 'Arme Männer' }],
+          why: 'Ein junger Mann wird älter, ein armer Mann kann reicher werden, ein Diener kann die Arbeit wechseln. Eine Frau bleibt nach der Verfassung immer ausgeschlossen.',
+          tip: 'Geh die Gruppen einzeln durch: Kann sich ihre Lage im Leben ändern, sodass sie doch wählen dürfen?'
+        }),
+        guessBackStep()
+      ],
+      done: function () { addMuster('abhaengig'); },
+      render: function () {
+        return '<div class="kick">Spalte</div><h3>' + letters('Gleich – aber wer?') + '</h3>' +
+          '<figure><img src="gouges.jpg" alt="Pastellporträt von Olympe de Gouges" style="max-height:220px"><figcaption>Olympe de Gouges, Pastell, Alexandre Kucharski zugeschrieben, spätes 18. Jahrhundert</figcaption></figure>' +
+          '<p>Wählen darf nach der neuen Verfassung nur, wer ein Mann ist, älter als 25 Jahre, genug Steuern zahlt und kein Diener ist. Die Schriftstellerin Olympe de Gouges hält dagegen. In ihrer neuen Schrift heißt es:</p>' +
+          '<blockquote>„Die Frau ist frei geboren und bleibt dem Manne gleich in allen Rechten.“</blockquote>' +
+          '<blockquote>„Die Frau hat das Recht, das Schafott zu besteigen. Sie muß gleichermaßen das Recht haben, die Tribüne zu besteigen […].“</blockquote>' +
+          '<p class="src">Olympe de Gouges, Erklärung der Rechte der Frau und Bürgerin, 1791, Art. 1 und 10. ' + SRCG + '</p>';
+      }
+    },
+    D: {
+      label: 'Vermischtes',
+      steps: [
+        queenStep(),
+        rumorStep(RUMORS),
+        mcStep({
+          title: 'Was die Flugblätter gemeinsam haben',
+          q: 'Was haben die Vorwürfe auf den Flugblättern gemeinsam?',
+          opts: [
+            { t: 'Sie zeigen die Königin als gierig und herzlos.', ok: true },
+            { t: 'Sie loben die Königin für ihre Sparsamkeit.' },
+            { t: 'Sie stammen alle von der Königin selbst.' },
+            { t: 'Sie handeln alle von der Flucht nach Varennes.' }
+          ],
+          why: 'Die Flugblätter zeichnen ein Bild: eine verschwenderische, kaltherzige Frau. Solche Bilder blieben hängen, ob sie stimmten oder nicht.',
+          tip: 'Lies die Flugblätter noch einmal. Wie wird die Königin dort beschrieben?'
+        }),
+        mcStep({
+          title: 'Auch der König',
+          lead: ['Nach der Flucht zeigten Karikaturen die Königsfamilie als Schweine. Ludwig XVI. wurde als schwach und „unmännlich“ verspottet.'],
+          q: 'Warum sollte ihm gerade dieser Spott schaden?',
+          opts: [
+            { t: 'Von einem König erwartete man Stärke und Führung.', ok: true },
+            { t: 'Karikaturen über den König waren damals streng verboten.' },
+            { t: 'Schweine galten damals als das Wappentier des Adels.' },
+            { t: 'Der König zeichnete selbst gern solche Karikaturen.' }
+          ],
+          why: 'Wer einem König abspricht, ein „richtiger Mann“ zu sein, spricht ihm auch ab, ein richtiger Herrscher zu sein. Solche Bilder engten also auch Männer ein.',
+          tip: 'Überlege, was man damals von einem König erwartete. Was wird ihm mit „unmännlich“ abgesprochen?'
+        }),
+        mcStep({
+          title: 'Ein ganz anderer Brief',
+          lead: ['Olympe de Gouges hat ihre Schrift ausgerechnet der Königin gewidmet. Darin heißt es:', el('div', 'quote', '„Unterstützt eine so schöne Sache, Madame; verteidigt dieses unglückliche Geschlecht, und bald werdet Ihr die eine Hälfte des Königreichs auf Eurer Seite haben und von der anderen mindestens ein Drittel.“'), el('div', 'cite', 'Olympe de Gouges, Die Rechte der Frau, An die Königin, 1791. ' + CL)],
+          q: 'Was erhofft sich Gouges von der Königin?',
+          opts: [
+            { t: 'Dass sie sich für die Rechte der Frauen einsetzt.', ok: true },
+            { t: 'Dass sie Gouges eine gute Stelle am Hof verschafft.' },
+            { t: 'Dass sie die Flucht nach Varennes noch einmal wagt.' },
+            { t: 'Dass sie auf ihre Krone sofort ganz verzichtet.' }
+          ],
+          why: 'Während die Flugblätter die Königin verspotteten, wollte Gouges sie als Verbündete für die Frauen gewinnen.',
+          tip: 'Lies, was Gouges die Königin verteidigen lassen will: „dieses unglückliche Geschlecht“. Wer ist damit gemeint?'
+        })
+      ],
+      done: function () { addMuster('laecherlich'); },
+      render: function () {
+        var pr = RUMORS.filter(function (r) { return S.printed.indexOf(r.id) >= 0; });
+        var list = pr.length ? '<ul class="rumor-list">' + pr.map(function (r) { return '<li>' + r.t + '<span class="fc">' + r.short.charAt(0).toUpperCase() + r.short.slice(1) + '</span></li>'; }).join('') + '</ul>' : '<p>Die Redaktion druckt diesmal keine Gerüchte über die Königin.</p>';
+        return '<div class="kick">Vermischtes</div><h3>' + letters('Man erzählt sich …') + '</h3>' + list +
+          '<div class="box"><b>Ein Brief an die Königin</b><p>Olympe de Gouges widmet ihre neue Schrift Marie Antoinette und bittet sie, sich für die Rechte der Frauen einzusetzen.</p></div>';
+      }
+    }
+  };
+  var ORDER = ['A', 'B', 'C', 'D'];
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function fig(src, alt, cap, mh) { return '<figure style="margin:6px 0 10px"><img src="' + src + '" alt="' + alt + '" style="display:block;max-width:100%;max-height:' + (mh || 300) + 'px;margin:0 auto"><figcaption class="cite" style="text-align:center;margin-top:4px">' + cap + '</figcaption></figure>'; }
+  var OWN = 'Übersetzung für dieses Modul.';
+  var BUCH = 'Forum Geschichte Berlin/Brandenburg 7/8, Cornelsen';
+  var GOUGES10 = '<div class="quote">„Die Frau hat das Recht, das Schafott zu besteigen. Sie muß gleichermaßen das Recht haben, die Tribüne zu besteigen […].“</div><div class="cite">Olympe de Gouges, 1791, Artikel 10. ' + SRCG + '</div>';
+
+  // Dieselben sieben Personen stehen dreimal vor dem Wahllokal.
+  var VOTE92 = [
+    { who: 'Pierre, 41 Jahre', what: 'reicher Kaufmann, zahlt viel Steuern', ok: 'ja' },
+    { who: 'Michel, 36 Jahre', what: 'Schmiedemeister, zahlt genug Steuern', ok: 'ja' },
+    { who: 'Jacques, 31 Jahre', what: 'Tagelöhner, zahlt kaum Steuern', ok: 'ja' },
+    { who: 'Louis, 29 Jahre', what: 'Diener in einem Adelshaus, zahlt Steuern', ok: 'nein' },
+    { who: 'Antoine, 23 Jahre', what: 'Sohn eines Arztes, zahlt Steuern', ok: 'ja' },
+    { who: 'Madame Duval, 51 Jahre', what: 'Witwe, besitzt eine Werkstatt, zahlt hohe Steuern', ok: 'nein' },
+    { who: 'Olympe de Gouges, 44 Jahre', what: 'Schriftstellerin', ok: 'nein' }
+  ];
+  var VOTE95 = [
+    { who: 'Pierre, 44 Jahre', what: 'reicher Kaufmann, besitzt ein großes Haus', ok: 'wm' },
+    { who: 'Michel, 39 Jahre', what: 'Schmiedemeister, besitzt sein Haus mit der Werkstatt', ok: 'wm' },
+    { who: 'Jacques, 34 Jahre', what: 'Tagelöhner, zahlt eine kleine Steuer, besitzt nichts', ok: 'ja' },
+    { who: 'Louis, 32 Jahre', what: 'Diener in einem Bürgerhaus, zahlt Steuern', ok: 'nein' },
+    { who: 'Antoine, 26 Jahre', what: 'Sohn eines Arztes, zahlt Steuern, wohnt bei seinen Eltern, besitzt kein Haus und kein Land', ok: 'ja' },
+    { who: 'Madame Duval, 54 Jahre', what: 'Witwe, besitzt eine Werkstatt, zahlt hohe Steuern', ok: 'nein' },
+    { who: 'Olympe de Gouges', what: '† Hingerichtet am 3. November 1793', dead: true }
+  ];
+
+  // ------------------------------------------------------------------ Inhalte der Ausgabe 1794
+  var FIELDS94 = {
+    A: {
+      label: 'Aufmacher', big: true,
+      steps: [
+        textStep('Ein neuer Kalender', [
+          'Schau aufs Datum dieser Ausgabe: „11. Thermidor im Jahr II“. Im Herbst 1793 führte der Konvent einen neuen Kalender ein. Die Zeit sollte nicht mehr nach Königen und Festen der Kirche gezählt werden, sondern nach der Republik.',
+          'Das Jahr I begann rückwirkend am 22. September 1792, dem ersten Tag der Republik. Jeder Monat hatte 30 Tage und war in drei „Dekaden“ zu je zehn Tagen eingeteilt. Statt des Sonntags war jeder zehnte Tag ein Ruhetag. Am Ende des Jahres kamen fünf oder sechs Festtage dazu.',
+          'Die Monate bekamen neue Namen. Sie beschreiben, was in der Natur und auf dem Land gerade passiert. Die Namen klingen französisch, aber jeder steckt voller Hinweise.'
+        ]),
+        sortStep({
+          title: 'Welcher Monat in welcher Jahreszeit?',
+          paras: ['Hier sind acht der zwölf Monatsnamen mit ihrer Bedeutung. Das Jahr beginnt im Herbst.'],
+          q: 'Ordne jeden Monat einer Jahreszeit zu.',
+          cats: [['h', 'Herbst'], ['w', 'Winter'], ['f', 'Frühling'], ['s', 'Sommer']],
+          missing: 'Ordne zuerst jeden Monat einer Jahreszeit zu.',
+          items: [
+            { t: '<b>Vendémiaire</b>: Monat der Weinlese', k: 'h' },
+            { t: '<b>Brumaire</b>: Monat des Nebels', k: 'h' },
+            { t: '<b>Nivôse</b>: Monat des Schnees', k: 'w' },
+            { t: '<b>Pluviôse</b>: Monat des Regens', k: 'w' },
+            { t: '<b>Germinal</b>: Monat des Keimens', k: 'f' },
+            { t: '<b>Prairial</b>: Monat der Wiesen', k: 'f' },
+            { t: '<b>Thermidor</b>: Monat der Hitze', k: 's' },
+            { t: '<b>Fructidor</b>: Monat der Früchte', k: 's' }
+          ],
+          after: '<div class="reveal"><b>Der ganze Kalender</b>Herbst: Vendémiaire, Brumaire, Frimaire (Frost). Winter: Nivôse, Pluviôse, Ventôse (Wind). Frühling: Germinal, Floréal (Blüte), Prairial. Sommer: Messidor (Ernte), Thermidor, Fructidor.<br>Unsere Ausgabe: 11. Thermidor im Jahr II, das ist der 29. Juli 1794.</div>',
+          why: 'Die Monatsnamen folgen dem Jahr in der Natur.',
+          tip: 'Lies die Bedeutung: Wann ist Weinlese, wann liegt Schnee, wann keimt die Saat, wann ist es heiß?'
+        }),
+        textStep('Krieg und Angst', [
+          'Im April 1792 erklärte Frankreich Österreich den Krieg. Bald kämpfte auch Preußen gegen Frankreich. Die französischen Truppen verloren zunächst. In Paris wuchs die Angst, dass Feinde im Inneren mit den fremden Heeren zusammenarbeiten, vielleicht sogar der König.',
+          'Im Sommer 1792 drohte der Anführer der feindlichen Heere, der Herzog von Braunschweig, Paris zu zerstören, falls der Königsfamilie etwas geschehe. Die Drohung bewirkte das Gegenteil: Am 10. August 1792 stürmten bewaffnete Pariserinnen und Pariser das Schloss des Königs, die Tuilerien. Der König wurde abgesetzt und gefangen genommen.',
+          'Eine neue Versammlung sollte gewählt werden, der Nationalkonvent. Dafür galten neue Regeln. Im September 1792 schaffte der Konvent die Monarchie ab. Frankreich war jetzt eine Republik.'
+        ]),
+        voteStep({
+          title: 'Wieder vor dem Wahllokal',
+          intro: 'August 1792: Der Nationalkonvent wird gewählt. Vor dem Wahllokal stehen dieselben sieben Menschen wie 1791, ein Jahr älter.',
+          rule: '<b>Neue Regel für die Wahl zum Konvent 1792:</b> Wählen dürfen alle Männer, die älter als 21 Jahre sind, seit einem Jahr am selben Ort wohnen und nicht als Dienstboten arbeiten. Wie viel Steuern jemand zahlt, spielt keine Rolle mehr.',
+          okMsg: 'Jetzt dürfen vier von sieben wählen, 1791 waren es nur zwei. Die Frauen bleiben draußen, wie vorher.',
+          tip: 'Prüfe jede Person an den neuen Bedingungen: Mann, über 21, kein Dienstbote. Die Steuern zählen nicht mehr.',
+          people: VOTE92
+        }),
+        textStep('Wer streitet im Konvent?', [
+          'Im Konvent bildeten sich zwei Lager, die sich bald erbittert bekämpften.',
+          '<b>Die Girondisten</b> hießen so, weil viele ihrer Abgeordneten aus dem Departement Gironde rund um Bordeaux kamen. Sie waren gemäßigter. 1792 hatten sie den Krieg gewollt, um die Revolution in Europa zu verbreiten. Sie wollten, dass die Regionen Frankreichs mitreden, und fürchteten die Macht der Pariser Straße. Zu ihren Freunden gehörten Manon Roland und Condorcet.',
+          '<b>Die Jakobiner</b> trafen sich in Paris in einem Kloster von Dominikanermönchen. Diese Mönche nannte man in Paris „Jakobiner“, nach ihrem ersten Kloster Saint-Jacques, also „heiliger Jakob“. Der Name ging auf den Club über. Die Jakobiner waren radikaler und wollten die Revolution mit allen Mitteln gegen ihre Feinde verteidigen. Im Konvent saßen sie oben auf den hohen Bänken, deshalb nannte man sie auch „den Berg“. Ihr bekanntester Redner war Robespierre.',
+          '<b>Die Sansculotten</b> standen hinter den Jakobinern. So nannte man die einfachen Leute von Paris: Handwerker, Ladenbesitzer, Arbeiter. Sie trugen lange Hosen statt der Kniebundhosen, der „culottes“, die reiche Herren trugen. „Sans culottes“ heißt „ohne Kniebundhosen“. Sie forderten bezahlbares Brot und harte Strafen für Feinde der Revolution.'
+        ]),
+        sortStep({
+          title: 'Girondisten oder Jakobiner?',
+          paras: [],
+          q: 'Zu welchem Lager passt die Karte?',
+          cats: [['g', 'Girondisten'], ['j', 'Jakobiner']],
+          missing: 'Ordne zuerst jede Karte zu.',
+          items: [
+            { t: 'Viele ihrer Abgeordneten kamen aus der Gegend um Bordeaux.', k: 'g' },
+            { t: 'Im Konvent saßen sie oben auf den hohen Bänken.', k: 'j' },
+            { t: 'Die Sansculotten von Paris unterstützten sie.', k: 'j' },
+            { t: 'Sie fürchteten die Macht der Pariser Straße.', k: 'g' },
+            { t: 'Ihr bekanntester Redner war Robespierre.', k: 'j' },
+            { t: 'Manon Roland und Condorcet standen ihnen nahe.', k: 'g' }
+          ],
+          why: 'Die Girondisten waren gemäßigter, die Jakobiner radikaler und mit den Sansculotten verbündet.',
+          tip: 'Lies im Text davor noch einmal nach. Du kannst mit „Zurück“ blättern.'
+        }),
+        textStep('Die Schreckensherrschaft', [
+          'Im Januar 1793 wurde Ludwig XVI. hingerichtet. Im Juni 1793 umstellten bewaffnete Sansculotten den Konvent. Die Abgeordneten mussten die Verhaftung vieler Girondisten beschließen. Seitdem hatten die Jakobiner die Macht.',
+          'Frankreich führte jetzt Krieg gegen fast ganz Europa. Die Regierungsmacht lag bei einem kleinen Ausschuss von Abgeordneten, dem Wohlfahrtsausschuss. Ab Juli 1793 gehörte ihm Maximilien de Robespierre an. Im August 1793 wurden alle unverheirateten Männer zwischen 18 und 25 Jahren zur Armee gerufen.'
+        ]),
+        textStep('Aufstand gegen Paris', [
+          'Nicht ganz Frankreich stand hinter der Regierung in Paris. Im März 1793 erhoben sich in der Vendée, einer Gegend im Westen, viele Bauern gegen die Republik. Der Anlass: Die Republik brauchte 300&nbsp;000 neue Soldaten, und aus jedem Dorf sollten junge Männer in den Krieg ziehen.',
+          'Dazu kam Wut über die Verfolgung von Pfarrern, die keinen Eid auf die Revolution geschworen hatten. Für viele Bauern auf dem Land war ihr Pfarrer wichtiger als die Politik in Paris. Viele hatten außerdem das Gefühl, dass die Revolution vor allem den Bürgern in den Städten nützte. Und die Hinrichtung des Königs empörte sie.',
+          'Nach der Verhaftung der Girondisten im Juni 1793 lehnten sich auch große Städte gegen Paris auf, etwa Lyon, Marseille und Bordeaux. Toulon übergab seinen Hafen sogar den Engländern. Die Regierung nannte all diese Menschen „Konterrevolutionäre“, also Feinde der Revolution.',
+          'Die Republik schlug hart zurück. Ihre Armeen eroberten die Städte zurück. In Lyon wurden danach fast 2000 Menschen hingerichtet, viele ohne richtiges Verfahren. In der Vendée zogen Anfang 1794 Truppen durch das Land, brannten Dörfer nieder und töteten auch Frauen und Kinder. Zehntausende Menschen kamen in der Vendée ums Leben.'
+        ]),
+        textStep('Der Nachbar als Spitzel', [
+          'Auch wer nicht zu den Waffen griff, lebte gefährlich. Seit März 1793 gab es in jeder Gemeinde und in jedem Pariser Viertel einen Überwachungsausschuss. Er stellte Listen von Verdächtigen auf und konnte Haftbefehle ausstellen.',
+          'Im September 1793 beschloss der Konvent das Gesetz über die Verdächtigen:',
+          '<div class="quote">„Als verdächtige Personen gelten: 1. Alle, die sich durch ihr Verhalten oder ihre Beziehungen oder durch ihre mündlich oder schriftlich geäußerten Ansichten als … Feinde der Freiheit zu erkennen gegeben haben …“</div><div class="cite">Gesetz über die Verdächtigen, 17. September 1793, Art. 2 (Auszug). Zit. nach: W. Grab (Hg.), Die Französische Revolution. Eine Dokumentation, München 1973, S. 176 f., bearb., in: ' + BUCH + ', S. 127.</div>',
+          'Verdächtig war nach diesem Gesetz auch, wem die Behörden eine Bescheinigung verweigerten, dass er ein guter Bürger sei. Ebenso frühere Adlige und Verwandte von Geflohenen, wenn sie sich nicht ständig für die Revolution eingesetzt hatten.',
+          'Anzeigen konnte jeder jeden: Nachbarn, Kollegen, sogar Verwandte. Manche taten es aus Überzeugung, andere aus Angst oder um sich an jemandem zu rächen. Im Oktober 1793 veröffentlichte die Pariser Stadtverwaltung eine Liste mit Merkmalen, an denen man Verdächtige erkennen sollte.'
+        ]),
+        multiStep({
+          title: 'Bist du verdächtig?',
+          q: 'Was davon stand im Oktober 1793 wirklich auf der Liste der Pariser Stadtverwaltung?',
+          opts: [
+            { t: 'Du gehst nicht zu den Versammlungen in deinem Viertel.', ok: true },
+            { t: 'Du trägst die blau-weiß-rote Kokarde an deinem Hut.' },
+            { t: 'Du erzählst gern schlechte Nachrichten über die Republik weiter.', ok: true },
+            { t: 'Du hast Mitleid mit Händlern, die ihre Waren zu teuer verkaufen.', ok: true },
+            { t: 'Du zahlst pünktlich und vollständig deine Steuern.' },
+            { t: 'Du hast nichts gegen die Freiheit getan, aber auch nichts für sie.', ok: true }
+          ],
+          after: '<div class="cite">Nach: Beschluss des Generalrats der Pariser Kommune vom 11. Oktober 1793 über die Merkmale von Verdächtigen, sinngemäß.</div>',
+          why: 'Vier der sechs Merkmale standen wirklich auf der Liste. Schon Schweigen, Fernbleiben oder Mitleid konnte jemanden verdächtig machen.',
+          tip: 'Auf der Liste standen keine Taten, die der Republik nützen. Überleg, was jemanden als „lau“ oder „unzuverlässig“ erscheinen lässt.'
+        }),
+        textStep('Bis aufs Schafott', [
+          'Wer als verdächtig galt, kam ins Gefängnis. Im Herbst 1793 saßen allein in Paris über 3000 Menschen in Haft, im ganzen Land wurden es Hunderttausende.',
+          'Auf das Schafott konnte man schon wegen eines unbedachten Satzes über die Regierung kommen, wegen eines Briefes an einen ins Ausland geflohenen Verwandten oder weil ein Nachbar einen anzeigte. Wer „Es lebe der König!“ rief, riskierte die Todesstrafe.',
+          'Vor dem Revolutionsgericht ging es oft schnell, die Urteile standen meist schon vor der Verhandlung fest. Im Juni 1794 beschloss der Konvent ein neues Gesetz: Angeklagte durften keinen Verteidiger mehr haben, und das Gericht kannte nur noch zwei Urteile, Freispruch oder Tod. In den folgenden sieben Wochen wurden allein in Paris über 1000 Menschen hingerichtet. Insgesamt verurteilten die Revolutionsgerichte etwa 17&nbsp;000 Menschen zum Tode.',
+          'Am Ende hatten sogar viele Abgeordnete Angst, die Nächsten zu sein. Am 9. Thermidor, dem 27. Juli 1794, stürzten sie Robespierre. Am nächsten Tag wurde er mit seinen engsten Anhängern hingerichtet.'
+        ]),
+        setzkastenStep({
+          title: 'Kettenreaktion', domino: true, check: 'Kette anstoßen',
+          lead: ['Für den Aufmacher legst du die Ereignisse wie Dominosteine aus: Jeder Stein soll den nächsten anstoßen, die Ursache kommt vor der Folge.'],
+          hint: 'Tippe die Steine unten in der richtigen Reihenfolge an. Ein Stein liegt falsch? Tippe ihn in der Kette an, dann kommt er zurück.',
+          okMsg: 'Die Kette ist vollständig. Jede Ursache führt zur nächsten Folge.',
+          tip: 'Frag bei jedem Stein: Was musste vorher passiert sein, damit es dazu kam?',
+          cards: [
+            { t: 'Frankreich erklärt Österreich den Krieg.', d: 'April 1792' },
+            { t: 'Feindliche Heere rücken vor. In Paris wächst die Angst vor Verrätern.', d: 'Sommer 1792' },
+            { t: 'Der König wird gestürzt und später hingerichtet.', d: 'August 1792 und Januar 1793' },
+            { t: 'In der Vendée und in großen Städten erheben sich Menschen gegen Paris.', d: 'ab März 1793' },
+            { t: 'Der Wohlfahrtsausschuss bekommt immer mehr Macht.', d: '1793' },
+            { t: 'Das Gesetz über die Verdächtigen füllt die Gefängnisse.', d: 'September 1793' },
+            { t: 'Das Revolutionsgericht verurteilt Tausende zum Tode.', d: '1793 und 1794' },
+            { t: 'Abgeordnete fürchten um ihr Leben und stürzen Robespierre.', d: '27. Juli 1794' }
+          ]
+        }),
+        mcStep({
+          q: 'Warum stürzten die Abgeordneten am Ende Robespierre?',
+          opts: [
+            { t: 'Viele fürchteten, selbst als Nächste verhaftet zu werden.', ok: true },
+            { t: 'Er hatte den Krieg gegen Österreich ganz allein verloren.' },
+            { t: 'Er wollte den König wieder zurück auf den Thron bringen.' },
+            { t: 'Er hatte das Gesetz über die Verdächtigen abgeschafft.' }
+          ],
+          why: 'Der Terror traf am Ende auch Revolutionäre. Wer Robespierre stürzte, schützte damit auch sich selbst.',
+          tip: 'Lies den letzten Absatz von „Bis aufs Schafott“ noch einmal. Wovor hatten die Abgeordneten Angst?'
+        })
+      ],
+      render: function () {
+        return '<div class="kick">Aufmacher</div><h2>' + letters('Der Tyrann ist gestürzt') + '</h2>' +
+          '<p class="dek">Am 9. Thermidor hat der Konvent Robespierre gestürzt. Gestern Abend starb er auf dem Schafott. Endet jetzt der Schrecken?</p>' +
+          '<div class="cols"><p>Zwei Jahre lang lebte Paris in Angst. Seit dem Gesetz über die Verdächtigen konnte jeder verhaftet werden, der verdächtig wirkte. Das Revolutionsgericht verurteilte Tausende zum Tode.</p>' +
+          '<p>Am 9. Thermidor wandte sich der Konvent gegen den Mann, den man „den Unbestechlichen“ nannte. Am 10. Thermidor wurde Robespierre mit seinen engsten Anhängern hingerichtet. Wird die Republik jetzt milder?</p></div>';
+      }
+    },
+    B: {
+      label: 'Porträt',
+      steps: [
+        textStep('Wer war Robespierre?', [
+          fig('robespierre.jpg', 'Gemälde: Robespierre mit gepuderter Perücke und gestreiftem Rock', 'Maximilien de Robespierre, Gemälde eines unbekannten Malers, um 1790. Musée Carnavalet, Paris', 260),
+          'Maximilien de Robespierre wurde 1758 in Arras im Norden Frankreichs geboren und arbeitete dort als Anwalt. 1789 wurde er Abgeordneter des Dritten Standes. In seinen Reden vertrat er die Ideen der Aufklärung.',
+          'Weil er als bescheiden galt und sich nicht bestechen ließ, nannte man ihn „den Unbestechlichen“. Er war einer der wichtigsten Redner im Club der Jakobiner. Ab Juli 1793 gehörte er dem Wohlfahrtsausschuss an.'
+        ]),
+        mcStep({
+          title: 'Mai 1791: eine Rede gegen die Todesstrafe',
+          lead: [
+            'Im Mai 1791 ist Frankreich noch eine Monarchie, und es herrscht Frieden. Die Nationalversammlung berät über ein neues Strafgesetzbuch: Soll es weiter die Todesstrafe geben? Robespierre ist ein junger Abgeordneter ohne Regierungsamt. Er spricht dagegen.',
+            el('div', 'galley', '<span class="lbl">Robespierre, Rede in der Nationalversammlung, 30. Mai 1791</span><p class="fr" lang="fr">Je veux leur prouver : 1° que la peine de mort est essentiellement injuste […]. Écoutez la voix de la justice et de la raison : elle nous crie que les jugements humains ne sont jamais assez certains pour que la société puisse donner la mort à un homme condamné par d\'autres hommes sujets à l\'erreur.</p><span class="de">Übersetzung</span><p>Ich will ihnen beweisen: 1. dass die Todesstrafe grundlegend ungerecht ist […]. Hört auf die Stimme der Gerechtigkeit und der Vernunft: Sie ruft uns zu, dass die menschlichen Urteile niemals sicher genug sind, als dass die Gesellschaft einen Menschen töten dürfte, den andere Menschen verurteilt haben, die sich irren können.</p>'),
+            el('div', 'cite', 'Original nach: Œuvres de Robespierre, hg. von A. Vermorel, S. 212–216. ' + OWN)
+          ],
+          q: 'Was ist Robespierres wichtigstes Argument?',
+          opts: [
+            { t: 'Richter können irren, und eine Hinrichtung ist nicht rückgängig zu machen.', ok: true },
+            { t: 'Hinrichtungen kosten den Staat zu viel Geld, und der hat kaum noch welches.' },
+            { t: 'Nur der König allein soll künftig entscheiden dürfen, wer sterben muss.' },
+            { t: 'Verbrecher sollen statt hingerichtet zu werden lieber Soldaten werden.' }
+          ],
+          why: 'Menschen können sich irren. Wer hingerichtet wurde, kann aber nicht mehr freigesprochen werden.',
+          tip: 'Lies den zweiten Satz genau: Was sagt er über die „menschlichen Urteile“?'
+        }),
+        sortStep({
+          title: 'Was hat sich verändert?',
+          paras: ['Knapp drei Jahre später, im Februar 1794, hält Robespierre eine ganz andere Rede. Bevor du sie liest: Wie war die Lage im Mai 1791, und wie im Februar 1794? Denk an den Aufmacher.'],
+          q: 'Ordne jede Karte einem Zeitpunkt zu.',
+          cats: [['91', 'Mai 1791'], ['94', 'Februar 1794']],
+          missing: 'Ordne zuerst jede Karte zu.',
+          items: [
+            { t: 'Frankreich hat Frieden mit seinen Nachbarn.', k: '91' },
+            { t: 'Der König ist noch im Amt.', k: '91' },
+            { t: 'Robespierre ist Abgeordneter, aber ohne Regierungsamt.', k: '91' },
+            { t: 'Frankreich führt Krieg gegen fast ganz Europa.', k: '94' },
+            { t: 'Im Westen Frankreichs kämpfen Aufständische gegen die Republik.', k: '94' },
+            { t: 'Robespierre sitzt im mächtigsten Ausschuss des Landes.', k: '94' },
+            { t: 'Überall wird nach Verrätern in den eigenen Reihen gesucht.', k: '94' }
+          ],
+          why: '1791 herrschte Frieden, und Robespierre hatte keine Macht. 1794 war Krieg, und er regierte selbst mit.',
+          tip: 'Denk an den Aufmacher: Wann begann der Krieg? Wann kam Robespierre in den Wohlfahrtsausschuss?'
+        }),
+        mcStep({
+          title: 'Februar 1794: eine Rede über Tugend und Terror',
+          lead: [
+            'Im Februar 1794 spricht Robespierre im Konvent für den Wohlfahrtsausschuss. Er erklärt, nach welchen Grundsätzen die Republik jetzt regiert wird. Mit „Tugend“ meint er die Liebe zur Republik und ihren Gesetzen: Jeder soll das Wohl aller über sein eigenes stellen.',
+            el('div', 'galley', '<span class="lbl">Robespierre, Rede im Konvent, 5. Februar 1794</span><p class="fr" lang="fr">Si le ressort du gouvernement populaire dans la paix est la vertu, le ressort du gouvernement populaire en révolution est à la fois la vertu et la terreur : la vertu, sans laquelle la terreur est funeste ; la terreur, sans laquelle la vertu est impuissante. La terreur n\'est autre chose que la justice prompte, sévère, inflexible.</p><span class="de">Übersetzung</span><p>Wenn im Frieden die Triebkraft der Volksregierung die Tugend ist, so ist die Triebkraft der Volksregierung in der Revolution zugleich die Tugend und der Terror: die Tugend, ohne die der Terror verhängnisvoll ist; der Terror, ohne den die Tugend machtlos ist. Der Terror ist nichts anderes als die schnelle, strenge, unbeugsame Gerechtigkeit.</p>'),
+            el('div', 'cite', 'Rede über die Grundsätze der politischen Moral, 17. Pluviôse im Jahr II (5. Februar 1794). ' + OWN),
+            el('div', 'quote', '„Man muss die inneren und äußeren Feinde der Republik vernichten oder mit ihnen untergehen.“'),
+            el('div', 'cite', 'Aus derselben Rede. Zit. nach: ' + BUCH + ', S. 127.')
+          ],
+          q: 'Wie hängen Tugend und Terror für Robespierre zusammen?',
+          opts: [
+            { t: 'Ohne Terror kann sich die Tugend gegen ihre Feinde nicht durchsetzen.', ok: true },
+            { t: 'Der Terror soll die Tugend ersetzen, weil es keine Tugend mehr gibt.' },
+            { t: 'Tugend und Terror schließen sich für ihn vollständig gegenseitig aus.' },
+            { t: 'Der Terror soll nur im Frieden gelten und die Tugend nur im Krieg.' }
+          ],
+          why: 'Er unterscheidet Frieden und Revolution. Im Frieden reiche die Tugend. In der Revolution, also im Kampf gegen Feinde, sei sie ohne Terror „machtlos“.',
+          tip: 'Achte auf den Anfang: „Wenn im Frieden …, so … in der Revolution“. Und auf das Wort „machtlos“.'
+        }),
+        mcStep({
+          title: 'Ein Mann, zwei Reden',
+          q: 'Was erklärt am besten, warum Robespierre 1794 so anders sprach als 1791?',
+          opts: [
+            { t: 'Er sah die Republik in Gefahr und wollte sie um jeden Preis retten.', ok: true },
+            { t: 'Er hatte die Rede von 1791 gar nicht selbst geschrieben, nur vorgelesen.' },
+            { t: 'Der Konvent hatte die Todesstrafe im Jahr 1794 gerade ganz abgeschafft.' },
+            { t: 'Er wollte mit der Rede den König zurück auf den Thron holen.' }
+          ],
+          why: 'Für ihn selbst war das kein Widerspruch: 1791 ging es um Recht in Friedenszeiten, 1794 um das Überleben der Republik. Aber das Gesetz über die Verdächtigen traf auch viele Unschuldige. Vor genau diesem Irrtum hatte er 1791 selbst gewarnt.',
+          tip: 'Schau auf die Karten zur Lage 1791 und 1794. Was war 1794 anders, und wovor hatte er Angst?'
+        })
+      ],
+      render: function () {
+        return '<div class="kick">Porträt</div><h3>' + letters('Der Unbestechliche') + '</h3>' +
+          '<figure><img src="henker.jpg" alt="Karikatur: Robespierre betätigt die Guillotine, auf der der Henker liegt. Dahinter viele Guillotinen und eine Pyramide."><figcaption>Robespierre guillotiniert den Henker, nachdem er alle Franzosen hat guillotinieren lassen. Auf der Pyramide steht: „Hier ruht ganz Frankreich“. Anonyme Karikatur, um 1794</figcaption></figure>' +
+          '<p>Anwalt aus Arras, Abgeordneter seit 1789, führendes Mitglied des Wohlfahrtsausschusses. 1791 wollte er die Todesstrafe abschaffen. 1794 nannte er den Terror „die schnelle, strenge, unbeugsame Gerechtigkeit“.</p>';
+      }
+    },
+    C: {
+      label: 'Nachrufe', artCls: 'trauer',
+      doneTalk: [{ w: 'T', t: 'Das waren schwere Akten.', m: 'sad' }, { w: 'R', t: 'Die Nachrufe stehen jetzt mit Trauerrand auf der Seite.', m: 'calm' }],
+      steps: [
+        filesStep({
+          title: 'Die Akten',
+          lead: ['Für die Nachrufe liegen sechs Akten auf deinem Tisch. Öffne jede und lies genau, was den Menschen vorgeworfen wurde. Danach sortierst du die Vorwürfe.'],
+          okMsg: 'Du hast alle Akten gelesen. Jetzt sortierst du die Vorwürfe.',
+          files: [
+            { name: 'Marie Antoinette (1755–1793)', html: '<img src="marie-antoinette-david.jpg" alt="Federzeichnung: Marie Antoinette sitzt mit gefesselten Händen auf dem Karren"><p>Nach dem Sturz der Monarchie saß die frühere Königin im Gefängnis. Im Oktober 1793 stand sie vor dem Revolutionsgericht. Man warf ihr vor, heimlich mit Österreich gegen Frankreich zusammengearbeitet zu haben.</p><p>Dazu kamen erfundene Vorwürfe über sie als Mutter: Sie habe ihren Sohn verdorben. Sie antwortete, sie rufe alle Mütter im Saal als Zeuginnen an. Am 16. Oktober 1793 wurde sie hingerichtet.</p><div class="cite" style="clear:both">Bild: Jacques-Louis David zeichnete sie auf dem Karren zum Schafott, 16. Oktober 1793. Louvre, Paris</div>' },
+            { name: 'Olympe de Gouges (1748–1793)', html: '<p>Gouges kennst du aus der Ausgabe 1791. Im Sommer 1793 ließ sie ein Plakat drucken: Das Volk solle selbst wählen, welche Regierungsform es will. Dafür wurde sie verhaftet und am 3. November 1793 hingerichtet. Danach schrieb die Zeitung „Le Moniteur“ über sie:</p><div class="quote">„Sie wollte ein Staatsmann sein, und es scheint, dass das Gesetz diese Verschwörerin dafür bestraft hat, dass sie die Tugenden vergessen hat, die zu ihrem Geschlecht passen.“</div><div class="cite">Le Moniteur, November 1793. Original: „Elle voulut être homme d\'État et il semble que la loi ait puni cette conspiratrice d\'avoir oublié les vertus qui conviennent à son sexe.“ ' + OWN + '</div>' },
+            { name: 'Manon Roland (1754–1793)', html: '<p>Manon Roland war die Frau eines Ministers. In ihrem Salon trafen sich Politiker der Girondisten, und sie schrieb Briefe und Reden für ihren Mann. Nach dem Sturz der Girondisten wurde sie verhaftet und am 8. November 1793 hingerichtet.</p><p>Wenige Tage später sagte der Pariser Stadtpolitiker Chaumette in einer Rede: Man solle sich an „die Roland“ erinnern, die sich für fähig hielt, die Republik zu regieren, und die deshalb in ihr Verderben lief. Und an Olympe de Gouges, die ihren Haushalt vernachlässigt habe, um Politik zu machen.</p><div class="cite">Pierre-Gaspard Chaumette, Rede im Pariser Rathaus, 17. November 1793, sinngemäß.</div>' },
+            { name: 'Charlotte Corday (1768–1793)', html: '<p>Charlotte Corday war eine junge Frau aus der Normandie. Sie hielt den Journalisten Jean-Paul Marat für schuld an der Gewalt gegen die Girondisten. Im Juli 1793 tötete sie ihn in Paris mit einem Messer. Vier Tage später wurde sie hingerichtet.</p><p>Viele wollten nicht glauben, dass eine junge Frau diese Tat allein geplant hatte. Man suchte nach Männern, die hinter ihr stecken sollten. Corday blieb dabei: Sie habe allein gehandelt.</p>' },
+            { name: 'Condorcet (1743–1794)', html: '<p>Der Mathematiker und Philosoph Condorcet war Abgeordneter im Konvent. Schon 1790 schrieb er, Frauen müssten dieselben politischen Rechte haben wie Männer.</p><p>Er hielt zu den Girondisten und schrieb gegen die neue Verfassung der Jakobiner. 1793 wurde er deshalb geächtet und versteckte sich monatelang. Im März 1794 wurde er gefasst. Zwei Tage später starb er in der Haft.</p>' },
+            { name: 'Jean, 19 Jahre (erfunden)', html: '<img src="soldat-schreibt.png" alt="Gezeichneter junger Soldat sitzt auf einer Kiste und schreibt einen Brief"><p>Diese Akte ist erfunden, wie die Marktfrau. Aber so ging es vielen jungen Männern.</p><p>Jean ist Schneidergeselle in Paris. Im August 1793 werden alle unverheirateten Männer zwischen 18 und 25 Jahren zur Armee gerufen. In seinem Viertel heißt es: Ein echter Mann drückt sich nicht, wer zu Hause bleibt, ist ein Feigling.</p><p>Im Frühjahr 1794 schreibt Jean seiner Mutter einen letzten Brief. Im Sommer fällt er an der Nordgrenze.</p>' }
+          ]
+        }),
+        sortStep({
+          title: 'Was man ihnen vorwarf',
+          paras: ['Manche Vorwürfe betreffen Politik: was jemand getan, geschrieben oder unterstützt hat. Andere arbeiten mit Bildern davon, wie eine Frau oder ein Mann zu sein hat.'],
+          q: 'Ordne jeden Vorwurf zu. Wenn du unsicher bist, geh mit „Zurück“ noch einmal zu den Akten.',
+          cats: [['pol', 'politischer Vorwurf'], ['bild', 'Bild von „Frau“ oder „Mann“']],
+          missing: 'Ordne zuerst jeden Vorwurf zu.',
+          items: [
+            { t: '<b>Marie Antoinette:</b> Sie habe heimlich mit Österreich gegen Frankreich gearbeitet.', k: 'pol' },
+            { t: '<b>Marie Antoinette:</b> Sie sei eine schlechte Mutter gewesen.', k: 'bild' },
+            { t: '<b>Olympe de Gouges:</b> Sie habe auf einem Plakat eine freie Wahl der Regierungsform gefordert.', k: 'pol' },
+            { t: '<b>Olympe de Gouges:</b> Sie habe die Tugenden vergessen, die zu ihrem Geschlecht passen.', k: 'bild' },
+            { t: '<b>Manon Roland:</b> Sie habe sich für fähig gehalten, die Republik zu regieren.', k: 'bild' },
+            { t: '<b>Charlotte Corday:</b> Eine junge Frau könne so eine Tat nicht allein geplant haben.', k: 'bild' },
+            { t: '<b>Condorcet:</b> Er habe zu den Girondisten gehalten und gegen die Verfassung geschrieben.', k: 'pol' },
+            { t: '<b>Jean:</b> Wer nicht an die Front will, sei ein Feigling und kein echter Mann.', k: 'bild' }
+          ],
+          why: 'Bei allen Frauen kam zum politischen Vorwurf ein zweiter dazu: Sie hätten sich nicht verhalten, wie es sich für eine Frau gehört. Und auch von Männern wurde etwas erwartet.',
+          tip: 'Frag bei jedem Vorwurf: Geht es um eine politische Tat oder darum, was sich angeblich für eine Frau oder einen Mann gehört?'
+        }),
+        mcStep({
+          title: 'Schafott und Tribüne',
+          lead: ['1791 hast du diesen Satz von Olympe de Gouges gelesen:', el('div', '', GOUGES10)],
+          q: 'Was ist aus ihrer Forderung geworden?',
+          opts: [
+            { t: 'Das Schafott durfte sie besteigen, die Tribüne nie.', ok: true },
+            { t: 'Sie durfte am Ende doch im Konvent eine Rede halten.' },
+            { t: 'Frauen wurden ab 1793 gar nicht mehr hingerichtet.' },
+            { t: 'Der Konvent hat ihre Forderung 1793 ganz erfüllt.' }
+          ],
+          why: 'Gouges wurde bestraft wie ein Mann, aber nie gehört wie ein Mann. Ihr Satz von 1791 ist für sie selbst bitter wahr geworden.',
+          tip: 'Denk an ihre Akte: Was ist mit ihr passiert? Und durfte sie je im Konvent sprechen?'
+        })
+      ],
+      done: function () { addMuster('natur'); },
+      render: function () {
+        var N = [
+          ['Marie Antoinette', '1755–1793', 'Frühere Königin. Hingerichtet am 16. Oktober 1793.'],
+          ['Olympe de Gouges', '1748–1793', 'Schriftstellerin. Hingerichtet am 3. November 1793. Sie schrieb: „Die Frau hat das Recht, das Schafott zu besteigen …“'],
+          ['Manon Roland', '1754–1793', 'Hingerichtet am 8. November 1793.'],
+          ['Charlotte Corday', '1768–1793', 'Hingerichtet am 17. Juli 1793, vier Tage nachdem sie Marat getötet hatte.'],
+          ['Condorcet', '1743–1794', 'Gestorben in der Haft im März 1794. Er forderte schon 1790 politische Rechte für Frauen.'],
+          ['Jean, Schneidergeselle', '19 Jahre', 'Gefallen an der Nordgrenze. Erfundene Person, wie viele Tausende, deren Namen keine Zeitung druckt.']
+        ];
+        return '<div class="kick">Nachrufe</div><h3>' + letters('Wir trauern') + '</h3>' + N.map(function (n) { return '<div class="nachruf"><b>' + n[0] + '</b> <span>' + n[1] + '</span>' + n[2] + '</div>'; }).join('');
+      }
+    },
+    D: {
+      label: 'Bekanntmachung', big: true,
+      steps: [
+        textStep('Die Clubs der Frauen', [
+          fig('frauenclub.jpg', 'Gouache: Frauen sitzen in einem Saal, eine liest stehend aus einem Blatt vor, andere hören zu und sammeln Geld', 'Jean-Baptiste Lesueur, Patriotischer Frauenclub, Gouache, um 1792–1794. Musée Carnavalet, Paris', 280),
+          'Unter dem Bild steht in alter Handschrift (für dieses Modul übersetzt): Patriotische Frauen hatten einen Club gegründet. Sie hatten eine Präsidentin und Sekretärinnen und trafen sich zweimal in der Woche. Die Präsidentin las vor, was der Konvent beschlossen hatte, und man stimmte den Beschlüssen zu oder kritisierte sie. Außerdem sammelten die Frauen Geld für bedürftige Familien.',
+          'Im Mai 1793 gründeten Claire Lacombe und Pauline Léon in Paris den Club der Revolutionären Republikanerinnen. Seine Mitglieder trugen die rote Mütze der Revolution. Sie forderten harte Strafen gegen Händler, die mit Lebensmitteln Wucher trieben, und das Recht für Frauen, Waffen zu tragen.'
+        ]),
+        dialogStep({
+          title: 'Streit in den Markthallen',
+          lead: ['Ende Oktober 1793 gibt es Streit in den Markthallen. Die Clubfrauen wollen, dass alle Bürgerinnen die rote Mütze tragen. Viele Marktfrauen wollen das nicht. Die beiden Frauen hier sind erfunden, den Streit gab es wirklich.'],
+          who: { L: { name: 'Clubfrau' }, R: { name: 'Marktfrau' } },
+          lines: [
+            ['L', 'Bürgerin, wo ist deine rote Mütze? Wir sind Republikanerinnen wie die Männer. Das soll jede sehen!', 'clubfrau-rede.png'],
+            ['R', 'Ich trage, was ich will. Mir geht es um Brot für meine Kinder, nicht um Mützen.', 'marktfrau-entschlossen.png'],
+            ['L', 'Gerade deshalb! Wir kämpfen gegen die Wucherer. Dafür müssen wir Frauen zusammenstehen.', 'clubfrau-streit.png'],
+            ['R', 'Vorschreiben lasse ich mir nichts. Nicht von euch und nicht von sonst jemandem.', 'marktfrau-nachdenklich.png'],
+            ['L', 'Jetzt reden alle nur noch über unseren Streit. Ich fürchte, das nutzen die Herren im Konvent aus.', 'clubfrau-nachdenklich.png']
+          ],
+          end: '<b>So ging es weiter</b>Am 29. Oktober 1793 baten Pariserinnen den Konvent, dass niemand zu einer bestimmten Kleidung gezwungen werden darf. Eine von ihnen forderte, alle Frauenclubs abzuschaffen. Der Konvent beschloss, dass sich jeder kleiden darf, wie er will. Über die Frauenclubs sollte ein Ausschuss berichten.'
+        }),
+        sortStep({
+          title: 'Die Begründung',
+          paras: ['Am nächsten Tag, dem 30. Oktober 1793, sprach der Abgeordnete André Amar für diesen Ausschuss. Er fragte: Sollen Frauen politische Rechte ausüben und sich in die Regierung einmischen? Sollen sie sich in politischen Vereinen versammeln? Seine Antwort war beide Male: Nein.'],
+          q: 'Worauf beruft sich Amar in diesen Sätzen?',
+          cats: [['natur', 'Natur'], ['familie', 'Familie'], ['ordnung', 'Ruhe und Ordnung']],
+          missing: 'Ordne zuerst jeden Satz zu.',
+          items: [
+            { t: '„Jedes Geschlecht ist zu einer eigenen Art von Tätigkeit berufen.“', k: 'natur', src: 'Original: „Chaque sexe est appelé à un genre d\'occupation qui lui est propre“' },
+            { t: '„Die Frauen neigen durch ihre Körperbeschaffenheit zu einer Erregung, die in öffentlichen Angelegenheiten verhängnisvoll wäre.“', k: 'natur', src: 'Original: „les femmes sont disposées, par leur organisation, à une exaltation qui serait funeste dans les affaires publiques“' },
+            { t: '„Wir glauben also, dass eine Frau ihre Familie nicht verlassen darf, um sich in die Angelegenheiten der Regierung einzumischen.“', k: 'familie', src: 'Original: „Nous croyons donc qu\'une femme ne doit pas sortir de sa famille pour s\'immiscer dans les affaires du gouvernement.“' },
+            { t: '„Euer Ausschuss hat sich unermüdlich mit den Mitteln befasst, den Folgen der Unruhen vorzubeugen.“', k: 'ordnung', src: 'Original: „votre comité s\'est occupé sans relâche des moyens de prévenir les suites des troubles“' }
+          ],
+          after: '<div class="cite">André Amar, Bericht im Konvent, 30. Oktober 1793. Nach: Archives parlementaires, Bd. 78. Übersetzungen für dieses Modul.</div>',
+          why: 'Amar beruft sich vor allem auf die „Natur“. Den Streit in den Markthallen nimmt er als Anlass.',
+          tip: 'Achte auf Signalwörter: Geschlecht und Körper, Familie, Unruhen.'
+        }),
+        mcStep({
+          title: 'Das Verbot',
+          lead: [el('div', 'amt', '<span class="h">Dekret des Nationalkonvents, 30. Oktober 1793</span>Art. 1. Die Clubs und Volksgesellschaften von Frauen sind verboten, unter welchem Namen auch immer.<span class="fr">„Les clubs et Sociétés populaires de femmes, sous quelque dénomination que ce soit, sont défendus.“ ' + OWN + '</span>')],
+          q: 'Ein Streit zwischen einigen Frauen in den Markthallen. Und das Ergebnis?',
+          opts: [
+            { t: 'Alle Frauen verloren das Recht auf eigene Clubs.', ok: true },
+            { t: 'Nur die Clubfrauen mussten ihre roten Mützen abgeben.' },
+            { t: 'Die Marktfrauen bekamen dafür einen eigenen Club.' },
+            { t: 'Frauenclubs durften nur noch Männer leiten.' }
+          ],
+          why: 'Aus dem Streit einiger Frauen wurde ein Verbot für alle Frauen, auch für die, die gar nicht gestritten hatten.',
+          tip: 'Lies Artikel 1 genau: Welche Clubs sind verboten?'
+        }),
+        decisionStep({
+          title: 'Ein Kommentar aus dem Winter', key: 'milde',
+          lead: ['Rückblende: Dezember 1793. Die Gefängnisse sind voll. Ein Mitarbeiter legt dir einen Kommentar auf den Tisch:', '<div class="quote">„Nicht jeder Verdächtige ist ein Feind der Republik. Wir brauchen einen Ausschuss, der Milde walten lässt und Unschuldige freilässt.“</div><div class="cite">Erfundener Kommentar</div>'],
+          q: 'Druckst du den Kommentar?',
+          opts: [['ja', 'Ja, ich drucke ihn.'], ['nein', 'Nein, das ist mir zu gefährlich.']],
+          reveal: {
+            ja: '<b>Was damals geschah</b>Genau das hat Camille Desmoulins getan. Er war Journalist und schon 1789 ein Held der Revolution. Im Dezember 1793 forderte er in seiner Zeitung „Le Vieux Cordelier“ einen „Ausschuss der Milde“. Im April 1794 wurde er hingerichtet, eine Woche später auch seine Frau Lucile.',
+            nein: '<b>Was damals geschah</b>Ein anderer Journalist hat so etwas gedruckt: Camille Desmoulins, schon 1789 ein Held der Revolution. Im Dezember 1793 forderte er in seiner Zeitung „Le Vieux Cordelier“ einen „Ausschuss der Milde“. Im April 1794 wurde er hingerichtet, eine Woche später auch seine Frau Lucile.'
+          },
+          say: 'Wer damals schrieb, riskierte viel. Darum arbeitest du anonym.'
+        }),
+        noteStep({
+          title: 'Dein Kommentar', key: 'k94', max: 240, ph: 'Ein Satz für deine Leser …',
+          lead: ['Unter die Bekanntmachung über das Verbot der Frauenclubs kommt ein Satz Kommentar. Den schreibst du.']
+        })
+      ],
+      done: function () { addMuster('natur'); addMuster('ordnung'); },
+      render: function () {
+        var k = (S.txt.k94 || '').trim();
+        var m = S.txt.milde === 'ja'
+          ? '<div class="box"><b>Aus der Redaktion</b><p>Im Winter forderte diese Zeitung Milde für die Verdächtigen. Camille Desmoulins wurde für dieselbe Forderung im April hingerichtet.</p></div>'
+          : '<div class="box"><b>Aus der Redaktion</b><p>Im Winter druckte diese Zeitung keinen Aufruf zur Milde. Camille Desmoulins druckte einen und wurde im April hingerichtet.</p></div>';
+        return '<div class="kick">Amtliche Bekanntmachung</div><h3>' + letters('Die Clubs der Frauen sind verboten') + '</h3>' +
+          '<figure><img src="frauenclub.jpg" alt="Gouache: Frauen in einem Club, eine liest vor"><figcaption>Jean-Baptiste Lesueur, Patriotischer Frauenclub, um 1792–1794. Musée Carnavalet, Paris</figcaption></figure>' +
+          '<div class="amt"><span class="h">Nationalkonvent · 9. Brumaire im Jahr II</span>Art. 1. Die Clubs und Volksgesellschaften von Frauen sind verboten, unter welchem Namen auch immer.</div>' +
+          (k ? '<p><b>Kommentar der Redaktion:</b> ' + esc(k) + '</p>' : '<p><i>Die Redaktion verzichtet auf einen Kommentar.</i></p>') + m;
+      }
+    }
+  };
+
+  // ------------------------------------------------------------------ Inhalte der Ausgabe 1797
+  var FIELDS97 = {
+    A: {
+      label: 'Aufmacher', big: true,
+      steps: [
+        textStep('Nach dem Terror', [
+          'Nach Robespierres Sturz kamen viele Verdächtige frei. Im November 1794 wurde der Club der Jakobiner geschlossen. Für die Armen wurde das Leben noch härter: Die festen Höchstpreise für Brot und andere Waren wurden abgeschafft, und im eiskalten Winter stiegen die Preise stark.',
+          'Im August 1795 beschloss der Konvent eine neue Verfassung. Die Regierung bildeten jetzt fünf Direktoren, das Direktorium. Die Gesetze machten zwei Kammern, der Rat der Fünfhundert und der Rat der Alten.',
+          'Im Oktober 1795 versuchten Anhänger des Königtums in Paris einen Aufstand. Ein junger General ließ mit Kanonen auf die Aufständischen schießen: Napoleon Bonaparte. Danach führte er die französische Armee in Italien von Sieg zu Sieg. Am 17. Oktober 1797 schloss er in Campo Formio Frieden mit Österreich.'
+        ]),
+        textStep('Wer will was?', [
+          'Nach dem Terror regierten die Abgeordneten, die Robespierre gestürzt hatten. Man nennt sie nach dem Monat seines Sturzes die <b>Thermidorianer</b>. Die meisten waren wohlhabende Bürger. Sie wollten die Revolution beenden, ohne den König zurückzuholen. Aus ihren Reihen kamen später die Direktoren.',
+          'Von zwei Seiten bekamen sie Druck. Auf der einen Seite standen die <b>Anhänger des Königtums</b>, die Royalisten. Der Bruder Ludwigs XVI. lebte im Ausland und wollte König werden. Bei den Wahlen 1797 gewannen Royalisten viele Sitze.',
+          'Auf der anderen Seite standen die übrigen <b>Jakobiner</b> und die <b>Sansculotten</b>. Sie wollten bezahlbares Brot und die Verfassung von 1793. Diese Verfassung hatte allen Männern das Wahlrecht versprochen. Wegen des Krieges war sie aber nie in Kraft getreten.',
+          'Die Regierung versuchte, sich in der Mitte zu halten. Wenn es eng wurde, holte sie die Armee zu Hilfe, mal gegen die eine Seite, mal gegen die andere.'
+        ]),
+        mcStep({
+          q: 'Warum wurde die Armee für die Regierung immer wichtiger?',
+          opts: [
+            { t: 'Die Regierung hatte Gegner auf zwei Seiten und konnte sich allein kaum halten.', ok: true },
+            { t: 'Die Soldaten durften ab 1795 als Einzige im Land wählen und Gesetze machen.' },
+            { t: 'Der König hatte vor seinem Tod befohlen, dass die Armee immer regieren soll.' },
+            { t: 'Die Armee war nach dem Frieden mit Österreich in Paris einfach übrig.' }
+          ],
+          why: 'Gegen Royalisten und gegen hungernde Arme setzte die Regierung Soldaten ein. Damit wurden Generäle wie Bonaparte immer mächtiger.',
+          tip: 'Lies den letzten Absatz von „Wer will was?“ noch einmal.'
+        }),
+        voteStep({
+          title: 'Zum dritten Mal vor dem Wahllokal',
+          intro: 'Die Verfassung von 1795 regelt die Wahlen neu. Vor dem Wahllokal stehen wieder die Menschen von 1791, vier Jahre älter. Eine fehlt.',
+          rule: '<b>Verfassung von 1795:</b> Wählen dürfen Männer ab 21, die überhaupt eine direkte Steuer zahlen und nicht als Dienstboten arbeiten. Sie wählen aber nur Wahlmänner, und die wählen die Abgeordneten. <b>Wahlmann</b> kann nur werden, wer mindestens 25 Jahre alt ist und ein Haus oder Land besitzt (oder eine teure Wohnung mietet).',
+          opts: [['nein', 'darf nicht wählen'], ['ja', 'darf wählen'], ['wm', 'darf wählen und Wahlmann werden']],
+          okMsg: 'Jacques und Antoine dürfen wählen, aber wer am Ende entscheidet, bestimmen Pierre und Michel mit.',
+          tip: 'Prüfe zuerst: Darf die Person überhaupt wählen? Und dann: Ist sie mindestens 25 und besitzt sie ein Haus oder Land?',
+          people: VOTE95
+        }),
+        decisionStep({
+          title: 'Der 18. Fructidor', key: 'fructidor',
+          lead: ['Am 18. Fructidor, also im Fruchtmonat, am 4. September 1797, lassen drei der fünf Direktoren Soldaten aufmarschieren. Abgeordnete, die dem Königtum nahestehen, werden verhaftet. Die Wahlen in 49 Departements werden für ungültig erklärt. Ein Mitarbeiter hat einen Artikel geschrieben: Das sei ein Staatsstreich gegen die Verfassung.'],
+          q: 'Druckst du den Artikel?',
+          opts: [['ja', 'Ja, die Leser sollen es erfahren.'], ['nein', 'Nein, wir schreiben lieber über Italien.']],
+          reveal: {
+            ja: '<b>Was damals geschah</b>Gleich nach dem Staatsstreich wurden Dutzende Zeitungen verboten. Ihre Herausgeber und Redakteure sollten in die Strafkolonie nach Guayana gebracht werden. Alle übrigen Zeitungen kamen für ein Jahr unter die Aufsicht der Polizei. Dein Artikel wird beschlagnahmt.',
+            nein: '<b>Was damals geschah</b>Gleich nach dem Staatsstreich wurden Dutzende Zeitungen verboten. Ihre Herausgeber und Redakteure sollten in die Strafkolonie nach Guayana gebracht werden. Alle übrigen Zeitungen kamen für ein Jahr unter die Aufsicht der Polizei. Deine Zeitung darf weiter erscheinen.'
+          },
+          say: 'Pressefreiheit gab es 1789 und 1791. Jetzt ist sie wieder weg.'
+        }),
+        pendelStep({
+          title: 'Wohin schwingt das Pendel?',
+          lead: ['Seit 1789 hat sich viel verändert, mal in die eine, mal in die andere Richtung. Entscheide bei jedem Ereignis: Bringt es den Menschen danach mehr oder weniger Freiheit und Mitbestimmung als vorher?'],
+          left: 'weniger Freiheit und Mitbestimmung', right: 'mehr Freiheit und Mitbestimmung',
+          tip: 'Frag dich: Dürfen danach mehr Menschen mitreden und frei leben als vorher, oder weniger?',
+          end: 'Das Pendel ist hin und her geschwungen. Schau noch einmal auf die Liste: In welche Richtung schwang es für die Frauen?',
+          items: [
+            { d: 'Juni 1789', t: 'Der Dritte Stand erklärt sich zur Nationalversammlung.', k: 'r' },
+            { d: 'September 1791', t: 'Die Verfassung bindet den König an die Gesetze.', k: 'r' },
+            { d: 'August 1792', t: 'Alle Männer ab 21 dürfen wählen, auch die armen.', k: 'r' },
+            { d: 'September 1793', t: 'Wer verdächtig wirkt, kann ohne Beweis verhaftet werden.', k: 'l' },
+            { d: 'Oktober 1793', t: 'Die Clubs der Frauen werden verboten.', k: 'l' },
+            { d: 'Sommer 1794', t: 'Nach Robespierres Sturz kommen viele Verdächtige frei.', k: 'r' },
+            { d: 'Mai 1795', t: 'Frauen dürfen nicht mehr zu politischen Versammlungen gehen.', k: 'l' },
+            { d: 'August 1795', t: 'Wahlmann kann nur noch werden, wer Besitz hat.', k: 'l' },
+            { d: 'September 1797', t: 'Dutzende Zeitungen werden verboten.', k: 'l' }
+          ]
+        })
+      ],
+      render: function () {
+        var f = S.txt.fructidor === 'ja'
+          ? '<div class="box seized"><b>Der 18. Fructidor</b><p>Was am 4. September in Paris geschah, war ein Staatsstreich gegen die Verfassung. Soldaten verhafteten gewählte Abgeordnete …</p></div>'
+          : '<div class="box"><b>Aus der Redaktion</b><p>Über den 18. Fructidor druckt diese Zeitung kein Wort.</p></div>';
+        return '<div class="kick">Aufmacher</div><h2>' + letters('General Bonaparte bringt den Frieden') + '</h2>' +
+          '<figure><img src="arcole.jpg" alt="Gemälde: Der junge Bonaparte stürmt mit einer Fahne in der Hand voran"><figcaption>Antoine-Jean Gros, Bonaparte auf der Brücke von Arcole (1796). Gros malte mehrere Fassungen, diese entstand um 1801. Louvre, Paris</figcaption></figure>' +
+          '<p class="dek">In Campo Formio hat General Bonaparte Frieden mit Österreich geschlossen. Paris jubelt dem jungen Sieger zu.</p>' +
+          '<div class="cols"><p>Vor zwei Jahren schlug Bonaparte in Paris einen Aufstand nieder. Seitdem hat er in Italien eine Schlacht nach der anderen gewonnen. Den Frieden hat er weitgehend selbst ausgehandelt.</p>' +
+          '<p>Die Regierung, das Direktorium, ist schwach. Im September brauchte sie Soldaten, um sich gegen ihre Gegner durchzusetzen. Wie viel Macht wird der junge General noch bekommen?</p></div>' + f;
+      }
+    },
+    B: {
+      label: 'Rückblick', ernst: true,
+      steps: [
+        picStoryStep('Sechs Jahre später', [
+          ['Winter 1794/95', 'Die Marktfrau vom Oktober 1789 ist älter geworden. Der Winter ist eiskalt, und das Brot ist teurer als je zuvor. Viele Familien hungern.', 'marktfrau1795-hunger.png'],
+          ['20. Mai 1795', 'Wieder ziehen vor allem Frauen voran, mit ihnen Männer aus den Vorstädten. Sie dringen in den Konvent ein und rufen: „Brot und die Verfassung von 1793!“ Gemeint ist die Verfassung, die allen Männern das Wahlrecht versprochen hatte. Im Tumult wird ein Abgeordneter getötet.', 'marktfrau1795-wut.png'],
+          ['21. bis 23. Mai 1795', 'Diesmal schickt die Regierung Truppen. Die Soldaten umstellen die Vorstädte, die Menschen müssen ihre Waffen abgeben. Der Aufstand ist vorbei.', 'marktfrau1795-abwehr.png'],
+          ['23. Mai 1795 (4. Prairial, im Wiesenmonat)', 'Der Konvent beschließt: Frauen sollen in ihre Wohnungen zurückkehren. Zu politischen Versammlungen dürfen sie nicht mehr. Stehen mehr als fünf Frauen zusammen auf der Straße, werden sie auseinandergetrieben und festgenommen.', 'marktfrau1795-muede.png']
+        ]),
+        sortStep({
+          title: 'Zweimal dieselbe Straße',
+          paras: ['<div class="twoimg" style="max-width:300px;margin:0 auto 8px"><img src="marktfrau-jubel.png" alt="Die junge Marktfrau 1789, jubelnd"><img src="marktfrau1795-muede.png" alt="Die Marktfrau 1795, alt und erschöpft"></div>', 'Vergleiche den Marsch vom Oktober 1789 mit dem Aufstand vom Mai 1795.'],
+          q: 'Was trifft auf beide zu, was nur auf einen?',
+          cats: [['beide', 'beide Male'], ['89', 'nur 1789'], ['95', 'nur 1795']],
+          missing: 'Ordne zuerst jede Karte zu.',
+          items: [
+            { t: 'Das Brot ist knapp und sehr teuer.', k: 'beide' },
+            { t: 'Vor allem Frauen gehen voran.', k: 'beide' },
+            { t: 'Tausende Nationalgardisten ziehen hinterher.', k: '89' },
+            { t: 'Der König verspricht den Frauen Brot.', k: '89' },
+            { t: 'Truppen der Regierung beenden den Aufstand.', k: '95' },
+            { t: 'Frauen werden danach von politischen Versammlungen ausgeschlossen.', k: '95' }
+          ],
+          why: 'Dieselbe Not, dieselben Frauen, aber eine ganz andere Antwort der Politik.',
+          tip: 'Geh in Gedanken noch einmal den Marsch aus der Ausgabe 1791 durch. Was ist 1795 anders?'
+        }),
+        mcStep({
+          q: 'Warum verbot der Konvent gerade den Frauen, sich auf der Straße zu versammeln?',
+          opts: [
+            { t: 'Frauen waren vorangegangen und sollten jetzt nach Hause.', ok: true },
+            { t: 'Frauen hatten beim Aufstand gar nicht mitgemacht.' },
+            { t: 'Männer durften sich schon seit 1793 nicht mehr versammeln.' },
+            { t: 'Die Frauen hatten selbst um dieses Verbot gebeten.' }
+          ],
+          why: 'Die Frauen hatten den Aufstand angeführt. Jetzt wurden sie ausdrücklich nach Hause geschickt, im Namen von Ruhe und Ordnung.',
+          tip: 'Lies den letzten Abschnitt der Geschichte noch einmal. Wohin sollen die Frauen?'
+        })
+      ],
+      done: function () { addMuster('ordnung'); },
+      render: function () {
+        return '<div class="kick">Rückblick</div><h3>' + letters('Brot und Ruhe') + '</h3>' +
+          '<p>Im Mai 1795 zogen wieder Tausende zum Konvent, vorneweg die Frauen. Sie riefen nach Brot und nach der Verfassung von 1793. Diesmal schickte die Regierung Truppen.</p>' +
+          '<div class="amt"><span class="h">Nationalkonvent · Mai 1795</span>Alle Frauen ziehen sich in ihre Wohnungen zurück. Politischen Versammlungen dürfen sie nicht beiwohnen. Frauen, die sich zu mehr als fünf auf der Straße versammeln, werden auseinandergetrieben und festgenommen.<span class="fr">Inhalt der Beschlüsse vom 1. und 4. Prairial im Jahr III, sinngemäß</span></div>';
+      }
+    },
+    C: {
+      label: 'Spalte',
+      steps: [
+        textStep('Rechte und Pflichten', [
+          '1795 bekam die Verfassung eine neue Erklärung vorangestellt: die „Erklärung der Rechte und Pflichten des Menschen und Bürgers“. Neu waren die Pflichten. In Artikel 4 der Pflichten steht:',
+          '<div class="galley"><span class="lbl">Erklärung der Rechte und Pflichten, 1795 · Pflichten, Artikel 4</span><p class="fr" lang="fr">Nul n\'est bon citoyen, s\'il n\'est bon fils, bon père, bon frère, bon ami, bon époux.</p><span class="de">Übersetzung</span><p>Niemand ist ein guter Bürger, wenn er nicht ein guter Sohn, guter Vater, guter Bruder, guter Freund, guter Ehemann ist.</p></div><div class="cite">Original: Verfassung vom 5. Fructidor im Jahr III (22. August 1795). ' + OWN + '</div>'
+        ]),
+        mcStep({
+          title: 'Wer fehlt?',
+          q: 'Wer fehlt in dieser Aufzählung?',
+          opts: [
+            { t: 'Töchter, Mütter, Schwestern und Ehefrauen', ok: true },
+            { t: 'Bauern, Händler, Dienstboten und Tagelöhner' },
+            { t: 'Nachbarn, Kollegen, Lehrer und Soldaten' },
+            { t: 'Großeltern, Enkel, Onkel und Tanten' }
+          ],
+          why: 'In der ganzen Aufzählung kommt keine Frau vor. Ein „guter Bürger“ ist hier ganz selbstverständlich ein Mann.',
+          tip: 'Lies die Aufzählung noch einmal: Sohn, Vater, Bruder, Freund, Ehemann. Was haben alle gemeinsam?'
+        }),
+        mcStep({
+          title: 'Und die Männer?',
+          q: 'Was muss ein Mann laut Artikel 4 tun, um als guter Bürger zu gelten?',
+          opts: [
+            { t: 'Er muss sich auch in seiner Familie bewähren.', ok: true },
+            { t: 'Er muss möglichst viel Besitz und Land haben.' },
+            { t: 'Er muss mindestens einmal Soldat gewesen sein.' },
+            { t: 'Er muss im Konvent schon eine Rede gehalten haben.' }
+          ],
+          why: 'Auch die Männer werden hier an feste Rollen gebunden: Sohn, Vater, Ehemann. Wer nicht in dieses Bild passt, gilt nicht als guter Bürger.',
+          tip: 'Alle Wörter in der Aufzählung beschreiben Beziehungen zu anderen Menschen. Wo finden die meisten davon statt?'
+        }),
+        sortStep({
+          title: 'Was bleibt?',
+          paras: ['Seit 1789 hatten Frauen einige Rechte gewonnen. Welche gelten im Oktober 1797 noch, welche sind schon wieder weg?'],
+          q: 'Ordne jede Karte zu.',
+          cats: [['noch', 'gilt 1797 noch'], ['weg', 'schon wieder weg']],
+          missing: 'Ordne zuerst jede Karte zu.',
+          items: [
+            { t: 'Frauen dürfen sich scheiden lassen (seit 1792).', k: 'noch' },
+            { t: 'Frauen dürfen eigene politische Clubs gründen.', k: 'weg' },
+            { t: 'Töchter erben genauso viel wie ihre Brüder.', k: 'noch' },
+            { t: 'Frauen dürfen politische Versammlungen besuchen.', k: 'weg' },
+            { t: 'Frauen sind mit 21 Jahren volljährig (seit 1792).', k: 'noch' }
+          ],
+          after: '<div class="reveal"><b>Ein Blick voraus</b>1804 ließ Napoleon das Recht neu ordnen, im Code civil. Darin heißt es: „Der Ehemann schuldet seiner Frau jeglichen Schutz, die Ehefrau schuldet dem Manne Gehorsam.“<div class="cite">Code Napoleon, Düsseldorf 1810, bearb., zit. nach: ' + BUCH + ', S. 129</div></div>',
+          why: 'Einige Rechte im Familienleben blieben. Die politischen Rechte der Frauen waren dagegen schon wieder verschwunden.',
+          tip: 'Unterscheide: Rechte im Familienleben und Rechte in der Politik. Was davon haben die Beschlüsse von 1793 und 1795 verboten?'
+        })
+      ],
+      done: function () { addMuster('mann'); },
+      render: function () {
+        return '<div class="kick">Spalte</div><h3>' + letters('Was von der Gleichheit bleibt') + '</h3>' +
+          '<blockquote>„Niemand ist ein guter Bürger, wenn er nicht ein guter Sohn, guter Vater, guter Bruder, guter Freund, guter Ehemann ist.“</blockquote><p class="src">Erklärung der Rechte und Pflichten, 1795, Pflichten Art. 4</p>' +
+          '<p><b>Es bleibt:</b> die Scheidung, das gleiche Erbe für Töchter, die Volljährigkeit mit 21.</p>' +
+          '<p><b>Es ist weg:</b> die Clubs der Frauen, ihr Platz in politischen Versammlungen.</p>';
+      }
+    },
+    D: {
+      label: 'Feuilleton', big: true,
+      steps: [
+        textStep('Unglaublich und wunderbar', [
+          'Nach dem Ende des Terrors wird in Paris wieder gefeiert, vor allem von den Reichen. Auf den Straßen zeigt sich eine auffällige neue Mode. Die jungen Männer nennt man „Incroyables“, die Unglaublichen. Die jungen Frauen heißen „Merveilleuses“, die Wunderbaren.',
+          'Der Zeichner Carle Vernet verspottet beide. Zwei Kupferstiche nach seinen Zeichnungen liegen vor dir.',
+          '<figure class="twoimg"><img src="incroyables.jpg" alt="Karikatur: Zwei Männer mit langen Haarsträhnen, hohen Halstüchern und weiten Röcken"><img src="merveilleuses.jpg" alt="Karikatur: Zwei Frauen in dünnen, langen Kleidern mit riesigen Hüten, dazwischen ein Mann"><figcaption class="cite">Links: „Les Incroyables“, 1796. Rechts: „Les Merveilleuses“, 1797. Kupferstiche von Louis Darcis nach Carle Vernet</figcaption></figure>'
+        ]),
+        sortStep({
+          title: 'Bildunterschriften',
+          paras: ['<figure class="twoimg" style="max-width:420px;margin:0 auto 8px"><img src="incroyables.jpg" alt="Die Incroyables"><img src="merveilleuses.jpg" alt="Die Merveilleuses"></figure>'],
+          q: 'Zu welchem Bild passt welche Bildunterschrift? Schau genau hin.',
+          cats: [['m', 'Incroyables (links)'], ['f', 'Merveilleuses (rechts)']],
+          missing: 'Ordne zuerst jede Bildunterschrift zu.',
+          items: [
+            { t: 'Die Haare hängen ihnen wie Hundeohren ins Gesicht.', k: 'm' },
+            { t: 'Ihre Kleider sind dünn und lang wie bei antiken Statuen.', k: 'f' },
+            { t: 'Das Halstuch reicht bis über das Kinn.', k: 'm' },
+            { t: 'Ihre Hüte sind riesig, mit Schleifen und Federn.', k: 'f' },
+            { t: 'Einer mustert den anderen durch ein Einglas.', k: 'm' },
+            { t: 'Eine von ihnen rafft ihr Kleid weit hoch.', k: 'f' }
+          ],
+          why: 'Beide Bilder übertreiben. Verspottet werden Frauen und Männer.',
+          tip: 'Schau genau auf die Bilder: Haare, Halstücher, Hüte, Kleider.'
+        }),
+        mcStep({
+          q: 'Was sollte der Spott über die jungen Männer wohl ausdrücken?',
+          opts: [
+            { t: 'Sie seien eitel und nicht männlich genug.', ok: true },
+            { t: 'Sie seien zu arm für die neue Mode.' },
+            { t: 'Sie seien heimliche Anhänger Robespierres.' },
+            { t: 'Sie seien zu fleißig und viel zu ernst.' }
+          ],
+          why: 'Wer sich so viel um sein Aussehen kümmert, galt manchen als „weibisch“. Spott über Männlichkeit kennst du schon von Ludwig XVI.',
+          tip: 'Erinnere dich an den Spott über Ludwig XVI. in der Ausgabe 1791. Was warf man ihm vor?'
+        }),
+        mcStep({
+          q: 'Und was wird bei den jungen Frauen verspottet?',
+          opts: [
+            { t: 'Sie zeigten zu viel und seien zu freizügig.', ok: true },
+            { t: 'Sie seien zu sparsam mit ihrem Geld.' },
+            { t: 'Sie trügen zu dunkle und ernste Kleider.' },
+            { t: 'Sie seien viel zu oft im Konvent zu sehen.' }
+          ],
+          why: 'Bei den Frauen geht es um Anstand, bei den Männern um Männlichkeit. Beide Male sagt der Spott: So hat man als Frau oder als Mann nicht zu sein.',
+          tip: 'Schau auf die Kleider im rechten Bild. Was daran fanden die Zeitgenossen wohl anstößig?'
+        })
+      ],
+      done: function () { addMuster('laecherlich'); addMuster('mann'); },
+      render: function () {
+        return '<div class="kick">Feuilleton</div><h3>' + letters('Unglaublich! Wunderbar!') + '</h3>' +
+          '<figure class="twoimg"><img src="incroyables.jpg" alt="Karikatur der Incroyables"><img src="merveilleuses.jpg" alt="Karikatur der Merveilleuses"><figcaption>„Les Incroyables“ (1796) und „Les Merveilleuses“ (1797), Kupferstiche von Louis Darcis nach Carle Vernet</figcaption></figure>' +
+          '<p>Paris tanzt wieder. Die Herren tragen Haare wie Hundeohren und Halstücher bis zur Nase, die Damen Kleider wie Statuen und Hüte wie Wagenräder. Ob man darüber lachen soll? Die Karikaturisten tun es jedenfalls.</p>';
+      }
+    }
+  };
+
+  // ------------------------------------------------------------------ Das Archiv der Redaktion: der Musterdetektor
+  var MUSTER = {
+    natur: ['„Das ist eben die Natur.“', 'Amar 1793, Le Moniteur 1793'],
+    ordnung: ['„Das stört die Ordnung.“', 'Frauenclubs 1793, Brotaufstand 1795'],
+    laecherlich: ['„Mach sie lächerlich.“', 'Flugblätter über die Königin, Karikaturen 1791 und 1797'],
+    abhaengig: ['„Wer abhängig ist, darf nicht mitreden.“', 'Wahlrecht 1791 und 1795'],
+    mann: ['„So hat ein richtiger Mann zu sein.“', 'Pflichten 1795, Karikaturen 1797']
+  };
+  var MCATS = [['natur', 'Natur'], ['ordnung', 'Ordnung'], ['laecherlich', 'Lächerlich machen'], ['abhaengig', 'Abhängig'], ['mann', 'Richtiger Mann']];
+  function musterCards() {
+    return '<div class="mcards">' + Object.keys(MUSTER).map(function (k) { var have = S.muster.indexOf(k) >= 0; return '<div class="mcard">' + MUSTER[k][0] + '<small>' + (have ? 'Gefunden: ' : 'Noch nicht gefunden. Kommt vor bei: ') + MUSTER[k][1] + '</small></div>'; }).join('') + '</div>';
+  }
+  var FINALE = {
+    label: 'Archiv der Redaktion',
+    steps: [
+      function (box, done) {
+        box.appendChild(el('h3', '', 'Das Archiv der Redaktion'));
+        box.appendChild(el('p', '', 'Drei Ausgaben, sieben Jahre Revolution. Beim Zeitungmachen sind dir immer wieder dieselben Muster begegnet. Hier liegen sie, als Karten im Archiv.'));
+        box.appendChild(el('div', '', musterCards()));
+        box.appendChild(el('p', '', 'Mit diesen Karten wirst du zum Musterdetektor. Zuerst prüfst du Sätze aus deinen drei Ausgaben, dann Sätze von heute.'));
+        done();
+      },
+      sortStep({
+        title: 'Runde 1: damals',
+        paras: [],
+        q: 'Welches Muster steckt in welchem Satz?',
+        cats: MCATS, missing: 'Ordne zuerst jeden Satz einem Muster zu.',
+        items: [
+          { t: 'Wählen darf nur, wer genug Steuern zahlt und kein Dienstbote ist. <i>(nach der Verfassung von 1791)</i>', k: 'abhaengig' },
+          { t: '„Madame Déficit!“ <i>(Flugblatt über die Königin)</i>', k: 'laecherlich' },
+          { t: '„Jedes Geschlecht ist zu einer eigenen Art von Tätigkeit berufen.“ <i>(Amar, 1793)</i>', k: 'natur' },
+          { t: '„… den Folgen der Unruhen vorzubeugen.“ <i>(Amar zum Verbot der Frauenclubs, 1793)</i>', k: 'ordnung' },
+          { t: 'Gouges habe die Tugenden vergessen, die zu ihrem Geschlecht passen. <i>(nach Le Moniteur, 1793)</i>', k: 'natur' },
+          { t: 'Die Königsfamilie wird als Schweine gezeichnet. <i>(Karikatur, 1791)</i>', k: 'laecherlich' },
+          { t: 'Stehen mehr als fünf Frauen auf der Straße zusammen, werden sie auseinandergetrieben. <i>(nach den Beschlüssen vom Mai 1795)</i>', k: 'ordnung' },
+          { t: '„Niemand ist ein guter Bürger, wenn er nicht ein guter Sohn, guter Vater, guter Bruder, guter Freund, guter Ehemann ist.“ <i>(1795)</i>', k: 'mann' }
+        ],
+        why: 'Du erkennst die Muster in den Quellen.',
+        tip: 'Vergleiche mit den Karten im Archiv: Beruft sich der Satz auf die Natur, auf Ruhe und Ordnung, macht er jemanden lächerlich, schließt er Abhängige aus oder schreibt er Männern eine Rolle vor?'
+      }),
+      sortStep({
+        title: 'Runde 2: heute',
+        paras: ['Diese Sätze sind erfunden. Solche Sätze hört man aber bis heute. Es geht nur darum, ob du das Muster erkennst, nicht um deine Meinung.'],
+        q: 'Welches Muster steckt in welchem Satz?',
+        cats: MCATS, missing: 'Ordne zuerst jeden Satz einem Muster zu.',
+        items: [
+          { t: '„Jungs weinen nicht.“', k: 'mann' },
+          { t: '„Mädchen sind von Natur aus nicht so gut in Mathe.“', k: 'natur' },
+          { t: 'Unter dem Video einer Politikerin geht es nur um ihre Frisur. Tausende lachen mit.', k: 'laecherlich' },
+          { t: '„Solange du bei uns wohnst, hast du bei Politik nicht mitzureden.“', k: 'abhaengig' },
+          { t: '„Wenn die Mädchen in der Pause mitkicken, gibt es nur Chaos.“', k: 'ordnung' },
+          { t: '„Ein echter Mann verdient das Geld für die Familie.“', k: 'mann' }
+        ],
+        why: 'Die Muster von damals funktionieren bis heute. Manche treffen Mädchen, manche Jungen.',
+        tip: 'Frag bei jedem Satz: Womit wird hier begründet, was jemand darf oder sein soll?'
+      }),
+      noteStep({
+        title: 'Deine Tribüne', key: 'finale', max: 600, ph: 'Welches Muster ist dir schon einmal begegnet? Oder: Dein Leserbrief an die Redaktion …',
+        lead: ['Olympe de Gouges forderte für Frauen das Recht auf die Tribüne, das Rednerpult. Hier ist deine.', 'Welches Muster ist dir schon einmal begegnet? Du kannst auch einen Leserbrief an die Redaktion schreiben.']
+      })
+    ]
+  };
+
+  // ------------------------------------------------------------------ Die drei Ausgaben
+  var ISSUES = {
+    1791: { fields: FIELDS91, cls: '', sub: 'Nachrichten aus Paris und der Nationalversammlung', d1: 'Paris, Donnerstag, 15. September 1791', d2: 'Im dritten Jahr der Freiheit',
+      lockMsg: 'Fang mit dem Aufmacher an. Er gibt dir den Überblick über die Jahre bis 1791.',
+      printed: [{ w: 'T', t: 'Die Ausgabe 1791 ist gedruckt! 🎉', m: 'excited' }, { w: 'R', t: 'Die Muster, die dir begegnet sind, legen wir ins Archiv der Redaktion.', m: 'happy' }],
+      first: [{ w: 'R', t: 'Kleiner Hinweis von mir: Echte Zeitungen von 1791 sahen anders aus. Sie hatten kaum Schlagzeilen und fast nie Bilder. Unsere Titelseite ist modern gesetzt, damit du sie gut lesen kannst.', m: 'interested' }] },
+    1794: { fields: FIELDS94, cls: 'y94', ernst: true, sub: 'Nachrichten aus Paris und dem Nationalkonvent', d1: 'Paris, 11. Thermidor im Jahr II', d2: '29. Juli 1794',
+      lockMsg: 'Fang mit dem Aufmacher an. Er gibt dir den Überblick über die Jahre 1791 bis 1794.',
+      printed: [{ w: 'T', t: 'Die Ausgabe 1794 ist gedruckt. Das war eine schwere Ausgabe.', m: 'sad' }, { w: 'R', t: 'Die Muster aus diesen Mappen liegen jetzt im Archiv der Redaktion.', m: 'calm' }],
+      first: [{ w: 'R', t: 'In dieser Ausgabe geht es um Krieg, um Angst und um viele Tote. Lass dir Zeit beim Lesen.', m: 'calm' }, { w: 'T', t: 'Ist dir das seltsame Datum oben aufgefallen? Der Aufmacher erklärt es dir.', m: 'interested' }] },
+    1797: { fields: FIELDS97, cls: 'y97', sub: 'Nachrichten aus Paris, dem Direktorium und den Armeen', d1: 'Paris, 29. Vendémiaire im Jahr VI', d2: '20. Oktober 1797',
+      lockMsg: 'Fang mit dem Aufmacher an. Er gibt dir den Überblick über die Jahre 1794 bis 1797.',
+      printed: [{ w: 'T', t: 'Die Ausgabe 1797 ist gedruckt! 🎉', m: 'excited' }, { w: 'R', t: 'Die Muster aus diesen Mappen liegen jetzt im Archiv der Redaktion.', m: 'happy' }],
+      first: [{ w: 'R', t: 'Drei Jahre später: Die Zeitung sieht feiner aus. Das Datum steht wieder im Revolutionskalender: Vendémiaire ist der Monat der Weinlese.', m: 'interested' }, { w: 'R', t: 'Schau an den Rand der Seite, sobald der Aufmacher steht.', m: 'interested' }] }
+  };
+  var CUR = 1791;
+  function Y() { return S['y' + CUR]; }
+
+  function addMuster(m) { if (S.muster.indexOf(m) < 0) { S.muster.push(m); save(); } }
+  // Schlagzeilen Buchstabe für Buchstabe „setzen“
+  var animate = false;
+  function letters(t) {
+    if (!animate) return t;
+    var i = 0;
+    return t.split(' ').map(function (w) { return '<span style="white-space:nowrap">' + w.split('').map(function (c) { return '<span class="drop" style="animation-delay:' + (i++ * 0.025).toFixed(3) + 's">' + c + '</span>'; }).join('') + '</span>'; }).join(' ');
+  }
+
+  // ------------------------------------------------------------------ Titelseite
+  var QUILL = '<svg class="quill" viewBox="0 0 48 48" aria-hidden="true"><path d="M40 4C26 8 16 20 12 34l-4 10 6-6c10-2 20-12 26-34z" fill="none" stroke="#2b2620" stroke-width="2" stroke-linejoin="round"/><path d="M14 36c6-10 12-18 22-26" fill="none" stroke="#2b2620" stroke-width="1.5"/></svg>';
+  function drawPage(fresh) {
+    var I = ISSUES[CUR], St = Y(), allDone = true;
+    $('#page').className = 'paper page' + (I.cls ? ' ' + I.cls : '');
+    $('#pgSub').textContent = I.sub; $('#pgDate1').textContent = I.d1; $('#pgDate2').textContent = I.d2;
+    $('#censor').classList.toggle('hidden', !(CUR === 1797 && St.A));
+    ORDER.forEach(function (k) {
+      var F = I.fields[k], slot = $('#slot' + k), done = !!St[k];
+      slot.innerHTML = '';
+      if (done) {
+        animate = fresh === k;
+        var a = el('article', 'field art' + (F.artCls ? ' ' + F.artCls : '') + (animate ? ' fadein' : ''), F.render()); slot.appendChild(a); animate = false;
+      } else {
+        allDone = false;
+        var locked = k !== 'A' && !St.A;
+        var b = el('button', 'field' + (F.big ? ' big' : '') + (locked ? ' locked' : ''), QUILL + '<span class="lab">' + F.label + '</span><span class="hint">' + (locked ? 'Erst den Aufmacher setzen' : 'Antippen und bearbeiten') + '</span>');
+        b.type = 'button';
+        b.onclick = function () { if (locked) return say(I.lockMsg, 'interested', 'R'); openField(k); };
+        slot.appendChild(b);
+      }
+    });
+    var fin = $('#finish'); fin.innerHTML = '';
+    if (allDone) {
+      if (St.printed) {
+        fin.appendChild(el('div', 'stamp', 'Gedruckt'));
+        var row = el('div', '', ''); row.style.marginTop = '16px';
+        var pb = el('button', 'btn ghost', 'Seite drucken'); pb.type = 'button'; pb.onclick = function () { window.print(); };
+        var bk = el('button', 'btn', 'Zur Redaktion'); bk.type = 'button'; bk.style.marginLeft = '8px'; bk.onclick = showStart;
+        row.appendChild(pb); row.appendChild(bk); fin.appendChild(row);
+      } else {
+        var go = el('button', 'btn red', 'Ausgabe in Druck geben'); go.type = 'button';
+        go.onclick = function () {
+          var r = el('div', 'roller'); document.body.appendChild(r);
+          setTimeout(function () { r.remove(); St.printed = 1; save(); drawPage(); talk(allPrinted() ? I.printed.slice(0, 1).concat([{ w: 'R', t: 'Damit sind alle drei Ausgaben gedruckt. Jetzt öffnet sich das Archiv der Redaktion. Du findest es in der Redaktion, unter den drei Ausgaben.', m: 'happy' }]) : I.printed); }, 1400);
+        };
+        fin.appendChild(go);
+      }
+    }
+  }
+
+  // ------------------------------------------------------------------ Mappe öffnen
+  var cur = null;
+  function openField(k) {
+    var I = ISSUES[CUR], F = I.fields[k], St = Y();
+    setErnst(!!(F.ernst || I.ernst));
+    openSheet(F, function () {
+      St[k] = 1; save(); if (F.done) F.done();
+      closeSheet(); setErnst(!!(F.ernst || I.ernst)); drawPage(k);
+      var left = ORDER.filter(function (q) { return !St[q]; }).length;
+      setTimeout(function () {
+        var pre = F.doneTalk ? F.doneTalk.slice() : [];
+        if (k === 'A') talk(pre.concat([{ w: 'T', t: 'Der Aufmacher steht!', m: 'excited' }, { w: 'R', t: 'Jetzt sind die anderen drei Felder frei. Die Reihenfolge darfst du selbst wählen.', m: 'happy' }]));
+        else if (left) talk(pre.concat([{ w: 'T', t: 'Gesetzt! Noch ' + left + (left === 1 ? ' Feld' : ' Felder') + ' bis zum Druck.', m: 'excited' }]));
+        else talk(pre.concat([{ w: 'T', t: 'Alle Felder sind gesetzt. Unten auf der Seite kannst du die Ausgabe in Druck geben.', m: 'excited' }]));
+        setErnst(!!I.ernst);
+      }, 700);
+    });
+  }
+  function openSheet(F, onSet, lastLabel) {
+    var sh = $('#sheet'), bg = $('#sheetBg'), i = 0;
+    cur = F; sh.innerHTML = '';
+    var head = el('div', 'head', '<span class="t">Mappe · ' + F.label + '</span>'), x = el('button', 'x', 'Schließen'); x.type = 'button';
+    x.onclick = closeSheet; head.appendChild(x); sh.appendChild(head);
+    var dots = el('div', 'dots'); F.steps.forEach(function () { dots.appendChild(el('i')); }); sh.appendChild(dots);
+    var stage = el('div'); sh.appendChild(stage);
+    var foot = el('div', 'foot'), bk = el('button', 'btn ghost', 'Zurück'), nx = el('button', 'btn', 'Weiter'); bk.type = nx.type = 'button'; foot.appendChild(bk); foot.appendChild(nx); sh.appendChild(foot);
+    var built = [];      // schon aufgebaute Schritte bleiben erhalten, damit man zurückblättern kann, ohne etwas zu verlieren
+    function run() {
+      stage.innerHTML = '';
+      [].forEach.call(dots.children, function (d, j) { d.classList.toggle('on', j <= i); });
+      var last = i === F.steps.length - 1;
+      nx.textContent = last ? (lastLabel || 'Feld setzen') : 'Weiter'; nx.className = last ? 'btn red' : 'btn';
+      bk.classList.toggle('hidden', i === 0);
+      if (!built[i]) {
+        var b = { box: el('div', 'step'), done: false }; built[i] = b; var me = i;
+        stage.appendChild(b.box); nx.disabled = true;
+        F.steps[i](b.box, function () { b.done = true; if (i === me) nx.disabled = false; });
+      } else { stage.appendChild(built[i].box); nx.disabled = !built[i].done; }
+      bg.scrollTop = 0;
+    }
+    bk.onclick = function () { if (i > 0) { i--; run(); } };
+    nx.onclick = function () {
+      if (nx.disabled) return;
+      if (i < F.steps.length - 1) { i++; run(); return; }
+      onSet();
+    };
+    bg.classList.add('on'); document.body.style.overflow = 'hidden'; run();
+  }
+  function closeSheet() { $('#sheetBg').classList.remove('on'); document.body.style.overflow = ''; cur = null; setErnst(!$('#page').classList.contains('hidden') && !!ISSUES[CUR].ernst); }
+
+  // ------------------------------------------------------------------ Ansichten
+  // Alle drei Ausgaben sind von Anfang an offen. Welche bearbeitet wird, gibt die Lehrkraft vor.
+  function issueLocked(y) { return false; }
+  function allPrinted() { return !!(S.y1791.printed && S.y1794.printed && S.y1797.printed); }
+  function showStart() {
+    setErnst(false);
+    $('#start').classList.remove('hidden'); $('#page').classList.add('hidden'); $('#toStart').classList.add('hidden'); $('#toDesk').classList.remove('hidden');
+    [1791, 1794, 1797].forEach(function (y) {
+      var b = $('#iss' + y); b.classList.toggle('done', !!S['y' + y].printed); b.classList.toggle('locked', issueLocked(y));
+      b.style.opacity = issueLocked(y) ? '.45' : '';
+    });
+    var archLocked = !allPrinted();
+    var aLocked = archLocked; $('#archiveRow').classList.toggle('hidden', aLocked);
+    window.scrollTo(0, 0);
+  }
+  var seenFirst = {};
+  function showPage(y) {
+    CUR = y; setErnst(!!ISSUES[y].ernst);
+    $('#start').classList.add('hidden'); $('#page').classList.remove('hidden'); $('#toStart').classList.remove('hidden'); $('#toDesk').classList.add('hidden');
+    drawPage(); window.scrollTo(0, 0);
+    if (!seenFirst[y]) {
+      seenFirst[y] = 1;
+      setTimeout(function () { talk(ISSUES[y].first.concat([{ w: 'T', t: Y().A ? 'Mach weiter, wo du aufgehört hast.' : 'Fang mit dem großen Feld oben an, dem Aufmacher.', m: ISSUES[y].ernst ? 'calm' : 'happy' }])); }, 900);
+    }
+  }
+  $('#iss1791').onclick = function () { showPage(1791); };
+  $('#iss1794').onclick = function () { showPage(1794); };
+  $('#iss1797').onclick = function () { showPage(1797); };
+  $('#archiveBtn').onclick = function () {
+    openSheet(FINALE, function () {
+      S.finale = 1; save(); closeSheet();
+      talk([{ w: 'T', t: 'Das war die letzte Mappe. Danke für deine Arbeit in der Redaktion! 🖋️', m: 'happy' }, { w: 'R', t: 'Deine drei Titelseiten bleiben gespeichert. Du kannst sie jederzeit wieder ansehen und drucken.', m: 'happy' }]);
+    }, 'Archiv schließen');
+  };
+  // Neu anfangen: zweimal tippen, damit nichts aus Versehen verloren geht
+  var rs = $('#reset'), rsT = null;
+  rs.onclick = function () {
+    if (!rs.dataset.arm) { rs.dataset.arm = '1'; rs.textContent = 'Wirklich alles löschen? Noch einmal tippen'; rs.classList.add('miss'); rsT = setTimeout(function () { delete rs.dataset.arm; rs.textContent = 'Neu anfangen'; rs.classList.remove('miss'); }, 4000); return; }
+    clearTimeout(rsT); try { localStorage.removeItem(KEY); } catch (e) {}
+    S = fresh(); delete rs.dataset.arm; rs.textContent = 'Neu anfangen'; rs.classList.remove('miss');
+    showStart(); say('Alles ist zurückgesetzt. Die Titelseiten sind wieder leer.', 'happy', 'T');
+  };
+  $('#toStart').onclick = showStart;
+  $('#toDesk').onclick = function () { toDesk(); };
+
+  // ------------------------------------------------------------------ Der Tisch: Die Zeitung liegt klein im freien Feld des Bildes
+  // Das Hintergrundbild ist 1024 × 572 Pixel groß. Das freie Feld in der Mitte liegt ungefähr bei x 290 bis 770 und y 175 bis 520.
+  var IMG = { w: 1024, h: 572, cx: 528, cy: 350, fh: 300 };
+  var mini = $('#mini'), desk = $('#deskView');
+  function layout() {
+    var vw = window.innerWidth, vh = window.innerHeight, sc = Math.max(vw / IMG.w, vh / IMG.h);
+    var ox = (vw - IMG.w * sc) / 2, oy = (vh - IMG.h * sc) / 2;
+    var h = IMG.fh * sc, w = h * 0.72;
+    if (w > vw * 0.78) { w = vw * 0.78; h = w / 0.72; }
+    if (h > vh * 0.62) { h = vh * 0.62; w = h * 0.72; }
+    var cx = ox + IMG.cx * sc, cy = oy + IMG.cy * sc;
+    cx = Math.min(Math.max(cx, w / 2 + 10), vw - w / 2 - 10);
+    mini.style.width = w + 'px'; mini.style.height = h + 'px'; mini.style.left = (cx - w / 2) + 'px'; mini.style.top = (cy - h / 2) + 'px';
+    $('.mn', mini).style.fontSize = (w * 0.16) + 'px'; $('.md', mini).style.fontSize = Math.max(7, w * 0.035) + 'px';
+  }
+  layout(); window.addEventListener('resize', layout);
+  mini.onclick = function () {
+    if (mini.dataset.busy) return; mini.dataset.busy = '1'; mini.classList.remove('pulse');
+    var r = mini.getBoundingClientRect(), vw = window.innerWidth, vh = window.innerHeight;
+    var tw = Math.min(820, vw) - 24, sc = tw / r.width;
+    var dx = vw / 2 - (r.left + r.width / 2), dy = Math.min(vh / 2, 60 + r.height * sc / 2) - (r.top + r.height / 2);
+    mini.style.transform = 'translate(' + dx + 'px,' + dy + 'px) rotate(0deg) scale(' + sc + ')';
+    setTimeout(function () {
+      desk.classList.add('hidden'); var w = $('#wrap'); w.classList.remove('hidden'); w.classList.add('fade');
+      showStart();
+      setTimeout(function () { say('Hier suchst du dir eine Ausgabe aus. Mit welcher du anfängst, sagt dir deine Lehrkraft.', 'happy', 'T'); }, 600);
+    }, 820);
+  };
+  function toDesk() { $('#wrap').classList.add('hidden'); desk.classList.remove('hidden'); mini.style.transform = ''; delete mini.dataset.busy; layout(); }
+
+  // ------------------------------------------------------------------ Tinto und Rolli fliegen ein und erklären die Grundlagen
+  var REL = 'Geschichte/Klasse-8/Franzoesische-Revolution';
+  try { sessionStorage.setItem('tr-expl-' + REL, '1'); } catch (e) {}       // die allgemeine Begrüßung aus duo-app.js übernimmt hier das Modul
+  var introDone = false; try { introDone = !!sessionStorage.getItem('courrier-intro'); } catch (e) {}
+  function watchDuo() {
+    var root = document.getElementById('dc-root');
+    if (root) { root.classList.add('flyin'); setTimeout(function () { root.classList.remove('flyin'); }, 2600); return; }
+    if (window.MutationObserver) {
+      var mo = new MutationObserver(function () { var r = document.getElementById('dc-root'); if (r) { mo.disconnect(); r.classList.add('flyin'); setTimeout(function () { r.classList.remove('flyin'); }, 2600); } });
+      mo.observe(document.body, { childList: true });
+    }
+  }
+  watchDuo();
+  if (!introDone) {
+    var tries = 0;
+    setTimeout(function go() {
+      var ok = false;
+      if (window.Duo && Duo.talk && !$('#deskView').classList.contains('hidden')) ok = Duo.talk([
+        { w: 'T', t: 'Willkommen in der Redaktion von „Le Courrier“! 🖋️', m: 'excited' },
+        { w: 'R', t: 'Hier machst du Zeitung, mitten in der Französischen Revolution. Du stellst drei Titelseiten zusammen: 1791, 1794 und 1797.', m: 'happy' },
+        { w: 'T', t: 'Auf jeder Titelseite sind leere Felder. Jedes Feld ist eine Mappe mit Texten und Aufgaben. Wenn du sie geschafft hast, wird das Feld gedruckt.', m: 'interested' },
+        { w: 'R', t: 'Wenn dir ein Wort fremd ist, tipp uns an und wähle „Wort erklären“. Und jetzt tipp die Zeitung auf dem Tisch an!', m: 'happy' }
+      ], { stay: 14000 });
+      if (ok) { try { sessionStorage.setItem('courrier-intro', '1'); } catch (e) {} }
+      else if (++tries < 40 && !$('#deskView').classList.contains('hidden')) setTimeout(go, 1500);
+    }, 2600);
+  }
+})();
+</script>
+<script src="../../../maskottchen/duo-app.js"></script>
+</body>
+</html>
