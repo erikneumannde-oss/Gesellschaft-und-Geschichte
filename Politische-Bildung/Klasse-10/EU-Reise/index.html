@@ -78,6 +78,7 @@ p{margin:0 0 10px}
 .bar{position:relative;height:16px;background:#e4ebf8;border-radius:8px;margin:14px 0 4px}
 .bar b{position:absolute;top:-4px;width:6px;height:24px;border-radius:3px}
 .bar .t{background:var(--ok)}.bar .g{background:var(--blue2)}
+.wipe{margin-top:22px;padding-top:14px;border-top:1px dashed #c9d3e6;font-size:.9rem;color:#51607c}.wipe .btn{margin-top:6px}
 .nextbar{display:flex;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap;align-items:center}
 .big{font-size:3rem;line-height:1}
 .ring{width:150px;height:150px;border-radius:50%;margin:8px auto;display:flex;align-items:center;justify-content:center;flex-direction:column;background:conic-gradient(var(--gold) var(--deg,0deg),#e4ebf8 0);position:relative}
@@ -324,7 +325,12 @@ function render(){var m=$('#main');m.innerHTML='';nextBox=null;updHead(false);up
  var st=ST[S.cur];m.appendChild(el('h2','',st.ico+' '+esc(st.name)));m.appendChild(el('p','place',esc(st.place)));
  st.info.forEach(function(h){m.appendChild(el('div','box',h));});
  st.qs.forEach(function(q){var box=el('div','q');m.appendChild(box);renderQ(q,box);});
- nextBox=el('div','nextbar');m.appendChild(nextBox);showNext();}
+ nextBox=el('div','nextbar');m.appendChild(nextBox);showNext();
+ var si=S.cur,wipe=el('div','wipe');m.appendChild(wipe);
+ (function showBtn(){wipe.innerHTML='';var d=el('button','btn ghost','🗑️ Daten dieser Station löschen');d.onclick=function(){wipe.innerHTML='';
+  var y=el('button','btn','Ja, löschen');var n=el('button','btn ghost','Abbrechen');n.style.marginLeft='8px';
+  y.onclick=function(){st.qs.forEach(function(q){delete S.a[q.id];delete view[q.id];q._pick=null;});S.streak=0;save();render();};n.onclick=showBtn;
+  wipe.appendChild(el('span','','Alle Antworten und Punkte dieser Station werden gelöscht. '));wipe.appendChild(y);wipe.appendChild(n);};wipe.appendChild(d);})();}
 
 function renderEnd(m){var t=total(),pc=t/MAX;var rk=RANKS[0];RANKS.forEach(function(r){if(pc>=r[0])rk=r;});
  m.innerHTML='<h2>Auswertung</h2><p class="place">Dein erster Tag in Brüssel ist vorbei</p>';
