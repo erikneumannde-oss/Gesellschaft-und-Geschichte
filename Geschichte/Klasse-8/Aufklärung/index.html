@@ -25,6 +25,9 @@
         }
         select, button { -webkit-user-select: auto; user-select: auto; }
 
+        .topnav { position: fixed; top: 8px; left: 8px; z-index: 1100; display: flex; gap: 6px; }
+        .topnav a { background: rgba(0,0,0,.55); color: #fff; text-decoration: none; font: 600 13px system-ui, sans-serif; padding: 6px 10px; border-radius: 6px; }
+        .topnav a:hover, .topnav a:focus-visible { background: rgba(0,0,0,.8); }
         /* --- INTRO SCREEN STYLES --- */
         #intro-screen {
             position: fixed; inset: 0;
@@ -282,6 +285,7 @@
   <link rel="apple-touch-icon" href="../../../icons/apple-touch-icon.png">
 </head>
 <body>
+<nav class="topnav"><a href="../index.html">← Klasse 8</a><a href="../../../index.html">⌂ Startseite</a></nav>
 
 <!-- INTRO BEREICH -->
 <div id="intro-screen">
