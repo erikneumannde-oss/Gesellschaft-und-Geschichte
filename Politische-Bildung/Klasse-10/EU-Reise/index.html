@@ -329,7 +329,7 @@ function render(){var m=$('#main');m.innerHTML='';nextBox=null;updHead(false);up
 function renderEnd(m){var t=total(),pc=t/MAX;var rk=RANKS[0];RANKS.forEach(function(r){if(pc>=r[0])rk=r;});
  m.innerHTML='<h2>Auswertung</h2><p class="place">Dein erster Tag in Brüssel ist vorbei</p>';
  var ring=el('div','ring','<span>'+t+'</span><small>von '+MAX+'</small>');ring.style.setProperty('--deg',(pc*360)+'deg');m.appendChild(ring);
- m.appendChild(el('div','rank','Dein Titel: '+rk[1]));m.appendChild(el('p','','<span style="display:block;text-align:center;margin-top:4px">'+rk[2]+'</span>'));
+ m.appendChild(el('div','rank','Dein Titel: '+rk[1]));var gr=pc>=0.9?1:pc>=0.75?2:pc>=0.6?3:pc>=0.45?4:pc>=0.15?5:6;m.appendChild(el('div','rank','Note: '+gr));m.appendChild(el('p','','<span style="display:block;text-align:center;margin-top:4px">'+rk[2]+'</span>'));
  m.appendChild(el('h3','','Deine Punkte je Station'));
  ST.forEach(function(s,i){var a=stPts(i),b=stMax(i);m.appendChild(el('div','br','<span>'+s.ico+' '+esc(s.name)+'</span><span class="b"><i style="width:'+(b?a/b*100:0)+'%"></i></span><span>'+a+'/'+b+'</span>'));});
  m.appendChild(el('h3','','Das nimmst du mit'));m.appendChild(el('ul','take',TAKE.map(function(x){return '<li>'+x+'</li>';}).join('')));
