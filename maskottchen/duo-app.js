@@ -59,6 +59,12 @@
       tip: 'Lies zuerst deine Rolle in Ruhe durch und notiere dir, was dein Land will. Wenn du bei einer Aufgabe nicht weiterkommst, lies den Text darüber noch einmal und suche die Schlüsselwörter. Bei den Zuordnungen kannst du so oft probieren, wie du willst. Rot markierte Karten zeigen dir, wo du noch einmal hinschauen solltest.',
       more: true
     },
+    'EU-Reise': {
+      topic: 'eu',
+      text: 'Du bist Praktikant oder Praktikantin bei der EU und sammelst in sechs Stationen Punkte. Jede Frage kannst du nur einmal beantworten.',
+      tip: 'Lies die kurze Einführung jeder Station und danach jede Frage in Ruhe. Bei den Antwortmöglichkeiten lohnt es sich, zuerst das auszuschließen, was sicher nicht passt. Nach jeder Antwort steht eine Erklärung dabei.',
+      more: true
+    },
     'Dimensionen-der-Politik': {
       topic: 'dimensionen',
       text: 'Hier lernst du die drei Dimensionen von Politik kennen: Inhalt, Form und Prozess. Du ordnest Beispiele zu, damit du sie unterscheiden kannst.',
@@ -107,6 +113,7 @@
     revolution: ['Die Glorious Revolution heißt „glorreich“, weil sie weitgehend ohne Blutvergießen ablief.', 'Die Bill of Rights von 1689 beschränkte die Macht des englischen Königs.', 'Ein Parlament, das dem König Bedingungen stellt: Das war damals eine große Sache.'],
     courrier: ['Nach 1789 erschienen in Paris Hunderte neue Zeitungen. Vorher hatte es nur wenige gegeben.', 'Viele Menschen konnten damals nicht lesen. Zeitungen wurden deshalb oft laut vorgelesen, auf Plätzen und in Cafés.', 'Viele Journalisten schrieben ohne ihren Namen oder unter einem Decknamen. Das konnte sie schützen.'],
     paulskirche: ['Das Parlament tagte in einer Kirche, in der Frankfurter Paulskirche. Heute ist sie ein Ort der Erinnerung.', 'Die Abgeordneten von 1848 wollten ein geeintes Deutschland mit Grundrechten.', 'Hier wurde heftig gestritten und trotzdem versucht, einen Beschluss zu finden. Das ist Demokratie.'],
+    eu: ['Das Europäische Parlament tagt abwechselnd in Brüssel und Straßburg. Das kostet viel Zeit und Geld und ist seit Jahren umstritten.', 'Die EU hat 24 Amtssprachen. Viele Texte werden deshalb in alle Sprachen übersetzt.', 'Ein Gesetz in der EU braucht oft Jahre. Beim einheitlichen Ladekabel waren es mehr als 15.'],
     euro: ['Den Euro gibt es als Bargeld seit dem 1. Januar 2002. Vorher brauchte man an der Grenze oft anderes Geld.', 'Eine gemeinsame Währung heißt auch: Länder müssen sich abstimmen. Das ist anstrengend, aber lehrreich.', 'In Novarien wird verhandelt wie in echt: Jede Seite hat gute Gründe.'],
     dimensionen: ['Das Wort Politik kommt vom griechischen „polis“, dem Stadtstaat.', 'Inhalt, Form, Prozess: Drei Brillen, durch die man dieselbe Politik anschauen kann.', 'Politik findet nicht nur im Bundestag statt, auch im Klassenrat.'],
     karikatur: ['„Karikatur“ kommt vom italienischen „caricare“: überladen oder übertreiben.', 'Eine gute Karikatur erkennt man oft an dem, was bewusst übertrieben ist.', 'Erst genau hinsehen, dann deuten. Sonst sieht man nur, was man schon erwartet.'],
@@ -130,6 +137,9 @@
     ],
     'Paulskirchenparlament': [
       { sel: '#feedback', tips: ['Lies Aktenlage und Zeitdokument noch einmal. Wer spricht hier, und was möchte er erreichen?', 'Frag dich: Wer würde diese Forderung aufstellen, und warum passt sie zu seinen Interessen?', 'Achte auf Schlüsselwörter im Zitat. Sie zeigen oft, welche Seite spricht.'] }
+    ],
+    'EU-Reise': [
+      { sel: '.fb', tips: ['Lies nach jeder Antwort die Erklärung darunter. Sie zeigt dir, woran du das Richtige erkennst.', 'Frag dich bei den Zuständigkeiten: Betrifft das alle Länder gleich (dann eher EU) oder hängt es vom Land ab?', 'Bei Gesetzen gilt: Die Kommission schlägt vor, Parlament und Rat beschließen, und die Länder setzen eine Richtlinie um.'] }
     ],
     'Euro': [
       { sel: '.fb', tips: ['Lies den Text über der Aufgabe noch einmal und suche die Schlüsselwörter. Sie stehen oft fast wörtlich in der richtigen Antwort.', 'Denk an deine Rolle in Novarien: Was will sie, und was befürchtet sie? Das hilft beim Abwägen.', 'Bei den Zuordnungen kannst du so oft probieren, wie du willst. Rot markierte Karten zeigen dir, wo du noch einmal hinschauen solltest.', 'Frag dich bei jeder Aussage: Gilt sie für alle Länder der Währungsunion oder nur für bestimmte?'] }

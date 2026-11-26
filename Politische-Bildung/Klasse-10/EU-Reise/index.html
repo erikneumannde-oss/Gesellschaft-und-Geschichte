@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EU-Reise – Dein Tag als Praktikant/in in Brüssel</title>
+<style>
+:root{--blue:#0b2f7a;--blue2:#17469f;--gold:#f2c230;--gold2:#c99a0a;--ink:#1d2433;--soft:#eef3fc;--ok:#1f8a4c;--bad:#b3261e}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);background:#0b3a9e;min-height:100vh;line-height:1.5}
+#flag{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.5}
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:12px 12px 80px}
+.toplinks{display:flex;gap:14px;font-size:.82rem;padding:2px 2px 6px}
+.toplinks a{color:#cfdcf7;text-decoration:none}
+header.top{display:flex;align-items:center;gap:12px;color:#fff;padding:4px 2px 10px;flex-wrap:wrap}
+header.top h1{margin:0;font-size:1.3rem;line-height:1.2}
+header.top small{display:block;color:#cfdcf7;font-weight:400;font-size:.8rem}
+#score{margin-left:auto;background:var(--gold);color:#241a00;border-radius:999px;padding:6px 16px;font-weight:800;font-size:1rem;box-shadow:0 3px 10px rgba(0,0,0,.3)}
+#score.pop{animation:pop .5s}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
+nav#tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin}
+nav#tabs button{flex:none;border:2px solid rgba(255,255,255,.45);background:rgba(8,30,90,.78);color:#fff;border-radius:12px;padding:8px 12px;font:inherit;font-size:.85rem;cursor:pointer;white-space:nowrap;min-height:40px}
+nav#tabs button.act{background:var(--gold);color:#241a00;border-color:var(--gold);font-weight:700}
+nav#tabs button:disabled{opacity:.4;cursor:default}
+nav#tabs button .ck{margin-left:4px;color:#7ee2a0}
+nav#tabs button.act .ck{color:#1c6b3b}
+main{background:#fff;border-radius:16px;padding:18px 18px 24px;box-shadow:0 14px 40px rgba(0,0,0,.35)}
+h2{margin:0 0 2px;color:var(--blue);font-size:1.45rem}
+.place{color:#51607c;margin:0 0 12px;font-size:.92rem}
+h3{color:var(--blue2);margin:18px 0 6px;font-size:1.05rem}
+p{margin:0 0 10px}
+.box{background:var(--soft);border-left:5px solid var(--blue2);border-radius:8px;padding:10px 14px;margin:10px 0}
+.box.gold{background:#fff7da;border-left-color:var(--gold2)}
+.q{border:2px solid #d4def2;border-radius:14px;padding:12px 14px;margin:14px 0;background:#fcfdff}
+.q.done{border-color:#9bd5b2;background:#f6fbf8}
+.q .qh{font-weight:700;margin-bottom:8px}
+.q .pts{float:right;font-size:.8rem;font-weight:700;color:#51607c;background:#e9effb;border-radius:999px;padding:2px 10px;margin-left:8px}
+.btn{border:none;border-radius:12px;padding:11px 18px;font:inherit;font-weight:700;cursor:pointer;background:var(--blue2);color:#fff;min-height:44px}
+.btn.gold{background:var(--gold);color:#241a00}
+.btn.ghost{background:#e4ebf8;color:var(--blue)}
+.btn:disabled{opacity:.45;cursor:default}
+.opts{display:grid;gap:8px}
+.opt{border:2px solid #c7d3ee;background:#fff;border-radius:12px;padding:10px 12px;font:inherit;text-align:left;cursor:pointer;color:var(--ink);min-height:46px}
+.opt:hover:not(:disabled){border-color:var(--blue2);background:#f4f8ff}
+.opt:disabled{cursor:default}
+.opt.right{border-color:#4cb479;background:#e9f8ef}
+.opt.wrong{border-color:#e0928c;background:#fff1f0}
+.opts.row{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.card{background:#fff;border:2px solid var(--blue2);border-radius:14px;padding:16px;font-size:1.05rem;font-weight:600;margin:6px 0 12px;box-shadow:0 4px 12px rgba(23,70,159,.15)}
+.fb{margin-top:10px;font-weight:700;min-height:1.2em}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.why{margin-top:4px;font-weight:400;color:#2d3a55;font-size:.95rem}
+.hist{margin-top:10px;border-top:1px dashed #c7d3ee;padding-top:8px;font-size:.88rem}
+.hist div{margin:4px 0;color:#41506d}
+.hist b.ok{color:var(--ok)}.hist b.bad{color:var(--bad)}
+.dots{display:flex;gap:5px;margin:2px 0 6px}
+.dots i{width:12px;height:12px;border-radius:50%;background:#d4def2;display:block}
+.dots i.ok{background:#4cb479}.dots i.bad{background:#e0928c}.dots i.cur{box-shadow:0 0 0 3px rgba(242,194,48,.8)}
+.mrow{display:grid;grid-template-columns:1fr minmax(150px,42%);gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid #e3eaf7}
+.mrow:last-of-type{border-bottom:none}
+.mrow select{font:inherit;padding:9px 8px;border:2px solid #b9c7e6;border-radius:10px;background:#fff;color:var(--ink);min-height:44px;width:100%}
+.mrow.good{background:#effaf3}.mrow.badr{background:#fff3f2}
+.mrow .sol{grid-column:1/-1;font-size:.88rem;color:#2d3a55}
+@media(max-width:560px){.mrow{grid-template-columns:1fr}}
+.ordwrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.ordwrap{grid-template-columns:1fr}}
+.ordwrap h4{margin:0 0 6px;font-size:.9rem;color:#51607c}
+.chip{display:block;width:100%;text-align:left;border:2px solid #c7d3ee;background:#fff;border-radius:11px;padding:9px 11px;margin:0 0 7px;font:inherit;font-size:.93rem;cursor:pointer;color:var(--ink);min-height:44px}
+.chip:hover:not(:disabled){border-color:var(--blue2)}
+.chip.used{opacity:.35}
+.slot{display:flex;gap:8px;align-items:flex-start;border:2px dashed #b9c7e6;border-radius:11px;padding:8px 10px;margin:0 0 7px;min-height:44px;font-size:.93rem;background:#fafcff}
+.slot.fill{border-style:solid;border-color:#9fb2dc;background:#fff;cursor:pointer}
+.slot.good{border-color:#4cb479;background:#effaf3}.slot.badr{border-color:#e0928c;background:#fff3f2}
+.slot .n{flex:none;background:var(--blue2);color:#fff;border-radius:50%;width:24px;height:24px;text-align:center;line-height:24px;font-size:.8rem;font-weight:700}
+.sl{width:100%;margin:12px 0 4px;accent-color:var(--blue2);height:32px}
+.slval{font-size:1.5rem;font-weight:800;color:var(--blue);text-align:center}
+.bar{position:relative;height:16px;background:#e4ebf8;border-radius:8px;margin:14px 0 4px}
+.bar b{position:absolute;top:-4px;width:6px;height:24px;border-radius:3px}
+.bar .t{background:var(--ok)}.bar .g{background:var(--blue2)}
+.nextbar{display:flex;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap;align-items:center}
+.big{font-size:3rem;line-height:1}
+.ring{width:150px;height:150px;border-radius:50%;margin:8px auto;display:flex;align-items:center;justify-content:center;flex-direction:column;background:conic-gradient(var(--gold) var(--deg,0deg),#e4ebf8 0);position:relative}
+.ring::before{content:"";position:absolute;inset:12px;background:#fff;border-radius:50%}
+.ring span{position:relative;font-size:2rem;font-weight:800;color:var(--blue);line-height:1}
+.ring small{position:relative;color:#51607c}
+.rank{text-align:center;font-size:1.3rem;font-weight:800;color:var(--blue)}
+.br{display:grid;grid-template-columns:150px 1fr 52px;gap:8px;align-items:center;font-size:.88rem;margin:5px 0}
+.br .b{height:12px;background:#e4ebf8;border-radius:6px;overflow:hidden}
+.br .b i{display:block;height:100%;background:var(--gold2)}
+ul.take{margin:6px 0 0;padding-left:20px}ul.take li{margin:4px 0}
+@media(max-width:560px){.br{grid-template-columns:100px 1fr 46px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg id="flag" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+<div class="wrap">
+  <div class="toplinks"><a href="../index.html">← Klasse 10</a><a href="../../../index.html">⌂ Startseite</a></div>
+  <header class="top">
+    <div><h1>EU-Reise<small>Dein Tag als Praktikant/in in Brüssel</small></h1></div>
+    <div id="score" aria-live="polite">⭐ 0 / 0</div>
+  </header>
+  <nav id="tabs" aria-label="Stationen"></nav>
+  <main id="main"></main>
+</div>
+
+<script>
+(function(){
+'use strict';
+var KEY='eu-reise-v1';
+function $(s,r){return (r||document).querySelector(s);}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+// ---------- Hintergrund: Sternenkranz
+(function(){var s='',i,a,x,y;for(i=0;i<12;i++){a=i/12*Math.PI*2;x=150+Math.cos(a)*62;y=100+Math.sin(a)*62;
+ s+='<polygon fill="#f2c230" points="'+star(x,y,7,2.9)+'"/>';}
+ $('#flag').innerHTML=s;
+ function star(cx,cy,R,r){var p=[],k,ang;for(k=0;k<10;k++){ang=-Math.PI/2+k*Math.PI/5;var rr=k%2?r:R;p.push((cx+Math.cos(ang)*rr).toFixed(1)+','+(cy+Math.sin(ang)*rr).toFixed(1));}return p.join(' ');}
+})();
+
+// ---------- Inhalt
+var ST=[
+{ico:'🏛️',name:'Wer ist wer?',place:'Station 1 · Brüssel',
+ info:['<p>Die EU hat 27 Mitgliedstaaten, aber keine einzelne Regierung wie ein Staat. Stattdessen teilen sich mehrere Organe die Arbeit. Heute lernst du die wichtigsten kennen.</p><p>Ein Tipp vorab: Der <b>Rat der EU</b> und der <b>Europäische Rat</b> klingen fast gleich, sind aber zwei verschiedene Organe.</p>'],
+ qs:[{id:'s1m',type:'match',q:'Welches Organ ist gemeint? Wähle für jede Beschreibung das passende Organ.',
+  opts:['Europäische Kommission','Europäische Zentralbank','Europäischer Rat','Europäisches Parlament','Gerichtshof der EU','Rat der EU'],
+  rows:[
+   {t:'Fachminister der Mitgliedstaaten beschließen hier gemeinsam mit dem Parlament neue Gesetze.',c:5,w:'Im Rat der EU sitzen je nach Thema die Fachminister der Länder, zum Beispiel die Umweltminister.'},
+   {t:'Sie schlägt neue Gesetze vor und achtet darauf, dass die EU-Regeln eingehalten werden.',c:0,w:'Die Kommission macht die Vorschläge. Man nennt sie deshalb auch „Hüterin der Verträge“.'},
+   {t:'Die Staats- und Regierungschefs treffen sich und legen die großen politischen Leitlinien fest.',c:2,w:'Der Europäische Rat macht keine Gesetze, sondern gibt die Richtung vor.'},
+   {t:'Sie wird alle fünf Jahre direkt von den Bürgerinnen und Bürgern gewählt und beschließt Gesetze mit.',c:3,w:'Das Europäische Parlament ist das einzige Organ, das direkt gewählt wird: zuletzt im Juni 2024, mit 720 Abgeordneten.'},
+   {t:'Sie sitzt in Frankfurt und legt zum Beispiel die Leitzinsen für den Euroraum fest.',c:1,w:'Die EZB ist für den Euro zuständig und hat ihren Sitz in Frankfurt am Main.'},
+   {t:'Er sitzt in Luxemburg und entscheidet im Streitfall, wie EU-Recht gemeint ist.',c:4,w:'Der Gerichtshof der EU (EuGH) sorgt dafür, dass EU-Recht in allen Ländern gleich ausgelegt wird.'}]}]},
+
+{ico:'⚖️',name:'Wer entscheidet was?',place:'Station 2 · Straßburg',
+ info:['<p>Nicht alles wird in Brüssel entschieden. Manche Themen regelt <b>nur die EU</b>, bei anderen entscheiden vor allem die <b>Mitgliedstaaten</b>, und bei vielen Themen sind <b>beide</b> gemeinsam zuständig.</p><p>Entscheide bei jedem Fall: Wer hat hier vor allem das Sagen?</p>'],
+ qs:[{id:'s2c',type:'cards',q:'Karte für Karte: Wer ist hier vor allem zuständig?',
+  opts:['Vor allem die EU','Vor allem die Mitgliedstaaten','Beide gemeinsam'],
+  items:[
+   {t:'Ob es in einem Land eine Wehrpflicht gibt',c:1,w:'Die Armee ist Sache der Mitgliedstaaten. Jedes Land entscheidet selbst über Wehrpflicht und Truppen.'},
+   {t:'Welche Zölle für Waren von außerhalb der EU gelten',c:0,w:'Die EU ist eine Zollunion. Für Waren von außen gelten überall dieselben Zölle, und die EU verhandelt die Handelsabkommen.'},
+   {t:'Wie streng die Klimaschutz-Regeln für Fabriken sind',c:2,w:'Umwelt und Klima teilen sich EU und Länder. Die EU setzt den Rahmen, die Länder setzen um und können teils strenger sein.'},
+   {t:'Was in den Lehrplänen der Schulen steht',c:1,w:'Bildung ist Sache der Mitgliedstaaten, in Deutschland sogar der Bundesländer. Die EU unterstützt nur, zum Beispiel mit Erasmus+.'},
+   {t:'Wie Krankenhäuser organisiert und bezahlt werden',c:1,w:'Das Gesundheitswesen gehört den Mitgliedstaaten. Die EU kann ergänzen, entscheidet das aber nicht.'},
+   {t:'Wie hoch der Leitzins im Euroraum ist',c:0,w:'Das entscheidet die Europäische Zentralbank für alle Euro-Länder gemeinsam.'},
+   {t:'Wie die Landwirtschaft gefördert wird',c:2,w:'Die gemeinsame Agrarpolitik ist ein Gemeinschaftsthema: Die EU zahlt und setzt Regeln, die Länder setzen sie um.'},
+   {t:'Welchen Ladeanschluss neue Handys haben müssen',c:0,w:'Das ist ein Produktstandard im Binnenmarkt. Die EU legt ihn fest, die Länder müssen ihn umsetzen (mehr dazu gleich).'}]}]},
+
+{ico:'🔌',name:'Wie entsteht ein Gesetz?',place:'Station 3 · Das Ladekabel',
+ info:['<p>Früher hatte fast jeder Hersteller sein eigenes Ladekabel. Das nervte und erzeugte viel Elektroschrott. Seit Ende 2024 gilt in der EU für neue Handys, Tablets und Kopfhörer derselbe USB-C-Anschluss, seit dem 28. April 2026 auch für Laptops.</p><p>Bis dahin war es ein langer Weg. Du bringst die Schritte in die richtige Reihenfolge.</p>'],
+ qs:[{id:'s3o',type:'order',q:'Tippe die Schritte in der richtigen Reihenfolge an: zuerst, was am Anfang kommt.',
+  items:[
+   'Die Kommission legt einen Gesetzesvorschlag vor.',
+   'Parlament und Rat beraten den Vorschlag und verhandeln über Änderungen.',
+   'Parlament und Rat stimmen der gemeinsamen Fassung zu.',
+   'Die EU-Richtlinie wird veröffentlicht und die Länder bekommen eine Frist.',
+   'Deutschland und die anderen Länder machen daraus eigene Gesetze.',
+   'Die Pflicht gilt: Neue Handys brauchen den USB-C-Anschluss.'],
+  perm:[4,1,5,0,3,2],
+  w:'So läuft das „ordentliche Gesetzgebungsverfahren“: Die Kommission schlägt vor, Parlament und Rat beschließen gemeinsam. Danach setzen die Länder die Richtlinie um. Bei USB-C haben Kommission und Parlament mehr als 15 Jahre daran gearbeitet.'},
+ {id:'s3m',type:'mc',q:'Warum musste Deutschland für das USB-C-Gesetz noch ein eigenes Gesetz beschließen?',
+  opts:['Der Bundestag musste das Europäische Parlament zuvor um Erlaubnis bitten.','Eine Richtlinie gilt erst, wenn die Länder sie in nationales Recht umsetzen.','Gesetze der EU gelten grundsätzlich nur in dem Land, das sie vorschlägt.','Eine Verordnung der EU gilt in Deutschland nur nach einer Volksabstimmung.'],c:1,
+  w:'Eine <b>Richtlinie</b> gibt das Ziel vor, die Länder müssen sie in eigene Gesetze umwandeln (in Deutschland: Änderung des Funkanlagengesetzes). Eine <b>Verordnung</b> gilt dagegen sofort und direkt in allen Ländern.'}]},
+
+{ico:'🔎',name:'Mythen-Check',place:'Station 4 · Wahr oder falsch?',
+ info:['<p>Über die EU kursieren viele Behauptungen. Manche stimmen, andere sind Unsinn oder nur halb richtig. Du bist die Faktenprüferin oder der Faktenprüfer.</p>'],
+ qs:[{id:'s4c',type:'cards',q:'Stimmt die Behauptung?',
+  opts:['Wahr','Falsch'],
+  items:[
+   {t:'Die EU hat 27 Mitgliedstaaten.',c:0,w:'Stimmt. Seit dem Austritt des Vereinigten Königreichs 2020 sind es 27.'},
+   {t:'Alle EU-Länder bezahlen mit dem Euro.',c:1,w:'Falsch. 21 der 27 Länder haben den Euro, zuletzt kam Bulgarien am 1. Januar 2026 dazu. Dänemark hat zum Beispiel noch die Krone.'},
+   {t:'Die Mitglieder der EU-Kommission sind gewählte Abgeordnete.',c:1,w:'Falsch. Die Kommissarinnen und Kommissare werden von den Ländern vorgeschlagen und vom Parlament bestätigt, aber nicht direkt gewählt.'},
+   {t:'Das Europäische Parlament wird direkt von den Bürgerinnen und Bürgern gewählt.',c:0,w:'Stimmt. Das passiert alle fünf Jahre, die nächste Europawahl ist 2029.'},
+   {t:'Bei der Europawahl 2024 durften in Deutschland schon 16-Jährige wählen.',c:0,w:'Stimmt. 2024 durften zum ersten Mal Jugendliche ab 16 Jahren bei der Europawahl in Deutschland wählen.'},
+   {t:'„Schengen-Raum“ und „EU“ bedeuten genau dasselbe.',c:1,w:'Falsch. Zum Schengen-Raum gehören 29 Länder: 25 EU-Staaten und Länder wie die Schweiz und Norwegen, die nicht in der EU sind.'},
+   {t:'Die EU hat 2012 den Friedensnobelpreis bekommen.',c:0,w:'Stimmt. Das Komitee würdigte, dass die EU über Jahrzehnte zu Frieden und Versöhnung in Europa beigetragen hat.'}]}]},
+
+{ico:'🎯',name:'Zahlen und Schätzen',place:'Station 5 · Wie gut liegst du?',
+ info:['<p>Wie groß ist die EU eigentlich? Hier darfst du schätzen. Je näher du an der richtigen Zahl bist, desto mehr Punkte bekommst.</p>'],
+ qs:[{id:'s5a',type:'slider',q:'Wie viele Menschen leben in der EU?',min:50,max:800,step:10,start:300,unit:' Mio.',target:450,tiers:[30,80,150],
+  w:'Rund 450 Millionen Menschen leben in der EU. Deutschland hat gut 80 Millionen und ist damit das bevölkerungsreichste Land.'},
+ {id:'s5b',type:'slider',q:'Wie viele Abgeordnete hat das Europäische Parlament?',min:100,max:1000,step:10,start:400,unit:'',target:720,tiers:[40,120,250],
+  w:'Das Parlament hat 720 Abgeordnete. Deutschland schickt mit 96 die meisten, kleine Länder wie Malta mindestens 6.'},
+ {id:'s5c',type:'mc',q:'Wie viele der 27 EU-Staaten haben den Euro als Währung?',opts:['21 Länder','19 Länder','27 Länder','24 Länder'],c:0,
+  w:'Seit Bulgarien am 1. Januar 2026 beigetreten ist, sind es 21 Länder.'},
+ {id:'s5d',type:'mc',q:'Was bedeutet der Schengen-Raum?',opts:['Eine gemeinsame Währung, die in allen Teilnehmerländern gilt','Ein gemeinsames Heer, das alle Außengrenzen der EU bewacht','Einheitliche Steuern, die in allen Teilnehmerländern gelten','Reisen über die Binnengrenzen ohne feste Personenkontrollen'],c:3,
+  w:'Im Schengen-Raum gibt es normalerweise keine festen Grenzkontrollen zwischen den Teilnehmerländern. Zeitweise Kontrollen sind in Ausnahmefällen möglich.'}]},
+
+{ico:'🌍',name:'Soll die EU wachsen?',place:'Station 6 · Das große Finale',
+ info:['<p>Mehrere Länder wollen in die EU. Über die Erweiterung wird gestritten. Hier geht es nicht um deine Meinung, sondern darum, welche <b>Argumente</b> eher <b>dafür</b> und welche eher <b>dagegen</b> vorgebracht werden.</p>'],
+ qs:[{id:'s6c',type:'cards',q:'Für welche Seite wird dieses Argument vorgebracht?',
+  opts:['Spricht eher dafür','Spricht eher dagegen'],
+  items:[
+   {t:'Der gemeinsame Markt würde noch größer, und davon profitieren Unternehmen und Kunden.',c:0,w:'Ein größerer Binnenmarkt ist ein typisches Argument der Befürworter.'},
+   {t:'Entscheidungen werden schwieriger, wenn in vielen Bereichen alle Länder zustimmen müssen.',c:1,w:'Je mehr Länder mitreden, desto schwerer wird oft eine Einigung. Das ist ein Argument der Skeptiker.'},
+   {t:'Die Einkommen in manchen Beitrittsländern sind viel niedriger, Hilfen würden die EU Geld kosten.',c:1,w:'Die Kosten und die wirtschaftlichen Unterschiede nennen Kritiker als Sorge.'},
+   {t:'Der Beitrittswunsch ist ein Anreiz für Reformen, zum Beispiel bei Justiz und Wirtschaft.',c:0,w:'Wer beitreten will, muss EU-Standards erfüllen. Befürworter sehen darin einen Schub für Reformen.'},
+   {t:'Mehr Länder in der Union können Frieden und Sicherheit in der Nachbarschaft stärken.',c:0,w:'Dieses Argument stammt von den Befürwortern: Wer dazugehört, streitet eher am Verhandlungstisch.'},
+   {t:'Manche Menschen in den heutigen Mitgliedsländern fürchten, dass sie die Kosten tragen müssen.',c:1,w:'Diese Sorge wird von Kritikern genannt, sie ist aber eine Frage der Verteilung und nicht automatisch richtig.'}]}]}
+];
+var RANKS=[[0,'Neu im Haus','Du kennst jetzt die ersten Wege durchs Gebäude. Spiel die Fragen mit dem Wissen von eben noch einmal im Kopf durch.'],
+ [0.36,'Sachbearbeiter/in','Du kennst die Grundlagen der EU schon gut. Bei Zuständigkeiten und Gesetzen lohnt sich noch ein zweiter Blick.'],
+ [0.6,'Abgeordnete/r','Stark! Du hast die EU gut verstanden und kennst die wichtigsten Zahlen.'],
+ [0.8,'Kommissar/in','Sehr gut! Du hast Institutionen, Gesetzgebung und aktuelle Zahlen sicher im Griff.'],
+ [0.93,'EU-Profi','Fast perfekt! In Brüssel würdest du sofort eingestellt.']];
+var TAKE=['Die <b>Kommission</b> schlägt Gesetze vor, <b>Parlament und Rat</b> beschließen sie gemeinsam.',
+ 'Manches regelt die EU (Euro, Zölle), manches die Länder (Schulen, Armee, Krankenhäuser), vieles beide zusammen.',
+ 'Eine <b>Richtlinie</b> muss von den Ländern in eigene Gesetze umgesetzt werden, eine <b>Verordnung</b> gilt direkt.',
+ 'Die EU hat 27 Mitglieder, 21 davon zahlen mit dem Euro, und der Schengen-Raum umfasst 29 Länder.',
+ 'Das Europäische Parlament wird direkt gewählt. 2024 durften in Deutschland erstmals 16-Jährige mitwählen.'];
+
+// ---------- Zustand
+function fresh(){return {a:{},cur:'intro',streak:0};}
+var S;try{S=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){S=null;}
+if(!S||!S.a)S=fresh();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function qmax(q){return q.type==='match'?q.rows.length:q.type==='cards'?q.items.length:q.type==='order'?q.items.length:q.type==='slider'?3:1;}
+function qpts(q){var r=S.a[q.id];if(!r)return 0;
+ if(q.type==='match')return r.v.reduce(function(s,x,i){return s+(x===q.rows[i].c?1:0);},0);
+ if(q.type==='cards')return r.v.reduce(function(s,x,i){return s+(x===q.items[i].c?1:0);},0);
+ if(q.type==='order')return r.v.reduce(function(s,x,i){return s+(x===i?1:0);},0);
+ if(q.type==='slider'){var d=Math.abs(r.v-q.target);return d<=q.tiers[0]?3:d<=q.tiers[1]?2:d<=q.tiers[2]?1:0;}
+ return r.v===q.c?1:0;}
+function qdone(q){var r=S.a[q.id];if(!r)return false;if(q.type==='cards')return r.v.length>=q.items.length;return true;}
+function stDone(i){return ST[i].qs.every(qdone);}
+function stPts(i){return ST[i].qs.reduce(function(s,q){return s+qpts(q);},0);}
+function stMax(i){return ST[i].qs.reduce(function(s,q){return s+qmax(q);},0);}
+var MAX=ST.reduce(function(s,_,i){return s+stMax(i);},0);
+function total(){return ST.reduce(function(s,_,i){return s+stPts(i);},0);}
+function reach(){var i=0;while(i<ST.length&&stDone(i))i++;return i;} // erste offene Station
+function updHead(pop){var s=$('#score');s.textContent='⭐ '+total()+' / '+MAX;if(pop){s.classList.remove('pop');void s.offsetWidth;s.classList.add('pop');}}
+function updTabs(){var t=$('#tabs');t.innerHTML='';var r=reach();
+ ST.forEach(function(s,i){var b=el('button',S.cur===i?'act':'',s.ico+' '+(i+1)+(stDone(i)?'<span class="ck">✓</span>':''));b.disabled=i>r;b.title=s.name;b.onclick=function(){go(i);};t.appendChild(b);});}
+function go(c){S.cur=c;save();render();window.scrollTo({top:0,behavior:'smooth'});}
+function fbEl(ok,txt,why){var d=el('div');var f=el('div','fb '+(ok?'ok':'bad'),txt);d.appendChild(f);if(why)d.appendChild(el('div','why',why));return d;}
+function cheer(ok){if(ok){S.streak=(S.streak||0)+1;}else S.streak=0;return ok&&S.streak>=3?' 🔥 '+S.streak+' in Folge':'';}
+function ptsTag(q){return '<span class="pts">'+qpts(q)+' / '+qmax(q)+'</span>';}
+
+// ---------- Fragetypen
+function renderQ(q,box){box.innerHTML='';box.className='q'+(qdone(q)?' done':'');
+ ({match:rMatch,cards:rCards,order:rOrder,mc:rMc,slider:rSlider}[q.type])(q,box);}
+function head(q,box){box.appendChild(el('div','qh',(qdone(q)?ptsTag(q):'')+esc(q.q)));}
+function after(q){updHead(true);save();updTabs();showNext();}
+
+function rMatch(q,box){head(q,box);var r=S.a[q.id],sel=[];
+ q.rows.forEach(function(row,i){var d=el('div','mrow'+(r?(r.v[i]===row.c?' good':' badr'):''));d.appendChild(el('div','',esc(row.t)));
+  var s=el('select');s.disabled=!!r;s.innerHTML='<option value="">– wählen –</option>'+q.opts.map(function(o,k){return '<option value="'+k+'">'+esc(o)+'</option>';}).join('');
+  if(r)s.value=r.v[i];s.onchange=check;sel.push(s);d.appendChild(s);
+  if(r)d.appendChild(el('div','sol',(r.v[i]===row.c?'<b style="color:#1f8a4c">✓</b> ':'<b style="color:#b3261e">✗ Richtig wäre: '+esc(q.opts[row.c])+'.</b> ')+esc(row.w)));
+  box.appendChild(d);});
+ var b=el('button','btn','Antwort abgeben');b.disabled=true;
+ function check(){b.disabled=sel.some(function(s){return s.value==='';});}
+ if(!r){box.appendChild(el('p','','<small>Du kannst jede Frage nur einmal beantworten.</small>'));box.appendChild(b);}
+ b.onclick=function(){S.a[q.id]={v:sel.map(function(s){return +s.value;})};var p=qpts(q);cheer(p===q.rows.length);after(q);renderQ(q,box);};
+ if(r){var p=qpts(q);box.appendChild(fbEl(p===q.rows.length,p+' von '+q.rows.length+' richtig.',''));}}
+
+var view={}; // Karten: angezeigter Index
+function rCards(q,box){head(q,box);var r=S.a[q.id]||(S.a[q.id]={v:[]}),n=q.items.length;
+ if(view[q.id]==null)view[q.id]=r.v.length;
+ var vi=view[q.id];if(vi>=n&&r.v.length<n)vi=r.v.length;
+ var dots=el('div','dots');for(var i=0;i<n;i++){dots.appendChild(el('i',(i<r.v.length?(r.v[i]===q.items[i].c?'ok':'bad'):'')+(i===vi?' cur':'')));}box.appendChild(dots);
+ if(vi<n){var it=q.items[vi],answered=r.v.length>vi;box.appendChild(el('div','card',esc(it.t)));
+  var o=el('div','opts '+(q.opts.length===2?'row':''));
+  q.opts.forEach(function(lab,k){var b=el('button','opt',esc(lab));b.disabled=answered;
+   if(answered){if(k===it.c)b.classList.add('right');else if(k===r.v[vi])b.classList.add('wrong');}
+   b.onclick=function(){if(S.a[q.id].v.length>vi)return;S.a[q.id].v.push(k);var ok=k===it.c;var s=cheer(ok);save();updHead(ok);updTabs();
+    renderQ(q,box);};o.appendChild(b);});
+  box.appendChild(o);
+  if(answered){var ok=r.v[vi]===it.c;box.appendChild(fbEl(ok,(ok?'✓ Richtig.':'✗ Leider nicht.')+(ok&&S.streak>=3?' 🔥 '+S.streak+' in Folge':''),esc(it.w)));
+   var nb=el('button','btn gold',vi<n-1?'Nächste Karte ›':'Fertig ✓');nb.style.marginTop='10px';nb.onclick=function(){view[q.id]=vi+1;renderQ(q,box);showNext();};box.appendChild(nb);}
+  else box.appendChild(el('p','','<small style="color:#51607c">Eine Antwort pro Karte, überlege kurz.</small>'));}
+ else{var p=qpts(q);box.appendChild(fbEl(p>=n*0.7,p+' von '+n+' Karten richtig.',''));}
+ if(r.v.length&&vi>0){var h=el('div','hist');for(var j=0;j<Math.min(vi,r.v.length);j++){var okj=r.v[j]===q.items[j].c;h.appendChild(el('div','','<b class="'+(okj?'ok':'bad')+'">'+(okj?'✓':'✗')+'</b> '+esc(q.items[j].t)+' – <i>'+esc(q.opts[q.items[j].c])+'</i>'));}box.appendChild(h);}
+ box.className='q'+(qdone(q)&&vi>=n?' done':'');
+ var tag=box.querySelector('.qh');if(tag&&r.v.length)tag.insertAdjacentHTML('afterbegin',ptsTag(q));
+ showNext();}
+
+function rOrder(q,box){head(q,box);var r=S.a[q.id];
+ var pick=q._pick||(q._pick=[]);
+ if(r){ // ausgewertet: Spalte „Deine Reihenfolge“ mit Markierung, danach die richtige
+  var w=el('div','ordwrap');var a=el('div'),b=el('div');a.appendChild(el('h4','','Deine Reihenfolge'));b.appendChild(el('h4','','So ist es richtig'));
+  r.v.forEach(function(item,pos){a.appendChild(el('div','slot fill '+(item===pos?'good':'badr'),'<span class="n">'+(pos+1)+'</span><span>'+esc(q.items[item])+'</span>'));});
+  q.items.forEach(function(t,i){b.appendChild(el('div','slot fill','<span class="n">'+(i+1)+'</span><span>'+esc(t)+'</span>'));});
+  w.appendChild(a);w.appendChild(b);box.appendChild(w);var p=qpts(q);box.appendChild(fbEl(p===q.items.length,p+' von '+q.items.length+' Schritten an der richtigen Stelle.',q.w));return;}
+ var w2=el('div','ordwrap'),L=el('div'),R=el('div');L.appendChild(el('h4','','Die Schritte (antippen)'));R.appendChild(el('h4','','Deine Reihenfolge (antippen zum Entfernen)'));
+ q.perm.forEach(function(idx){var c=el('button','chip'+(pick.indexOf(idx)>=0?' used':''),esc(q.items[idx]));c.disabled=pick.indexOf(idx)>=0;c.onclick=function(){pick.push(idx);renderQ(q,box);};L.appendChild(c);});
+ for(var k=0;k<q.items.length;k++){(function(k){var s=el('div','slot'+(pick[k]!=null?' fill':''),'<span class="n">'+(k+1)+'</span><span>'+(pick[k]!=null?esc(q.items[pick[k]]):'')+'</span>');
+  if(pick[k]!=null){s.onclick=function(){pick.splice(k,1);renderQ(q,box);};}R.appendChild(s);})(k);}
+ w2.appendChild(L);w2.appendChild(R);box.appendChild(w2);box.appendChild(el('p','','<small>Du kannst die Reihenfolge ändern, bis du auf „Prüfen“ tippst. Danach zählt sie.</small>'));
+ var b=el('button','btn','Prüfen');b.disabled=pick.length<q.items.length;b.onclick=function(){S.a[q.id]={v:pick.slice()};q._pick=null;var p=qpts(q);cheer(p===q.items.length);after(q);renderQ(q,box);};box.appendChild(b);}
+
+function rMc(q,box){head(q,box);var r=S.a[q.id];var o=el('div','opts');
+ q.opts.forEach(function(lab,k){var b=el('button','opt',esc(lab));b.disabled=!!r;if(r){if(k===q.c)b.classList.add('right');else if(k===r.v)b.classList.add('wrong');}
+  b.onclick=function(){S.a[q.id]={v:k};var ok=k===q.c;cheer(ok);after(q);renderQ(q,box);};o.appendChild(b);});
+ box.appendChild(o);if(!r)box.appendChild(el('p','','<small style="color:#51607c">Nur ein Versuch.</small>'));
+ if(r){var ok=r.v===q.c;box.appendChild(fbEl(ok,(ok?'✓ Richtig.':'✗ Leider nicht.')+(ok&&S.streak>=3?' 🔥 '+S.streak+' in Folge':''),q.w));}}
+
+function rSlider(q,box){head(q,box);var r=S.a[q.id];var val=r?r.v:q.start;
+ var v=el('div','slval',val+q.unit);box.appendChild(v);
+ var s=el('input','sl');s.type='range';s.min=q.min;s.max=q.max;s.step=q.step;s.value=val;s.disabled=!!r;s.oninput=function(){v.textContent=s.value+q.unit;};box.appendChild(s);
+ if(!r){var b=el('button','btn','Schätzung abgeben');b.onclick=function(){S.a[q.id]={v:+s.value};var p=qpts(q);cheer(p>=2);after(q);renderQ(q,box);};box.appendChild(b);box.appendChild(el('p','','<small style="color:#51607c">Nur eine Schätzung.</small>'));}
+ else{var span=q.max-q.min,pc=function(x){return ((x-q.min)/span*100).toFixed(1)+'%';};
+  var bar=el('div','bar','<b class="t" style="left:calc('+pc(q.target)+' - 3px)" title="richtig"></b><b class="g" style="left:calc('+pc(r.v)+' - 3px)" title="deine Schätzung"></b>');box.appendChild(bar);
+  box.appendChild(el('p','','<small>Grün: richtig · Blau: deine Schätzung</small>'));
+  var p=qpts(q);box.appendChild(fbEl(p>=2,(p===3?'✓ Sehr nah dran!':p===2?'✓ Gut geschätzt.':p===1?'Ein Stück daneben.':'✗ Weit daneben.')+' Richtig: '+(q.target+q.unit).replace(/\.?$/,'.'),q.w));}}
+
+// ---------- Seiten
+var nextBox=null;
+function showNext(){if(!nextBox)return;var i=S.cur;nextBox.innerHTML='';if(typeof i!=='number')return;
+ var done=stDone(i);var last=i===ST.length-1;
+ var b=el('button','btn gold',last?'Zur Auswertung 🏁':'Weiter zu Station '+(i+2)+' ›');b.disabled=!done;b.onclick=function(){go(last?'end':i+1);};
+ nextBox.appendChild(el('div','',done?'<b style="color:#1f8a4c">Station geschafft: '+stPts(i)+' von '+stMax(i)+' Punkten.</b>':'<span style="color:#51607c">Beantworte alle Fragen dieser Station, dann geht es weiter.</span>'));
+ nextBox.appendChild(b);}
+
+function render(){var m=$('#main');m.innerHTML='';nextBox=null;updHead(false);updTabs();
+ if(S.cur==='intro'){m.innerHTML='<h2>Willkommen in Brüssel!</h2><p class="place">Dein erster Tag als Praktikant/in bei der EU</p>'+
+  '<p>Du arbeitest heute in sechs Stationen an den Fragen, die eine EU-Praktikantin oder ein EU-Praktikant kennen muss. Unterwegs sammelst du Punkte.</p>'+
+  '<div class="box gold"><b>So funktioniert es</b><br>Jede Frage kannst du <b>nur einmal</b> beantworten. Danach siehst du sofort, was richtig war und warum. Lies deshalb genau und überlege kurz, bevor du antippst.</div>'+
+  '<div class="box"><b>Insgesamt gibt es '+MAX+' Punkte.</b> Am Ende bekommst du einen Titel, vom „Neu im Haus“ bis zum „EU-Profi“. Dein Stand bleibt in diesem Browser gespeichert.</div>';
+  var go1=el('button','btn gold','Los geht’s ›');go1.onclick=function(){go(reach()<ST.length?reach():'end');};m.appendChild(go1);return;}
+ if(S.cur==='end'){renderEnd(m);return;}
+ var st=ST[S.cur];m.appendChild(el('h2','',st.ico+' '+esc(st.name)));m.appendChild(el('p','place',esc(st.place)));
+ st.info.forEach(function(h){m.appendChild(el('div','box',h));});
+ st.qs.forEach(function(q){var box=el('div','q');m.appendChild(box);renderQ(q,box);});
+ nextBox=el('div','nextbar');m.appendChild(nextBox);showNext();}
+
+function renderEnd(m){var t=total(),pc=t/MAX;var rk=RANKS[0];RANKS.forEach(function(r){if(pc>=r[0])rk=r;});
+ m.innerHTML='<h2>Auswertung</h2><p class="place">Dein erster Tag in Brüssel ist vorbei</p>';
+ var ring=el('div','ring','<span>'+t+'</span><small>von '+MAX+'</small>');ring.style.setProperty('--deg',(pc*360)+'deg');m.appendChild(ring);
+ m.appendChild(el('div','rank','Dein Titel: '+rk[1]));m.appendChild(el('p','','<span style="display:block;text-align:center;margin-top:4px">'+rk[2]+'</span>'));
+ m.appendChild(el('h3','','Deine Punkte je Station'));
+ ST.forEach(function(s,i){var a=stPts(i),b=stMax(i);m.appendChild(el('div','br','<span>'+s.ico+' '+esc(s.name)+'</span><span class="b"><i style="width:'+(b?a/b*100:0)+'%"></i></span><span>'+a+'/'+b+'</span>'));});
+ m.appendChild(el('h3','','Das nimmst du mit'));m.appendChild(el('ul','take',TAKE.map(function(x){return '<li>'+x+'</li>';}).join('')));
+ m.appendChild(el('div','box gold','<b>Zum Weiterdenken:</b> Welches EU-Gesetz oder welche EU-Regel hat dein Alltag schon verändert? Und welche Regel würdest du als Praktikant/in in Brüssel vorschlagen?'));
+ var again=el('button','btn ghost','Noch einmal spielen');var box=el('span');
+ again.onclick=function(){box.innerHTML='';var y=el('button','btn','Ja, alles zurücksetzen');var n=el('button','btn ghost','Abbrechen');n.style.marginLeft='8px';
+  y.onclick=function(){S=fresh();view={};ST.forEach(function(s){s.qs.forEach(function(q){q._pick=null;});});save();go('intro');};n.onclick=function(){render();};
+  box.appendChild(el('span','','Alle Antworten und Punkte werden gelöscht. '));box.appendChild(y);box.appendChild(n);again.style.display='none';};
+ var row=el('div','nextbar');row.appendChild(again);row.appendChild(box);m.appendChild(row);}
+
+// Startansicht: Stand wiederherstellen
+if(typeof S.cur==='number'&&S.cur>reach())S.cur=reach();
+if(S.cur==='end'&&reach()<ST.length)S.cur=reach();
+render();
+})();
+</script>
+<script src="../../../maskottchen/duo-app.js?v=20261126a"></script>
+</body>
+</html>
